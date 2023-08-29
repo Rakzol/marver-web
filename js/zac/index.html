@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            border: 0;
+            cursor: none;
+        }
+
+        html{
+            background-color: black;
+        }
+
+        #barra{
+            width: 250px;
+            height: 10px;
+            position: fixed;
+            background-color: white;
+        }
+
+        #circulo{
+            width: 175px;
+            height: 150px;
+            position: fixed;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <img src="zac.png" id="circulo"></img>
+    <div id="barra" ></div>
+
+    <script>
+        let barra = document.querySelector("#barra");
+        let circulo = document.querySelector("#circulo");
+        let aceleracion = 0.5;
+        let velocidad_rotacion = 0.1;
+        let aceleracion_rotacion = 0.25;
+        barra.posicion = {"x": 0};
+
+        barra.altura = 50;
+
+        let velocidad = 1.5;
+
+        /* Cuantos grados mas pequeños seran los angulos */
+        let margen = 10;
+
+        circulo.rotacion = 0; 
+        circulo.trayectoria = trayectoria(270, 90, margen);
+        circulo.posicion = {
+                "x": window.innerWidth / 2 - circulo.scrollWidth / 2,
+                "y": 10
+            };
+
+        barra.posicion.x = window.innerWidth / 2 - barra.scrollWidth / 2;
+        barra.style.left = barra.posicion.x + "px";
+        barra.style.top = window.innerHeight - barra.altura + "px";
+        window.addEventListener('mousemove', (e)=>{
+            barra.posicion.x = e.x;
+            barra.style.left = barra.posicion.x + "px";
+            barra.style.top = window.innerHeight - barra.altura + "px";
+        });
+
+        function trayectoria(maximo, minimo, margen){
+            /* Aca hacemos las pequeño el posible angulo dependiendo del margen */
+            maximo -= margen;
+            minimo += margen;
+            /* Generamos un angulo nuevo dentro del rango */
+            let angulo = ( Math.random() * ( maximo - minimo ) ) + minimo;
+            /* Con esta resta pasamos de un plano carteciano comun donde lo positivo es arriba,
+               a el plano carteciaon de html donde lo positivo es abajo derecha */
+            angulo -= 90;
+            /* Lo pasamos a radeanes */
+            let radianes = angulo * Math.PI / 180;
+
+            /* Regresamos la trayectoria de x,y dependiendo del angulo generado
+               estas trayectorias se pueden multiplicar para trazar una linea en esa direccion de angulo */
+            return {
+                "x": Math.cos( radianes ),
+                "y": Math.sin( radianes )
+            };
+        }
+
+        setInterval( ()=>{
+            circulo.rotacion += velocidad_rotacion;
+            circulo.style.transform = "rotate(" + circulo.rotacion + "deg)";
+
+            /* Dependiendo del margen del cual ya paso el limite y la trayectoria, cambiaremos la misma */
+            if(circulo.posicion.x <= 0 && circulo.trayectoria.y >= 0 ){
+                circulo.trayectoria = trayectoria(180, 90, margen);
+            }
+            else if(circulo.posicion.x <= 0 && circulo.trayectoria.y <= 0 ){
+                circulo.trayectoria = trayectoria(90, 0, margen);
+            }
+            else if(circulo.posicion.x >= window.innerWidth - circulo.scrollWidth && circulo.trayectoria.y >= 0 ){
+                circulo.trayectoria = trayectoria(270, 180, margen);
+            }
+            else if(circulo.posicion.x >= window.innerWidth - circulo.scrollWidth && circulo.trayectoria.y <= 0 ){
+                circulo.trayectoria = trayectoria(360, 270, margen);
+            }
+            else if(circulo.posicion.y <= 0 && circulo.trayectoria.x >= 0){
+                circulo.trayectoria = trayectoria(180, 90, margen);
+            }
+            else if(circulo.posicion.y <= 0 && circulo.trayectoria.x <= 0){
+                circulo.trayectoria = trayectoria(270, 180, margen);
+            }
+            else if(circulo.posicion.y >= window.innerHeight - circulo.scrollHeight - barra.altura && ( (barra.posicion.x <= circulo.posicion.x || barra.posicion.x <= circulo.posicion.x + circulo.scrollWidth ) && barra.posicion.x + barra.scrollWidth >= circulo.posicion.x ) && circulo.trayectoria.x >= 0 ){
+                velocidad += aceleracion;
+                velocidad_rotacion += aceleracion_rotacion;
+                circulo.trayectoria = trayectoria(90, 0, margen);
+            }
+            else if(circulo.posicion.y >= window.innerHeight - circulo.scrollHeight - barra.altura && ( (barra.posicion.x <= circulo.posicion.x || barra.posicion.x <= circulo.posicion.x + circulo.scrollWidth ) && barra.posicion.x + barra.scrollWidth >= circulo.posicion.x ) && circulo.trayectoria.x <= 0 ){
+                velocidad += aceleracion;
+                velocidad_rotacion += aceleracion_rotacion;
+                circulo.trayectoria = trayectoria(360, 270, margen);
+            }
+
+            if(circulo.posicion.y >= window.innerHeight - circulo.scrollHeight - barra.altura && circulo.trayectoria.y > 0){
+                location.reload();
+            }
+
+            circulo.posicion.x += velocidad * circulo.trayectoria.x;
+            circulo.posicion.y += velocidad * circulo.trayectoria.y;
+
+            circulo.style.left = circulo.posicion.x + "px";
+            circulo.style.top = circulo.posicion.y + "px";
+        }, 0);
+
+    </script>
+</body>
+</html>

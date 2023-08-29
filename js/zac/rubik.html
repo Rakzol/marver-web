@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <style>
+
+        html
+        {
+            width: 100%;
+            height: 100%;
+        }
+
+        body
+        {
+            background-color: black;
+            padding: 0px;
+            border: 0px;
+            margin: 0px;
+            width: 100%;
+            height: 100%;
+        }
+
+        @keyframes fondo
+        {
+            0%
+            {
+                background-color: rgba(255, 0, 0, 0.15);
+            }
+            33%
+            {
+                background-color: rgba(0, 255, 0, 0.15);
+            }
+            66%
+            {
+                background-color: rgba(0, 0, 255, 0.15);
+            }
+            100%
+            {
+                background-color: rgba(255, 0, 0, 0.15);
+            }
+        }
+
+        @keyframes rotar
+        {
+            0%
+            {
+                transform: rotateX( 0deg ) rotateY( 0deg );
+            }
+            100%
+            {
+                transform: rotateX( 360deg ) rotateY( 360deg );
+            }
+        }
+
+        @media ( orientation: landscape )
+        {
+            .rubik
+            {
+                height: 35vh;
+                width: 35vh;
+
+                /* left: calc( 50% - 35vh / 2 );
+                top: calc( 50% - 35vh / 2 ); */
+            }
+        }
+        @media ( orientation: portrait )
+        {
+            .rubik
+            {
+                height: 35vw;
+                width: 35vw;
+
+                /* left: calc( 50% - 35vw / 2 );
+                top: calc( 50% - 35vw / 2 ); */
+            }
+        }
+
+        .rubik
+        {
+            position: fixed;
+
+            transform-style: preserve-3d;
+            --escala_cubos: 0.85;
+
+            animation-name: rotar;
+            animation-duration: 6s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+        }
+        /* Todos los cubos que formal al cubo de rubik */
+        .rubik > div
+        {
+            position: absolute;
+            width: 33%;
+            height: 33%;
+
+            transform-style: preserve-3d;
+        }
+        /* Cubos especificos que forman la cubo de rubik */
+        .rubik > div:nth-child(1)
+        {
+            transform: rotateY( 90deg ) translateX( 100% ) rotateY( 270deg ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(2)
+        {
+            transform: rotateY( 90deg ) translateX( 100% ) rotateY( 270deg ) translateX( 100% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(3)
+        {
+            transform: rotateY( 90deg ) translateX( 100% ) rotateY( 270deg ) translateX( 200% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(4)
+        {
+            transform: scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(5)
+        {
+            transform: translateX( 100% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(6)
+        {
+            transform: translateX( 200% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(7)
+        {
+            transform: rotateY( 90deg ) translateX( -100% ) rotateY( 270deg ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(8)
+        {
+            transform: rotateY( 90deg ) translateX( -100% ) rotateY( 270deg ) translateX( 100% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(9)
+        {
+            transform: rotateY( 90deg ) translateX( -100% ) rotateY( 270deg ) translateX( 200% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(10)
+        {
+            transform: rotateY( 90deg ) translateX( 100% ) rotateY( 270deg ) translateY( 100% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(11)
+        {
+            transform: rotateY( 90deg ) translateX( 100% ) rotateY( 270deg ) translateX( 100% ) translateY( 100% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(12)
+        {
+            transform: rotateY( 90deg ) translateX( 100% ) rotateY( 270deg ) translateX( 200% ) translateY( 100% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(13)
+        {
+            transform: translateY( 100% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(14)
+        {
+            transform: translateX( 100% ) translateY( 100% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(15)
+        {
+            transform: translateX( 200% ) translateY( 100% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(16)
+        {
+            transform: rotateY( 90deg ) translateX( -100% ) rotateY( 270deg ) translateY( 100% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(17)
+        {
+            transform: rotateY( 90deg ) translateX( -100% ) rotateY( 270deg ) translateX( 100% ) translateY( 100% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(18)
+        {
+            transform: rotateY( 90deg ) translateX( -100% ) rotateY( 270deg ) translateX( 200% ) translateY( 100% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(19)
+        {
+            transform: rotateY( 90deg ) translateX( 100% ) rotateY( 270deg ) translateY( 200% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(20)
+        {
+            transform: rotateY( 90deg ) translateX( 100% ) rotateY( 270deg ) translateX( 100% ) translateY( 200% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(21)
+        {
+            transform: rotateY( 90deg ) translateX( 100% ) rotateY( 270deg ) translateX( 200% ) translateY( 200% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(22)
+        {
+            transform: translateY( 200% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(23)
+        {
+            transform: translateX( 100% ) translateY( 200% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(24)
+        {
+            transform: translateX( 200% ) translateY( 200% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(25)
+        {
+            transform: rotateY( 90deg ) translateX( -100% ) rotateY( 270deg ) translateY( 200% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(26)
+        {
+            transform: rotateY( 90deg ) translateX( -100% ) rotateY( 270deg ) translateX( 100% ) translateY( 200% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        .rubik > div:nth-child(27)
+        {
+            transform: rotateY( 90deg ) translateX( -100% ) rotateY( 270deg ) translateX( 200% ) translateY( 200% ) scale3d(  var( --escala_cubos ) ,  var( --escala_cubos ) ,  var( --escala_cubos )  );
+        }
+        /* Todas las caras de los cubos que formal al cubo de rubik */
+        .rubik > div div
+        {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+
+            border: 3px solid rgba(128, 128, 128, 0.200);
+            background-color: rgba(0, 255, 0, 0.15);
+
+            transform-style: preserve-3d;
+
+            animation-name: fondo;
+            animation-duration: 3s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+        }
+        /* Caras especificas de los cubos que forman la cubo de rubik */
+        .rubik > div div:nth-child(1)/* Adelante */
+        {
+            transform: rotateY( 270deg ) translateX( 50% ) rotateY( 90deg );
+        }
+        .rubik > div div:nth-child(2)/* Atras */
+        {
+            transform: rotateY( 270deg ) translateX( -50% ) rotateY( 90deg );
+        }
+        .rubik > div div:nth-child(3)/* Arriba */
+        {
+            transform: translateY( -50% ) rotateX( 90deg );
+        }
+        .rubik > div div:nth-child(4)/* Abajo */
+        {
+            transform: translateY( 50% ) rotateX( 90deg );
+        }
+        .rubik > div div:nth-child(5)/* Derecha */
+        {
+            transform: translateX( -50% ) rotateY( 90deg );
+        }
+        .rubik > div div:nth-child(6)/* Izquierda */
+        {
+            transform: translateX( 50% ) rotateY( 90deg );
+        }
+    </style>
+
+    <script>
+
+        window.onload = function()
+        {
+            Array.from( document.getElementsByClassName("rubik") ).forEach
+            (
+                function( elemento )
+                {
+                    rebotar( elemento );
+                }
+            );
+        }
+
+        function rebotar( elemento )
+        {
+            elemento.style.position = "fixed";
+            /* Centramos el elemento */
+            var left = window.innerWidth / 2 - elemento.offsetWidth / 2;
+            var top = window.innerHeight / 2 - elemento.offsetHeight / 2;
+            elemento.style.left = left + "px";
+            elemento.style.top = top + "px";
+
+            /* Damos una direccion random al elemento */
+            var velocidad = 3;
+            var centrado_angulo = 22.5;
+            var direccion;
+
+            switch ( Math.floor( Math.random() * 4 ) )
+            {
+                case 0:
+                    direccion = direccion_random_entre_grados( 89, 1 );
+                break;
+                case 1:
+                    direccion = direccion_random_entre_grados( 179, 91 );
+                break;
+                case 2:
+                    direccion = direccion_random_entre_grados( 269, 181 );
+                break;
+                case 3:
+                    direccion = direccion_random_entre_grados( 359, 271 );
+                break;
+            }
+
+            setInterval
+            (
+                function()
+                {
+                    /* Verificar si ya estas al lado del limite y dar una nueva direccion en caso de ser asi */
+
+                    /*
+                        Esquina superior izquierda,
+                        Lado izquierdo hacia abajo,
+                        Lado superior hacia la derecha
+                    */
+                    if
+                    (
+                        ( left == 0 && top == 0 ) ||
+                        ( left == 0 && direccion.y > 0 ) ||
+                        ( top == 0 && direccion.x > 0 )
+                    )
+                    {
+                        direccion = direccion_random_entre_grados( 90 - centrado_angulo, 0 + centrado_angulo );
+                    }
+                    /*
+                        Esquina superior derecha,
+                        Lado derecho hacia abajo,
+                        Lado superior hacia la izquierda
+                    */
+                    if
+                    (
+                        ( left + elemento.offsetWidth == window.innerWidth && top == 0 ) ||
+                        ( left + elemento.offsetWidth == window.innerWidth && direccion.y > 0 ) ||
+                        ( top == 0 && direccion.x < 0 )
+                    )
+                    {
+                        direccion = direccion_random_entre_grados( 180 - centrado_angulo, 90 + centrado_angulo );
+                    }
+                    /*
+                        Esquina inferior derecha,
+                        Lado derecho hacia arriba,
+                        Lado inferior hacia la izquierda
+                    */
+                    if
+                    (
+                        ( left + elemento.offsetWidth == window.innerWidth && top + elemento.offsetHeight == window.innerHeight ) ||
+                        ( left + elemento.offsetWidth == window.innerWidth && direccion.y < 0 ) ||
+                        ( top + elemento.offsetHeight == window.innerHeight && direccion.x < 0 )
+                    )
+                    {
+                        direccion = direccion_random_entre_grados( 270 - centrado_angulo, 180 + centrado_angulo );
+                    }
+                    /*
+                        Esquina inferior izquierda,
+                        Lado izquierdo hacia arriba,
+                        Lado inferior hacia la derecha
+                    */
+                    if
+                    (
+                        ( left == 0 && top + elemento.offsetHeight == window.innerHeight ) ||
+                        ( left == 0 && direccion.y < 0 ) ||
+                        ( top + elemento.offsetHeight == window.innerHeight && direccion.x > 0 )
+                    )
+                    {
+                        direccion = direccion_random_entre_grados( 360 - centrado_angulo, 270 + centrado_angulo );
+                    }
+                    /*
+                        No es necesario controlar las colisiones de direcciones rectas con los lados superior, derecho, inferior e izquierdo
+                        ya que el centrado_angulo evita las direcciones rectas
+                    */
+
+                    /* Dibujarte y verificar si en el siguiente movimiento te pasas del limite y en caso de ser asi ponerte enal lado del limite */
+                    left += velocidad * direccion.x;
+                    top += velocidad * direccion.y;
+                    
+                    /* De esta manera sabemos si el elemento ya se salio del limite hacia la izquierda */
+                    if( left < 0 )
+                    {
+                        /* Lo colocamos al limite del lado izquierdo */
+                        left = 0;
+                    }
+                    /* De esta manera sabemos si el elemento ya se salio del limite hacia la derecha */
+                    if( left + elemento.offsetWidth > window.innerWidth )
+                    {
+                        /* Lo colocamos al limite del lado derecho */
+                        left = window.innerWidth - elemento.offsetWidth;
+                    }
+
+                    if( top < 0 )
+                    {
+                        top = 0;
+                    }
+                    if( top + elemento.offsetHeight > window.innerHeight )
+                    {
+                        top = window.innerHeight - elemento.offsetHeight;
+                    }
+
+                    elemento.style.left = left + "px";
+                    elemento.style.top = top + "px";
+                }
+            ,
+                1
+            );
+        }
+
+        function direccion_random_entre_grados( grado_maximo, grado_minimo )
+        {
+            grados = random_entre( grado_maximo, grado_minimo );
+            return  {
+                        "x": Math.cos( grados_radianes( grados ) ),
+                        "y": Math.sin( grados_radianes( grados ) )
+                    };
+        }
+
+        function random_entre( maximo, minimo )
+        {
+            return Math.random() * ( maximo - minimo + 1 ) + minimo;
+        }
+
+        function grados_radianes( grados )
+        {
+            return grados * Math.PI / 180;
+        }
+
+    </script>
+
+</head>
+<body>
+
+    <div class="rubik" >
+
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+    </div>
+
+</body>
+</html>
