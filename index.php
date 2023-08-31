@@ -1023,7 +1023,7 @@
             <div class="container">
                 <div class="row">
                     <div class="text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a href="#">marverrefacciones.com:)Aby yo a usted la amo <3</a>, Todos los derechos
+                        &copy; <a href="#">marverrefacciones.com</a>, Todos los derechos
                         reservados.
                     </div>
                 </div>
