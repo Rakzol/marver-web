@@ -1,4 +1,5 @@
 <?php
+    //comentario index
     require_once('modelo/guardar_estadisticas.php');
 ?>
 <!DOCTYPE html>
