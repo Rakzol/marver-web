@@ -500,10 +500,10 @@
       <thead>
         <tr>
           <th>Pedido</th>
-          <th class="d-none d-sm-table-cell" >Fecha</th>
-          <th class="d-none d-md-table-cell" >Hora</th>
-          <th>Total</th>
-          <th>Status</th>
+          <th class="d-none d-sm-table-cell" >Vencimiento</th>
+          <th class="d-none d-md-table-cell" >Importe</th>
+          <th>Abono</th>
+          <th>Debe</th>
           <th>Detalle</th>
         </tr>
       </thead>
@@ -595,26 +595,30 @@
                 tr.appendChild(td);
 
                 td = document.createElement('td');
-                td.innerText = factura['Fechafactura'];
+                td.innerText = factura['FechaVencimiento'];
                 td.classList.add('d-none');
                 td.classList.add('d-sm-table-cell');
                 tr.appendChild(td);
 
                 td = document.createElement('td');
-                td.innerText = factura['Horafactura'];
-                td.classList.add('d-none');
-                td.classList.add('d-md-table-cell');
+                td.innerText = factura['Importe'].toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
+                td.classList.add('dinero');
                 tr.appendChild(td);
 
                 td = document.createElement('td');
-                td.innerText = factura['Totalfactura'].toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
+                td.innerText = factura['Abono'].toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
+                td.classList.add('dinero');
+                tr.appendChild(td);
+
+                td = document.createElement('td');
+                td.innerText = (factura['Importe'] - factura['Abono']).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
                 td.classList.add('dinero');
                 tr.appendChild(td);
 
                 td = document.createElement('td');
                 let button = document.createElement('button');
                 button.onclick = ()=>{
-                    document.location.href = 'https://www.marverrefacciones.mx/pedido?folio=' + pedido['Folio'];
+                    document.location.href = 'https://www.marverrefacciones.mx/pedido?folio=' + factura['Folio'];
                 }
                 button.innerText = 'Ver';
                 button.classList.add('btn');

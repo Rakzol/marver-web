@@ -2,7 +2,7 @@
     try{
         require_once('inicializar_datos.php');
 
-        $preparada = $datos['conexion_base_sucursal']->prepare("SELECT * FROM Pagos WHERE Cliente = :cliente AND Saldado != 3 ORDER BY Saldado");
+        $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Pagos.FechaVencimiento, Pagos.Importe, Pagos.Abono, PedidosCliente.Folio AS Folio FROM Pagos INNER JOIN PedidosCliente ON PedidosCliente.FolioComprobante = Pagos.Folio WHERE Pagos.Cliente = :cliente AND Pagos.Saldado != 3 ORDER BY Pagos.Saldado, Pagos.Fecha");
         $preparada->bindValue(':cliente', $datos['cliente']['Clave']);
         $preparada->execute();
 
