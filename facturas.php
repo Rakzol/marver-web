@@ -497,7 +497,10 @@
     <div class="container mt-3 p-3 bg-white rounded">
     <h1 class="text-center" >Estado de Cuenta</h1>
     <table class="table mt-2">
-    <caption class="text-end" >List of users</caption>
+    <caption class="text-end" >
+        <p>Total:</p>
+        <p style="color: green;" >$ 999</p>
+    </caption>
       <thead>
         <tr>
           <th>Pedido</th>
