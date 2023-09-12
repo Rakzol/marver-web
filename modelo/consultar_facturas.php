@@ -7,7 +7,7 @@
         $preparada->execute();
         $resultados[] = $preparada->fetchAll(PDO::FETCH_ASSOC);
 
-        $preparada = $datos['conexion_base_sucursal']->prepare("SELECT SUM(Pagos.Importe) - SUM(Pagos.Abono) WHERE Pagos.Cliente = :cliente AND Pagos.Saldado = 0");
+        $preparada = $datos['conexion_base_sucursal']->prepare("SELECT SUM(Pagos.Importe) - SUM(Pagos.Abono) FROM Pagos WHERE Pagos.Cliente = :cliente AND Pagos.Saldado = 0");
         $preparada->bindValue(':cliente', $datos['cliente']['Clave']);
         $preparada->execute();
         $resultados[] = $preparada->fetchColumn();
