@@ -495,8 +495,9 @@
     <!-- Navbar End -->
 
     <div class="container mt-3 p-3 bg-white rounded">
-    <h1 class="text-center" >Facturas</h1>
+    <h1 class="text-center" >Estado de Cuenta</h1>
     <table class="table mt-2">
+    <caption>List of users</caption>
       <thead>
         <tr>
           <th>Pedido</th>
