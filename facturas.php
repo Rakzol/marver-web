@@ -514,8 +514,9 @@
       <tr>
           <th></th>
           <th></th>
-          <th></th>
-          <th>Total</th>
+          <th>Totales:</th>
+          <th class="dinero" id="importe_total" ></th>
+          <th class="dinero" id="abono_total" ></th>
           <th class="dinero" id="deuda_total" ></th>
           <th></th>
         </tr>
@@ -560,7 +561,9 @@
                     console.error('Error al solicitar las facturas: ', error);
                 })
                 .then(respuesta_json => {
-                    document.querySelector("#deuda_total").innerText = respuesta_json[1].toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
+                    document.querySelector("#importe_total").innerText = respuesta_json[1].toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
+                    document.querySelector("#abono_total").innerText = respuesta_json[2].toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
+                    document.querySelector("#deuda_total").innerText = (respuesta_json[1] - respuesta_json[2]).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
                     facturas = respuesta_json[0];
                     //console.log(facturas);
                     primera.innerText = facturas.length ? 1 : 0;
