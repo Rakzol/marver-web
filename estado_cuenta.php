@@ -410,7 +410,7 @@
       <tbody>
         <?php
         
-            require_once('inicializar_datos.php');
+            require_once('modelo/inicializar_datos.php');
             $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Pagos.Fecha, Pagos.FechaVencimiento, Pagos.Importe, Pagos.Abono, Pagos.Folio AS FolioComprobante, PedidosCliente.Folio AS Folio FROM Pagos INNER JOIN PedidosCliente ON PedidosCliente.FolioComprobante = Pagos.Folio AND PedidosCliente.Cliente = :clienteTemp AND PedidosCliente.Status != 'CA' WHERE Pagos.Cliente = :cliente AND Pagos.Saldado = 0 ORDER BY Pagos.Fecha");
             $preparada->bindValue(':clienteTemp', $datos['cliente']['Clave']);
             $preparada->bindValue(':cliente', $datos['cliente']['Clave']);
