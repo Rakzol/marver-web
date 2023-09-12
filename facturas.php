@@ -515,7 +515,7 @@
           <th></th>
           <th></th>
           <th>Total</th>
-          <th class="dinero" >$ 99.99</th>
+          <th class="dinero" >99.99</th>
           <th></th>
         </tr>
     </tfoot>
