@@ -515,7 +515,7 @@
           <th></th>
           <th></th>
           <th>Total</th>
-          <th class="dinero" >99.99</th>
+          <th class="dinero" id="deuda_total" ></th>
           <th></th>
         </tr>
     </tfoot>
@@ -559,7 +559,8 @@
                     console.error('Error al solicitar las facturas: ', error);
                 })
                 .then(respuesta_json => {
-                    facturas = respuesta_json;
+                    console.log(respuesta_json);
+                    facturas = respuesta_json[0];
                     //console.log(facturas);
                     primera.innerText = facturas.length ? 1 : 0;
                     pagina.valueAsNumber = facturas.length ? 1 : 0;
