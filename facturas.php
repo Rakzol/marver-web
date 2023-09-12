@@ -559,7 +559,7 @@
                     console.error('Error al solicitar las facturas: ', error);
                 })
                 .then(respuesta_json => {
-                    console.log(respuesta_json);
+                    document.querySelector("#deuda_total").innerText = respuesta_json[1].toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
                     facturas = respuesta_json[0];
                     //console.log(facturas);
                     primera.innerText = facturas.length ? 1 : 0;
