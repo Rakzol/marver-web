@@ -400,15 +400,14 @@
 
 <body>
 
-    <div class="container mt-3 p-3 bg-white rounded">
     <h1 class="text-center" >Estado de Cuenta</h1>
     <table class="table mt-2">
       <thead>
         <tr>
           <th>Folio</th>
           <th>Inicio</th>
-          <th class="d-none d-sm-table-cell" >Vencimiento</th>
-          <th class="d-none d-md-table-cell" >Importe</th>
+          <th>Vencimiento</th>
+          <th>Importe</th>
           <th>Abono</th>
           <th>Debe</th>
           <th>Detalle</th>
@@ -421,128 +420,14 @@
           <th></th>
           <th></th>
           <th>Totales:</th>
-          <th class="dinero" id="importe_total" ></th>
-          <th class="dinero" id="abono_total" ></th>
-          <th class="dinero" id="deuda_total" ></th>
+          <th class="dinero"></th>
+          <th class="dinero"></th>
+          <th class="dinero"></th>
           <th></th>
         </tr>
     </tfoot>
     </table>
   </div>
-
-    <script>
-        let primera;
-        let ultima;
-        let pagina;
-        let facturas_pagina = 10;
-        let facturas = [];
-        let cuerpo_facturas;
-
-        window.addEventListener('load', () => {
-            primera = document.getElementById('primera');
-            ultima = document.getElementById('ultima');
-            pagina = document.getElementById('pagina');
-            cuerpo_facturas = document.querySelector('tbody');
-
-            fetch('modelo/consultar_facturas')
-                .then((respuesta) => {
-                    return respuesta.json();
-                })
-                .catch(error => {
-                    console.error('Error al solicitar las facturas: ', error);
-                })
-                .then(respuesta_json => {
-                    document.querySelector("#importe_total").innerText = respuesta_json[1].toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
-                    document.querySelector("#abono_total").innerText = respuesta_json[2].toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
-                    document.querySelector("#deuda_total").innerText = (respuesta_json[1] - respuesta_json[2]).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
-                    facturas = respuesta_json[0];
-                    //console.log(facturas);
-                    primera.innerText = facturas.length ? 1 : 0;
-                    pagina.valueAsNumber = facturas.length ? 1 : 0;
-                    ultima.innerText = Math.ceil(facturas.length / facturas_pagina);
-                    mostrar_facturas();
-                });
-        });
-
-        function pagina_anterior() {
-            if (pagina.valueAsNumber > 1) {
-                pagina.valueAsNumber -= 1;
-            }
-            mostrar_facturas();
-        }
-
-        function primera_pagina() {
-            pagina.valueAsNumber = primera.innerText;
-            mostrar_facturas();
-        }
-
-        function ir_pagina() {
-            mostrar_facturas();
-        }
-
-        function ultima_pagina() {
-            pagina.valueAsNumber = ultima.innerText;
-            mostrar_facturas();
-        }
-
-        function siguiente_pagina() {
-            pagina.valueAsNumber++;
-            mostrar_facturas();
-        }
-
-        function mostrar_facturas() {
-            cuerpo_facturas.replaceChildren();
-            let inicio = (pagina.valueAsNumber - 1) * facturas_pagina;
-            facturas.slice(inicio, inicio + facturas_pagina).forEach(factura => {
-                let tr = document.createElement('tr');
-
-                let td = document.createElement('td');
-                td.innerText = factura['FolioComprobante'];
-                tr.appendChild(td);
-
-                td = document.createElement('td');
-                td.innerText = factura['Fecha'];
-                td.classList.add('d-none');
-                td.classList.add('d-sm-table-cell');
-                tr.appendChild(td);
-
-                td = document.createElement('td');
-                td.innerText = factura['FechaVencimiento'];
-                td.classList.add('d-none');
-                td.classList.add('d-sm-table-cell');
-                tr.appendChild(td);
-
-                td = document.createElement('td');
-                td.innerText = factura['Importe'].toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
-                td.classList.add('dinero');
-                tr.appendChild(td);
-
-                td = document.createElement('td');
-                td.innerText = factura['Abono'].toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
-                td.classList.add('dinero');
-                tr.appendChild(td);
-
-                td = document.createElement('td');
-                td.innerText = (factura['Importe'] - factura['Abono']).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
-                td.classList.add('dinero');
-                tr.appendChild(td);
-
-                td = document.createElement('td');
-                let button = document.createElement('button');
-                button.onclick = ()=>{
-                    document.location.href = 'https://www.marverrefacciones.mx/pedido?folio=' + factura['Folio'];
-                }
-                button.innerText = 'Ver';
-                button.classList.add('btn');
-                button.classList.add('btn-primary');
-                td.appendChild(button);
-                tr.appendChild(td);
-                
-                cuerpo_facturas.appendChild(tr);
-            });
-        }
-
-    </script>
 
     <!-- <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'
         integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM'
