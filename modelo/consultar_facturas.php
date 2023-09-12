@@ -2,12 +2,12 @@
     try{
         require_once('inicializar_datos.php');
 
-        $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Pagos.FechaVencimiento, Pagos.Importe, Pagos.Abono, PedidosCliente.Folio AS Folio FROM Pagos INNER JOIN PedidosCliente ON PedidosCliente.FolioComprobante = Pagos.Folio WHERE Pagos.Cliente = :cliente AND Pagos.Saldado = 0 ORDER BY Pagos.Fecha");
+        $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Pagos.Fecha, Pagos.FechaVencimiento, Pagos.Importe, Pagos.Abono, Pagos.Folio AS FolioComprobante, PedidosCliente.Folio AS Folio FROM Pagos INNER JOIN PedidosCliente ON PedidosCliente.FolioComprobante = Pagos.Folio WHERE Pagos.Cliente = :cliente AND Pagos.Saldado = 0 ORDER BY Pagos.Fecha");
         $preparada->bindValue(':cliente', $datos['cliente']['Clave']);
         $preparada->execute();
         $resultados[] = $preparada->fetchAll(PDO::FETCH_ASSOC);
 
-        $preparada = $datos['conexion_base_sucursal']->prepare("SELECT SUM(Pagos.Importe) - SUM(Pagos.Abono) FROM Pagos WHERE Pagos.Cliente = :cliente AND Pagos.Saldado = 0");
+        $preparada = $datos['conexion_base_sucursal']->prepare("SELECT SUM(Importe) - SUM(Abono) FROM Pagos WHERE Cliente = :cliente AND Saldado = 0");
         $preparada->bindValue(':cliente', $datos['cliente']['Clave']);
         $preparada->execute();
         $resultados[] = $preparada->fetchColumn();

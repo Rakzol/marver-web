@@ -499,7 +499,8 @@
     <table class="table mt-2">
       <thead>
         <tr>
-          <th>Pedido</th>
+          <th>Folio</th>
+          <th>Inicio</th>
           <th class="d-none d-sm-table-cell" >Vencimiento</th>
           <th class="d-none d-md-table-cell" >Importe</th>
           <th>Abono</th>
@@ -602,7 +603,13 @@
                 let tr = document.createElement('tr');
 
                 let td = document.createElement('td');
-                td.innerText = factura['Folio'];
+                td.innerText = factura['FolioComprobante'];
+                tr.appendChild(td);
+
+                td = document.createElement('td');
+                td.innerText = factura['Fecha'];
+                td.classList.add('d-none');
+                td.classList.add('d-sm-table-cell');
                 tr.appendChild(td);
 
                 td = document.createElement('td');
