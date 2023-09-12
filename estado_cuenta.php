@@ -410,7 +410,7 @@
       <tbody>
         <?php
 
-            echo 5 + 5 ;
+            echo "<tr> <td>15</td> </tr>";
 
         ?>
       </tbody>
