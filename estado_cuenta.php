@@ -408,14 +408,12 @@
         </tr>
       </thead>
       <tbody>
-      </tbody>
-
       <?php
 
-        echo 5 + 5 ;
+echo 5 + 5 ;
 
-        ?>
-
+?>
+      </tbody>
       <tfoot>
         <tr>
           <th></th>
