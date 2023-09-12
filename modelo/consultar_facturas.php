@@ -2,7 +2,11 @@
     try{
         require_once('inicializar_datos.php');
 
-        $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Pagos.Fecha, Pagos.FechaVencimiento, Pagos.Importe, Pagos.Abono, Pagos.Folio AS FolioComprobante, PedidosCliente.Folio AS Folio FROM Pagos INNER JOIN PedidosCliente ON PedidosCliente.FolioComprobante = Pagos.Folio WHERE Pagos.Cliente = :cliente AND Pagos.Saldado = 0 ORDER BY Pagos.Fecha");
+        //PedidosCliente.Cliente = :clienteTemp no es necesario para esta consulta y solo se agrega para solucionar un problema donde se repiten los PedidosCliente.FolioComprobante
+        //para diferentes clientes, con esto solo mostrara los del cliente actual, la verdadera solucion seria arreglar y quitar la repeticion entre el PedidosCliente.FolioComprobante
+        //removiendo las duplicidades de codigos en toda la tabla, ya que si se repite un PedidosCliente.FolioComprobante para el mismo cliente no servira de nada el PedidosCliente.Cliente = :clienteTemp
+        $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Pagos.Fecha, Pagos.FechaVencimiento, Pagos.Importe, Pagos.Abono, Pagos.Folio AS FolioComprobante, PedidosCliente.Folio AS Folio FROM Pagos INNER JOIN PedidosCliente ON PedidosCliente.FolioComprobante = Pagos.Folio AND PedidosCliente.Cliente = :clienteTemp WHERE Pagos.Cliente = :cliente AND Pagos.Saldado = 0 ORDER BY Pagos.Fecha");
+        $preparada->bindValue(':clienteTemp', $datos['cliente']['Clave']);
         $preparada->bindValue(':cliente', $datos['cliente']['Clave']);
         $preparada->execute();
         $resultados[] = $preparada->fetchAll(PDO::FETCH_ASSOC);
