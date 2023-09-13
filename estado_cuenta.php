@@ -514,7 +514,7 @@
     use Dompdf\Options;
 
     $options = new Options();
-    $options->set( array('isRemoteEnabled' => TRUE) );
+    $options->set( array('isRemoteEnabled' => true) );
 
     $dompdf = new Dompdf($options);
 
@@ -522,5 +522,5 @@
 
     $dompdf->render();
 
-    $dompdf->stream("estado_cuenta.pdf", array("Attachment" => FALSE));
+    $dompdf->stream("estado_cuenta.pdf", array("Attachment" => false));
 ?>
