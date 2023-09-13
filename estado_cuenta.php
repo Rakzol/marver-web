@@ -522,5 +522,5 @@
 
     $dompdf->render();
 
-    $dompdf->stream("estado_cuenta.pdf", array("Attachment" => false));
+    $dompdf->stream("estado_cuenta.pdf", array("Attachment" => true));
 ?>
