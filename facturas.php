@@ -518,7 +518,7 @@
           <th class="dinero" id="importe_total" ></th>
           <th class="dinero" id="abono_total" ></th>
           <th class="dinero" id="deuda_total" ></th>
-          <th> <a class="btn btn-primary" href="https://www.marverrefacciones.mx/estado_cuenta">Descargar PDF</a> </th>
+          <th> <button class="btn btn-primary" onclick="descargar();" id="descargar_pdf" >Descargar PDF</button> </th>
         </tr>
     </tfoot>
     </table>
@@ -540,6 +540,53 @@
     </ul>
 
     <script>
+        function descargar(){
+            document.querySelector("#descargar_pdf").innerHTML = 'Descargando<div class="spinner-border" role="status"><span class="visually-hidden">Descargando</span></div>';
+
+            // URL del archivo que deseas descargar
+            const archivoURL = 'https://www.marverrefacciones.mx/estado_cuenta';
+
+            // Nombre del archivo que se utilizará para guardar
+            const nombreArchivo = 'estado de cuenta.pdf';
+
+            // Realiza la solicitud fetch para obtener el archivo
+            fetch(archivoURL)
+            .then((response) => {
+                // Verifica si la respuesta es exitosa (código de estado 200)
+                if (!response.ok) {
+                throw new Error(`Error al descargar el archivo: ${response.status} ${response.statusText}`);
+                    document.querySelector("#descargar_pdf").innerHTML = "";
+                }
+
+                // Convierte la respuesta en un blob (tipo de dato binario)
+                return response.blob();
+            })
+            .then((blob) => {
+                // Crea un objeto URL para el blob
+                const url = window.URL.createObjectURL(blob);
+
+                // Crea un enlace (link) invisible en el documento
+                const a = document.createElement('a');
+                a.classList.add('d-none');
+                a.href = url;
+                a.download = nombreArchivo;
+
+                // Agrega el enlace al documento y simula un clic para iniciar la descarga
+                document.body.appendChild(a);
+                a.click();
+
+                // Limpia el objeto URL y remueve el enlace del documento
+                window.URL.revokeObjectURL(url);
+                a.remove();
+
+                document.querySelector("#descargar_pdf").innerHTML = "";
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                document.querySelector("#descargar_pdf").innerHTML = "";
+            });
+        }
+
         let primera;
         let ultima;
         let pagina;
