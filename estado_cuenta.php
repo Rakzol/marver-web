@@ -410,7 +410,6 @@
           <th>Importe</th>
           <th>Abono</th>
           <th>Debe</th>
-          <th>Detalle</th>
         </tr>
       </thead>
       <tbody>
@@ -421,8 +420,20 @@
             $preparada->bindValue(':cliente', $datos['cliente']['Clave']);
             $preparada->execute();
 
+            $importes = 0;
+            $abonos = 0;
+
             foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $factura ){
-                echo "<tr> <td>" . $factura["Fecha"] . "</td> </tr>";
+                $importes += $factura["Importe"];
+                $abonos += $factura["Abono"];
+                echo "<tr>". 
+                        "<td>" . $factura["FolioComprobante"] . "</td>".
+                        "<td>" . $factura["Fecha"] . "</td>".
+                        "<td>" . $factura["FechaVencimiento"] . "</td>".
+                        "<td>" . $factura["Importe"] . "</td>".
+                        "<td>" . $factura["Abono"] . "</td>".
+                        "<td>" . $factura["Importe"] - $factura["Abono"] . "</td>".
+                    "</tr>";
             }
 
         ?>
@@ -432,9 +443,9 @@
           <th></th>
           <th></th>
           <th>Totales:</th>
-          <th class="dinero"></th>
-          <th class="dinero"></th>
-          <th class="dinero"></th>
+          <th class="dinero"><?php echo $importes; ?></th>
+          <th class="dinero"><?php echo $abonos; ?></th>
+          <th class="dinero"><?php echo $importes - $abonos; ?></th>
           <th></th>
         </tr>
     </tfoot>
