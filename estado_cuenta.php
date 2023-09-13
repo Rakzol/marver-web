@@ -515,7 +515,7 @@
 
     $options = new Options();
     $options->set('isRemoteEnabled', true);
-    //$options->set('chroot', __DIR__);
+    $options->set('chroot', __DIR__);
     $options->set('tempDir', 'tamporaldir');
     $options->set('isHtml5ParserEnabled', true);
 
