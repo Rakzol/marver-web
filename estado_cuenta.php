@@ -376,7 +376,7 @@
 
 <body>
 
-    <div class="d-flex justify-content-between " >
+    <div class="d-flex justify-content-between p-3" >
         <img src="img/logo.png" width="150">
         <div class="text-center" >
             <h5>MARIO ALBERTO VERDUZCO COTA</h5>
@@ -393,7 +393,7 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-center " >
+    <div class="d-flex justify-content-center p-3" >
         <div class="text-center" >
             <h5><?php echo $datos['cliente']['RFC'] ?></h5>
             <p><?php echo $datos['cliente']['Clave'] . " " . $datos['cliente']['Razon_Social'] ?></p>
@@ -411,7 +411,7 @@
         </div>
     </div>
 
-    <div class="">
+    <div class="p-3">
     <h1 class="text-center" >Estado de Cuenta</h1>
     <table class="table mt-2">
       <thead>
