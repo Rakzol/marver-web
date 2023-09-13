@@ -541,7 +541,7 @@
 
     <script>
         function descargar(){
-            document.querySelector("#descargar_pdf").innerHTML = 'Descargando<div class="spinner-border" role="status"><span class="visually-hidden">Descargando</span></div>';
+            document.querySelector("#descargar_pdf").innerHTML = 'Descargando <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
 
             // URL del archivo que deseas descargar
             const archivoURL = 'https://www.marverrefacciones.mx/estado_cuenta';
@@ -555,7 +555,7 @@
                 // Verifica si la respuesta es exitosa (código de estado 200)
                 if (!response.ok) {
                 throw new Error(`Error al descargar el archivo: ${response.status} ${response.statusText}`);
-                    document.querySelector("#descargar_pdf").innerHTML = "";
+                    document.querySelector("#descargar_pdf").innerHTML = "Descargar PDF";
                 }
 
                 // Convierte la respuesta en un blob (tipo de dato binario)
@@ -579,11 +579,11 @@
                 window.URL.revokeObjectURL(url);
                 a.remove();
 
-                document.querySelector("#descargar_pdf").innerHTML = "";
+                document.querySelector("#descargar_pdf").innerHTML = "Descargar PDF";
             })
             .catch((error) => {
                 console.error('Error:', error);
-                document.querySelector("#descargar_pdf").innerHTML = "";
+                document.querySelector("#descargar_pdf").innerHTML = "Descargar PDF";
             });
         }
 
