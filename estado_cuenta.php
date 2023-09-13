@@ -518,6 +518,8 @@
     $options->set('chroot', __DIR__);
     $options->set('tempDir', 'tamporaldir');
     $options->set('isHtml5ParserEnabled', true);
+    $options->set('isPhpEnabled', true);
+    $options->set('debugPng', true); // Habilita la depuración de imágenes
 
     $dompdf = new Dompdf($options);
 
