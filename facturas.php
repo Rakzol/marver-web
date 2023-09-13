@@ -513,13 +513,15 @@
       </tbody>
       <tfoot>
       <tr>
-          <th class="d-md-none" ><div>Totales:</div></th>
-          <th class="d-none d-md-table-cell" ></th>
+          <th>
+            <div class="d-md-none" >Totales:</div>
+          </th>
 
           <th class="d-none d-md-table-cell" ></th>
-
-          <th class="d-md-none" ></th>
-          <th class="d-none d-md-table-cell" >Totales:</th>
+          
+          <th>
+            <div class="d-none d-md-table-cell" >Totales:</div>
+          </th>
 
           <th class="dinero" id="importe_total" ></th>
           <th class="dinero" id="abono_total" ></th>
