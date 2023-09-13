@@ -416,6 +416,8 @@
         </div>
         <div class="text-center" >
             <h3>Estado de cuenta</h3>
+            <P><?php echo "Fecha: " . date('d/m/Y') ?></P>
+            <P><?php echo "Hora: " . date('h:i:s A') ?></P>
         </div>
     </div>
 
