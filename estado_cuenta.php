@@ -497,5 +497,5 @@
     // $debugLog = $options->get('debugLogOutput');
     // file_put_contents('dompdf_debug.log', $debugLog);
 
-    $dompdf->stream("estado_cuenta.pdf", array("Attachment" => true));
+    $dompdf->stream("estado_cuenta.pdf", array("Attachment" => false));
 ?>
