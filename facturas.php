@@ -513,16 +513,11 @@
       </tbody>
       <tfoot>
       <tr>
-          <th>
-            <div class="d-md-none" >Totales:</div>
-          </th>
-
+        <!-- class="d-none d-md-table-cell" -->
+        <!-- class="d-md-none" -->
           <th class="d-none d-md-table-cell" ></th>
-          
-          <th>
-            <div class="d-none d-md-table-cell" >Totales:</div>
-          </th>
-
+          <th class="d-none d-md-table-cell" ></th>
+          <th>Totales:</th>
           <th class="dinero" id="importe_total" ></th>
           <th class="dinero" id="abono_total" ></th>
           <th class="dinero d-none d-md-table-cell" id="deuda_total" ></th>
