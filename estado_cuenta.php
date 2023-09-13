@@ -8,13 +8,16 @@
 
 <head>
     <meta charset='UTF-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Catalogo</title>
 
 
 
     <style>
+        *{
+            font-family: sans-serif !important;
+        }
+
         .card-subtitle::before {
             content: "$ ";
         }
@@ -378,7 +381,7 @@
 <body>
 
     <div class="d-flex justify-content-between container mt-3 mb-3 p-3 bg-white rounded" >
-        <img src="https://www.marverrefacciones.mx/img/logo.png" width="150">
+        <img src="img/logo.png" width="150">
         <div class="text-center" >
             <h5>MARIO ALBERTO VERDUZCO COTA</h5>
             <h5>VECM880923NI1</h5>
