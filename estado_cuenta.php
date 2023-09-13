@@ -45,12 +45,6 @@
     <!-- Favicon -->
     <link href="img/logo_solo.png" rel="icon">
 
-
-    <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -384,7 +378,7 @@
 <body>
 
     <div class="d-flex justify-content-between container mt-3 mb-3 p-3 bg-white rounded" >
-
+        <img src="https://www.marverrefacciones.mx/img/logo.png" width="150">
         <div class="text-center" >
             <h5>MARIO ALBERTO VERDUZCO COTA</h5>
             <h5>VECM880923NI1</h5>
