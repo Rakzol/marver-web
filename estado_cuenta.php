@@ -520,7 +520,7 @@
     $options->set('isHtml5ParserEnabled', true);
     $options->set('isPhpEnabled', true);
     $options->set('debugPng', true);
-    $options->set('debugCss', true);
+    // $options->set('debugCss', true);
 
     $dompdf = new Dompdf($options);
 
