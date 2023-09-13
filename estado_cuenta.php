@@ -47,11 +47,6 @@
 
     <link href="css/estado_fuentes.css" rel="stylesheet">
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-
-
     <style>
         :root {
             --el-color: #E72F2D;
