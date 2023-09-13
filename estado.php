@@ -17,7 +17,7 @@
 
     $dompdf = new Dompdf($options);
 
-    $dompdf->loadHtmlFile(file_get_contents('https://github.com/dompdf/dompdf/blob/master/src/Dompdf.php'));
+    $dompdf->loadHtmlFile(file_get_contents('https://tauromaquia.jcyl.es/web/es/informacion-interes/glosario-terminos-taurinos.html'));
 
     $dompdf->render();
 
