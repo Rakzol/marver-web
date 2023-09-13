@@ -43,15 +43,15 @@
     </style>
 
     <!-- Favicon -->
-    <link href="img/logo_solo.png" rel="icon">
+    <link href="https://www.marverrefacciones.mx/img/logo_solo.png" rel="icon">
 
-    <link href="css/estado_fuentes.css" rel="stylesheet">
+    <link href="https://www.marverrefacciones.mx/css/estado_fuentes.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://www.marverrefacciones.mx/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="https://www.marverrefacciones.mx/css/style.css" rel="stylesheet">
 
 
     <style>
