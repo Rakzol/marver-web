@@ -364,9 +364,6 @@
             content: '$';
         }
 
-        body{
-            background: #e15454;
-        }
 </style>
 
 <style>
@@ -379,7 +376,7 @@
 
 <body>
 
-    <div class="d-flex justify-content-between container mt-3 mb-3 p-3 bg-white rounded" >
+    <div class="d-flex justify-content-between p-3 bg-white rounded" >
         <img src="img/logo.png" width="150">
         <div class="text-center" >
             <h5>MARIO ALBERTO VERDUZCO COTA</h5>
@@ -396,7 +393,7 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-center container mt-3 mb-3 p-3 bg-white rounded" >
+    <div class="d-flex justify-content-center p-3 bg-white rounded" >
         <div class="text-center" >
             <h5><?php echo $datos['cliente']['RFC'] ?></h5>
             <p><?php echo $datos['cliente']['Clave'] . " " . $datos['cliente']['Razon_Social'] ?></p>
@@ -414,7 +411,7 @@
         </div>
     </div>
 
-    <div class="container mt-3 mb-3 p-3 bg-white rounded">
+    <div class="p-3 bg-white rounded">
     <h1 class="text-center" >Estado de Cuenta</h1>
     <table class="table mt-2">
       <thead>
