@@ -405,6 +405,10 @@
             <h5>MARIO ALBERTO VERDUZCO COTA</h5>
             <h5>VECM880923NI1</h5>
         </div>
+        <div class="text-center" >
+            <h5>MARIO ALBERTO VERDUZCO COTA</h5>
+            <h5>VECM880923NI1</h5>
+        </div>
     </div>
 
     <div class="container mt-3 mb-3 p-3 bg-white rounded">
