@@ -1,8 +1,6 @@
 <?php
-    error_reporting(0);
-    session_start();
     require_once('modelo/inicializar_datos.php');
-    header("Content-Type: text/html")
+    header("Content-Type: text/html");
 ?>
 <!DOCTYPE html>
 <html lang='es'>
@@ -424,9 +422,19 @@
 
     <div class="d-flex justify-content-center container mt-3 mb-3 p-3 bg-white rounded" >
         <div class="text-center" >
-            <h5>RFC</h5>
-            <p>ID NOMBRE</p>
-            <P>DIRECCION</P>
+            <h5><?php echo $datos['cliente']['RFC'] ?></h5>
+            <p><?php echo $datos['cliente']['Clave'] . " " . $datos['cliente']['Razon_Social'] ?></p>
+            <P><?php echo
+                $datos['cliente']['Domicilio'] . " " .
+                $datos['cliente']['Num_Exterior']  . ", " .
+                $datos['cliente']['Num_interior']  . " " .
+                $datos['cliente']['Colonia']  . " " .
+                $datos['cliente']['Municipio']  . " " .
+                $datos['cliente']['Estado']  . ", " .
+                $datos['cliente']['Ciudad']  . " " .
+                $datos['cliente']['Pais']  . " C.P. " .
+                $datos['cliente']['Codigo_Postal']
+            ?></P>
         </div>
     </div>
 
