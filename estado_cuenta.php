@@ -380,7 +380,7 @@
 <body>
 
     <div class="d-flex justify-content-between container mt-3 mb-3 p-3 bg-white rounded" >
-        <img src="img/logo.png" width="150">
+        <img src="https://www.marverrefacciones.mx/img/logo.png" width="150">
         <div class="text-center" >
             <h5>MARIO ALBERTO VERDUZCO COTA</h5>
             <h5>VECM880923NI1</h5>
@@ -480,7 +480,7 @@
     use Dompdf\Options;
 
     $options = new Options();
-    // $options->set('isRemoteEnabled', true);
+    $options->set('isRemoteEnabled', true);
     // $options->set('chroot', __DIR__);
     // $options->set('tempDir', 'tamporaldir');
     // $options->set('isHtml5ParserEnabled', true);
