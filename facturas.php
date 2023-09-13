@@ -513,11 +513,11 @@
       <tfoot>
       <tr>
           <th></th>
-          <th></th>
-          <th>Totales:</th>
+          <th class="d-none d-md-table-cell" ></th>
+          <th class="d-none d-md-table-cell" >Totales:</th>
           <th class="dinero" id="importe_total" ></th>
           <th class="dinero" id="abono_total" ></th>
-          <th class="dinero" id="deuda_total" ></th>
+          <th class="dinero d-none d-md-table-cell" id="deuda_total" ></th>
           <th> <button class="btn btn-primary" onclick="descargar();" id="descargar_pdf" style="width: 146px;" >Descargar PDF</button> </th>
         </tr>
     </tfoot>
