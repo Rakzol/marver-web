@@ -497,6 +497,7 @@
     <div class="container mt-3 p-3 bg-white rounded">
     <h1 class="text-center" >Estado de Cuenta</h1>
     <table class="table mt-2">
+    <caption><button class="btn btn-primary" onclick="descargar();" id="descargar_pdf" style="width: 146px;" >Descargar PDF</button></caption>
       <thead>
         <tr>
           <th>Folio</th>
@@ -518,7 +519,7 @@
           <th class="dinero" id="importe_total" ></th>
           <th class="dinero" id="abono_total" ></th>
           <th class="dinero d-none d-md-table-cell" id="deuda_total" ></th>
-          <th> <button class="btn btn-primary" onclick="descargar();" id="descargar_pdf" style="width: 146px;" >Descargar PDF</button> </th>
+          <th></th>
         </tr>
     </tfoot>
     </table>
