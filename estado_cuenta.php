@@ -446,6 +446,10 @@ th {
     vertical-align: inherit;
 }
 
+.justify-content-between {
+    justify-content: space-between !important;
+}
+
 </style>
 
 <style>
