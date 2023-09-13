@@ -482,6 +482,7 @@
             <div class="navbar-nav ms-auto p-3 p-xxl-0">
                 <?php
                     if(isset($_SESSION['usuario'])){
+                        echo '<a href="https://www.marverrefacciones.mx/facturas" class="nav-item nav-link"><i class="fa-solid fa-truck"></i> FACTURAS</a>';
                         echo '<a href="https://www.marverrefacciones.mx/pedidos.php" class="nav-item nav-link"><i class="fa-solid fa-truck"></i> PEDIDOS</a>';
                         echo '<a href="https://www.marverrefacciones.mx/carrito.php" class="nav-item nav-link"><i class="fa-solid fa-cart-shopping"></i> CARRITO</a>';
                         echo '<a href="https://www.marverrefacciones.mx/modelo/cerrar_sesion.php" class="nav-item nav-link"><i class="fa-solid fa-power-off"></i> CERRAR SESIÓN</a>';
