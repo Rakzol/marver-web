@@ -542,48 +542,32 @@
     <script>
         function descargar(){
             document.querySelector("#descargar_pdf").innerHTML = 'Descargando <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+            document.querySelector("#descargar_pdf").disabled = true;
 
-            // URL del archivo que deseas descargar
-            const archivoURL = 'https://www.marverrefacciones.mx/estado_cuenta';
-
-            // Nombre del archivo que se utilizará para guardar
-            const nombreArchivo = 'estado de cuenta.pdf';
-
-            // Realiza la solicitud fetch para obtener el archivo
-            fetch(archivoURL)
-            .then((response) => {
-                // Verifica si la respuesta es exitosa (código de estado 200)
-                if (!response.ok) {
-                throw new Error(`Error al descargar el archivo: ${response.status} ${response.statusText}`);
-                    document.querySelector("#descargar_pdf").innerHTML = "Descargar PDF";
-                }
-
-                // Convierte la respuesta en un blob (tipo de dato binario)
+            fetch('https://www.marverrefacciones.mx/estado_cuenta').then((response) => {
                 return response.blob();
             })
             .then((blob) => {
-                // Crea un objeto URL para el blob
-                const url = window.URL.createObjectURL(blob);
+                let url = window.URL.createObjectURL(blob);
 
-                // Crea un enlace (link) invisible en el documento
-                const a = document.createElement('a');
+                let a = document.createElement('a');
                 a.classList.add('d-none');
                 a.href = url;
-                a.download = nombreArchivo;
+                a.download = 'estado de cuenta.pdf';
 
-                // Agrega el enlace al documento y simula un clic para iniciar la descarga
                 document.body.appendChild(a);
                 a.click();
 
-                // Limpia el objeto URL y remueve el enlace del documento
                 window.URL.revokeObjectURL(url);
                 a.remove();
 
                 document.querySelector("#descargar_pdf").innerHTML = "Descargar PDF";
+                document.querySelector("#descargar_pdf").disabled = false;
             })
             .catch((error) => {
                 console.error('Error:', error);
                 document.querySelector("#descargar_pdf").innerHTML = "Descargar PDF";
+                document.querySelector("#descargar_pdf").disabled = false;
             });
         }
 
