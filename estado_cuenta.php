@@ -2,6 +2,7 @@
     error_reporting(0);
     session_start();
     require_once('modelo/inicializar_datos.php');
+    header("Content-Type: text/html")
 ?>
 <!DOCTYPE html>
 <html lang='es'>
