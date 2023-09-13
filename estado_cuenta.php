@@ -451,6 +451,16 @@ th {
     justify-content: space-between !important;
 }
 
+@media (min-width: 1200px)
+h1, .h1 {
+    font-size: 2.5rem;
+}
+
+@media (min-width: 1200px)
+h3, .h3 {
+    font-size: 1.75rem;
+}
+
 </style>
 
 <style>
