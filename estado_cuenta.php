@@ -405,7 +405,7 @@
 <body>
 
     <div class="d-flex justify-content-between container mt-3 mb-3 p-3 bg-white rounded" >
-        <img src="https://www.marverrefacciones.mx/estado/img/logo.png" width="150">
+        <img src="" width="150">
         <div class="text-center" >
             <h5>MARIO ALBERTO VERDUZCO COTA</h5>
             <h5>VECM880923NI1</h5>
