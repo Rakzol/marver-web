@@ -515,6 +515,8 @@
 
     $options = new Options();
     $options->set('isRemoteEnabled', true);
+    $options->set('chroot', __DIR__);
+    $options->set('isHtml5ParserEnabled', true);
 
     $dompdf = new Dompdf($options);
 
