@@ -430,9 +430,9 @@
                         "<td>" . $factura["FolioComprobante"] . "</td>".
                         "<td>" . $factura["Fecha"] . "</td>".
                         "<td>" . $factura["FechaVencimiento"] . "</td>".
-                        "<td>" . $factura["Importe"] . "</td>".
-                        "<td>" . $factura["Abono"] . "</td>".
-                        "<td>" . $factura["Importe"] - $factura["Abono"] . "</td>".
+                        "<td class=\"dinero\" >" . $factura["Importe"] . "</td>".
+                        "<td class=\"dinero\" >" . $factura["Abono"] . "</td>".
+                        "<td class=\"dinero\" >" . $factura["Importe"] - $factura["Abono"] . "</td>".
                     "</tr>";
             }
 
