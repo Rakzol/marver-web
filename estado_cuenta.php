@@ -14,9 +14,6 @@
 
 
     <style>
-        *{
-            font-family: sans-serif !important;
-        }
 
         .card-subtitle::before {
             content: "$ ";
