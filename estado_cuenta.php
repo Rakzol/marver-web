@@ -521,6 +521,8 @@
     $options->set( array('isRemoteEnabled' => TRUE) );
     //$options->setOptions($options);
 
+    $dompdf->loadHtml($html);
+
     $dompdf->render();
 
     $dompdf->stream("estado_cuenta.pdf", array("Attachment" => FALSE));
