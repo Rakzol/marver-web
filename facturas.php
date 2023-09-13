@@ -497,7 +497,7 @@
     <div class="container mt-3 p-3 bg-white rounded">
     <h1 class="text-center" >Estado de Cuenta</h1>
     <table class="table mb-0">
-    <caption class="text-center mb-0 pb-0" ><button class="btn btn-primary" onclick="descargar();" id="descargar_pdf" style="width: 146px;" >Descargar PDF</button></caption>
+    <caption class="text-center mb-0 pb-0 pt-3" ><button class="btn btn-primary" onclick="descargar();" id="descargar_pdf" style="width: 146px;" >Descargar PDF</button></caption>
       <thead>
         <tr>
           <th>Folio</th>
