@@ -1,4 +1,5 @@
 <?php
+    ob_start();
     require_once('modelo/inicializar_datos.php');
     header("Content-Type: text/html");
 ?>
@@ -404,7 +405,7 @@
 <body>
 
     <div class="d-flex justify-content-between container mt-3 mb-3 p-3 bg-white rounded" >
-        <img src="https://www.marverrefacciones.mx/img/logo.png" width="150">
+        <img src="https://www.marverrefacciones.mx/estado/img/logo.png" width="150">
         <div class="text-center" >
             <h5>MARIO ALBERTO VERDUZCO COTA</h5>
             <h5>VECM880923NI1</h5>
@@ -504,3 +505,31 @@
 </body>
 
 </html>
+<?php
+    $html = ob_get_clean();
+
+    require_once 'dompdf/autoload.inc.php';
+
+    use Dompdf\Dompdf;
+    use Dompdf\Options;
+
+    $options = new Options();
+    $options->set('isRemoteEnabled', true);
+    $options->set('chroot', __DIR__);
+    $options->set('tempDir', 'tamporaldir');
+    $options->set('isHtml5ParserEnabled', true);
+    $options->set('isPhpEnabled', true);
+    $options->set('debugPng', true);
+    //$options->set('debugCss', true);
+
+    $dompdf = new Dompdf($options);
+
+    $dompdf->loadHtml($html);
+
+    $dompdf->render();
+
+    // $debugLog = $options->get('debugLogOutput');
+    // file_put_contents('dompdf_debug.log', $debugLog);
+
+    $dompdf->stream("estado_cuenta.pdf", array("Attachment" => false));
+?>
