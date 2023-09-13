@@ -514,7 +514,7 @@
     use Dompdf\Options;
 
     $options = new Options();
-    $options->set( array('isRemoteEnabled' => true) );
+    $options->set('isRemoteEnabled', true);
 
     $dompdf = new Dompdf($options);
 
