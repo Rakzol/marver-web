@@ -518,7 +518,7 @@
           <th class="dinero" id="importe_total" ></th>
           <th class="dinero" id="abono_total" ></th>
           <th class="dinero" id="deuda_total" ></th>
-          <th> <a class="btn btn-primary" href="https://www.marverrefacciones.mx/estado_cuenta">Descargar</a> </th>
+          <th> <a class="btn btn-primary" href="https://www.marverrefacciones.mx/estado_cuenta">Descargar PDF</a> </th>
         </tr>
     </tfoot>
     </table>
