@@ -513,7 +513,7 @@
       </tbody>
       <tfoot>
       <tr>
-          <th class="d-md-none" >Totales:</th>
+          <th class="d-md-none" ><p>Totales:</p></th>
           <th class="d-none d-md-table-cell" ></th>
 
           <th class="d-none d-md-table-cell" ></th>
