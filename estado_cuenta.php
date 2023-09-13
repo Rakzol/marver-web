@@ -1,4 +1,5 @@
 <?php
+    ob_start();
     require_once('modelo/inicializar_datos.php');
     header("Content-Type: text/html");
 ?>
@@ -504,3 +505,20 @@
 </body>
 
 </html>
+<?php
+    $html = ob_get_clean();
+
+    require_once 'dompdf/autoload.inc.php';
+
+    use Dompdf\Dompdf;
+
+    $dompdf = new Dompdf();
+
+    $options = $dompdf->getOptions();
+    $options->set( array('isRemoteEnabled' => TRUE) );
+    $options->setOptions($options);
+
+    $dompdf->render();
+
+    $dompdf->stream("estado_cuenta.pdf", array("Attachment" => FALSE));
+?>
