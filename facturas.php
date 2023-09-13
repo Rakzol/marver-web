@@ -518,7 +518,7 @@
           <th class="dinero" id="importe_total" ></th>
           <th class="dinero" id="abono_total" ></th>
           <th class="dinero" id="deuda_total" ></th>
-          <th> <button class="btn btn-primary" onclick="descargar();" id="descargar_pdf" >Descargar PDF</button> </th>
+          <th> <button class="btn btn-primary" onclick="descargar();" id="descargar_pdf" style="width: 146px;" >Descargar PDF</button> </th>
         </tr>
     </tfoot>
     </table>
