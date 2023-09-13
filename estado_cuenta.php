@@ -399,7 +399,11 @@
 
 <body>
 
-    <div class="container mt-3 p-3 bg-white rounded">
+    <div class="d-flex" >
+        <img src="img/logo.png">
+    </div>
+
+    <div class="container mt-3 mb-3 p-3 bg-white rounded">
     <h1 class="text-center" >Estado de Cuenta</h1>
     <table class="table mt-2">
       <thead>
