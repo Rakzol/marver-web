@@ -400,7 +400,7 @@
 <body>
 
     <div class="d-flex" >
-        <img src="img/logo.png">
+        <img src="img/logo.png" width="200">
     </div>
 
     <div class="container mt-3 mb-3 p-3 bg-white rounded">
