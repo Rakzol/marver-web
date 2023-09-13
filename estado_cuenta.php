@@ -527,5 +527,8 @@
 
     $dompdf->render();
 
+    $debugLog = $dompdf->getOptions()->getDebugLogOutput();
+    file_put_contents('dompdf_debug.log', $debugLog);
+
     $dompdf->stream("estado_cuenta.pdf", array("Attachment" => false));
 ?>
