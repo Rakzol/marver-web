@@ -481,7 +481,7 @@
 
     $options = new Options();
     // $options->set('isRemoteEnabled', true);
-    $options->set('chroot', __DIR__);
+    // $options->set('chroot', __DIR__);
     // $options->set('tempDir', 'tamporaldir');
     // $options->set('isHtml5ParserEnabled', true);
     // $options->set('isPhpEnabled', true);
@@ -494,5 +494,5 @@
 
     $dompdf->render();
 
-    $dompdf->stream("estado_cuenta.pdf", array("Attachment" => true));
+    $dompdf->stream("estado_cuenta.pdf", array("Attachment" => false));
 ?>
