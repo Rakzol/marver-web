@@ -496,7 +496,7 @@
 
     <div class="container mt-3 p-3 bg-white rounded">
     <h1 class="text-center" >Estado de Cuenta</h1>
-    <table class="table mt-2">
+    <table class="table mb-0">
     <caption><button class="btn btn-primary" onclick="descargar();" id="descargar_pdf" style="width: 146px;" >Descargar PDF</button></caption>
       <thead>
         <tr>
