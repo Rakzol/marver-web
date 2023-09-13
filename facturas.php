@@ -543,7 +543,7 @@
         let primera;
         let ultima;
         let pagina;
-        let facturas_pagina = 10;
+        let facturas_pagina = 9;
         let facturas = [];
         let cuerpo_facturas;
 
