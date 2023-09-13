@@ -1,5 +1,5 @@
 <?php
-    ob_start();
+    //ob_start();
     require_once('modelo/inicializar_datos.php');
     header("Content-Type: text/html");
 ?>
@@ -506,7 +506,7 @@
 
 </html>
 <?php
-    $html = ob_get_clean();
+    //$html = ob_get_clean();
 
     require_once 'dompdf/autoload.inc.php';
 
@@ -524,12 +524,12 @@
 
     $dompdf = new Dompdf($options);
 
-    $dompdf->loadHtml($html);
+    $dompdf->loadHtml(file_get_contents('estado.php'));
 
     $dompdf->render();
 
-    $debugLog = $options->get('debugLogOutput');
-    file_put_contents('dompdf_debug.log', $debugLog);
+    // $debugLog = $options->get('debugLogOutput');
+    // file_put_contents('dompdf_debug.log', $debugLog);
 
     $dompdf->stream("estado_cuenta.pdf", array("Attachment" => false));
 ?>
