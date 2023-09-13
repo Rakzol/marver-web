@@ -1,5 +1,5 @@
 <?php
-    ob_start();
+    // ob_start();
     require_once('modelo/inicializar_datos.php');
     header("Content-Type: text/html");
 ?>
@@ -48,10 +48,8 @@
     <link href="css/estado_fuentes.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
 
-    <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
 
 
     <style>
@@ -469,27 +467,27 @@
 
 </html>
 <?php
-    $html = ob_get_clean();
+    // $html = ob_get_clean();
 
-    require_once 'dompdf/autoload.inc.php';
+    // require_once 'dompdf/autoload.inc.php';
 
-    use Dompdf\Dompdf;
-    use Dompdf\Options;
+    // use Dompdf\Dompdf;
+    // use Dompdf\Options;
 
-    $options = new Options();
-    // $options->set('isRemoteEnabled', true);
-    $options->set('chroot', __DIR__);
-    // $options->set('tempDir', 'tamporaldir');
-    // $options->set('isHtml5ParserEnabled', true);
-    // $options->set('isPhpEnabled', true);
-    // $options->set('debugPng', true);
-    // $options->set('debugCss', true);
+    // $options = new Options();
+    // // $options->set('isRemoteEnabled', true);
+    // $options->set('chroot', __DIR__);
+    // // $options->set('tempDir', 'tamporaldir');
+    // // $options->set('isHtml5ParserEnabled', true);
+    // // $options->set('isPhpEnabled', true);
+    // // $options->set('debugPng', true);
+    // // $options->set('debugCss', true);
 
-    $dompdf = new Dompdf($options);
+    // $dompdf = new Dompdf($options);
 
-    $dompdf->loadHtml($html);
+    // $dompdf->loadHtml($html);
 
-    $dompdf->render();
+    // $dompdf->render();
 
-    $dompdf->stream("estado de cuenta.pdf", array("Attachment" => false));
+    // $dompdf->stream("estado de cuenta.pdf", array("Attachment" => false));
 ?>
