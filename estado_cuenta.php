@@ -404,10 +404,12 @@
         <div class="text-center" >
             <h5>MARIO ALBERTO VERDUZCO COTA</h5>
             <h5>VECM880923NI1</h5>
+            <p>SANTOS DEGOLLADO 451 CENTRO LOS MOCHIS</p>
+            <P>SINALOA MEXICO CP.81200</P>
+            <P>TEL.8123595 ID 42*15*540025</P>
         </div>
         <div class="text-center" >
-            <h5>MARIO ALBERTO VERDUZCO COTA</h5>
-            <h5>VECM880923NI1</h5>
+            <h3>Estado de cuenta</h3>
         </div>
     </div>
 
