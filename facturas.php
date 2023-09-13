@@ -500,11 +500,11 @@
       <thead>
         <tr>
           <th>Folio</th>
-          <th>Inicio</th>
-          <th class="d-none d-sm-table-cell" >Vencimiento</th>
-          <th class="d-none d-md-table-cell" >Importe</th>
+          <th class="d-none d-md-table-cell" >Inicio</th>
+          <th class="d-none d-md-table-cell" >Vencimiento</th>
+          <th>Importe</th>
           <th>Abono</th>
-          <th>Debe</th>
+          <th class="d-none d-md-table-cell" >Debe</th>
           <th>Detalle</th>
         </tr>
       </thead>
@@ -643,13 +643,13 @@
                 td = document.createElement('td');
                 td.innerText = factura['Fecha'];
                 td.classList.add('d-none');
-                td.classList.add('d-sm-table-cell');
+                td.classList.add('d-md-table-cell');
                 tr.appendChild(td);
 
                 td = document.createElement('td');
                 td.innerText = factura['FechaVencimiento'];
                 td.classList.add('d-none');
-                td.classList.add('d-sm-table-cell');
+                td.classList.add('d-md-table-cell');
                 tr.appendChild(td);
 
                 td = document.createElement('td');
@@ -665,6 +665,8 @@
                 td = document.createElement('td');
                 td.innerText = (factura['Importe'] - factura['Abono']).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
                 td.classList.add('dinero');
+                td.classList.add('d-none');
+                td.classList.add('d-md-table-cell');
                 tr.appendChild(td);
 
                 td = document.createElement('td');
