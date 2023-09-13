@@ -401,7 +401,7 @@
 
     <div class="container mt-3 mb-3 p-3 bg-white rounded" >
         <img src="img/logo.png" width="150">
-        <div>
+        <div class="d-flex" >
             <h5>MARIO ALBERTO VERDUZCO COTA</h5>
             <h5>VECM880923NI1</h5>
         </div>
