@@ -422,6 +422,14 @@
         </div>
     </div>
 
+    <div class="d-flex container mt-3 mb-3 p-3 bg-white rounded" >
+        <div class="text-center" >
+            <h5>RFC</h5>
+            <p>ID NOMBRE</p>
+            <P>DIRECCION</P>
+        </div>
+    </div>
+
     <div class="container mt-3 mb-3 p-3 bg-white rounded">
     <h1 class="text-center" >Estado de Cuenta</h1>
     <table class="table mt-2">
