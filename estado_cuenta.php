@@ -48,7 +48,7 @@
     <link href="css/estado_fuentes.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
 
 
