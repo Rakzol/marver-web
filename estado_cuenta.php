@@ -416,7 +416,7 @@
         </div>
         <div class="text-center" >
             <h3>Estado de cuenta</h3>
-            <?php date_default_timezone_set('America/Los_Angeles'); ?>
+            <?php date_default_timezone_set('America/Mexico_City'); ?>
             <P><?php echo "Fecha: " . date('d/m/Y') ?></P>
             <P><?php echo "Hora: " . date('h:i:s A') ?></P>
         </div>
