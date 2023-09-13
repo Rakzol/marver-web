@@ -541,7 +541,7 @@
 
     <script>
         function descargar(){
-            document.querySelector("#descargar_pdf").innerHTML = 'Generando.. <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+            document.querySelector("#descargar_pdf").innerHTML = 'Descargando <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
             document.querySelector("#descargar_pdf").disabled = true;
 
             fetch('https://www.marverrefacciones.mx/estado_cuenta').then((response) => {
