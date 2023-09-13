@@ -511,12 +511,15 @@
     require_once 'dompdf/autoload.inc.php';
 
     use Dompdf\Dompdf;
+    //use Dompdf\Options;
+
+    //$options = new Options();
 
     $dompdf = new Dompdf();
 
     $options = $dompdf->getOptions();
     $options->set( array('isRemoteEnabled' => TRUE) );
-    $options->setOptions($options);
+    //$options->setOptions($options);
 
     $dompdf->render();
 
