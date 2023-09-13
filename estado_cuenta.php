@@ -1,5 +1,5 @@
 <?php
-    ob_start();
+    // ob_start();
     require_once('modelo/inicializar_datos.php');
     header("Content-Type: text/html");
 ?>
@@ -506,19 +506,19 @@
 
 </html>
 <?php
-    $html = ob_get_clean();
+    // $html = ob_get_clean();
 
-    require_once 'dompdf/autoload.inc.php';
+    // require_once 'dompdf/autoload.inc.php';
 
-    use Dompdf\Dompdf;
+    // use Dompdf\Dompdf;
 
-    $dompdf = new Dompdf();
+    // $dompdf = new Dompdf();
 
-    $options = $dompdf->getOptions();
-    $options->set( array('isRemoteEnabled' => TRUE) );
-    $options->setOptions($options);
+    // $options = $dompdf->getOptions();
+    // $options->set( array('isRemoteEnabled' => TRUE) );
+    // $options->setOptions($options);
 
-    $dompdf->render();
+    // $dompdf->render();
 
-    $dompdf->stream("estado_cuenta.pdf", array("Attachment" => FALSE));
+    // $dompdf->stream("estado_cuenta.pdf", array("Attachment" => FALSE));
 ?>
