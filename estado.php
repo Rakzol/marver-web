@@ -17,7 +17,7 @@
 
     $dompdf = new Dompdf($options);
 
-    $dompdf->loadHtmlFile('https://www.marverrefacciones.mx/estado_cuenta');
+    $dompdf->loadHtmlFile(file_get_contents('https://www.marverrefacciones.mx/estado_cuenta'));
 
     $dompdf->render();
 
