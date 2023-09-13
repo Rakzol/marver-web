@@ -515,12 +515,12 @@
 
     $options = new Options();
     $options->set('isRemoteEnabled', true);
-    // $options->set('chroot', __DIR__);
+    $options->set('chroot', __DIR__);
     // $options->set('tempDir', 'tamporaldir');
-    // $options->set('isHtml5ParserEnabled', true);
-    // $options->set('isPhpEnabled', true);
+    $options->set('isHtml5ParserEnabled', true);
+    $options->set('isPhpEnabled', true);
     // $options->set('debugPng', true);
-    //$options->set('debugCss', true);
+    // $options->set('debugCss', true);
 
     $dompdf = new Dompdf($options);
 
