@@ -17,7 +17,7 @@
 
     $dompdf = new Dompdf($options);
 
-    $dompdf->loadHtmlFile(file_get_contents('https://stackoverflow.com/questions/8781544/how-to-convert-dynamic-php-file-to-pdf'));
+    $dompdf->loadHtmlFile(file_get_contents('https://github.com/dompdf/dompdf/blob/master/src/Dompdf.php'));
 
     $dompdf->render();
 
