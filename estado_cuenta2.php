@@ -125,7 +125,7 @@ th {
 
     <div class="contenedor texto-centrado" >
         <img src="img/logo.png" width="150">
-        <div >
+        <div class="contenedor-central" >
             <h5>MARIO ALBERTO VERDUZCO COTA</h5>
             <h5>VECM880923NI1</h5>
             <p>SANTOS DEGOLLADO 451 CENTRO LOS MOCHIS</p>
