@@ -114,6 +114,9 @@ th {
         margin: auto;
     }
 
+    .contenedor-central{
+        margin: 0px 20px 0px 20px;
+    }
 </style>
 
 </head>
