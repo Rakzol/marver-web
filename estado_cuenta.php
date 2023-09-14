@@ -605,6 +605,6 @@ th {
 
     $dompdf->render();
 
-    // $dompdf->stream("estado de cuenta.pdf", array("Attachment" => false));
-    file_put_contents('filename.pdf', $dompdf->output());
+    $dompdf->stream("estado de cuenta.pdf", array("Attachment" => false));
+    //file_put_contents('filename.pdf', $dompdf->output());
 ?>
