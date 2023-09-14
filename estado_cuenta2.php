@@ -138,8 +138,8 @@ th {
     <div class="contenedor texto-centrado" >
         <img src="img/logo.png" width="150">
         <div class="contenedor-central" >
-            <h2>MARIO ALBERTO VERDUZCO COTA</h2>
-            <h2>VECM880923NI1</h2>
+            <h3>MARIO ALBERTO VERDUZCO COTA</h3>
+            <h3>VECM880923NI1</h3>
             <p>SANTOS DEGOLLADO 451 CENTRO LOS MOCHIS</p>
             <P>SINALOA MEXICO CP.81200</P>
             <P>TEL.8123595</P>
@@ -153,7 +153,7 @@ th {
     </div>
 
         <div class="texto-centrado" >
-            <h2><?php echo $datos['cliente']['RFC'] ?></h2>
+            <h3><?php echo $datos['cliente']['RFC'] ?></h3>
             <p><?php echo $datos['cliente']['Clave'] . " " . $datos['cliente']['Razon_Social'] ?></p>
             <P><?php echo
                 $datos['cliente']['Domicilio'] . " " .
