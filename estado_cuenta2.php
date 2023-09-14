@@ -94,23 +94,11 @@ th {
 </style>
 
 <style>
-    /* p, h5, h3{
-        margin: 0;
+    p, h5, h3{
+        margin: 8px 0px 8px 0px;
     }
 
-    body{
-        margin: 0;
-        font-family: "Open Sans",sans-serif;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #777;
-        background-color: #fff;
-        -webkit-text-size-adjust: 100%;
-        -webkit-tap-highlight-color: rgba(0,0,0,0);
-    }
-
-    *, *::before, *::after {
+    /**, *::before, *::after {
         box-sizing: border-box;
     } */
 
