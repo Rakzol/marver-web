@@ -484,6 +484,10 @@ th {
         font-size: 1.75rem;
     }}
 
+    *{
+        font-size: 10px;
+    }
+
 </style>
 
 </head>
