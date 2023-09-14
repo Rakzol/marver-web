@@ -114,6 +114,10 @@ th {
         box-sizing: border-box;
     } */
 
+    img{
+        display: inline;
+    }
+
 </style>
 
 </head>
