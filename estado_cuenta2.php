@@ -139,7 +139,6 @@ th {
         </div>
     </div>
 
-    <div class="" >
         <div class="" >
             <h5><?php echo $datos['cliente']['RFC'] ?></h5>
             <p><?php echo $datos['cliente']['Clave'] . " " . $datos['cliente']['Razon_Social'] ?></p>
@@ -155,9 +154,7 @@ th {
                 $datos['cliente']['Codigo_Postal']
             ?></P>
         </div>
-    </div>
 
-    <div class="">
     <table class="">
       <thead>
         <tr>
@@ -206,7 +203,6 @@ th {
         </tr>
     </tfoot>
     </table>
-  </div>
 
 
 </body>
