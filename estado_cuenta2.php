@@ -78,17 +78,13 @@ table>tbody {
 </style>
 
 <style>
-    body{
+    body, p, h3{
         margin: 0;
     }
 
     *{
         font-family:"Open Sans",sans-serif;
     }
-
-    /* p, h3{
-        margin: 0px 0px 0px 0px;
-    } */
 
     .texto-centrado{
         text-align: center;
