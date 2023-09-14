@@ -116,15 +116,15 @@ table>tbody {
 <body>
 
     <div class="contenedor texto-centrado" >
-        <img class="aliniacion-vertical" src="img/logo.png" width="150">
-        <div class="aliniacion-vertical contenedor-central" >
-            <h3>MARIO ALBERTO VERDUZCO COTA
-            <br>VECM880923NI1</h3>
-            <p>SANTOS DEGOLLADO 451 CENTRO LOS MOCHIS
-            <br>SINALOA MEXICO CP.81200
-            <br>TEL.8123595</P>
+        <img class="" src="img/logo.png" width="150">
+        <div class=" contenedor-central" >
+            <h3>MARIO ALBERTO VERDUZCO COTA</h3>
+            <h3>VECM880923NI1</h3>
+            <p>SANTOS DEGOLLADO 451 CENTRO LOS MOCHIS</p>
+            <p>SINALOA MEXICO CP.81200</p>
+            <p>TEL.8123595</p>
         </div>
-        <div class="aliniacion-vertical" >
+        <div class="" >
             <h3>Estado de cuenta</h3>
             <?php date_default_timezone_set('America/Mexico_City'); ?>
             <P><?php echo "Fecha: " . date('d/m/Y') ?></P>
