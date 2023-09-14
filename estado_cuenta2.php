@@ -62,7 +62,7 @@
     }
 
     th{
-        text-align: inherit;;
+        text-align: inherit;
     }
 </style>
 
