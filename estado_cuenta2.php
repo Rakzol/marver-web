@@ -117,7 +117,7 @@ table>tbody {
 
     <div class="aliniacion-vertical contenedor texto-centrado" >
         <img class="aliniacion-vertical" src="img/logo.png" width="150">
-        <div class=" contenedor-central" >
+        <div class="aliniacion-vertical contenedor-central" >
             <h3>MARIO ALBERTO VERDUZCO COTA</h3>
             <h3>VECM880923NI1</h3>
             <p>SANTOS DEGOLLADO 451 CENTRO LOS MOCHIS</p>
