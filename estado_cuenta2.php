@@ -25,21 +25,9 @@
             content: '$';
         }
 
-        /*.p-3 {
-            padding: 1rem !important;
-        }
 
-        .justify-content-center {
-            justify-content: center !important;
-        }
-        .d-flex {
-            display: flex !important;
-        }
-
-        .mt-2 {
-            margin-top: 0.5rem !important;
-        }
-        .table {
+   
+        table {
             --bs-table-bg: rgba(0,0,0,0);
             --bs-table-striped-color: #777;
             --bs-table-striped-bg: rgba(0,0,0,0.05);
@@ -58,7 +46,7 @@
             border-collapse: collapse;
         }
 
-        .table>thead {
+        table>thead {
             vertical-align: bottom;
         }
         thead, tbody, tfoot, tr, td, th {
@@ -67,11 +55,11 @@
             border-width: 0;
         }
 
-        .table>:not(:last-child)>:last-child>* {
+        table>:not(:last-child)>:last-child>* {
             border-bottom-color: currentColor;
         }
 
-        .table>:not(caption)>*>* {
+        table>:not(caption)>*>* {
             padding: 0.5rem 0.5rem;
             background-color: var(--bs-table-bg);
             border-bottom-width: 1px;
@@ -83,13 +71,9 @@ th {
     text-align: -webkit-match-parent;
 }
 
-.table>tbody {
+table>tbody {
     vertical-align: inherit;
 }
-
-.justify-content-between {
-    justify-content: space-between !important;
-} */
 
 </style>
 
@@ -102,13 +86,9 @@ th {
         font-family:"Open Sans",sans-serif;
     }
 
-    p, h5, h3{
+    p, h3{
         margin: 8px 0px 8px 0px;
     }
-
-    /**, *::before, *::after {
-        box-sizing: border-box;
-    } */
 
     .texto-centrado{
         text-align: center;
