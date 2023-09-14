@@ -1,5 +1,5 @@
 <?php
-    ob_start();
+    // ob_start();
     require_once('modelo/inicializar_datos.php');
     header("Content-Type: text/html");
 ?>
@@ -109,11 +109,10 @@ th {
         -webkit-text-size-adjust: 100%;
         -webkit-tap-highlight-color: rgba(0,0,0,0);
     }
-*/
 
     *, *::before, *::after {
         box-sizing: border-box;
-    }
+    } */
 
     .texto-centrado{
         text-align: center;
@@ -220,28 +219,28 @@ th {
 
 </html>
 <?php
-    $html = ob_get_clean();
+    // $html = ob_get_clean();
 
-    require_once 'dompdf/autoload.inc.php';
+    // require_once 'dompdf/autoload.inc.php';
 
-    use Dompdf\Dompdf;
-    use Dompdf\Options;
+    // use Dompdf\Dompdf;
+    // use Dompdf\Options;
 
-    $options = new Options();
-    // $options->set('isRemoteEnabled', true);
-    $options->set('chroot', __DIR__);
-    // $options->set('tempDir', 'tamporaldir');
-    // $options->set('isHtml5ParserEnabled', true);
-    // $options->set('isPhpEnabled', true);
-    // $options->set('debugPng', true);
-    // $options->set('debugCss', true);
+    // $options = new Options();
+    // // $options->set('isRemoteEnabled', true);
+    // $options->set('chroot', __DIR__);
+    // // $options->set('tempDir', 'tamporaldir');
+    // // $options->set('isHtml5ParserEnabled', true);
+    // // $options->set('isPhpEnabled', true);
+    // // $options->set('debugPng', true);
+    // // $options->set('debugCss', true);
 
-    $dompdf = new Dompdf($options);
+    // $dompdf = new Dompdf($options);
 
-    $dompdf->loadHtml($html);
+    // $dompdf->loadHtml($html);
 
-    $dompdf->render();
+    // $dompdf->render();
 
-    $dompdf->stream("estado de cuenta.pdf", array("Attachment" => false));
-    //file_put_contents('filename.pdf', $dompdf->output());
+    // $dompdf->stream("estado de cuenta.pdf", array("Attachment" => false));
+    // //file_put_contents('filename.pdf', $dompdf->output());
 ?>
