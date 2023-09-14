@@ -132,9 +132,9 @@
                         "<td>" . $factura["FolioComprobante"] . "</td>".
                         "<td>" . $factura["Fecha"] . "</td>".
                         "<td>" . $factura["FechaVencimiento"] . "</td>".
-                        "<td class=\"dinero\" >" . $factura["Importe"] . "</td>".
-                        "<td class=\"dinero\" >" . $factura["Abono"] . "</td>".
-                        "<td class=\"dinero\" >" . $factura["Importe"] - $factura["Abono"] . "</td>".
+                        "<td class=\"dinero\" >" . number_format($factura["Importe"], 2, '.', ',') . "</td>".
+                        "<td class=\"dinero\" >" . number_format($factura["Abono"], 2, '.', ',') . "</td>".
+                        "<td class=\"dinero\" >" . number_format($factura["Importe"] - $factura["Abono"], 2, '.', ',') . "</td>".
                     "</tr>";
             }
 
@@ -145,9 +145,9 @@
           <th></th>
           <th></th>
           <th>Totales:</th>
-          <th class="dinero"><?php echo $importes; ?></th>
-          <th class="dinero"><?php echo $abonos; ?></th>
-          <th class="dinero"><?php echo $importes - $abonos; ?></th>
+          <th class="dinero"><?php echo number_format($importes, 2, '.', ','); ?></th>
+          <th class="dinero"><?php echo number_format($abonos, 2, '.', ','); ?></th>
+          <th class="dinero"><?php echo number_format($importes - $abonos, 2, '.', ','); ?></th>
         </tr>
     </tfoot>
     </table>
