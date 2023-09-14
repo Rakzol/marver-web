@@ -596,9 +596,18 @@
                     console.error('Error al solicitar las facturas: ', error);
                 })
                 .then(respuesta_json => {
-                    document.querySelector("#importe_total").innerText = respuesta_json[1].toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
-                    document.querySelector("#abono_total").innerText = respuesta_json[2].toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
-                    document.querySelector("#deuda_total").innerText = (respuesta_json[1] - respuesta_json[2]).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
+                    document.querySelector("#importe_total").innerText = respuesta_json[1].toLocaleString('es-MX', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                        });
+                    document.querySelector("#abono_total").innerText = respuesta_json[2].toLocaleString('es-MX', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                        });
+                    document.querySelector("#deuda_total").innerText = (respuesta_json[1] - respuesta_json[2]).toLocaleString('es-MX', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                        });
                     facturas = respuesta_json[0];
                     //console.log(facturas);
                     primera.innerText = facturas.length ? 1 : 0;
@@ -657,17 +666,26 @@
                 tr.appendChild(td);
 
                 td = document.createElement('td');
-                td.innerText = factura['Importe'].toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
+                td.innerText = factura['Importe'].toLocaleString('es-MX', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                    });
                 td.classList.add('dinero');
                 tr.appendChild(td);
 
                 td = document.createElement('td');
-                td.innerText = factura['Abono'].toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
+                td.innerText = factura['Abono'].toLocaleString('es-MX', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                    });
                 td.classList.add('dinero');
                 tr.appendChild(td);
 
                 td = document.createElement('td');
-                td.innerText = (factura['Importe'] - factura['Abono']).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
+                td.innerText = (factura['Importe'] - factura['Abono']).toLocaleString('es-MX', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                    });
                 td.classList.add('dinero');
                 td.classList.add('d-none');
                 td.classList.add('d-md-table-cell');
