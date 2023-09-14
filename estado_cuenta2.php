@@ -94,6 +94,10 @@ th {
 </style>
 
 <style>
+    *{
+        font-family:"Open Sans",sans-serif;
+    }
+
     p, h5, h3{
         margin: 8px 0px 8px 0px;
     }
@@ -117,6 +121,10 @@ th {
     .contenedor-central{
         margin: 0px 20px 0px 20px;
     }
+
+    .aliniacion-vertical{
+        vertical-align: top;
+    }
 </style>
 
 </head>
@@ -132,7 +140,7 @@ th {
             <P>SINALOA MEXICO CP.81200</P>
             <P>TEL.8123595</P>
         </div>
-        <div >
+        <div class="aliniacion-vertical" >
             <h3>Estado de cuenta</h3>
             <?php date_default_timezone_set('America/Mexico_City'); ?>
             <P><?php echo "Fecha: " . date('d/m/Y') ?></P>
