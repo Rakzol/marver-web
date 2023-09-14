@@ -84,10 +84,12 @@ table>tbody {
 
     *{
         font-family:"Open Sans",sans-serif;
+        line-height: 1px;
     }
 
     p, h3{
         margin: 8px 0px 8px 0px;
+        line-height: 1px;
     }
 
     .texto-centrado{
@@ -118,7 +120,7 @@ table>tbody {
     <div class="contenedor texto-centrado" >
         <img src="img/logo.png" width="150">
         <div class="contenedor-central" >
-            <h3 style="line-height: 18px;" >MARIO ALBERTO VERDUZCO COTA
+            <h3 style="line-height: 1px;" >MARIO ALBERTO VERDUZCO COTA
             <br>VECM880923NI1</h3>
             <p>SANTOS DEGOLLADO 451 CENTRO LOS MOCHIS
             <br>SINALOA MEXICO CP.81200
