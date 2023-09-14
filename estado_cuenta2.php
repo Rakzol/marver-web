@@ -1,5 +1,5 @@
 <?php
-    ob_start();
+    // ob_start();
     require_once('modelo/inicializar_datos.php');
     header("Content-Type: text/html");
 ?>
@@ -118,11 +118,11 @@ table>tbody {
     <div class="contenedor texto-centrado" >
         <img src="img/logo.png" width="150">
         <div class="contenedor-central" >
-            <h3>MARIO ALBERTO VERDUZCO COTA</h3>
-            <h3>VECM880923NI1</h3>
-            <p>SANTOS DEGOLLADO 451 CENTRO LOS MOCHIS</p>
-            <P>SINALOA MEXICO CP.81200</P>
-            <P>TEL.8123595</P>
+            <h3>MARIO ALBERTO VERDUZCO COTA
+            <br>VECM880923NI1</h3>
+            <p>SANTOS DEGOLLADO 451 CENTRO LOS MOCHIS
+            <br>SINALOA MEXICO CP.81200
+            <br>TEL.8123595</P>
         </div>
         <div class="aliniacion-vertical" >
             <h3>Estado de cuenta</h3>
@@ -202,28 +202,28 @@ table>tbody {
 
 </html>
 <?php
-    $html = ob_get_clean();
+    // $html = ob_get_clean();
 
-    require_once 'dompdf/autoload.inc.php';
+    // require_once 'dompdf/autoload.inc.php';
 
-    use Dompdf\Dompdf;
-    use Dompdf\Options;
+    // use Dompdf\Dompdf;
+    // use Dompdf\Options;
 
-    $options = new Options();
-    // $options->set('isRemoteEnabled', true);
-    $options->set('chroot', __DIR__);
-    // $options->set('tempDir', 'tamporaldir');
-    // $options->set('isHtml5ParserEnabled', true);
-    // $options->set('isPhpEnabled', true);
-    // $options->set('debugPng', true);
-    // $options->set('debugCss', true);
+    // $options = new Options();
+    // // $options->set('isRemoteEnabled', true);
+    // $options->set('chroot', __DIR__);
+    // // $options->set('tempDir', 'tamporaldir');
+    // // $options->set('isHtml5ParserEnabled', true);
+    // // $options->set('isPhpEnabled', true);
+    // // $options->set('debugPng', true);
+    // // $options->set('debugCss', true);
 
-    $dompdf = new Dompdf($options);
+    // $dompdf = new Dompdf($options);
 
-    $dompdf->loadHtml($html);
+    // $dompdf->loadHtml($html);
 
-    $dompdf->render();
+    // $dompdf->render();
 
-    $dompdf->stream("estado de cuenta.pdf", array("Attachment" => false));
-    //file_put_contents('filename.pdf', $dompdf->output());
+    // $dompdf->stream("estado de cuenta.pdf", array("Attachment" => false));
+    // //file_put_contents('filename.pdf', $dompdf->output());
 ?>
