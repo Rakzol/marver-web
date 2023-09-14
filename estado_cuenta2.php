@@ -114,28 +114,24 @@ th {
         box-sizing: border-box;
     } */
 
-    img{
-        display: inline;
-    }
-
 </style>
 
 </head>
 
 <body>
 
-    <div class="d-flex justify-content-between p-3" >
+    <div class="" >
         <div>
-        <img src="img/logo.png" width="150">
+            <img src="img/logo.png" width="150">
         </div>
-        <div class="text-center" >
+        <div class="" >
             <h5>MARIO ALBERTO VERDUZCO COTA</h5>
             <h5>VECM880923NI1</h5>
             <p>SANTOS DEGOLLADO 451 CENTRO LOS MOCHIS</p>
             <P>SINALOA MEXICO CP.81200</P>
             <P>TEL.8123595</P>
         </div>
-        <div class="text-center" >
+        <div class="" >
             <h3>Estado de cuenta</h3>
             <?php date_default_timezone_set('America/Mexico_City'); ?>
             <P><?php echo "Fecha: " . date('d/m/Y') ?></P>
@@ -143,8 +139,8 @@ th {
         </div>
     </div>
 
-    <div class="d-flex justify-content-center p-3" >
-        <div class="text-center" >
+    <div class="" >
+        <div class="" >
             <h5><?php echo $datos['cliente']['RFC'] ?></h5>
             <p><?php echo $datos['cliente']['Clave'] . " " . $datos['cliente']['Razon_Social'] ?></p>
             <P><?php echo
@@ -161,8 +157,8 @@ th {
         </div>
     </div>
 
-    <div class="p-1">
-    <table class="table mt-1">
+    <div class="">
+    <table class="">
       <thead>
         <tr>
           <th>Folio</th>
@@ -207,7 +203,6 @@ th {
           <th class="dinero"><?php echo $importes; ?></th>
           <th class="dinero"><?php echo $abonos; ?></th>
           <th class="dinero"><?php echo $importes - $abonos; ?></th>
-          <th></th>
         </tr>
     </tfoot>
     </table>
