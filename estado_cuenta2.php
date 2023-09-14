@@ -109,10 +109,11 @@ th {
         -webkit-text-size-adjust: 100%;
         -webkit-tap-highlight-color: rgba(0,0,0,0);
     }
+*/
 
     *, *::before, *::after {
         box-sizing: border-box;
-    } */
+    }
 
     .texto-centrado{
         text-align: center;
