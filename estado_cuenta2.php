@@ -474,20 +474,6 @@ th {
         box-sizing: border-box;
     }
 
-    @media (min-width: 1200px){
-    h1, .h1 {
-        font-size: 2.5rem;
-    }}
-
-    @media (min-width: 1200px){
-    h3, .h3 {
-        font-size: 1.75rem;
-    }}
-
-    *{
-        font-size: 5px;
-    }
-
 </style>
 
 </head>
@@ -495,7 +481,9 @@ th {
 <body>
 
     <div class="d-flex justify-content-between p-3" >
+        <div>
         <img src="img/logo.png" width="150">
+        </div>
         <div class="text-center" >
             <h5>MARIO ALBERTO VERDUZCO COTA</h5>
             <h5>VECM880923NI1</h5>
