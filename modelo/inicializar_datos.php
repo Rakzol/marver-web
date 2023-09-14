@@ -1,6 +1,6 @@
 <?php
     
-    ini_set("memory_limit","5120M");
+    ini_set("memory_limit","10000M");
     ini_set('max_execution_time', '0');
 
     session_start();
