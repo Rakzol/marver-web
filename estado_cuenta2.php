@@ -17,7 +17,7 @@
 
 
 <style>
-        /* .dinero {
+        .dinero {
             color: green;
         }
 
@@ -25,7 +25,7 @@
             content: '$';
         }
 
-        .p-3 {
+        /*.p-3 {
             padding: 1rem !important;
         }
 
@@ -114,22 +114,34 @@ th {
         box-sizing: border-box;
     } */
 
+    .texto-centrado{
+        text-align: center;
+    }
+
+    .contenedor > *{
+        display: inline-block;
+    }
+
+    .margen-auto{
+        margin: auto;
+    }
+
 </style>
 
 </head>
 
 <body>
 
-    <div class="" >
+    <div class="contenedor texto-centrado" >
         <img src="img/logo.png" width="150">
-        <div class="" >
+        <div >
             <h5>MARIO ALBERTO VERDUZCO COTA</h5>
             <h5>VECM880923NI1</h5>
             <p>SANTOS DEGOLLADO 451 CENTRO LOS MOCHIS</p>
             <P>SINALOA MEXICO CP.81200</P>
             <P>TEL.8123595</P>
         </div>
-        <div class="" >
+        <div >
             <h3>Estado de cuenta</h3>
             <?php date_default_timezone_set('America/Mexico_City'); ?>
             <P><?php echo "Fecha: " . date('d/m/Y') ?></P>
@@ -137,7 +149,7 @@ th {
         </div>
     </div>
 
-        <div class="" >
+        <div class="texto-centrado" >
             <h5><?php echo $datos['cliente']['RFC'] ?></h5>
             <p><?php echo $datos['cliente']['Clave'] . " " . $datos['cliente']['Razon_Social'] ?></p>
             <P><?php echo
@@ -153,7 +165,7 @@ th {
             ?></P>
         </div>
 
-    <table class="">
+    <table class="margen-auto" >
       <thead>
         <tr>
           <th>Folio</th>
