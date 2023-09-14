@@ -121,9 +121,7 @@ th {
 <body>
 
     <div class="" >
-        <div>
-            <img src="img/logo.png" width="150">
-        </div>
+        <img src="img/logo.png" width="150">
         <div class="" >
             <h5>MARIO ALBERTO VERDUZCO COTA</h5>
             <h5>VECM880923NI1</h5>
