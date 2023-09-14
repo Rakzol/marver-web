@@ -87,7 +87,7 @@ table>tbody {
     }
 
     p, h3{
-        margin: 80px 0px 80px 0px;
+        margin: 10px 0px 10px 0px;
     }
 
     .texto-centrado{
