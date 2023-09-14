@@ -485,7 +485,7 @@ th {
     }}
 
     *{
-        font-size: 10px;
+        font-size: 5px;
     }
 
 </style>
