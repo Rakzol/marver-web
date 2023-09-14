@@ -124,7 +124,7 @@ table>tbody {
             <p>SINALOA MEXICO CP.81200</p>
             <p>TEL.8123595</p>
         </div>
-        <div class="" >
+        <div class="aliniacion-vertical" >
             <h3>Estado de cuenta</h3>
             <?php date_default_timezone_set('America/Mexico_City'); ?>
             <P><?php echo "Fecha: " . date('d/m/Y') ?></P>
