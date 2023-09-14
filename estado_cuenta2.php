@@ -87,7 +87,7 @@ table>tbody {
     }
 
     p, h3{
-        margin: 10px 0px 10px 0px;
+        margin: 0px 0px 10px 0px;
     }
 
     .texto-centrado{
@@ -115,7 +115,7 @@ table>tbody {
 
 <body>
 
-    <div class="aliniacion-vertical contenedor texto-centrado" >
+    <div class="contenedor texto-centrado" >
         <img class="aliniacion-vertical" src="img/logo.png" width="150">
         <div class="aliniacion-vertical contenedor-central" >
             <h3>MARIO ALBERTO VERDUZCO COTA</h3>
