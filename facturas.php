@@ -528,7 +528,7 @@
     </table>
   </div>
 
-    <ul class="pagination justify-content-center mt-4">
+    <ul class="pagination justify-content-center mt-3">
         <li class="page-item"><a class="page-link" href="#" onclick="event.preventDefault(); pagina_anterior();"
                 id="anterior">&#60;</a></li>
         <li class="page-item"><a class="page-link" href="#" onclick="event.preventDefault(); primera_pagina();"
