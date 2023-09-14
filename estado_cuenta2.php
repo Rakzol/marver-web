@@ -116,7 +116,7 @@ table>tbody {
 <body>
 
     <div class="aliniacion-vertical contenedor texto-centrado" >
-        <img class="" src="img/logo.png" width="150">
+        <img class="aliniacion-vertical" src="img/logo.png" width="150">
         <div class=" contenedor-central" >
             <h3>MARIO ALBERTO VERDUZCO COTA</h3>
             <h3>VECM880923NI1</h3>
