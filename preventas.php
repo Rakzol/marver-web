@@ -599,6 +599,7 @@
 
                 td = document.createElement('td');
                 td.innerText = pedido['Total'];
+                td.classList.add('dinero');
                 tr.appendChild(td);
 
                 td = document.createElement('td');
