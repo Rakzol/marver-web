@@ -2,7 +2,7 @@
     try{
         require_once('inicializar_datos.php');
 
-        $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Cliente, FechaPedido, HoraPedido, TotalPedido, Status, FolioComprobante, MEntrega FROM PedidosCliente WHERE Folio = :folio");
+        $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Cliente, FechaPedido, HoraPedido, TotalPedido, Status, FolioComprobante, MEntrega, Tipocomprobante FROM PedidosCliente WHERE Folio = :folio");
         $preparada->bindValue(':folio', $_POST['folio']);
         $preparada->execute();
 

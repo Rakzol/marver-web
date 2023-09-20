@@ -537,6 +537,7 @@
           </div>
         </div>
         <button id="descargar" style='width: 200px; margin-bottom: 1rem;' type="button" class="btn btn-primary"><i class="fas fa-download me-2"></i>Descargar Factura</button>
+        <button id="descargar-preventa" style='width: 200px; margin-bottom: 1rem;' type="button" class="d-none btn btn-primary"><i class="fas fa-download me-2"></i>Descargar Preventa</button>
         <!-- Tabla de productos -->
         <table class="table table-bordered">
           <thead>
@@ -621,6 +622,10 @@
                         });
 
                     });
+
+                    if( respuesta_json['pedido']['Tipocomprobante'] == 3 ){
+                        document.querySelector('#descargar-preventa').classList.remove('d-none');
+                    }
 
                     document.querySelector('#folio').innerHTML = '<strong>Folio:</strong> ' + folio;
                     document.querySelector('#fecha').innerHTML = '<strong>Fecha:</strong> ' + respuesta_json['pedido']['FechaPedido'];
