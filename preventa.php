@@ -39,7 +39,7 @@
 
     *{
         font-family:"Open Sans",sans-serif;
-        font-size: 15px;
+        /* font-size: 15px; */
     }
 
     .texto-centrado{
@@ -72,6 +72,10 @@
 
     .me-10{
         margin-right: 10px;
+    }
+
+    .corrido{
+        white-space: nowrap;
     }
 </style>
 
@@ -127,7 +131,7 @@
           <th>Codigo</th>
           <th>Descripcion</th>
           <th>%Descuento</th>
-          <th>Precio U.</th>
+          <th class="corrido" >Precio U.</th>
           <th>Importe</th>
         </tr>
       </thead>
@@ -172,8 +176,8 @@
             foreach( $preventas_positivas as $preventa ){
                 echo "<tr>". 
                         "<td>" . $preventa["Cantidad"] . "</td>".
-                        "<td>" . $preventa["Unidad"] . "</td>".
-                        "<td>" . $preventa["CodigoArticulo"] . "</td>".
+                        "<td class='corrido' >" . $preventa["Unidad"] . "</td>".
+                        "<td class='corrido' >" . $preventa["CodigoArticulo"] . "</td>".
                         "<td>" . $preventa["Descripcion"] . "</td>".
                         "<td>" . $preventa["Descuento"] . "</td>".
                         "<td class=\"dinero\" >" . $preventa["Precio"] . "</td>".
