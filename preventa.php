@@ -132,10 +132,12 @@
                 $preparada = $datos['conexion_base_sucursal']->prepare("SELECT TOP 1 Cajero, Vendedor FROM Preventa WHERE Folio = :folio");
                 $preparada->bindValue(':folio', $_GET['folio']);
                 $preparada->execute();
+
+                $preparada = $preparada->fetchAll(PDO::FETCH_ASSOC);
             ?>
-            <h3 class="linea" >Vendedor: </h3><p class="linea" ><?php $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['Vendedor'] ?></p>
+            <h3 class="linea" >Vendedor: </h3><p class="linea" ><?php $preparada[0]['Vendedor'] ?></p>
             <div>
-                <h3 class="linea" >Cajero: </h3><p class="linea" ><?php $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['Cajero'] ?></p>
+                <h3 class="linea" >Cajero: </h3><p class="linea" ><?php $preparada[0]['Cajero'] ?></p>
             </div>
         </div>
     </div>
