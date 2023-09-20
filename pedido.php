@@ -536,8 +536,7 @@
             <p id='total' ></p>
           </div>
         </div>
-        <button id="descargar" style='width: 200px; margin-bottom: 1rem;' type="button" class="btn btn-primary me-3"><i class="fas fa-download me-2"></i>Descargar Factura</button>
-        <button id="descargar-preventa" style='width: 200px; margin-bottom: 1rem;' type="button" class="d-none btn btn-primary"><i class="fas fa-download me-2"></i>Descargar Preventa</button>
+        <button id="descargar" style='width: 200px; margin-bottom: 1rem;' type="button" class="btn btn-primary me-3"><i class="fas fa-download me-2"></i>Descargar</button>
         <!-- Tabla de productos -->
         <table class="table table-bordered">
           <thead>
@@ -576,59 +575,68 @@
                 })
                 .then(respuesta_json => {
 
-                    let datos_descarga = new FormData();
-                    datos_descarga.append('folio', folio);
-                    document.querySelector('#descargar').addEventListener('click', () => {
+                    switch( respuesta_json['pedido']['Tipocomprobante'] ){
+                        case 1://factura
+                            document.querySelector('#descargar').innerText = 'Descargar Factura';
 
-                        let nombre_xml;
-                        let nombre_pdf;
+                            let datos_descarga = new FormData();
+                            datos_descarga.append('folio', folio);
 
-                        fetch('modelo/descargar_xml',{
-                            method: 'POST',
-                            body: datos_descarga
-                        })
-                        .then(response =>{
-                            nombre_xml = response.headers.get('Content-Disposition').split('filename=')[1];
-                            return response.blob();
-                        })
-                        .then(blob => {
-                            let url = window.URL.createObjectURL(new Blob([blob]));
-                            let a = document.createElement('a');
-                            a.href = url;
-                            a.download = nombre_xml;
-                            document.body.appendChild(a);
-                            a.click();
-                            a.remove();
-                            window.URL.revokeObjectURL(url);
-                        });
+                            document.querySelector('#descargar').addEventListener('click', () => {
 
-                        fetch('modelo/descargar_pdf',{
-                            method: 'POST',
-                            body: datos_descarga
-                        })
-                        .then(response =>{
-                            nombre_pdf = response.headers.get('Content-Disposition').split('filename=')[1];
-                            return response.blob();
-                        })
-                        .then(blob => {
-                            let url = window.URL.createObjectURL(new Blob([blob]));
-                            let a = document.createElement('a');
-                            a.href = url;
-                            a.download = nombre_pdf;
-                            document.body.appendChild(a);
-                            a.click();
-                            a.remove();
-                            window.URL.revokeObjectURL(url);
-                        });
+                                let nombre_xml;
+                                let nombre_pdf;
 
-                    });
+                                fetch('modelo/descargar_xml',{
+                                    method: 'POST',
+                                    body: datos_descarga
+                                })
+                                .then(response =>{
+                                    nombre_xml = response.headers.get('Content-Disposition').split('filename=')[1];
+                                    return response.blob();
+                                })
+                                .then(blob => {
+                                    let url = window.URL.createObjectURL(new Blob([blob]));
+                                    let a = document.createElement('a');
+                                    a.href = url;
+                                    a.download = nombre_xml;
+                                    document.body.appendChild(a);
+                                    a.click();
+                                    a.remove();
+                                    window.URL.revokeObjectURL(url);
+                                });
 
-                    if( respuesta_json['pedido']['Tipocomprobante'] == 3 ){
-                        document.querySelector('#descargar-preventa').classList.remove('d-none');
+                                fetch('modelo/descargar_pdf',{
+                                    method: 'POST',
+                                    body: datos_descarga
+                                })
+                                .then(response =>{
+                                    nombre_pdf = response.headers.get('Content-Disposition').split('filename=')[1];
+                                    return response.blob();
+                                })
+                                .then(blob => {
+                                    let url = window.URL.createObjectURL(new Blob([blob]));
+                                    let a = document.createElement('a');
+                                    a.href = url;
+                                    a.download = nombre_pdf;
+                                    document.body.appendChild(a);
+                                    a.click();
+                                    a.remove();
+                                    window.URL.revokeObjectURL(url);
+                                });
 
-                        document.querySelector('#descargar-preventa').addEventListener('click', () => {
-                            window.open('https://www.marverrefacciones.mx/preventa?folio=' + folio);
-                        });
+                            });
+                            break;
+                        case 2://recibo
+                            document.querySelector('#descargar').innerText = 'Descargar Recibo';
+                            break;
+                        case 3://preventa
+                            document.querySelector('#descargar').innerText = 'Descargar Preventa';
+
+                            document.querySelector('#descargar').addEventListener('click', () => {
+                                window.open('https://www.marverrefacciones.mx/preventa?folio=' + folio);
+                            });
+                            break;
                     }
 
                     document.querySelector('#folio').innerHTML = '<strong>Folio:</strong> ' + folio;
