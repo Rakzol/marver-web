@@ -112,13 +112,13 @@
           <th>Descripcion</th>
           <th>%Descuento</th>
           <th>Precio U.</th>
-          <!-- <th>Importe</th> -->
+          <th>Importe</th>
         </tr>
       </thead>
       <tbody>
         <?php
         
-            $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Cantidad, Unidad, CodigoArticulo, Producto + ' ' + Descripcion AS Descripcion, Descuento, Precio FROM PreventaDetalle INNER JOIN Producto ON Codigo = CodigoArticulo WHERE Folio = :folio");
+            $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Cantidad, Unidad, CodigoArticulo, Producto + ' ' + Descripcion AS Descripcion, Descuento, Precio FROM PreventaDetalle INNER JOIN Producto ON Codigo = CodigoArticulo WHERE Folio = :folio ORDER BY Precio");
             $preparada->bindValue(':folio', $_GET['folio']);
             $preparada->execute();
 
