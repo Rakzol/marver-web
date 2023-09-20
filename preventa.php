@@ -64,6 +64,10 @@
     th{
         text-align: inherit;
     }
+
+    .linea{
+        display: inline;
+    }
 </style>
 
 </head>
@@ -78,12 +82,16 @@
             <p>SANTOS DEGOLLADO 451 CENTRO LOS MOCHIS</p>
             <p>SINALOA MEXICO CP.81200</p>
             <p>TEL.8123595</p>
+            <h3>Lugar de expedición</h3>
+            <p>81200</p>
+            <h3>Regimen</h3>
+            <p>612</p>
         </div>
         <div class="aliniacion-vertical" >
-            <h3>Estado de cuenta</h3>
+            <h3>PREVENTA</h3>
             <?php date_default_timezone_set('America/Mexico_City'); ?>
-            <P><?php echo "Fecha: " . date('d/m/Y') ?></P>
-            <P><?php echo "Hora: " . date('h:i:s A') ?></P>
+            <h3 class="linea" >Fecha: </h3><p class="linea" ><?php echo date('d/m/Y') . ' ' . date('h:i:s A') ?></p>
+            <h3 class="linea" >Serie A </h3><h3>Folio <?php echo $_GET['Folio'] ?></h3>
         </div>
     </div>
 
