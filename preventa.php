@@ -111,7 +111,7 @@
         </div>
     </div>
 
-    <div class="contenedor texto-centrado" >
+    <div class="contenedor texto-centrado aliniacion-vertical" >
         <div >
                 <h3><?php echo $datos['cliente']['RFC'] ?></h3>
                 <p><?php echo $datos['cliente']['Clave'] . " " . $datos['cliente']['Razon_Social'] ?></p>
@@ -127,7 +127,7 @@
                     $datos['cliente']['Codigo_Postal']
                 ?></P>
             </div>
-        <div>
+        <div class="aliniacion-vertical me-10" >
             <?php
                 $preparada = $datos['conexion_base_sucursal']->prepare("SELECT TOP 1 Cajero, Vendedor FROM Preventa WHERE Folio = :folio");
                 $preparada->bindValue(':folio', $_GET['folio']);
@@ -135,9 +135,9 @@
 
                 $preparada = $preparada->fetchAll(PDO::FETCH_ASSOC);
             ?>
-            <h3 class="linea" >Vendedor: </h3><p class="linea" ><?php $preparada[0]['Vendedor'] ?></p>
+            <h3 class="linea" >Vendedor: </h3><p class="linea" ><?php echo $preparada[0]['Vendedor'] ?></p>
             <div>
-                <h3 class="linea" >Cajero: </h3><p class="linea" ><?php $preparada[0]['Cajero'] ?></p>
+                <h3 class="linea" >Cajero: </h3><p class="linea" ><?php echo $preparada[0]['Cajero'] ?></p>
             </div>
         </div>
     </div>
