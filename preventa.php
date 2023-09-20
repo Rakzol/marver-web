@@ -122,7 +122,7 @@
             $preparada->bindValue(':folio', $_GET['folio']);
             $preparada->execute();
 
-            $preventas_positivas;
+            $preventas_positivas = null;
             foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $preventa ){
                 if( $preventa['Cantidad'] > 0 ){
                     if( $preventas_positivas[$preventa['CodigoArticulo']] ){
