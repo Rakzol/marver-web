@@ -39,7 +39,7 @@
 
     *{
         font-family:"Open Sans",sans-serif;
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .texto-centrado{
