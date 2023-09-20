@@ -106,49 +106,45 @@
     <table class="margen-auto" >
       <thead>
         <tr>
-          <th>Folio</th>
-          <th>Inicio</th>
-          <th>Vencimiento</th>
+          <th>Cantidad</th>
+          <th>Unidad</th>
+          <th>Codigo</th>
+          <th>Descripcion</th>
+          <th>%Descuento</th>
+          <th>Precio U.</th>
           <th>Importe</th>
-          <th>Abono</th>
-          <th>Debe</th>
         </tr>
       </thead>
       <tbody>
         <?php
         
-            $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Pagos.Fecha, Pagos.FechaVencimiento, Pagos.Importe, Pagos.Abono, Pagos.Folio AS FolioComprobante, PedidosCliente.Folio AS Folio FROM Pagos INNER JOIN PedidosCliente ON PedidosCliente.FolioComprobante = Pagos.Folio AND PedidosCliente.Cliente = :clienteTemp AND PedidosCliente.Status != 'CA' WHERE Pagos.Cliente = :cliente AND Pagos.Saldado = 0 ORDER BY Pagos.Fecha");
-            $preparada->bindValue(':clienteTemp', $datos['cliente']['Clave']);
-            $preparada->bindValue(':cliente', $datos['cliente']['Clave']);
+            $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Cantidad, Unidad, CodigoArticulo, Descripcion, Descuento, Precio, Importe FROM PreventaDetalle INNER JOIN Producto ON Codigo = CodigoArticulo WHERE Folio = :folio");
+            $preparada->bindValue(':folio', $_GET['folio']);
             $preparada->execute();
 
-            $importes = 0;
-            $abonos = 0;
-
-            foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $factura ){
-                $importes += $factura["Importe"];
-                $abonos += $factura["Abono"];
+            foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $preventa ){
                 echo "<tr>". 
-                        "<td>" . $factura["FolioComprobante"] . "</td>".
-                        "<td>" . $factura["Fecha"] . "</td>".
-                        "<td>" . $factura["FechaVencimiento"] . "</td>".
-                        "<td class=\"dinero\" >" . number_format($factura["Importe"], 2, '.', ',') . "</td>".
-                        "<td class=\"dinero\" >" . number_format($factura["Abono"], 2, '.', ',') . "</td>".
-                        "<td class=\"dinero\" >" . number_format($factura["Importe"] - $factura["Abono"], 2, '.', ',') . "</td>".
+                        "<td>" . $preventa["Cantidad"] . "</td>".
+                        "<td>" . $preventa["Unidad"] . "</td>".
+                        "<td>" . $preventa["CodigoArticulo"] . "</td>".
+                        "<td>" . $preventa["Descripcion"] . "</td>".
+                        "<td>" . $preventa["Descuento"] . "</td>".
+                        "<td class=\"dinero\" >" . $preventa["Precio"] . "</td>".
+                        "<td class=\"dinero\" >" . $preventa["Importe"] . "</td>".
                     "</tr>";
             }
 
         ?>
       </tbody>
       <tfoot>
-        <tr>
+        <!-- <tr>
           <th></th>
           <th></th>
           <th>Totales:</th>
           <th class="dinero"><?php echo number_format($importes, 2, '.', ','); ?></th>
           <th class="dinero"><?php echo number_format($abonos, 2, '.', ','); ?></th>
           <th class="dinero"><?php echo number_format($importes - $abonos, 2, '.', ','); ?></th>
-        </tr>
+        </tr> -->
     </tfoot>
     </table>
 
