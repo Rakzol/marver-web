@@ -500,12 +500,10 @@
     <table class="table mt-2">
       <thead>
         <tr>
-          <th>Pedido</th>
-          <th class="d-none d-sm-table-cell" >Fecha</th>
-          <th class="d-none d-md-table-cell" >Hora</th>
+          <th>Folio</th>
+          <th>Fecha</th>
           <th>Total</th>
-          <th>Status</th>
-          <th>Detalle</th>
+          <th>Descargar PDF</th>
         </tr>
       </thead>
       <tbody>
@@ -596,49 +594,11 @@
                 tr.appendChild(td);
 
                 td = document.createElement('td');
-                td.innerText = pedido['FechaPedido'];
-                td.classList.add('d-none');
-                td.classList.add('d-sm-table-cell');
+                td.innerText = pedido['Fecha'];
                 tr.appendChild(td);
 
                 td = document.createElement('td');
-                td.innerText = pedido['HoraPedido'];
-                td.classList.add('d-none');
-                td.classList.add('d-md-table-cell');
-                tr.appendChild(td);
-
-                td = document.createElement('td');
-                td.innerText = pedido['TotalPedido'].toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
-                td.classList.add('dinero');
-                tr.appendChild(td);
-
-                td = document.createElement('td');
-                switch(pedido['Status']){
-                    case 'C':
-                        td.innerText = 'Capturado';
-                    break;
-                    case 'Z':
-                        td.innerText = 'Surtiendo';
-                    break;
-                    case 'S':
-                        td.innerText = 'Surtido';
-                    break;
-                    case 'F':
-                        td.innerText = 'Facturado';
-                    break;
-                    case 'E':
-                        td.innerText = 'Enviado';
-                    break;
-                    case 'R':
-                        td.innerText = 'Finalizado';
-                    break;
-                    case 'CA':
-                        td.innerText = 'Cancelado';
-                    break;
-                    default:
-                        td.innerText = 'Indefinido';
-                    break;
-                }
+                td.innerText = pedido['Total'];
                 tr.appendChild(td);
 
                 td = document.createElement('td');
@@ -646,7 +606,7 @@
                 button.onclick = ()=>{
                     document.location.href = 'https://www.marverrefacciones.mx/pedido?folio=' + pedido['Folio'];
                 }
-                button.innerText = 'Ver';
+                button.innerText = 'Descargar PDF';
                 button.classList.add('btn');
                 button.classList.add('btn-primary');
                 td.appendChild(button);
