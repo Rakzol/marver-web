@@ -68,10 +68,6 @@
     .linea{
         display: inline;
     }
-
-    .me-10{
-        margin-right: 10px;
-    }
 </style>
 
 </head>
