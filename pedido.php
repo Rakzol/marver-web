@@ -575,8 +575,6 @@
                 })
                 .then(respuesta_json => {
 
-                    switch( respuesta_json['pedido']['Tipocomprobante'] ){
-                        case 1://factura
                             document.querySelector('#descargar').innerText = 'Descargar Factura';
 
                             let datos_descarga = new FormData();
@@ -626,18 +624,70 @@
                                 });
 
                             });
-                            break;
-                        case 2://recibo
-                            document.querySelector('#descargar').innerText = 'Descargar Recibo';
-                            break;
-                        case 3://preventa
-                            document.querySelector('#descargar').innerText = 'Descargar Preventa';
 
-                            document.querySelector('#descargar').addEventListener('click', () => {
-                                window.open('https://www.marverrefacciones.mx/preventa?folio=' + folio);
-                            });
-                            break;
-                    }
+                    // switch( respuesta_json['pedido']['Tipocomprobante'] ){
+                    //     case 1://factura
+                    //         document.querySelector('#descargar').innerText = 'Descargar Factura';
+
+                    //         let datos_descarga = new FormData();
+                    //         datos_descarga.append('folio', folio);
+
+                    //         document.querySelector('#descargar').addEventListener('click', () => {
+
+                    //             let nombre_xml;
+                    //             let nombre_pdf;
+
+                    //             fetch('modelo/descargar_xml',{
+                    //                 method: 'POST',
+                    //                 body: datos_descarga
+                    //             })
+                    //             .then(response =>{
+                    //                 nombre_xml = response.headers.get('Content-Disposition').split('filename=')[1];
+                    //                 return response.blob();
+                    //             })
+                    //             .then(blob => {
+                    //                 let url = window.URL.createObjectURL(new Blob([blob]));
+                    //                 let a = document.createElement('a');
+                    //                 a.href = url;
+                    //                 a.download = nombre_xml;
+                    //                 document.body.appendChild(a);
+                    //                 a.click();
+                    //                 a.remove();
+                    //                 window.URL.revokeObjectURL(url);
+                    //             });
+
+                    //             fetch('modelo/descargar_pdf',{
+                    //                 method: 'POST',
+                    //                 body: datos_descarga
+                    //             })
+                    //             .then(response =>{
+                    //                 nombre_pdf = response.headers.get('Content-Disposition').split('filename=')[1];
+                    //                 return response.blob();
+                    //             })
+                    //             .then(blob => {
+                    //                 let url = window.URL.createObjectURL(new Blob([blob]));
+                    //                 let a = document.createElement('a');
+                    //                 a.href = url;
+                    //                 a.download = nombre_pdf;
+                    //                 document.body.appendChild(a);
+                    //                 a.click();
+                    //                 a.remove();
+                    //                 window.URL.revokeObjectURL(url);
+                    //             });
+
+                    //         });
+                    //         break;
+                    //     case 2://recibo
+                    //         document.querySelector('#descargar').innerText = 'Descargar Recibo';
+                    //         break;
+                    //     case 3://preventa
+                    //         document.querySelector('#descargar').innerText = 'Descargar Preventa';
+
+                    //         document.querySelector('#descargar').addEventListener('click', () => {
+                    //             window.open('https://www.marverrefacciones.mx/preventa?folio=' + folio);
+                    //         });
+                    //         break;
+                    // }
 
                     document.querySelector('#folio').innerHTML = '<strong>Folio:</strong> ' + folio;
                     document.querySelector('#fecha').innerHTML = '<strong>Fecha:</strong> ' + respuesta_json['pedido']['FechaPedido'];
