@@ -626,7 +626,7 @@
                     if( respuesta_json['pedido']['Tipocomprobante'] == 3 ){
                         document.querySelector('#descargar-preventa').classList.remove('d-none');
 
-                        document.querySelector('#descargar').addEventListener('click', () => {
+                        document.querySelector('#descargar-preventa').addEventListener('click', () => {
                             window.open('https://www.marverrefacciones.mx/preventa?folio=' + folio);
                         });
                     }
