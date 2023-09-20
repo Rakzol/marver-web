@@ -536,7 +536,7 @@
             <p id='total' ></p>
           </div>
         </div>
-        <button id="descargar" style='width: 200px; margin-bottom: 1rem;' type="button" class="btn btn-primary"><i class="fas fa-download me-2"></i>Descargar Factura</button>
+        <button id="descargar" style='width: 200px; margin-bottom: 1rem;' type="button" class="btn btn-primary me-3"><i class="fas fa-download me-2"></i>Descargar Factura</button>
         <button id="descargar-preventa" style='width: 200px; margin-bottom: 1rem;' type="button" class="d-none btn btn-primary"><i class="fas fa-download me-2"></i>Descargar Preventa</button>
         <!-- Tabla de productos -->
         <table class="table table-bordered">
@@ -625,6 +625,8 @@
 
                     if( respuesta_json['pedido']['Tipocomprobante'] == 3 ){
                         document.querySelector('#descargar-preventa').classList.remove('d-none');
+
+                        document.querySelector('#descargar').href = 'https://www.marverrefacciones.mx/preventa?folio=284225';
                     }
 
                     document.querySelector('#folio').innerHTML = '<strong>Folio:</strong> ' + folio;
