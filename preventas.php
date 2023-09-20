@@ -502,6 +502,7 @@
         <tr>
           <th>Folio</th>
           <th>Fecha</th>
+          <th class="d-none d-sm-table-cell" >Hora</th>
           <th>Total</th>
           <th>Descargar PDF</th>
         </tr>
@@ -595,6 +596,12 @@
 
                 td = document.createElement('td');
                 td.innerText = pedido['Fecha'];
+                tr.appendChild(td);
+
+                td = document.createElement('td');
+                td.innerText = pedido['Hora'];
+                td.classList.add('d-none');
+                td.classList.add('d-sm-table-cell');
                 tr.appendChild(td);
 
                 td = document.createElement('td');
