@@ -69,8 +69,8 @@
         display: inline;
     }
 
-    .me-25{
-        margin-right: 25px;
+    .me-10{
+        margin-right: 10px;
     }
 </style>
 
