@@ -144,6 +144,15 @@
                 }
             }
 
+            foreach( $preventas_negativas as $preventa ){
+                if( isset($preventas_positivas[$preventa['CodigoArticulo']]) ){
+                    $preventas_positivas[$preventa['CodigoArticulo']]['Cantidad'] += $preventa['Cantidad'];
+                    if($preventas_positivas[$preventa['CodigoArticulo']]['Cantidad'] <= 0){
+                        unset($preventas_positivas[$preventa['CodigoArticulo']]);
+                    }
+                }
+            }
+
             foreach( $preventas_positivas as $preventa ){
                 echo "<tr>". 
                         "<td>" . $preventa["Cantidad"] . "</td>".
@@ -152,19 +161,7 @@
                         "<td>" . $preventa["Descripcion"] . "</td>".
                         "<td>" . $preventa["Descuento"] . "</td>".
                         "<td class=\"dinero\" >" . $preventa["Precio"] . "</td>".
-                        // "<td class=\"dinero\" >" . $preventa["Importe"] . "</td>".
-                    "</tr>";
-            }
-
-            foreach( $preventas_negativas as $preventa ){
-                echo "<tr>". 
-                        "<td>" . $preventa["Cantidad"] . "</td>".
-                        "<td>" . $preventa["Unidad"] . "</td>".
-                        "<td>" . $preventa["CodigoArticulo"] . "</td>".
-                        "<td>" . $preventa["Descripcion"] . "</td>".
-                        "<td>" . $preventa["Descuento"] . "</td>".
-                        "<td class=\"dinero\" >" . $preventa["Precio"] . "</td>".
-                        // "<td class=\"dinero\" >" . $preventa["Importe"] . "</td>".
+                        "<td class=\"dinero\" >" . $preventa["Cantidad"] * $preventa["Precio"] . "</td>".
                     "</tr>";
             }
 
