@@ -125,16 +125,20 @@
             $preventas_positivas = [];
             $preventas_negativas = [];
             foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $preventa ){
-                if( $preventa['Cantidad'] > 0 ){
+                if( $preventa['Precio'] > 0 ){
                     if( isset($preventas_positivas[$preventa['CodigoArticulo']]) ){
                         $preventas_positivas[$preventa['CodigoArticulo']]['Cantidad'] += $preventa['Cantidad'];
                     }else{
                         $preventas_positivas[$preventa['CodigoArticulo']] = $preventa;
                     }
-                }else if( $preventa['Cantidad'] < 0 ){
+                }else if( $preventa['Precio'] < 0 ){
                     if( isset($preventas_negativas[$preventa['CodigoArticulo']]) ){
-                        $preventas_negativas[$preventa['CodigoArticulo']]['Cantidad'] += $preventa['Cantidad'];
+                        //Cuando el precio es negativo las cantidades pueden ser positivas o negativas, las forzamos a negativas
+                        $cantidad_negativa = $preventa['Cantidad'] < 0 ? $preventa['Cantidad'] : $preventa['Cantidad'] * -1;
+                        $preventas_negativas[$preventa['CodigoArticulo']]['Cantidad'] += $cantidad_negativa;
                     }else{
+                        //Cuando el precio es negativo las cantidades pueden ser positivas o negativas, las forzamos a negativas
+                        $preventa['Cantidad'] = $preventa['Cantidad'] < 0 ? $preventa['Cantidad'] : $preventa['Cantidad'] * -1;
                         $preventas_negativas[$preventa['CodigoArticulo']] = $preventa;
                     }
                 }
