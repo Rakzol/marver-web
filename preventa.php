@@ -91,7 +91,9 @@
             <h3>PREVENTA</h3>
             <?php date_default_timezone_set('America/Mexico_City'); ?>
             <h3 class="linea" >Fecha: </h3><p class="linea" ><?php echo date('d/m/Y') . ' ' . date('h:i:s A') ?></p>
-            <h3 class="linea" >Serie A </h3><h3>Folio <?php echo $_GET['folio'] ?></h3>
+            <div>
+                <h3 class="linea" >Serie A </h3><h3 class="linea" >Folio <?php echo $_GET['folio'] ?></h3>
+            </div>
         </div>
     </div>
 
