@@ -68,6 +68,10 @@
     .linea{
         display: inline;
     }
+
+    .me-25{
+        margin-right: 25px;
+    }
 </style>
 
 </head>
@@ -92,7 +96,7 @@
             <?php date_default_timezone_set('America/Mexico_City'); ?>
             <h3 class="linea" >Fecha: </h3><p class="linea" ><?php echo date('d/m/Y') . ' ' . date('h:i:s A') ?></p>
             <div>
-                <h3 class="linea" >Serie A </h3><h3 class="linea" >Folio <?php echo $_GET['folio'] ?></h3>
+                <h3 class="linea me-25" >Serie A </h3><h3 class="linea" >Folio <?php echo $_GET['folio'] ?></h3>
             </div>
         </div>
     </div>
