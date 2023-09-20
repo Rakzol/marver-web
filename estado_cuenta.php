@@ -68,6 +68,10 @@
     .linea{
         display: inline;
     }
+
+    .me-25{
+        margin-right: 25px;
+    }
 </style>
 
 </head>
@@ -87,7 +91,9 @@
             <h3>Estado de cuenta</h3>
             <?php date_default_timezone_set('America/Mexico_City'); ?>
             <h3 class="linea" >Fecha: </h3><p class="linea" ><?php date('d/m/Y') ?></p>
-            <h3 class="linea" >Hora: </h3><p class="linea" ><?php date('h:i:s A') ?></p>
+            <div>
+                <h3 class="linea" >Hora: </h3><p class="linea" ><?php date('h:i:s A') ?></p>
+            </div>
         </div>
     </div>
 
