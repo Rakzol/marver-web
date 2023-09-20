@@ -118,7 +118,7 @@
       <tbody>
         <?php
         
-            $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Cantidad, Unidad, CodigoArticulo, Producto + ' ' + Descripcion AS Descripcion, Descuento, Precio FROM PreventaDetalle INNER JOIN Producto ON Codigo = CodigoArticulo WHERE Folio = :folio ORDER BY Precio");
+            $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Cantidad, Unidad, CodigoArticulo, Producto + ' ' + Descripcion AS Descripcion, Descuento, Precio FROM PreventaDetalle INNER JOIN Producto ON Codigo = CodigoArticulo WHERE Folio = :folio ORDER BY Precio DESC");
             $preparada->bindValue(':folio', $_GET['folio']);
             $preparada->execute();
 
