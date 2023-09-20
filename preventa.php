@@ -133,7 +133,7 @@
                 }
             }
 
-            foreach( $preventas_positivas->fetchAll(PDO::FETCH_ASSOC) as $preventa ){
+            foreach( $preventas_positivas as $preventa ){
                 echo "<tr>". 
                         "<td>" . $preventa["Cantidad"] . "</td>".
                         "<td>" . $preventa["Unidad"] . "</td>".
