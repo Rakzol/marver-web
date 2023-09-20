@@ -111,21 +111,34 @@
         </div>
     </div>
 
-        <div class="texto-centrado" >
-            <h3><?php echo $datos['cliente']['RFC'] ?></h3>
-            <p><?php echo $datos['cliente']['Clave'] . " " . $datos['cliente']['Razon_Social'] ?></p>
-            <P><?php echo
-                $datos['cliente']['Domicilio'] . " " .
-                $datos['cliente']['Num_Exterior']  . ", " .
-                $datos['cliente']['Num_interior']  . " " .
-                $datos['cliente']['Colonia']  . " " .
-                $datos['cliente']['Municipio']  . " " .
-                $datos['cliente']['Estado']  . ", " .
-                $datos['cliente']['Ciudad']  . " " .
-                $datos['cliente']['Pais']  . " C.P. " .
-                $datos['cliente']['Codigo_Postal']
-            ?></P>
+    <div class="contenedor texto-centrado" >
+        <div >
+                <h3><?php echo $datos['cliente']['RFC'] ?></h3>
+                <p><?php echo $datos['cliente']['Clave'] . " " . $datos['cliente']['Razon_Social'] ?></p>
+                <P><?php echo
+                    $datos['cliente']['Domicilio'] . " " .
+                    $datos['cliente']['Num_Exterior']  . ", " .
+                    $datos['cliente']['Num_interior']  . " " .
+                    $datos['cliente']['Colonia']  . " " .
+                    $datos['cliente']['Municipio']  . " " .
+                    $datos['cliente']['Estado']  . ", " .
+                    $datos['cliente']['Ciudad']  . " " .
+                    $datos['cliente']['Pais']  . " C.P. " .
+                    $datos['cliente']['Codigo_Postal']
+                ?></P>
+            </div>
+        <div>
+            <?php
+                $preparada = $datos['conexion_base_sucursal']->prepare("SELECT TOP 1 Cajero, Vendedor FROM Preventa WHERE Folio = :folio");
+                $preparada->bindValue(':folio', $_GET['folio']);
+                $preparada->execute();
+            ?>
+            <h3 class="linea" >Vendedor: </h3><p class="linea" ><?php $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['Vendedor'] ?></p>
+            <div>
+                <h3 class="linea" >Cajero: </h3><p class="linea" ><?php $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['Cajero'] ?></p>
+            </div>
         </div>
+    </div>
 
     <table class="margen-auto" >
       <thead>
