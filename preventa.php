@@ -77,6 +77,10 @@
     .corrido{
         white-space: nowrap;
     }
+
+    th, td{
+        padding: 5px;
+    }
 </style>
 
 </head>
