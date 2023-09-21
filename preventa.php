@@ -275,8 +275,16 @@
         sdasadsadsadsad asdsda asd asd asdsad sadasf gsfjsfksdfhjs sdfhsdfkdhjsfkjhk asd
 
         sdasadsadsadsad asdsda asd asd asdsad sadasf gsfjsfksdfhjs sdfhsdfkdhjsfkjhk asd
+
+        <br>
+        Nombre: 
+        <br>
+        Direccion: 
     </p>
 
+    <h3 class="linea flotar-derecha p-15" >Acepto(amos)</h3>
+
+    <h3 class="linea texto-centrado p-15" >Esta es una presentación impresa del Comprobante Fiscal Digital</h3>
 </body>
 
 </html>
