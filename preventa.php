@@ -261,25 +261,23 @@
     </div>
 
     <p class="p-15" >
-        sdasadsadsadsad asdsda asd asd asdsad sadasf gsfjsfksdfhjs sdfhsdfkdhjsfkjhk asd
-        sdasadsadsadsad asdsda asd asd asdsad sadasf gsfjsfksdfhjs sdfhsdfkdhjsfkjhk asd
-        sdasadsadsadsad asdsda asd asd asdsad sadasf gsfjsfksdfhjs sdfhsdfkdhjsfkjhk asd
-        sdasadsadsadsad asdsda asd asd asdsad sadasf gsfjsfksdfhjs sdfhsdfkdhjsfkjhk asd
-        sdasadsadsadsad asdsda asd asd asdsad sadasf gsfjsfksdfhjs sdfhsdfkdhjsfkjhk asdsdasadsadsadsad asdsda asd asd asdsad sadasf gsfjsfksdfhjs sdfhsdfkdhjsfkjhk asd
-        sdasadsadsadsad asdsda asd asd asdsad sadasf gsfjsfksdfhjs sdfhsdfkdhjsfkjhk asd
-        asdsdasadsadsadsadasdsad
-
-        addslashes
-
-        asdsdasadsadsadsad asdsda asd asd asdsad sadasf gsfjsfksdfhjs sdfhsdfkdhjsfkjhk asd
-        sdasadsadsadsad asdsda asd asd asdsad sadasf gsfjsfksdfhjs sdfhsdfkdhjsfkjhk asd
-
-        sdasadsadsadsad asdsda asd asd asdsad sadasf gsfjsfksdfhjs sdfhsdfkdhjsfkjhk asd
-
+        Debe(mos) y pagare(mos) incondicionalmente por este pagaré a la orden de MARIO ALBERTO VERDUZCO COTA en LOS MOCHIS el día <?php echo $datos_preventa['Fecha'] . ' ' . $datos_preventa['Hora'] ?>
+        la cantidad de (<?php echo $total_texto ?>) valor recibidoa mi(nuestra) entera satisfaccion este pagaré forma parte de una serie
+        numeral del 1 al 0 y todos estan sujetos a la condicion de que al no pagarse cualquiera de ellos a su vencimiento serán exigibles todos los que le sigan en numero, ademas de
         <br>
-        Nombre: 
+        Nombre: <?php echo $datos['cliente']['Razon_Social'] ?>
         <br>
-        Direccion: 
+        Direccion: <?php echo
+                    $datos['cliente']['Domicilio'] . " " .
+                    $datos['cliente']['Num_Exterior']  . ", " .
+                    $datos['cliente']['Num_interior']  . " " .
+                    $datos['cliente']['Colonia']  . " " .
+                    $datos['cliente']['Municipio']  . " " .
+                    $datos['cliente']['Estado']  . ", " .
+                    $datos['cliente']['Ciudad']  . " " .
+                    $datos['cliente']['Pais']  . " C.P. " .
+                    $datos['cliente']['Codigo_Postal']
+                ?>
     </p>
 
     <h3 class="linea flotar-derecha p-15" >Acepto(amos)</h3>
