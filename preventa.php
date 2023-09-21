@@ -2,6 +2,17 @@
     ob_start();
     require_once('modelo/inicializar_datos.php');
     header("Content-Type: text/html");
+
+    $preparada = $datos['conexion_base_sucursal']->prepare("SELECT TOP 1 Cajero, Vendedor, Fecha, Hora, Cliente FROM Preventa WHERE Folio = :folio");
+    $preparada->bindValue(':folio', $_GET['folio']);
+    $preparada->execute();
+
+    $datos_preventa = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
+
+    if($datos['cliente']['Clave'] != $datos_preventa['Cliente']){
+        header("Location: https://www.marverrefacciones.mx/login.php");
+        exit();
+    }
 ?>
 <!DOCTYPE html>
 <html lang='es'>
@@ -140,18 +151,6 @@
                 ?></P>
             </div>
         <div class="aliniacion-vertical" >
-            <?php
-                $preparada = $datos['conexion_base_sucursal']->prepare("SELECT TOP 1 Cajero, Vendedor, Fecha, Hora, Cliente FROM Preventa WHERE Folio = :folio");
-                $preparada->bindValue(':folio', $_GET['folio']);
-                $preparada->execute();
-
-                $datos_preventa = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
-
-                if($datos['cliente']['Clave'] != $datos_preventa['Cliente']){
-                    header("Location: https://www.marverrefacciones.mx/login.php");
-                    exit();
-                }
-            ?>
             <h3 class="linea" >Vendedor: </h3><p class="linea" ><?php echo $datos_preventa['Vendedor'] ?></p>
             <div>
                 <h3 class="linea" >Cajero: </h3><p class="linea" ><?php echo $datos_preventa['Cajero'] ?></p>
