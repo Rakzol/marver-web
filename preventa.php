@@ -230,7 +230,7 @@
             $iva = $subtotal * 0.16;
             $total = $subtotal + $iva;
 
-            echo number_format($total, 2);
+            echo round($total, 2);
             echo '<br>';
             echo floatval(number_format($total, 2));
             $total_texto = (new NumberFormatter("es", NumberFormatter::SPELLOUT))->format( floatval(number_format($total, 2)) );
