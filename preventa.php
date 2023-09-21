@@ -74,6 +74,10 @@
         margin-right: 10px;
     }
 
+    .me-30{
+        margin-right: 30px;
+    }
+
     .corrido{
         white-space: nowrap;
     }
@@ -112,7 +116,7 @@
     </div>
 
     <div class="contenedor texto-centrado" >
-        <div class="aliniacion-vertical me-10" >
+        <div class="aliniacion-vertical me-30" >
                 <h3><?php echo $datos['cliente']['RFC'] ?></h3>
                 <p><?php echo $datos['cliente']['Clave'] . " " . $datos['cliente']['Razon_Social'] ?></p>
                 <P><?php echo
@@ -222,7 +226,7 @@
     </table>
 
     <div class="contenedor" >
-        <div class="aliniacion-vertical me-10" >
+        <div class="aliniacion-vertical me-30" >
             <h3 class="linea" >Total de codigos: </h3><p class="linea me-10" ><?php echo $codigos ?></p>
             <h3 class="linea" >Total de piezas: </h3><p class="linea me-10" ><?php echo $piezas ?></p>
             <h3 class="linea" >Condiciones: </h3><p class="linea" >CREDITO</p>
