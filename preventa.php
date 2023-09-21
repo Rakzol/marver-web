@@ -126,9 +126,9 @@
         <div class="aliniacion-vertical" >
             <h3>PREVENTA</h3>
             <?php date_default_timezone_set('America/Mexico_City'); ?>
-            <h3 class="linea" >Fecha: </h3><p class="linea" ><?php echo date('d/m/Y') ?></p>
+            <h3 class="linea" >Fecha: </h3><p class="linea" ><?php echo $datos_preventa['Fecha'] ?></p>
             <div>
-                <h3 class="linea" >Hora: </h3><p class="linea" ><?php echo date('h:i:s A') ?></p>
+                <h3 class="linea" >Hora: </h3><p class="linea" ><?php echo $datos_preventa['Hora'] ?></p>
             </div>
             <h3 class="linea me-10" >Serie A </h3><h3 class="linea" >Folio <?php echo $_GET['folio'] ?></h3>
         </div>
