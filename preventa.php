@@ -214,7 +214,7 @@
                         "<td class='corrido' >" . $preventa["CodigoArticulo"] . "</td>".
                         "<td>" . $preventa["Descripcion"] . "</td>".
                         "<td>" . $preventa["Descuento"] . "</td>".
-                        "<td class=\"dinero\" >" . $preventa["Precio"] . "</td>".
+                        "<td class=\"dinero\" >" . number_format($preventa["Precio"], 2, '.', ',') . "</td>".
                         "<td class=\"dinero\" >" . number_format($importe, 2, '.', ',') . "</td>".
                     "</tr>";
             }
