@@ -215,7 +215,7 @@
                         "<td>" . $preventa["Descripcion"] . "</td>".
                         "<td>" . $preventa["Descuento"] . "</td>".
                         "<td class=\"dinero\" >" . $preventa["Precio"] . "</td>".
-                        "<td class=\"dinero\" >" . $importe . "</td>".
+                        "<td class=\"dinero\" >" . number_format($importe, 2, '.', ',') . "</td>".
                     "</tr>";
             }
             $subtotal = $importes - $descuentos;
@@ -238,10 +238,10 @@
             <h3 class="linea" >Importe con leta: </h3><p class="linea" ></p>
         </div>
         <div class="aliniacion-vertical" >
-            <h3 class="linea" >Descuento: </h3><p class="linea" ><?php echo $descuentos ?></p>
-            <div><h3 class="linea" >Subtotal: </h3><p class="linea" ><?php echo $subtotal ?></p></div>
-            <h3 class="linea" >Iva: </h3><p class="linea" ><?php echo $iva ?></p>
-            <div><h3 class="linea" >Total: </h3><p class="linea" ><?php echo $total ?></p></div>
+            <h3 class="linea" >Descuento: </h3><p class="linea" ><?php number_format($descuentos, 2, '.', ','); ?></p>
+            <div><h3 class="linea" >Subtotal: </h3><p class="linea" ><?php echo number_format($subtotal, 2, '.', ',') ?></p></div>
+            <h3 class="linea" >Iva: </h3><p class="linea" ><?php echo number_format($iva, 2, '.', ',') ?></p>
+            <div><h3 class="linea" >Total: </h3><p class="linea" ><?php echo number_format($total, 2, '.', ',') ?></p></div>
         </div>
     </div>
 
