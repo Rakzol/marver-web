@@ -85,6 +85,10 @@
     th, td{
         padding: 8px;
     }
+
+    .flotar-derecha{
+        float: right;
+    }
 </style>
 
 </head>
@@ -226,7 +230,7 @@
     </table>
 
     <div class="contenedor" >
-        <div class="aliniacion-vertical me-30" >
+        <div class="aliniacion-vertical" >
             <h3 class="linea" >Total de codigos: </h3><p class="linea me-10" ><?php echo $codigos ?></p>
             <h3 class="linea" >Total de piezas: </h3><p class="linea me-10" ><?php echo $piezas ?></p>
             <h3 class="linea" >Condiciones: </h3><p class="linea" >CREDITO</p>
@@ -237,7 +241,7 @@
             </div>
             <h3 class="linea" >Importe con leta: </h3><p class="linea" ></p>
         </div>
-        <div class="aliniacion-vertical" >
+        <div class="aliniacion-vertical flotar-derecha" >
             <h3 class="linea" >Descuento: </h3><p class="linea" ><?php echo number_format($descuentos, 2, '.', ',') ?></p>
             <div><h3 class="linea" >Subtotal: </h3><p class="linea" ><?php echo number_format($subtotal, 2, '.', ',') ?></p></div>
             <h3 class="linea" >Iva: </h3><p class="linea" ><?php echo number_format($iva, 2, '.', ',') ?></p>
