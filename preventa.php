@@ -262,7 +262,7 @@
 
     <p class="p-15" >
         Debe(mos) y pagare(mos) incondicionalmente por este pagaré a la orden de MARIO ALBERTO VERDUZCO COTA en LOS MOCHIS el día <?php echo $datos_preventa['Fecha'] . ' ' . $datos_preventa['Hora'] ?>
-        la cantidad de (<?php echo $total_texto ?> /100 M.N.) valor recibidoa mi(nuestra) entera satisfaccion este pagaré forma parte de una serie
+        la cantidad de (<?php echo $total_texto ?> /100 M.N.) valor recibido a mi(nuestra) entera satisfaccion este pagaré forma parte de una serie
         numeral del 1 al 0 y todos estan sujetos a la condicion de que al no pagarse cualquiera de ellos a su vencimiento serán exigibles todos los que le sigan en numero, ademas de
         <br>
         Nombre: <?php echo $datos['cliente']['Razon_Social'] ?>
