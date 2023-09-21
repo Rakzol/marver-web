@@ -221,7 +221,7 @@
       </tbody>
     </table>
 
-    <div class="contenedor texto-centrado" >
+    <div class="contenedor" >
         <div class="aliniacion-vertical me-10" >
             <h3 class="linea" >Total de codigos: </h3><p class="linea me-10" ><?php echo $codigos ?></p>
             <h3 class="linea" >Total de piezas: </h3><p class="linea me-10" ><?php echo $piezas ?></p>
