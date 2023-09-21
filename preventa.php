@@ -145,11 +145,11 @@
                 $preparada->bindValue(':folio', $_GET['folio']);
                 $preparada->execute();
 
-                $datos_preventa = $preparada->fetchAll(PDO::FETCH_ASSOC);
+                $datos_preventa = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
             ?>
-            <h3 class="linea" >Vendedor: </h3><p class="linea" ><?php echo $datos_preventa[0]['Vendedor'] ?></p>
+            <h3 class="linea" >Vendedor: </h3><p class="linea" ><?php echo $datos_preventa['Vendedor'] ?></p>
             <div>
-                <h3 class="linea" >Cajero: </h3><p class="linea" ><?php echo $datos_preventa[0]['Cajero'] ?></p>
+                <h3 class="linea" >Cajero: </h3><p class="linea" ><?php echo $datos_preventa['Cajero'] ?></p>
             </div>
         </div>
     </div>
