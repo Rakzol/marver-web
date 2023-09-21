@@ -255,7 +255,7 @@
         </div>
     </div>
 
-    <div class="contenedor" >
+    <div class="contenedor p-15" >
         <h3 class="linea" >Bueno por: <?php echo number_format($total, 2, '.', ',') ?></h3>
         <h3 class="linea flotar-derecha" >Pagaré No. 0.00</h3>
     </div>
