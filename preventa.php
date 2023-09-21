@@ -260,7 +260,7 @@
         <h3 class="linea flotar-derecha" >Pagaré No. 0.00</h3>
     </div>
 
-    <p>
+    <p class="p-15" >
         sdasadsadsadsad asdsda asd asd asdsad sadasf gsfjsfksdfhjs sdfhsdfkdhjsfkjhk asd
         sdasadsadsadsad asdsda asd asd asdsad sadasf gsfjsfksdfhjs sdfhsdfkdhjsfkjhk asd
         sdasadsadsadsad asdsda asd asd asdsad sadasf gsfjsfksdfhjs sdfhsdfkdhjsfkjhk asd
