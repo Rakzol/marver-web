@@ -255,6 +255,22 @@
         </div>
     </div>
 
+    <div class="contenedor p-15" >
+        <div class="aliniacion-vertical" >
+            <h3 class="linea" >Bueno por: <?php echo number_format($total, 2, '.', ',') ?></h3>
+            <h3 class="linea flotar-derecha" >Pagaré No. 0.00</h3>
+        </div>
+        <p>
+            asdsdasadsdasdasdasda asdas das das dasdasd asd asd asd asd d asd asdsdasadsdasdasdasda asdas das das dasdasd asd asd asd asd d asd 
+            asdsdasadsdasdasdasda asdas das das dasdasd asd asd asd asd d asd asdsdasadsdasdasdasda asdas das das dasdasd asd asd asd asd d asd 
+            asdsdasadsdasdasdasda asdas das das dasdasd asd asd asd asd d asd asdsdasadsdasdasdasda asdas das das dasdasd asd asd asd asd d asd 
+            asdsdasadsdasdasdasda asdas das das dasdasd asd asd asd asd d asd 
+            asdsdasadsdasdasdasda asdas das das dasdasd asd asd asd asd d asd 
+            asdsdasadsdasdasdasda asdas das das dasdasd asd asd asd asd d asd asdsdasadsdasdasdasda asdas das das dasdasd asd asd asd asd d asd asdsdasadsdasdasdasda asdas das das dasdasd asd asd asd asd d asd 
+            asdsdasadsdasdasdasda asdas das das dasdasd asd asd asd asd d asd 
+        </p>
+    </div>
+
 </body>
 
 </html>
