@@ -238,7 +238,7 @@
             <h3 class="linea" >Importe con leta: </h3><p class="linea" ></p>
         </div>
         <div class="aliniacion-vertical" >
-            <h3 class="linea" >Descuento: </h3><p class="linea" ><?php number_format($descuentos, 2, '.', ','); ?></p>
+            <h3 class="linea" >Descuento: </h3><p class="linea" ><?php echo number_format($descuentos, 2, '.', ',') ?></p>
             <div><h3 class="linea" >Subtotal: </h3><p class="linea" ><?php echo number_format($subtotal, 2, '.', ',') ?></p></div>
             <h3 class="linea" >Iva: </h3><p class="linea" ><?php echo number_format($iva, 2, '.', ',') ?></p>
             <div><h3 class="linea" >Total: </h3><p class="linea" ><?php echo number_format($total, 2, '.', ',') ?></p></div>
