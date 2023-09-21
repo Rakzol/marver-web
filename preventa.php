@@ -129,15 +129,15 @@
             </div>
         <div class="aliniacion-vertical" >
             <?php
-                $preparada = $datos['conexion_base_sucursal']->prepare("SELECT TOP 1 Cajero, Vendedor FROM Preventa WHERE Folio = :folio");
+                $preparada = $datos['conexion_base_sucursal']->prepare("SELECT TOP 1 Cajero, Vendedor, Fecha, Hora FROM Preventa WHERE Folio = :folio");
                 $preparada->bindValue(':folio', $_GET['folio']);
                 $preparada->execute();
 
-                $preparada = $preparada->fetchAll(PDO::FETCH_ASSOC);
+                $datos_preventa = $preparada->fetchAll(PDO::FETCH_ASSOC);
             ?>
-            <h3 class="linea" >Vendedor: </h3><p class="linea" ><?php echo $preparada[0]['Vendedor'] ?></p>
+            <h3 class="linea" >Vendedor: </h3><p class="linea" ><?php echo $datos_preventa[0]['Vendedor'] ?></p>
             <div>
-                <h3 class="linea" >Cajero: </h3><p class="linea" ><?php echo $preparada[0]['Cajero'] ?></p>
+                <h3 class="linea" >Cajero: </h3><p class="linea" ><?php echo $datos_preventa[0]['Cajero'] ?></p>
             </div>
         </div>
     </div>
@@ -192,7 +192,18 @@
                 }
             }
 
+            $codigos = 0;
+            $piezas = 0;
+            $descuentos = 0;
+            $importes = 0;
             foreach( $preventas_positivas as $preventa ){
+                $codigos++;
+                $piezas += $preventa["Cantidad"];
+
+                $importe = $preventa["Cantidad"] * $preventa["Precio"];
+                $importes += $importe;
+
+                $descuentos += ( $preventa["Descuento"] * 0.01 ) * $importe;
                 echo "<tr>". 
                         "<td>" . $preventa["Cantidad"] . "</td>".
                         "<td class='corrido' >" . $preventa["Unidad"] . "</td>".
@@ -200,24 +211,35 @@
                         "<td>" . $preventa["Descripcion"] . "</td>".
                         "<td>" . $preventa["Descuento"] . "</td>".
                         "<td class=\"dinero\" >" . $preventa["Precio"] . "</td>".
-                        "<td class=\"dinero\" >" . $preventa["Cantidad"] * $preventa["Precio"] . "</td>".
+                        "<td class=\"dinero\" >" . $importe . "</td>".
                     "</tr>";
             }
-
+            $subtotal = $importes - $descuentos;
+            $iva = $subtotal * 0.16;
+            $total = $subtotal + $iva;
         ?>
       </tbody>
-      <tfoot>
-        <!-- <tr>
-          <th></th>
-          <th></th>
-          <th>Totales:</th>
-          <th class="dinero"><?php echo number_format($importes, 2, '.', ','); ?></th>
-          <th class="dinero"><?php echo number_format($abonos, 2, '.', ','); ?></th>
-          <th class="dinero"><?php echo number_format($importes - $abonos, 2, '.', ','); ?></th>
-        </tr> -->
-    </tfoot>
     </table>
 
+    <div class="contenedor texto-centrado" >
+        <div class="aliniacion-vertical me-10" >
+            <h3 class="linea" >Total de codigos: </h3><p class="linea me-10" ><?php echo $codigos ?></p>
+            <h3 class="linea" >Total de piezas: </h3><p class="linea me-10" ><?php echo $piezas ?></p>
+            <h3 class="linea" >Condiciones: </h3><p class="linea" >CREDITO</p>
+            <div>
+                <h3 class="linea" >Condiciones de pago: </h3><p class="linea me-10" ></p>
+                <h3 class="linea" >Metodo de pago: </h3><p class="linea me-10" >PPD Pago en parcialidades o diferido</p>
+                <h3 class="linea" >Cuenta: </h3><p class="linea" ></p>
+            </div>
+            <h3 class="linea" >Importe con leta: </h3><p class="linea" ></p>
+        </div>
+        <div class="aliniacion-vertical" >
+            <h3 class="linea" >Descuento: </h3><p class="linea" ><?php echo $descuentos ?></p>
+            <div><h3 class="linea" >Subtotal: </h3><p class="linea" ><?php echo $subtotal ?></p></div>
+            <h3 class="linea" >Iva: </h3><p class="linea" ><?php echo $iva ?></p>
+            <div><h3 class="linea" >Total: </h3><p class="linea" ><?php echo $total ?></p></div>
+        </div>
+    </div>
 
 </body>
 
