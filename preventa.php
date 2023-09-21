@@ -230,7 +230,7 @@
             $iva = $subtotal * 0.16;
             $total = $subtotal + $iva;
 
-            $total_texto = (new NumberFormatter("es", NumberFormatter::SPELLOUT))->format( number_format($total, 2, '.', ',') );
+            $total_texto = (new NumberFormatter("es", NumberFormatter::SPELLOUT))->format( $total );
         ?>
       </tbody>
     </table>
