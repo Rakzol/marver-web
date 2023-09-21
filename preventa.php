@@ -309,6 +309,6 @@
 
     $dompdf->render();
 
-    $dompdf->stream("estado de cuenta.pdf", array("Attachment" => true));
+    $dompdf->stream("preventa " . $_GET['folio'] . ".pdf", array("Attachment" => true));
     //file_put_contents('filename.pdf', $dompdf->output());
 ?>
