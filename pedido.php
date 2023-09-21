@@ -684,7 +684,7 @@
                             document.querySelector('#descargar').innerText = 'Descargar Preventa';
 
                             document.querySelector('#descargar').addEventListener('click', () => {
-                                window.open('https://www.marverrefacciones.mx/preventa?folio=' + folio);
+                                window.open('https://www.marverrefacciones.mx/preventa?folio=' + respuesta_json['pedido']['FolioComprobante']);
                             });
                             break;
                     }
