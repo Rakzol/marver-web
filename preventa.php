@@ -229,6 +229,8 @@
             $subtotal = $importes - $descuentos;
             $iva = $subtotal * 0.16;
             $total = $subtotal + $iva;
+
+            $total_texto = (new NumberFormatter("es", NumberFormatter::SPELLOUT))->format( number_format($total, 2, '.', ',') );
         ?>
       </tbody>
     </table>
@@ -243,7 +245,7 @@
                 <h3 class="linea" >Metodo de pago: </h3><p class="linea me-10" >PPD Pago en parcialidades o diferido</p>
                 <h3 class="linea" >Cuenta: </h3><p class="linea" ></p>
             </div>
-            <h3 class="linea" >Importe con leta: </h3><p class="linea" ></p>
+            <h3 class="linea" >Importe con leta: </h3><p class="linea" ><?php echo $total_texto ?></p>
         </div>
         <div class="aliniacion-vertical flotar-derecha" >
             <h3 class="linea" >Descuento: </h3><p class="linea" ><?php echo number_format($descuentos, 2, '.', ',') ?></p>
