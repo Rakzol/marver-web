@@ -89,6 +89,10 @@
     .flotar-derecha{
         float: right;
     }
+
+    .p-15{
+        padding: 15px;
+    }
 </style>
 
 </head>
@@ -229,7 +233,7 @@
       </tbody>
     </table>
 
-    <div class="contenedor" >
+    <div class="contenedor p-15" >
         <div class="aliniacion-vertical" >
             <h3 class="linea" >Total de codigos: </h3><p class="linea me-10" ><?php echo $codigos ?></p>
             <h3 class="linea" >Total de piezas: </h3><p class="linea me-10" ><?php echo $piezas ?></p>
