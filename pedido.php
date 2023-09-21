@@ -680,7 +680,7 @@
                         case 2://recibo
                             document.querySelector('#descargar').innerText = 'Descargar Recibo';
                             break;
-                        case 3://preventa
+                        case 5://preventa
                             document.querySelector('#descargar').innerText = 'Descargar Preventa';
 
                             document.querySelector('#descargar').addEventListener('click', () => {
