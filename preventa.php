@@ -9,10 +9,10 @@
 
     $datos_preventa = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    if($datos['cliente']['Clave'] != $datos_preventa['Cliente']){
-        header("Location: https://www.marverrefacciones.mx/index.php");
-        exit();
-    }
+    // if($datos['cliente']['Clave'] != $datos_preventa['Cliente']){
+    //     header("Location: https://www.marverrefacciones.mx/index.php");
+    //     exit();
+    // }
 ?>
 <!DOCTYPE html>
 <html lang='es'>
