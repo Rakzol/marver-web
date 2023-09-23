@@ -3,16 +3,16 @@
     require_once('modelo/inicializar_datos.php');
     header("Content-Type: text/html");
 
-    $preparada = $datos['conexion_base_sucursal']->prepare("SELECT TOP 1 Cajero, Vendedor, Fecha, Hora, Cliente FROM Preventa WHERE Folio = :folio");
+    $preparada = $datos['conexion_base_sucursal']->prepare("SELECT TOP 1 Cajero, Vendedor, Fecha, Hora, Cliente FROM Ventas WHERE Folio = :folio");
     $preparada->bindValue(':folio', $_GET['folio']);
     $preparada->execute();
 
-    $datos_preventa = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
+    $datos_venta = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    if($datos['cliente']['Clave'] != $datos_preventa['Cliente']){
-        header("Location: https://www.marverrefacciones.mx/index.php");
-        exit();
-    }
+    // if($datos['cliente']['Clave'] != $datos_venta['Cliente']){
+    //     header("Location: https://www.marverrefacciones.mx/index.php");
+    //     exit();
+    // }
 ?>
 <!DOCTYPE html>
 <html lang='es'>
@@ -124,12 +124,12 @@
             <p>612</p>
         </div>
         <div class="aliniacion-vertical" >
-            <h3>PREVENTA</h3>
-            <h3 class="linea" >Fecha: </h3><p class="linea" ><?php echo $datos_preventa['Fecha'] ?></p>
+            <h3>VENTA</h3>
+            <h3 class="linea" >Fecha: </h3><p class="linea" ><?php echo $datos_venta['Fecha'] ?></p>
             <div>
-                <h3 class="linea" >Hora: </h3><p class="linea" ><?php echo $datos_preventa['Hora'] ?></p>
+                <h3 class="linea" >Hora: </h3><p class="linea" ><?php echo $datos_venta['Hora'] ?></p>
             </div>
-            <h3 class="linea me-10" >Serie PRE </h3><h3 class="linea" >Folio <?php echo $_GET['folio'] ?></h3>
+            <h3 class="linea me-10" >Serie VEN </h3><h3 class="linea" >Folio <?php echo $_GET['folio'] ?></h3>
         </div>
     </div>
 
@@ -150,9 +150,9 @@
                 ?></P>
             </div>
         <div class="aliniacion-vertical" >
-            <h3 class="linea" >Vendedor: </h3><p class="linea" ><?php echo $datos_preventa['Vendedor'] ?></p>
+            <h3 class="linea" >Vendedor: </h3><p class="linea" ><?php echo $datos_venta['Vendedor'] ?></p>
             <div>
-                <h3 class="linea" >Cajero: </h3><p class="linea" ><?php echo $datos_preventa['Cajero'] ?></p>
+                <h3 class="linea" >Cajero: </h3><p class="linea" ><?php echo $datos_venta['Cajero'] ?></p>
             </div>
         </div>
     </div>
@@ -172,37 +172,37 @@
       <tbody>
         <?php
         
-            $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Cantidad, Unidad, CodigoArticulo, Producto + ' ' + Descripcion AS Descripcion, Descuento, Precio FROM PreventaDetalle INNER JOIN Producto ON Codigo = CodigoArticulo WHERE Folio = :folio ORDER BY Precio DESC");
+            $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Cantidad, Unidad, CodigoArticulo, Producto + ' ' + Descripcion AS Descripcion, Descuento, Precio FROM VentaDetalle INNER JOIN Producto ON Codigo = CodigoArticulo WHERE Folio = :folio ORDER BY Precio DESC");
             $preparada->bindValue(':folio', $_GET['folio']);
             $preparada->execute();
 
-            $preventas_positivas = [];
-            $preventas_negativas = [];
-            foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $preventa ){
-                if( $preventa['Precio'] > 0 ){
-                    if( isset($preventas_positivas[$preventa['CodigoArticulo']]) ){
-                        $preventas_positivas[$preventa['CodigoArticulo']]['Cantidad'] += $preventa['Cantidad'];
+            $ventas_positivas = [];
+            $ventas_negativas = [];
+            foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $venta ){
+                if( $venta['Precio'] > 0 ){
+                    if( isset($ventas_positivas[$venta['CodigoArticulo']]) ){
+                        $ventas_positivas[$venta['CodigoArticulo']]['Cantidad'] += $venta['Cantidad'];
                     }else{
-                        $preventas_positivas[$preventa['CodigoArticulo']] = $preventa;
+                        $ventas_positivas[$venta['CodigoArticulo']] = $venta;
                     }
-                }else if( $preventa['Precio'] < 0 ){
-                    if( isset($preventas_negativas[$preventa['CodigoArticulo']]) ){
+                }else if( $venta['Precio'] < 0 ){
+                    if( isset($ventas_negativas[$venta['CodigoArticulo']]) ){
                         //Cuando el precio es negativo las cantidades pueden ser positivas o negativas, las forzamos a negativas
-                        $cantidad_negativa = $preventa['Cantidad'] < 0 ? $preventa['Cantidad'] : $preventa['Cantidad'] * -1;
-                        $preventas_negativas[$preventa['CodigoArticulo']]['Cantidad'] += $cantidad_negativa;
+                        $cantidad_negativa = $venta['Cantidad'] < 0 ? $venta['Cantidad'] : $venta['Cantidad'] * -1;
+                        $ventas_negativas[$venta['CodigoArticulo']]['Cantidad'] += $cantidad_negativa;
                     }else{
                         //Cuando el precio es negativo las cantidades pueden ser positivas o negativas, las forzamos a negativas
-                        $preventa['Cantidad'] = $preventa['Cantidad'] < 0 ? $preventa['Cantidad'] : $preventa['Cantidad'] * -1;
-                        $preventas_negativas[$preventa['CodigoArticulo']] = $preventa;
+                        $venta['Cantidad'] = $venta['Cantidad'] < 0 ? $venta['Cantidad'] : $venta['Cantidad'] * -1;
+                        $ventas_negativas[$venta['CodigoArticulo']] = $venta;
                     }
                 }
             }
 
-            foreach( $preventas_negativas as $preventa ){
-                if( isset($preventas_positivas[$preventa['CodigoArticulo']]) ){
-                    $preventas_positivas[$preventa['CodigoArticulo']]['Cantidad'] += $preventa['Cantidad'];
-                    if($preventas_positivas[$preventa['CodigoArticulo']]['Cantidad'] <= 0){
-                        unset($preventas_positivas[$preventa['CodigoArticulo']]);
+            foreach( $ventas_negativas as $venta ){
+                if( isset($ventas_positivas[$venta['CodigoArticulo']]) ){
+                    $ventas_positivas[$venta['CodigoArticulo']]['Cantidad'] += $venta['Cantidad'];
+                    if($ventas_positivas[$venta['CodigoArticulo']]['Cantidad'] <= 0){
+                        unset($ventas_positivas[$venta['CodigoArticulo']]);
                     }
                 }
             }
@@ -211,21 +211,21 @@
             $piezas = 0;
             $descuentos = 0;
             $importes = 0;
-            foreach( $preventas_positivas as $preventa ){
+            foreach( $ventas_positivas as $venta ){
                 $codigos++;
-                $piezas += $preventa["Cantidad"];
+                $piezas += $venta["Cantidad"];
 
-                $importe = $preventa["Cantidad"] * $preventa["Precio"];
+                $importe = $venta["Cantidad"] * $venta["Precio"];
                 $importes += $importe;
 
-                $descuentos += ( $preventa["Descuento"] * 0.01 ) * $importe;
+                $descuentos += ( $venta["Descuento"] * 0.01 ) * $importe;
                 echo "<tr>". 
-                        "<td>" . $preventa["Cantidad"] . "</td>".
-                        "<td class='corrido' >" . $preventa["Unidad"] . "</td>".
-                        "<td class='corrido' >" . $preventa["CodigoArticulo"] . "</td>".
-                        "<td>" . $preventa["Descripcion"] . "</td>".
-                        "<td>" . $preventa["Descuento"] . "</td>".
-                        "<td class=\"dinero\" >" . number_format($preventa["Precio"], 2, '.', ',') . "</td>".
+                        "<td>" . $venta["Cantidad"] . "</td>".
+                        "<td class='corrido' >" . $venta["Unidad"] . "</td>".
+                        "<td class='corrido' >" . $venta["CodigoArticulo"] . "</td>".
+                        "<td>" . $venta["Descripcion"] . "</td>".
+                        "<td>" . $venta["Descuento"] . "</td>".
+                        "<td class=\"dinero\" >" . number_format($venta["Precio"], 2, '.', ',') . "</td>".
                         "<td class=\"dinero\" >" . number_format($importe, 2, '.', ',') . "</td>".
                     "</tr>";
             }
@@ -239,14 +239,12 @@
     </table>
 
     <div class="contenedor p-15" >
+
         <div class="aliniacion-vertical" >
             <h3 class="linea" >Total de codigos: </h3><p class="linea me-10" ><?php echo $codigos ?></p>
-            <h3 class="linea" >Total de piezas: </h3><p class="linea me-10" ><?php echo $piezas ?></p>
-            <h3 class="linea" >Condiciones: </h3><p class="linea" >CREDITO</p>
+            <h3 class="linea" >Total de piezas: </h3><p class="linea" ><?php echo $piezas ?></p>
             <div>
-                <h3 class="linea" >Condiciones de pago: </h3><p class="linea me-10" ></p>
-                <h3 class="linea" >Metodo de pago: </h3><p class="linea me-10" >PPD Pago en parcialidades o diferido</p>
-                <h3 class="linea" >Cuenta: </h3><p class="linea" ></p>
+                <h3 class="linea" >Metodo de pago: </h3><p class="linea" >PPD Pago en parcialidades o diferido</p>
             </div>
             <h3 class="linea" >Importe con leta: </h3><p class="linea" >(<?php echo $total_texto ?> /100 M.N.)</p>
         </div>
@@ -258,34 +256,6 @@
         </div>
     </div>
 
-    <div class="contenedor p-15" >
-        <h3 class="linea" >Bueno por: <?php echo number_format($total, 2, '.', ',') ?></h3>
-        <h3 class="linea flotar-derecha" >Pagaré No. 0.00</h3>
-    </div>
-
-    <p class="p-15" >
-        Debe(mos) y pagare(mos) incondicionalmente por este pagaré a la orden de MARIO ALBERTO VERDUZCO COTA en LOS MOCHIS el día <?php echo $datos_preventa['Fecha'] . ' ' . $datos_preventa['Hora'] ?>
-        la cantidad de (<?php echo $total_texto ?> /100 M.N.) valor recibido a mi(nuestra) entera satisfaccion este pagaré forma parte de una serie
-        numeral del 1 al 0 y todos estan sujetos a la condicion de que al no pagarse cualquiera de ellos a su vencimiento serán exigibles todos los que le sigan en numero, ademas de
-        <br>
-        Nombre: <?php echo $datos['cliente']['Razon_Social'] ?>
-        <br>
-        Direccion: <?php echo
-                    $datos['cliente']['Domicilio'] . " " .
-                    $datos['cliente']['Num_Exterior']  . ", " .
-                    $datos['cliente']['Num_interior']  . " " .
-                    $datos['cliente']['Colonia']  . " " .
-                    $datos['cliente']['Municipio']  . " " .
-                    $datos['cliente']['Estado']  . ", " .
-                    $datos['cliente']['Ciudad']  . " " .
-                    $datos['cliente']['Pais']  . " C.P. " .
-                    $datos['cliente']['Codigo_Postal']
-                ?>
-    </p>
-
-    <h3 class="linea flotar-derecha p-15" >Acepto(amos)</h3>
-
-    <h3 class="texto-centrado p-15" >Esta es una presentación impresa del Comprobante Fiscal Digital</h3>
 </body>
 
 </html>
@@ -312,6 +282,6 @@
 
     $dompdf->render();
 
-    $dompdf->stream("preventa " . $_GET['folio'] . ".pdf", array("Attachment" => true));
+    $dompdf->stream("venta " . $_GET['folio'] . ".pdf", array("Attachment" => true));
     //file_put_contents('filename.pdf', $dompdf->output());
 ?>
