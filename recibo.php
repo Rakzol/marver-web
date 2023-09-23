@@ -282,6 +282,6 @@
 
     $dompdf->render();
 
-    $dompdf->stream("venta " . $_GET['folio'] . ".pdf", array("Attachment" => true));
+    $dompdf->stream("recibo " . $_GET['folio'] . ".pdf", array("Attachment" => true));
     //file_put_contents('filename.pdf', $dompdf->output());
 ?>
