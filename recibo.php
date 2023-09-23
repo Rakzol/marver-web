@@ -244,7 +244,22 @@
             <h3 class="linea" >Total de codigos: </h3><p class="linea me-10" ><?php echo $codigos ?></p>
             <h3 class="linea" >Total de piezas: </h3><p class="linea" ><?php echo $piezas ?></p>
             <div>
-                <h3 class="linea" >Metodo de pago: </h3><p class="linea" >PPD Pago en parcialidades o diferido</p>
+                <?php
+                    $preparada = $datos['conexion_base_sucursal']->prepare("SELECT TOP 1 FormaPago FROM PedidosCliente WHERE FolioComprobante = :folio");
+                    $preparada->bindValue(':folio', $_GET['folio']);
+                    $preparada->execute();
+
+                    $metodo_pago = $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['FormaPago'];
+
+                    $formas_de_pago['01'] = 'efectivo';
+                    $formas_de_pago['02'] = 'cheque nominativo';
+                    $formas_de_pago['03'] = 'transferencia electronica';
+                    $formas_de_pago['04'] = 'tarjeta de credito';
+                    $formas_de_pago['28'] = 'tarjeta de débito';
+                    $formas_de_pago['99'] = 'credito';
+                    $formas_de_pago['99'] = 'credito';
+                ?>
+                <h3 class="linea" >Metodo de pago: </h3><p class="linea" ><?php echo ( isset($metodo_pago) ? ( isset($formas_de_pago[$metodo_pago]) ? $formas_de_pago[$metodo_pago] : '' ) : '' ) ?></p>
             </div>
             <h3 class="linea" >Importe con leta: </h3><p class="linea" >(<?php echo $total_texto ?> /100 M.N.)</p>
         </div>
