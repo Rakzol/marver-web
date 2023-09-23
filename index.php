@@ -476,6 +476,10 @@
                 <img src="img/carousel-3.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
                 <img src="img/carousel-33.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
             </div>
+            <div class="carousel-item">
+                <img src="img/carousel-4.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
+                <img src="img/carousel-44.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
+            </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carousel-inicio" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
