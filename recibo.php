@@ -251,13 +251,12 @@
 
                     $metodo_pago = $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['FormaPago'];
 
-                    $formas_de_pago['01'] = 'efectivo';
-                    $formas_de_pago['02'] = 'cheque nominativo';
-                    $formas_de_pago['03'] = 'transferencia electronica';
-                    $formas_de_pago['04'] = 'tarjeta de credito';
-                    $formas_de_pago['28'] = 'tarjeta de débito';
-                    $formas_de_pago['99'] = 'credito';
-                    $formas_de_pago['99'] = 'credito';
+                    $formas_de_pago['01'] = 'Efectivo';
+                    $formas_de_pago['02'] = 'Cheque nominativo';
+                    $formas_de_pago['03'] = 'Transferencia electronica';
+                    $formas_de_pago['04'] = 'Tarjeta de credito';
+                    $formas_de_pago['28'] = 'Tarjeta de débito';
+                    $formas_de_pago['99'] = 'Credito';
                 ?>
                 <h3 class="linea" >Metodo de pago: </h3><p class="linea" ><?php echo ( isset($metodo_pago) ? ( isset($formas_de_pago[$metodo_pago]) ? $formas_de_pago[$metodo_pago] : '' ) : '' ) ?></p>
             </div>
