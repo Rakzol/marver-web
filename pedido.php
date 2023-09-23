@@ -575,7 +575,7 @@
                 })
                 .then(respuesta_json => {
 
-                            // document.querySelector('#descargar').innerText = 'Descargar Factura';
+                            // document.querySelector('#descargar').innerText = '<i class="fas fa-download me-2"></i>Descargar Factura';
 
                             // let datos_descarga = new FormData();
                             // datos_descarga.append('folio', folio);
@@ -626,7 +626,7 @@
                             // });
 
                     if( respuesta_json['pedido']['Tipocomprobante'] == 1 ){
-                        document.querySelector('#descargar').innerText = 'Descargar Factura';
+                        document.querySelector('#descargar').innerText = '<i class="fas fa-download me-2"></i>Descargar Factura';
 
                         let datos_descarga = new FormData();
                         datos_descarga.append('folio', folio);
@@ -676,9 +676,13 @@
 
                         });
                     }else if( respuesta_json['pedido']['Tipocomprobante'] == 2 ){
-                        document.querySelector('#descargar').innerText = 'Descargar Recibo';
+                        document.querySelector('#descargar').innerText = '<i class="fas fa-download me-2"></i>Descargar Recibo';
+
+                        document.querySelector('#descargar').addEventListener('click', () => {
+                            window.open('https://www.marverrefacciones.mx/recibo?folio=' + respuesta_json['pedido']['FolioComprobante']);
+                        });
                     }else if( respuesta_json['pedido']['Tipocomprobante'] == 3 || respuesta_json['pedido']['Tipocomprobante'] == 5 ){
-                        document.querySelector('#descargar').innerText = 'Descargar Preventa';
+                        document.querySelector('#descargar').innerText = '<i class="fas fa-download me-2"></i>Descargar Preventa';
 
                         document.querySelector('#descargar').addEventListener('click', () => {
                             window.open('https://www.marverrefacciones.mx/preventa?folio=' + respuesta_json['pedido']['FolioComprobante']);
