@@ -11,10 +11,10 @@
 
     header('Content-Type: application/json');
 
-    $datos['conexion_catalogo_principal'] = new PDO('sqlsrv:Server=10.10.10.83;Database=CatalagoLM;TrustServerCertificate=true','MARITE','2505M$RITE');
+    $datos['conexion_catalogo_principal'] = new PDO('sqlsrv:Server=10.10.10.130;Database=CatalagoLM;TrustServerCertificate=true','MARITE','2505M$RITE');
     $datos['conexion_catalogo_principal']->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
-    $datos['conexion_base_principal'] = new PDO('sqlsrv:Server=10.10.10.83;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
+    $datos['conexion_base_principal'] = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
     $datos['conexion_base_principal']->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
     $preparada = $datos['conexion_catalogo_principal']->prepare('SELECT * FROM usuarios WHERE id = :id');
@@ -27,10 +27,10 @@
         case 'MOCHIS':
             $datos['base_sucursal'] = 'Mochis';
 
-            $datos['conexion_catalogo_sucursal'] = new PDO('sqlsrv:Server=10.10.10.83;Database=CatalagoLM;TrustServerCertificate=true','MARITE','2505M$RITE');
+            $datos['conexion_catalogo_sucursal'] = new PDO('sqlsrv:Server=10.10.10.130;Database=CatalagoLM;TrustServerCertificate=true','MARITE','2505M$RITE');
             $datos['conexion_catalogo_sucursal']->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
     
-            $datos['conexion_base_sucursal'] = new PDO('sqlsrv:Server=10.10.10.83;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
+            $datos['conexion_base_sucursal'] = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
             $datos['conexion_base_sucursal']->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
         break;
         case 'GUASAVE':

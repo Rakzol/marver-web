@@ -13,7 +13,7 @@
         header('Content-Type: application/json');
 
         //// Inicio de sesion
-        $conexion = new PDO('sqlsrv:Server=10.10.10.83;Database=CatalagoLM;TrustServerCertificate=true','MARITE','2505M$RITE');
+        $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=CatalagoLM;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
         
         $preparada = $conexion->prepare('SELECT correo FROM usuarios WHERE correo = :correo');
