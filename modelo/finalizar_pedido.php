@@ -182,7 +182,9 @@
 
 
         //Una vez se verifico que los datos recividos son validos, verificamos si es compra por credito 
-        if( $_POST['tipo_de_compra'] == '2' ){
+
+        //Y ahora si es el cliente 3 lo dejamos comprar sin limitarlo
+        if( $_POST['tipo_de_compra'] == '2' &&  $datos['cliente']['Clave'] != 3 ){
             //Consultamos si tiene pagos no saldados que sobre pasaron la FechaVencimiento
             $preparada = $datos['conexion_base_sucursal']->prepare("SELECT COUNT(*) AS cantidad FROM Pagos WHERE Cliente = :cliente AND Saldado = 0 AND FechaVencimiento <= GETDATE()");
             $preparada->bindValue(':cliente', $datos['cliente']['Clave']);
