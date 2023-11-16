@@ -459,18 +459,18 @@
             <div class="carousel-item active">
                 <img src="img/carousel-1.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
                 <img src="img/carousel-11.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
-                <div class="carousel-caption d-md-block">
+                <!-- <div class="carousel-caption d-md-block">
                     <p style="color: white;">Mereces viajar con</p>
                     <h5 style="color: gold;">La mejor seguridad</h5>
-                </div>
+                </div> -->
             </div>
             <div class="carousel-item">
                 <img src="img/carousel-2.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
                 <img src="img/carousel-22.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
-                <div class="carousel-caption d-md-block">
+                <!-- <div class="carousel-caption d-md-block">
                     <p style="color: white;">Con marver viaja a</p>
                     <h5 style="color: gold;">La máxima potencia</h5>
-                </div>
+                </div> -->
             </div>
             <div class="carousel-item">
                 <img src="img/carousel-3.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
