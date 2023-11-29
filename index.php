@@ -480,6 +480,14 @@
                 <img src="img/carousel-4.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
                 <img src="img/carousel-44.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
             </div>
+            <div class="carousel-item">
+                <img src="img/carousel-5.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
+                <img src="img/carousel-55.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
+            </div>
+            <div class="carousel-item">
+                <img src="img/carousel-6.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
+                <img src="img/carousel-66.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
+            </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carousel-inicio" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
