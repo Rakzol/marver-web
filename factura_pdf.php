@@ -194,10 +194,11 @@
             $total_piezas = 0;
 
             foreach ($xml->xpath('//cfdi:Concepto') as $concepto) {
+                $atributos = $concepto->attributes();
+
                 $total_codigos += 1;
                 $total_piezas += $atributos['Cantidad'];
 
-                $atributos = $concepto->attributes();
                 echo 
                     "<tr>". 
                     "<td>" . $atributos['Cantidad'] . "</td>".
