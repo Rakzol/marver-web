@@ -190,7 +190,13 @@
       <tbody>
         <?php
 
+            $total_codigos = 0;
+            $total_piezas = 0;
+
             foreach ($xml->xpath('//cfdi:Concepto') as $concepto) {
+                $total_codigos += 1;
+                $total_piezas += $atributos['Cantidad'];
+
                 $atributos = $concepto->attributes();
                 echo 
                     "<tr>". 
@@ -211,13 +217,13 @@
 
     <div class="contenedor p-15" >
         <div class="aliniacion-vertical" >
-            <h3 class="linea" >Total de codigos: </h3><p class="linea me-10" ><?php echo 0 ?></p>
-            <h3 class="linea" >Total de piezas: </h3><p class="linea me-10" ><?php echo 0 ?></p>
-            <h3 class="linea" >Condiciones: </h3><p class="linea" >CREDITO</p>
+            <h3 class="linea" >Total de codigos: </h3><p class="linea me-10" ><?php echo $total_codigos ?></p>
+            <h3 class="linea" >Total de piezas: </h3><p class="linea me-10" ><?php echo $total_piezas ?></p>
+            <h3 class="linea" >Condiciones: </h3><p class="linea" ><?php echo $xml->xpath('//cfdi:Comprobante')[0]['CondicionesDePago'] ?></p>
             <div>
-                <h3 class="linea" >Condiciones de pago: </h3><p class="linea me-10" ></p>
-                <h3 class="linea" >Metodo de pago: </h3><p class="linea me-10" >PPD Pago en parcialidades o diferido</p>
-                <h3 class="linea" >Cuenta: </h3><p class="linea" ></p>
+                <h3 class="linea" >Forma de pago: </h3><p class="linea me-10" ><?php echo $xml->xpath('//cfdi:Comprobante')[0]['FormaPago'] ?></p>
+                <h3 class="linea" >Metodo de pago: </h3><p class="linea me-10" ><?php echo $xml->xpath('//cfdi:Comprobante')[0]['MetodoPago'] ?></p>
+                <!-- <h3 class="linea" >Cuenta: </h3><p class="linea" ></p> -->
             </div>
             <h3 class="linea" >Importe con leta: </h3><p class="linea" >(<?php echo 0 ?> /100 M.N.)</p>
         </div>
