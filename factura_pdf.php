@@ -138,8 +138,7 @@
             <h3>Folio Fiscal</h3>
             <p class="linea" ><?php echo 0; ?></p>
             <br>
-            <?php $Comprobante->registerXPathNamespace('tfd', 'tfd_url'); ?>
-            <p class="linea" >Fecha de certificación: </p><p class="linea" ><?php echo var_dump($Comprobante->xpath('//tfd:TimbreFiscalDigital/@UUID')[0]); ?></p>
+            <p class="linea" >Fecha de certificación: </p><p class="linea" ><?php echo var_dump( $Comprobante->children('tfd', true)->Conceptos ); ?></p>
             <br>
             <p class="linea" >Num. Serie del CSD: </p><p class="linea" ><?php echo 0; ?></p>
             <br>
@@ -188,17 +187,17 @@
         <?php
 
             foreach ($Comprobante->children('cfdi', true)->Conceptos->children('cfdi', true) as $concepto) {
-
+                $atributos = $concepto->attributes();
                 echo 
                     "<tr>". 
-                    "<td>" . $concepto->attributes()['Cantidad'] . "</td>".
-                    "<td class='corrido' >" . $concepto->attributes()["Unidad"] . "</td>".
-                    "<td class='corrido' >" . $concepto->attributes()["ClaveProdServ"] . "</td>".
-                    "<td class='corrido' >" . $concepto->attributes()["NoIdentificacion"] . "</td>".
-                    "<td>" . $concepto->attributes()["Descripcion"] . "</td>".
-                    "<td>" .  number_format( 100 * (float)$concepto->attributes()["Descuento"] / (float)$concepto->attributes()['Importe'] , 2, '.', ',') . "</td>".
-                    "<td class=\"dinero\" >" . number_format((float)$concepto->attributes()["ValorUnitario"], 2, '.', ',') . "</td>".
-                    "<td class=\"dinero\" >" . number_format((float)$concepto->attributes()["Importe"], 2, '.', ',') . "</td>".
+                    "<td>" . $atributos['Cantidad'] . "</td>".
+                    "<td class='corrido' >" . $atributos["Unidad"] . "</td>".
+                    "<td class='corrido' >" . $atributos["ClaveProdServ"] . "</td>".
+                    "<td class='corrido' >" . $atributos["NoIdentificacion"] . "</td>".
+                    "<td>" . $atributos["Descripcion"] . "</td>".
+                    "<td>" .  number_format( 100 * (float)$atributos["Descuento"] / (float)$atributos['Importe'] , 2, '.', ',') . "</td>".
+                    "<td class=\"dinero\" >" . number_format((float)$atributos["ValorUnitario"], 2, '.', ',') . "</td>".
+                    "<td class=\"dinero\" >" . number_format((float)$atributos["Importe"], 2, '.', ',') . "</td>".
                     "</tr>";
 
             }
