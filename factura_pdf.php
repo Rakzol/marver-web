@@ -21,6 +21,8 @@
     $datos_factura_electronica = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
     $Comprobante = simplexml_load_string( file_get_contents('C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML'));
+
+    echo var_dump( json_encode($Comprobante) );
 ?>
 <!DOCTYPE html>
 <html lang='es'>
