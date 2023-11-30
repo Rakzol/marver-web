@@ -20,11 +20,7 @@
 
     $datos_factura_electronica = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    print_r( file_get_contents('C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML') );
-
-    $Comprobante = simplexml_load_string( file_get_contents('C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML') );
-
-    print_r($Comprobante->Emisor);
+    $Comprobante = simplexml_load_file( 'C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML');
 ?>
 <!DOCTYPE html>
 <html lang='es'>
@@ -185,7 +181,7 @@
       <tbody>
         <?php
 
-            foreach ($Comprobante->Conceptos as $concepto) {
+            foreach ($Comprobante->Emisor->Receptor->Conceptos as $concepto) {
 
                 
                 echo 
