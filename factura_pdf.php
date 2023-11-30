@@ -187,18 +187,18 @@
       <tbody>
         <?php
 
-            foreach ($Comprobante->xpath('//cfdi:Comprobante/cfdi:Conceptos/cfdi:Concepto') as $concepto) {
+            foreach ($Comprobante->children('cfdi', true)->Conceptos->children('cfdi', true) as $concepto) {
 
                 echo 
                     "<tr>". 
-                    "<td>" . $concepto['Cantidad'] . "</td>".
-                    "<td class='corrido' >" . $concepto["Unidad"] . "</td>".
-                    "<td class='corrido' >" . $concepto["ClaveProdServ"] . "</td>".
-                    "<td class='corrido' >" . $concepto["NoIdentificacion"] . "</td>".
-                    "<td>" . $concepto["Descripcion"] . "</td>".
-                    "<td>" .  number_format( 100 * (float)$concepto["Descuento"] / (float)$concepto['Importe'] , 2, '.', ',') . "</td>".
-                    "<td class=\"dinero\" >" . number_format((float)$concepto["ValorUnitario"], 2, '.', ',') . "</td>".
-                    "<td class=\"dinero\" >" . number_format((float)$concepto["Importe"], 2, '.', ',') . "</td>".
+                    "<td>" . $concepto->attributes()['Cantidad'] . "</td>".
+                    "<td class='corrido' >" . $concepto->attributes()["Unidad"] . "</td>".
+                    "<td class='corrido' >" . $concepto->attributes()["ClaveProdServ"] . "</td>".
+                    "<td class='corrido' >" . $concepto->attributes()["NoIdentificacion"] . "</td>".
+                    "<td>" . $concepto->attributes()["Descripcion"] . "</td>".
+                    "<td>" .  number_format( 100 * (float)$concepto->attributes()["Descuento"] / (float)$concepto->attributes()['Importe'] , 2, '.', ',') . "</td>".
+                    "<td class=\"dinero\" >" . number_format((float)$concepto->attributes()["ValorUnitario"], 2, '.', ',') . "</td>".
+                    "<td class=\"dinero\" >" . number_format((float)$concepto->attributes()["Importe"], 2, '.', ',') . "</td>".
                     "</tr>";
 
             }
