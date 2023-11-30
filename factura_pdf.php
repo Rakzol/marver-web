@@ -219,6 +219,12 @@
     </table>
 
     <div class="contenedor p-15" >
+         <div class="aliniacion-vertical flotar-derecha" >
+            <h3 class="linea" >Descuento: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Descuento'], 2, '.', ',') ?></p>
+            <div><h3 class="linea" >Subtotal: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['SubTotal'], 2, '.', ',') ?></p></div>
+            <h3 class="linea" >Iva: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('/cfdi:Comprobante/cfdi:Impuestos')[0]['TotalImpuestosTrasladados'], 2, '.', ',') ?></p>
+            <div><h3 class="linea" >Total: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', ',') ?></p></div>
+        </div>
         <div class="aliniacion-vertical" >
             <h3 class="linea" >Total de codigos: </h3><p class="linea me-10" ><?php echo $total_codigos ?></p>
             <h3 class="linea" >Total de piezas: </h3><p class="linea me-10" ><?php echo $total_piezas ?></p>
@@ -256,12 +262,6 @@
                     }
                 }
                 echo $salida ?></p>
-        </div>
-        <div class="aliniacion-vertical flotar-derecha" >
-            <h3 class="linea" >Descuento: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Descuento'], 2, '.', ',') ?></p>
-            <div><h3 class="linea" >Subtotal: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['SubTotal'], 2, '.', ',') ?></p></div>
-            <h3 class="linea" >Iva: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('/cfdi:Comprobante/cfdi:Impuestos')[0]['TotalImpuestosTrasladados'], 2, '.', ',') ?></p>
-            <div><h3 class="linea" >Total: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', ',') ?></p></div>
         </div>
     </div>
 
