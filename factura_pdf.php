@@ -124,28 +124,28 @@
     <div class="contenedor texto-centrado" >
         <img class="aliniacion-vertical" src="img/logo.png" width="150">
         <div class="aliniacion-vertical contenedor-central" >
-            <h3><?php $xml->Emisor['Nombre'] ?></h3>
-            <h3><?php $xml->Emisor['Rfc'] ?></h3>
+            <h3><?php $xml->xpath('//cfdi:Emisor')[0]['Nombre'] ?></h3>
+            <h3><?php $xml->xpath('//cfdi:Emisor')[0]['Rfc'] ?></h3>
             <p>SANTOS DEGOLLADO 451 CENTRO LOS MOCHIS</p>
             <p>SINALOA MEXICO CP.81200</p>
             <p>TEL.8123595</p>
             <h3>Lugar de expedición</h3>
             <p>81200</p>
             <h3>Regimen</h3>
-            <p><?php $xml->Emisor['RegimenFiscal'] ?> Persona Física con Actividades Empresariales y Profesionales</p>
+            <p><?php $xml->xpath('//cfdi:Emisor')[0]['RegimenFiscal'] ?> Persona Física con Actividades Empresariales y Profesionales</p>
         </div>
         <div class="aliniacion-vertical" >
             <h3>INGRESO FACTURA ORIGINAL</h3>
             <h3 class="linea" >Fecha: </h3><p class="linea" ><?php echo $datos_factura_electronica['Fecha'] . ' ' . $datos_factura_electronica['Hora'] ?></p>
             <h3 class="linea me-10" >Serie <?php echo $datos_factura_electronica['Serie'] ?> </h3><h3 class="linea" >Folio <?php echo $_GET['folio_comprobante'] ?></h3>
             <h3>Folio Fiscal</h3>
-            <p class="linea" ><?php echo 0; ?></p>
+            <p class="linea" ><?php echo $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] ?></p>
             <br>
-            <p class="linea" >Fecha de certificación: </p><p class="linea" ><?php echo $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] ?></p>
+            <p class="linea" >Fecha de certificación: </p><p class="linea" ><?php echo $xml->xpath('//tfd:TimbreFiscalDigital')[0]['FechaTimbrado'] ?></p>
             <br>
-            <p class="linea" >Num. Serie del CSD: </p><p class="linea" ><?php echo 0; ?></p>
+            <p class="linea" >Num. Serie del CSD: </p><p class="linea" ><?php echo $xml->xpath('//tfd:Comprobante')[0]['NoCertificado'] ?></p>
             <br>
-            <p class="linea" >CSD del SAT: </p><p class="linea" ><?php echo 0; ?></p>
+            <p class="linea" >CSD del SAT: </p><p class="linea" ><?php echo $xml->xpath('//tfd:TimbreFiscalDigital')[0]['NoCertificadoSAT'] ?></p>
         </div>
     </div>
 
