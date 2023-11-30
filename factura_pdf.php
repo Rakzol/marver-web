@@ -186,7 +186,7 @@
       <tbody>
         <?php
 
-            foreach ($Comprobante->Emisor->Receptor->Conceptos as $concepto) {
+            foreach ($Comprobante->Conceptos[0] as $concepto) {
 
                 
                 echo 
