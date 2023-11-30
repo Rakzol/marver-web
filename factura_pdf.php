@@ -20,16 +20,7 @@
 
     $datos_factura_electronica = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-
-
-    $nombreArchivo = 'C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML';
-    $archivo = fopen($nombreArchivo, 'r');
-    $contenido = fread($archivo, filesize($nombreArchivo));
-    $contenido = file_get_contents($nombreArchivo);
-    echo 'XXXXXXXX' . var_dump( $contenido ) . 'XXXXXXXX';
-    fclose($archivo);
-
-    $Comprobante = simplexml_load_string( $contenido );
+    $Comprobante = simplexml_load_file( 'C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML' );
 ?>
 <!DOCTYPE html>
 <html lang='es'>
@@ -130,7 +121,7 @@
     <div class="contenedor texto-centrado" >
         <img class="aliniacion-vertical" src="img/logo.png" width="150">
         <div class="aliniacion-vertical contenedor-central" >
-            <h3><?php $Comprobante->Emisor['Nombre'] ?></h3>
+            <h3><?php $Comprobante->Emisor[0]['Nombre'] ?></h3>
             <h3><?php $Comprobante->Emisor['Rfc'] ?></h3>
             <p>SANTOS DEGOLLADO 451 CENTRO LOS MOCHIS</p>
             <p>SINALOA MEXICO CP.81200</p>
