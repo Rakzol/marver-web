@@ -142,7 +142,7 @@
             <h3>Folio Fiscal</h3>
             <p class="linea" ><?php echo $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] ?></p>
             <br>
-            <p class="linea" style="float: left;" >Fecha de certificación: </p><p class="linea" ><?php echo $xml->xpath('//tfd:TimbreFiscalDigital')[0]['FechaTimbrado'] ?></p>
+            <p class="linea" >Fecha de certificación: </p><p class="linea" ><?php echo $xml->xpath('//tfd:TimbreFiscalDigital')[0]['FechaTimbrado'] ?></p>
             <br>
             <p class="linea" >Num. Serie del CSD: </p><p class="linea" ><?php echo $xml->xpath('//cfdi:Comprobante')[0]['NoCertificado'] ?></p>
             <br>
@@ -229,9 +229,9 @@
             </div>
             <h3 class="linea" >Importe con leta: </h3><p class="linea" >(<?php echo (new NumberFormatter("es", NumberFormatter::SPELLOUT))->format( floatval(number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', '')) ); ?> /100 M.N.)</p>
             <h3>Sello Digital del CFDI</h3>
-            <p class="me-10" ><?php echo $xml->xpath('//cfdi:Comprobante')[0]['Sello'] ?></p>
+            <p class="linea me-10" ><?php echo $xml->xpath('//cfdi:Comprobante')[0]['Sello'] ?></p>
             <h3>Sello del SAT</h3>
-            <p class="me-10" ><?php echo $xml->xpath('//tfd:TimbreFiscalDigital')[0]['SelloSAT'] ?></p>
+            <p class="linea me-10" ><?php echo $xml->xpath('//tfd:TimbreFiscalDigital')[0]['SelloSAT'] ?></p>
         </div>
         <div class="aliniacion-vertical flotar-derecha" >
             <h3 class="linea" >Descuento: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Descuento'], 2, '.', ',') ?></p>
