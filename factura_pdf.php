@@ -132,7 +132,7 @@
             <h3>Lugar de expedición</h3>
             <p><?php echo $xml->xpath('//cfdi:Comprobante')[0]['LugarExpedicion'] ?></p>
             <h3>Regimen</h3>
-            <p><?php echo $xml->xpath('//cfdi:Emisor')[0]['RegimenFiscal'] ?> Persona Física con Actividades Empresariales y Profesionales</p>
+            <p><?php echo $xml->xpath('//cfdi:Emisor')[0]['RegimenFiscal'] ?> Persona Física con Actividades<br>Empresariales y Profesionales</p>
         </div>
         <div class="aliniacion-vertical" >
             <h3>INGRESO FACTURA ORIGINAL</h3>
