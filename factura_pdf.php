@@ -118,11 +118,6 @@
 
 <body>
 
-<?php
-    print_r($Comprobante);
-    echo var_dump($Comprobante);
-?>
-
     <div class="contenedor texto-centrado" >
         <img class="aliniacion-vertical" src="img/logo.png" width="150">
         <div class="aliniacion-vertical contenedor-central" >
