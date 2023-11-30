@@ -186,7 +186,7 @@
       <tbody>
         <?php
 
-            foreach ($Comprobante['Conceptos'] as $concepto) {
+            foreach ($Comprobante->Conceptos->Concepto as $concepto) {
 
                 
                 echo 
