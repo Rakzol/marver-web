@@ -186,7 +186,7 @@
       <tbody>
         <?php
 
-            foreach ($Comprobante->Conceptos->children() as $concepto) {
+            foreach ($Comprobante->children('cfdi', true)->Conceptos->children() as $concepto) {
 
                 
                 echo 
