@@ -186,7 +186,7 @@
       <tbody>
         <?php
 
-            foreach ($Comprobante->children('cfdi', true)->Conceptos->children('cfdi', true) as $concepto) {
+            foreach ($Comprobante->xpath('//cfdi:Comprobante/cfdi:Conceptos/cfdi:Concepto') as $concepto) {
                 
                 print_r($concepto);
 
