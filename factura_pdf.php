@@ -130,7 +130,7 @@
             <p>SINALOA MEXICO CP.81200</p>
             <p>TEL.8123595</p>
             <h3>Lugar de expedición</h3>
-            <p>81200</p>
+            <p><?php echo $xml->xpath('//cfdi:Comprobante')[0]['LugarExpedicion'] ?></p>
             <h3>Regimen</h3>
             <p><?php $xml->xpath('//cfdi:Emisor')[0]['RegimenFiscal'] ?> Persona Física con Actividades Empresariales y Profesionales</p>
         </div>
@@ -151,8 +151,8 @@
 
     <div class="contenedor texto-centrado" >
         <div class="aliniacion-vertical me-30" >
-                <h3><?php echo $datos['cliente']['RFC'] ?></h3>
-                <p><?php echo $datos['cliente']['Clave'] . " " . $datos['cliente']['Razon_Social'] ?></p>
+                <h3><?php echo $xml->xpath('//cfdi:Receptor')[0]['Rfc'] ?></h3>
+                <p><?php echo $datos['cliente']['Clave'] . " " . $xml->xpath('//cfdi:Receptor')[0]['Nombre'] ?></p>
                 <P><?php echo
                     $datos['cliente']['Domicilio'] . " " .
                     $datos['cliente']['Num_Exterior']  . ", " .
@@ -162,8 +162,9 @@
                     $datos['cliente']['Estado']  . ", " .
                     $datos['cliente']['Ciudad']  . " " .
                     $datos['cliente']['Pais']  . " C.P. " .
-                    $datos['cliente']['Codigo_Postal']
+                    $xml->xpath('//cfdi:Receptor')[0]['DomicilioFiscalReceptor']
                 ?></P>
+                <h3 class="linea" >Uso de CFDI: </h3><p class="linea" ><?php echo $xml->xpath('//cfdi:Receptor')[0]['UsoCFDI'] ?></p>
             </div>
         <div class="aliniacion-vertical" >
             <h3 class="linea" >Vendedor: </h3><p class="linea" ><?php echo $datos_venta['Vendedor'] ?></p>
