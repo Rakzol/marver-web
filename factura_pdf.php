@@ -26,7 +26,7 @@
     $archivo = fopen($nombreArchivo, 'r');
     $contenido = fread($archivo, filesize($nombreArchivo));
     fclose($archivo);
-    echo $contenido;
+    echo 'XXXXXXXX' . $contenido . 'XXXXXXXX';
     
     $Comprobante = simplexml_load_string( $contenido );
 ?>
