@@ -188,6 +188,8 @@
 
             foreach ($Comprobante->children('cfdi', true)->Conceptos->children('cfdi', true) as $concepto) {
                 
+                print_r($concepto);
+
                 echo 
                     "<tr>". 
                     "<td>" . $concepto['Cantidad'] . "</td>".
