@@ -20,11 +20,15 @@
 
     $datos_factura_electronica = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    $cadena = file_get_contents('C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML');
 
-    echo $cadena;
 
-    $Comprobante = simplexml_load_string( $cadena );
+    $nombreArchivo = 'C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML';
+    $archivo = fopen($nombreArchivo, 'r');
+    $contenido = fread($archivo, filesize($nombreArchivo));
+    fclose($archivo);
+    echo $contenido;
+    
+    $Comprobante = simplexml_load_string( $contenido );
 
     echo var_dump( json_encode($Comprobante) );
 ?>
