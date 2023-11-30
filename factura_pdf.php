@@ -3,7 +3,7 @@
     require_once('modelo/inicializar_datos.php');
     header("Content-Type: text/html");
 
-    $preparada = $datos['conexion_base_sucursal']->prepare("SELECT TOP Cajero, Vendedor, Cliente FROM PedidosCliente WHERE FolioComprobante = :folio_comprobante");
+    $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Cajero, Vendedor, Cliente FROM PedidosCliente WHERE FolioComprobante = :folio_comprobante");
     $preparada->bindValue(':folio_comprobante', $_GET['folio_comprobante']);
     $preparada->execute();
 
@@ -14,7 +14,7 @@
         exit();
     }
 
-    $preparada = $datos['conexion_base_sucursal']->prepare("SELECT TOP Fecha, Hora FROM FacturaElectronica WHERE Folio = :folio_comprobante");
+    $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Fecha, Hora FROM FacturaElectronica WHERE Folio = :folio_comprobante");
     $preparada->bindValue(':folio_comprobante', $_GET['folio_comprobante']);
     $preparada->execute();
 
