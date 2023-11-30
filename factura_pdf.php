@@ -132,12 +132,14 @@
             <p><?php $Comprobante->Emisor['RegimenFiscal'] ?> Persona Física con Actividades Empresariales y Profesionales</p>
         </div>
         <div class="aliniacion-vertical" >
-            <h3>PREVENTA</h3>
-            <h3 class="linea" >Fecha: </h3><p class="linea" ><?php echo $datos_factura_electronica['Fecha'] ?></p>
-            <div>
-                <h3 class="linea" >Hora: </h3><p class="linea" ><?php echo $datos_factura_electronica['Hora'] ?></p>
-            </div>
-            <h3 class="linea me-10" >Serie PRE </h3><h3 class="linea" >Folio <?php echo $_GET['folio_comprobante'] ?></h3>
+            <h3>INGRESO FACTURA ORIGINAL</h3>
+            <h3 class="linea" >Fecha: </h3><p class="linea" ><?php echo $datos_factura_electronica['Fecha'] . ' ' . $datos_factura_electronica['Hora'] ?></p>
+            <h3 class="linea me-10" >Serie <?php echo $datos_factura_electronica['Serie'] ?> </h3><h3 class="linea" >Folio <?php echo $_GET['folio_comprobante'] ?></h3>
+        </div>
+        <div class="aliniacion-vertical" >
+            <h3>INGRESO FACTURA ORIGINAL</h3>
+            <h3 class="linea" >Fecha: </h3><p class="linea" ><?php echo $datos_factura_electronica['Fecha'] . ' ' . $datos_factura_electronica['Hora'] ?></p>
+            <h3 class="linea me-10" >Serie <?php echo $datos_factura_electronica['Serie'] ?> </h3><h3 class="linea" >Folio <?php echo $_GET['folio_comprobante'] ?></h3>
         </div>
     </div>
 
