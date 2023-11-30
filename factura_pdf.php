@@ -229,16 +229,15 @@
             <h3 class="linea" >Importe con leta: </h3><p class="linea" >(<?php echo (new NumberFormatter("es", NumberFormatter::SPELLOUT))->format( floatval(number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', '')) ); ?> /100 M.N.)</p>
         </div>
         <div class="aliniacion-vertical flotar-derecha" >
-            <h3 class="linea" >Descuento: </h3><p class="linea" ><?php echo 0 ?></p>
-            <div><h3 class="linea" >Subtotal: </h3><p class="linea" ><?php echo 0 ?></p></div>
-            <h3 class="linea" >Iva: </h3><p class="linea" ><?php echo 0 ?></p>
-            <div><h3 class="linea" >Total: </h3><p class="linea" ><?php echo 0 ?></p></div>
+            <h3 class="linea" >Descuento: </h3><p class="linea" ><?php echo $xml->xpath('//cfdi:Comprobante')[0]['Descuento'] ?></p>
+            <div><h3 class="linea" >Subtotal: </h3><p class="linea" ><?php echo $xml->xpath('//cfdi:Comprobante')[0]['SubTotal'] ?></p></div>
+            <h3 class="linea" >Iva: </h3><p class="linea" ><?php echo $xml->xpath('//cfdi:Comprobante')[0]['FormaPago'] ?></p>
+            <div><h3 class="linea" >Total: </h3><p class="linea" ><?php echo $xml->xpath('//cfdi:Impuestos ')[0]['TotalImpuestosTrasladados'] ?></p></div>
         </div>
     </div>
 
     <div class="contenedor p-15" >
         <h3 class="linea" >Bueno por: <?php echo 0 ?></h3>
-        <h3 class="linea flotar-derecha" >Pagaré No. 0.00</h3>
     </div>
 
     <p class="p-15" >
