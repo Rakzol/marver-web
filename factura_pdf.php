@@ -136,13 +136,13 @@
             <h3 class="linea" >Fecha: </h3><p class="linea" ><?php echo $datos_factura_electronica['Fecha'] . ' ' . $datos_factura_electronica['Hora'] ?></p>
             <h3 class="linea me-10" >Serie <?php echo $datos_factura_electronica['Serie'] ?> </h3><h3 class="linea" >Folio <?php echo $_GET['folio_comprobante'] ?></h3>
             <h3>Folio Fiscal</h3>
-            <p class="linea" ><?php echo  ?></p>
+            <p class="linea" ><?php echo 0; ?></p>
             <br>
             <p class="linea" >Fecha de certificación: </p><p class="linea" ><?php echo $Comprobante->xpath('//cfdi:Comprobante/cfdi:Complemento/tfd:TimbreFiscalDigital')['UUID'] ?></p>
             <br>
-            <p class="linea" >Num. Serie del CSD: </p><p class="linea" ><?php echo  ?></p>
+            <p class="linea" >Num. Serie del CSD: </p><p class="linea" ><?php echo 0; ?></p>
             <br>
-            <p class="linea" >CSD del SAT: </p><p class="linea" ><?php echo  ?></p>
+            <p class="linea" >CSD del SAT: </p><p class="linea" ><?php echo 0; ?></p>
         </div>
     </div>
 
