@@ -9,10 +9,8 @@
 
     $datos_venta = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    echo $datos['cliente']['Clave'];
-    echo $datos_venta['Cliente'];
     if($datos['cliente']['Clave'] != $datos_venta['Cliente']){
-        // header("Location: https://www.marverrefacciones.mx/index.php");
+        header("Location: https://www.marverrefacciones.mx/index.php");
         exit();
     }
 
@@ -21,8 +19,6 @@
     $preparada->execute();
 
     $datos_factura_electronica = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
-
-    echo 'C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML';
 
     $xml = simplexml_load_file('C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML');
 
