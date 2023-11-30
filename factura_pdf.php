@@ -192,7 +192,7 @@
                     "<td>" . $concepto["Descripcion"] . "</td>".
                     "<td>" .  number_format( 100 * $concepto["Descuento"] / $concepto['Importe'] , 2, '.', ',') . "</td>".
                     "<td class=\"dinero\" >" . number_format($concepto["ValorUnitario"], 2, '.', ',') . "</td>".
-                    "<td class=\"dinero\" >" . number_format($concepto["Importe"] 2, '.', ',') . "</td>".
+                    "<td class=\"dinero\" >" . number_format($concepto["Importe"], 2, '.', ',') . "</td>".
                     "</tr>";
 
             }
