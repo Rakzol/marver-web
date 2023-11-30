@@ -187,8 +187,6 @@
         <?php
 
             foreach ($Comprobante->xpath('//cfdi:Comprobante/cfdi:Conceptos/cfdi:Concepto') as $concepto) {
-                
-                print_r($concepto);
 
                 echo 
                     "<tr>". 
@@ -197,7 +195,7 @@
                     "<td class='corrido' >" . $concepto["ClaveProdServ"] . "</td>".
                     "<td class='corrido' >" . $concepto["NoIdentificacion"] . "</td>".
                     "<td>" . $concepto["Descripcion"] . "</td>".
-                    // "<td>" .  number_format( 100 * $concepto["Descuento"] / $concepto['Importe'] , 2, '.', ',') . "</td>".
+                    "<td>" .  number_format( 100 * (float)$concepto["Descuento"] / (float)$concepto['Importe'] , 2, '.', ',') . "</td>".
                     "<td class=\"dinero\" >" . number_format((float)$concepto["ValorUnitario"], 2, '.', ',') . "</td>".
                     "<td class=\"dinero\" >" . number_format((float)$concepto["Importe"], 2, '.', ',') . "</td>".
                     "</tr>";
