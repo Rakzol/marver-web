@@ -22,7 +22,7 @@
 
     $xml = simplexml_load_file('C:/Sistema Marver/Facturas/XML/A_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML');
 
-    var_dump($xml);
+    echo var_dump($xml);
 ?>
 <!DOCTYPE html>
 <html lang='es'>
