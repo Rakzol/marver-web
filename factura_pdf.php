@@ -231,8 +231,8 @@
         <div class="aliniacion-vertical flotar-derecha" >
             <h3 class="linea" >Descuento: </h3><p class="linea" ><?php echo $xml->xpath('//cfdi:Comprobante')[0]['Descuento'] ?></p>
             <div><h3 class="linea" >Subtotal: </h3><p class="linea" ><?php echo $xml->xpath('//cfdi:Comprobante')[0]['SubTotal'] ?></p></div>
-            <h3 class="linea" >Iva: </h3><p class="linea" ><?php echo $xml->xpath('//cfdi:Comprobante')[0]['FormaPago'] ?></p>
-            <div><h3 class="linea" >Total: </h3><p class="linea" ><?php echo $xml->xpath('//cfdi:Impuestos ')[0]['TotalImpuestosTrasladados'] ?></p></div>
+            <h3 class="linea" >Iva: </h3><p class="linea" ><?php echo $xml->xpath('//cfdi:Impuestos')[0]['TotalImpuestosTrasladados'] ?></p>
+            <div><h3 class="linea" >Total: </h3><p class="linea" ><?php echo $xml->xpath('//cfdi:Comprobante')[0]['Total'] ?></p></div>
         </div>
     </div>
 
