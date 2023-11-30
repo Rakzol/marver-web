@@ -20,12 +20,10 @@
 
     $datos_factura_electronica = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    $Comprobante = simplexml_load_file( 'C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML' );
+    $xml = simplexml_load_file( 'C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML' );
 
-    print_r( $Comprobante->getNamespaces(true) );
-
-    $Comprobante->registerXPathNamespace('tfd', 'http://www.sat.gob.mx/TimbreFiscalDigital');
-    $Comprobante->registerXPathNamespace('cfdi', 'http://www.sat.gob.mx/cfd/4');
+    $xml->registerXPathNamespace('tfd', 'http://www.sat.gob.mx/TimbreFiscalDigital');
+    $xml->registerXPathNamespace('cfdi', 'http://www.sat.gob.mx/cfd/4');
 ?>
 <!DOCTYPE html>
 <html lang='es'>
@@ -126,15 +124,15 @@
     <div class="contenedor texto-centrado" >
         <img class="aliniacion-vertical" src="img/logo.png" width="150">
         <div class="aliniacion-vertical contenedor-central" >
-            <h3><?php $Comprobante->Emisor['Nombre'] ?></h3>
-            <h3><?php $Comprobante->Emisor['Rfc'] ?></h3>
+            <h3><?php $xml->Emisor['Nombre'] ?></h3>
+            <h3><?php $xml->Emisor['Rfc'] ?></h3>
             <p>SANTOS DEGOLLADO 451 CENTRO LOS MOCHIS</p>
             <p>SINALOA MEXICO CP.81200</p>
             <p>TEL.8123595</p>
             <h3>Lugar de expedición</h3>
             <p>81200</p>
             <h3>Regimen</h3>
-            <p><?php $Comprobante->Emisor['RegimenFiscal'] ?> Persona Física con Actividades Empresariales y Profesionales</p>
+            <p><?php $xml->Emisor['RegimenFiscal'] ?> Persona Física con Actividades Empresariales y Profesionales</p>
         </div>
         <div class="aliniacion-vertical" >
             <h3>INGRESO FACTURA ORIGINAL</h3>
@@ -143,7 +141,7 @@
             <h3>Folio Fiscal</h3>
             <p class="linea" ><?php echo 0; ?></p>
             <br>
-            <p class="linea" >Fecha de certificación: </p><p class="linea" ><?php echo $Comprobante->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] ?></p>
+            <p class="linea" >Fecha de certificación: </p><p class="linea" ><?php echo $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] ?></p>
             <br>
             <p class="linea" >Num. Serie del CSD: </p><p class="linea" ><?php echo 0; ?></p>
             <br>
@@ -191,7 +189,7 @@
       <tbody>
         <?php
 
-            foreach ($Comprobante->children('cfdi', true)->Conceptos->children('cfdi', true) as $concepto) {
+            foreach ($xml->xpath('//cfdi:Conceptos') as $concepto) {
                 $atributos = $concepto->attributes();
                 echo 
                     "<tr>". 
