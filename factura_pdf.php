@@ -233,7 +233,7 @@
             <p class="me-10" ><?php
                 $salida = "";
                 $acumulador_salto = 0
-                foreach( $xml->xpath('//cfdi:Comprobante')[0]['Sello'] as $caracter ){
+                foreach( str_split( $xml->xpath('//cfdi:Comprobante')[0]['Sello']) as $caracter ){
                     $acumulador_salto += 1;
                     $salida .= $caracter
                     if( $acumulador_salto == 60 ){
@@ -247,7 +247,7 @@
             <p class="me-10" ><?php
                 $salida = "";
                 $acumulador_salto = 0
-                foreach( $xml->xpath('//tfd:TimbreFiscalDigital')[0]['SelloSAT'] as $caracter ){
+                foreach( str_split( $xml->xpath('//tfd:TimbreFiscalDigital')[0]['SelloSAT']) as $caracter ){
                     $acumulador_salto += 1;
                     $salida .= $caracter
                     if( $acumulador_salto == 60 ){
