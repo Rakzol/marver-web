@@ -189,7 +189,7 @@
       <tbody>
         <?php
 
-            foreach ($xml->xpath('//cfdi:Conceptos') as $concepto) {
+            foreach ($xml->xpath('//cfdi:Concepto') as $concepto) {
                 $atributos = $concepto->attributes();
                 echo 
                     "<tr>". 
