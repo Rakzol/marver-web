@@ -142,7 +142,7 @@
             <h3>Folio Fiscal</h3>
             <p class="linea" ><?php echo $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] ?></p>
             <br>
-            <p class="linea" >Fecha de certificación: </p><p class="linea" ><?php echo $xml->xpath('//tfd:TimbreFiscalDigital')[0]['FechaTimbrado'] ?></p>
+            <p class="linea" style="float: left;" >Fecha de certificación: </p><p class="linea" ><?php echo $xml->xpath('//tfd:TimbreFiscalDigital')[0]['FechaTimbrado'] ?></p>
             <br>
             <p class="linea" >Num. Serie del CSD: </p><p class="linea" ><?php echo $xml->xpath('//cfdi:Comprobante')[0]['NoCertificado'] ?></p>
             <br>
