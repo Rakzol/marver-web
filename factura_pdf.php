@@ -22,7 +22,7 @@
 
     $Comprobante = simplexml_load_file('C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML');
 
-    print_r($Comprobante);
+    print_r($Comprobante->Emisor);
 ?>
 <!DOCTYPE html>
 <html lang='es'>
