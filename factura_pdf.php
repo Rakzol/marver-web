@@ -22,7 +22,6 @@
 
     $Comprobante = simplexml_load_file('C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML');
 
-    echo var_dump($Comprobante);
 ?>
 <!DOCTYPE html>
 <html lang='es'>
@@ -182,8 +181,12 @@
       </thead>
       <tbody>
         <?php
+
+            echo var_dump($Comprobante->Conceptos);
+
             foreach ($Comprobante->Conceptos as $concepto) {
 
+                
                 echo 
                     "<tr>". 
                     "<td>" . $concepto['Cantidad'] . "</td>".
