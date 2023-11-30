@@ -3,24 +3,26 @@
     require_once('modelo/inicializar_datos.php');
     header("Content-Type: text/html");
 
-    $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Vendedor, Cliente FROM PedidosCliente WHERE FolioComprobante = :folio_comprobante");
+    $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Cajero, Vendedor, Cliente FROM Ventas WHERE Folio = :folio_comprobante AND TipoComprobante = 1");
     $preparada->bindValue(':folio_comprobante', $_GET['folio_comprobante']);
     $preparada->execute();
 
-    $datos_pedidos_cliente = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
+    $datos_venta = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    if($datos['cliente']['Clave'] != $datos_pedidos_cliente['Cliente']){
+    if($datos['cliente']['Clave'] != $datos_venta['Cliente']){
         header("Location: https://www.marverrefacciones.mx/index.php");
         exit();
     }
 
-    $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Fecha, Hora FROM FacturaElectronica WHERE Folio = :folio_comprobante");
+    $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Fecha, Hora, Serie FROM FacturaElectronica WHERE Folio = :folio_comprobante");
     $preparada->bindValue(':folio_comprobante', $_GET['folio_comprobante']);
     $preparada->execute();
 
     $datos_factura_electronica = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    $xml = simplexml_load_file('C:/Sistema Marver/Facturas/XML/A_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML');
+    echo 'C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML';
+
+    $xml = simplexml_load_file('C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML');
 
     echo var_dump($xml);
 ?>
@@ -160,10 +162,10 @@
                 ?></P>
             </div>
         <div class="aliniacion-vertical" >
-            <h3 class="linea" >Vendedor: </h3><p class="linea" ><?php echo $datos_pedidos_cliente['Vendedor'] ?></p>
-            <!-- <div>
-                <h3 class="linea" >Cajero: </h3><p class="linea" ><?php echo $datos_pedidos_cliente['Cajero'] ?></p>
-            </div> -->
+            <h3 class="linea" >Vendedor: </h3><p class="linea" ><?php echo $datos_venta['Vendedor'] ?></p>
+            <div>
+                <h3 class="linea" >Cajero: </h3><p class="linea" ><?php echo $datos_venta['Cajero'] ?></p>
+            </div>
         </div>
     </div>
 
