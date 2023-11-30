@@ -121,7 +121,7 @@
     <div class="contenedor texto-centrado" >
         <img class="aliniacion-vertical" src="img/logo.png" width="150">
         <div class="aliniacion-vertical contenedor-central" >
-            <h3><?php $Comprobante->Emisor[0]['Nombre'] ?></h3>
+            <h3><?php $Comprobante->Emisor['Nombre'] ?></h3>
             <h3><?php $Comprobante->Emisor['Rfc'] ?></h3>
             <p>SANTOS DEGOLLADO 451 CENTRO LOS MOCHIS</p>
             <p>SINALOA MEXICO CP.81200</p>
@@ -138,7 +138,7 @@
             <h3>Folio Fiscal</h3>
             <p class="linea" ><?php echo 0; ?></p>
             <br>
-            <p class="linea" >Fecha de certificación: </p><p class="linea" ><?php echo var_dump( $Comprobante->Complemento ); ?></p>
+            <p class="linea" >Fecha de certificación: </p><p class="linea" ><?php echo $Comprobante->->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] ?></p>
             <br>
             <p class="linea" >Num. Serie del CSD: </p><p class="linea" ><?php echo 0; ?></p>
             <br>
