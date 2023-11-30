@@ -3,7 +3,7 @@
     require_once('modelo/inicializar_datos.php');
     header("Content-Type: text/html");
 
-    $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Cajero, Vendedor, Cliente FROM PedidosCliente WHERE FolioComprobante = :folio_comprobante");
+    $preparada = $datos['conexion_base_sucursal']->prepare("SELECT Vendedor, Cliente FROM PedidosCliente WHERE FolioComprobante = :folio_comprobante");
     $preparada->bindValue(':folio_comprobante', $_GET['folio_comprobante']);
     $preparada->execute();
 
@@ -160,9 +160,9 @@
             </div>
         <div class="aliniacion-vertical" >
             <h3 class="linea" >Vendedor: </h3><p class="linea" ><?php echo $datos_pedidos_cliente['Vendedor'] ?></p>
-            <div>
+            <!-- <div>
                 <h3 class="linea" >Cajero: </h3><p class="linea" ><?php echo $datos_pedidos_cliente['Cajero'] ?></p>
-            </div>
+            </div> -->
         </div>
     </div>
 
