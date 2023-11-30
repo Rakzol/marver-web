@@ -138,7 +138,7 @@
             <h3>Folio Fiscal</h3>
             <p class="linea" ><?php echo 0; ?></p>
             <br>
-            <?php $Comprobante->registerXPathNamespace('tfd', 'http://www.sat.gob.mx/TimbreFiscalDigital'); ?>
+            <?php $Comprobante->registerXPathNamespace('tfd', 'tfd_url'); ?>
             <p class="linea" >Fecha de certificación: </p><p class="linea" ><?php echo var_dump($Comprobante->xpath('//tfd:TimbreFiscalDigital/@UUID')[0]); ?></p>
             <br>
             <p class="linea" >Num. Serie del CSD: </p><p class="linea" ><?php echo 0; ?></p>
