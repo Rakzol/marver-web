@@ -236,6 +236,10 @@
         </div>
     </div>
 
+    <div class="contenedor p-15" >
+        <h3 class="linea" >Bueno por: <?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', ',') ?></h3>
+    </div>
+
     <p class="p-15" >
         Debe(mos) y pagare(mos) incondicionalmente por este pagaré a la orden de <?php echo $xml->xpath('//cfdi:Emisor')[0]['Nombre'] ?> en el día <?php echo $datos_factura_electronica['Fecha'] . ' ' . $datos_factura_electronica['Hora'] ?>
         la cantidad de (<?php echo (new NumberFormatter("es", NumberFormatter::SPELLOUT))->format( floatval(number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', '')) ); ?> /100 M.N.) valor recibido a mi(nuestra) entera satisfaccion este pagaré forma parte de una serie
@@ -255,10 +259,6 @@
                     $xml->xpath('//cfdi:Receptor')[0]['DomicilioFiscalReceptor']
                 ?>
     </p>
-
-    <div class="contenedor p-15" >
-        <h3 class="linea" >Bueno por: <?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', ',') ?></h3>
-    </div>
 
     <h3 class="linea flotar-derecha p-15" >Acepto(amos)</h3>
 
