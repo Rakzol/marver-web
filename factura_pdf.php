@@ -20,9 +20,9 @@
 
     $datos_factura_electronica = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    $xml = simplexml_load_file('C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML');
+    $Comprobante = simplexml_load_file('C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML');
 
-    echo var_dump($xml);
+    echo var_dump($Comprobante);
 ?>
 <!DOCTYPE html>
 <html lang='es'>
@@ -123,15 +123,15 @@
     <div class="contenedor texto-centrado" >
         <img class="aliniacion-vertical" src="img/logo.png" width="150">
         <div class="aliniacion-vertical contenedor-central" >
-            <h3><?php $xml->Emisor['Nombre'] ?></h3>
-            <h3><?php $xml->Emisor['Rfc'] ?></h3>
+            <h3><?php $Comprobante->Emisor['Nombre'] ?></h3>
+            <h3><?php $Comprobante->Emisor['Rfc'] ?></h3>
             <p>SANTOS DEGOLLADO 451 CENTRO LOS MOCHIS</p>
             <p>SINALOA MEXICO CP.81200</p>
             <p>TEL.8123595</p>
             <h3>Lugar de expedición</h3>
             <p>81200</p>
             <h3>Regimen</h3>
-            <p><?php $xml->Emisor['RegimenFiscal'] ?> Persona Física con Actividades Empresariales y Profesionales</p>
+            <p><?php $Comprobante->Emisor['RegimenFiscal'] ?> Persona Física con Actividades Empresariales y Profesionales</p>
         </div>
         <div class="aliniacion-vertical" >
             <h3>PREVENTA</h3>
@@ -182,7 +182,7 @@
       </thead>
       <tbody>
         <?php
-            foreach ($conceptos->Concepto as $concepto) {
+            foreach ($Comprobante->Conceptos as $concepto) {
 
                 echo 
                     "<tr>". 
