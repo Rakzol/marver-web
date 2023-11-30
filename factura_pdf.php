@@ -116,11 +116,6 @@
         padding: 15px;
     }
 
-    .romper-p{
-        display: block;
-        max-width: 400px;
-        word-break: break-all;
-    }
 </style>
 
 </head>
@@ -235,9 +230,32 @@
             </div>
             <h3 class="linea" >Importe con leta: </h3><p class="linea" >(<?php echo (new NumberFormatter("es", NumberFormatter::SPELLOUT))->format( floatval(number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', '')) ); ?> /100 M.N.)</p>
             <h3>Sello Digital del CFDI</h3>
-            <p class="me-10 romper-p" ><?php echo $xml->xpath('//cfdi:Comprobante')[0]['Sello'] ?></p>
+            <p class="me-10" ><?php
+                $salida = "";
+                $acumulador_salto = 0
+                foreach( $xml->xpath('//cfdi:Comprobante')[0]['Sello'] as $caracter ){
+                    $acumulador_salto += 1;
+                    $salida .= $caracter
+                    if( $acumulador_salto == 60 ){
+                        $acumulador_salto = 0;
+                        $salida .= '<br>';
+                    }
+                }
+                echo $salida ?></p>
+
             <h3>Sello del SAT</h3>
-            <p class="me-10 romper-p" ><?php echo $xml->xpath('//tfd:TimbreFiscalDigital')[0]['SelloSAT'] ?></p>
+            <p class="me-10" ><?php
+                $salida = "";
+                $acumulador_salto = 0
+                foreach( $xml->xpath('//tfd:TimbreFiscalDigital')[0]['SelloSAT'] as $caracter ){
+                    $acumulador_salto += 1;
+                    $salida .= $caracter
+                    if( $acumulador_salto == 60 ){
+                        $acumulador_salto = 0;
+                        $salida .= '<br>';
+                    }
+                }
+                echo $salida ?></p>
         </div>
         <div class="aliniacion-vertical flotar-derecha" >
             <h3 class="linea" >Descuento: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Descuento'], 2, '.', ',') ?></p>
