@@ -29,8 +29,6 @@
     echo $contenido;
     
     $Comprobante = simplexml_load_string( $contenido );
-
-    echo var_dump( json_encode($Comprobante) );
 ?>
 <!DOCTYPE html>
 <html lang='es'>
