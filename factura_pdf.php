@@ -232,7 +232,7 @@
             <h3>Sello Digital del CFDI</h3>
             <p class="me-10" ><?php
                 $salida = "";
-                $acumulador_salto = 0
+                $acumulador_salto = 0;
                 foreach( str_split( $xml->xpath('//cfdi:Comprobante')[0]['Sello']) as $caracter ){
                     $acumulador_salto += 1;
                     $salida .= $caracter
@@ -246,7 +246,7 @@
             <h3>Sello del SAT</h3>
             <p class="me-10" ><?php
                 $salida = "";
-                $acumulador_salto = 0
+                $acumulador_salto = 0;
                 foreach( str_split( $xml->xpath('//tfd:TimbreFiscalDigital')[0]['SelloSAT']) as $caracter ){
                     $acumulador_salto += 1;
                     $salida .= $caracter
