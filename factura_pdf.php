@@ -226,7 +226,7 @@
                 <h3 class="linea" >Metodo de pago: </h3><p class="linea me-10" ><?php echo $xml->xpath('//cfdi:Comprobante')[0]['MetodoPago'] ?></p>
                 <!-- <h3 class="linea" >Cuenta: </h3><p class="linea" ></p> -->
             </div>
-            <h3 class="linea" >Importe con leta: </h3><p class="linea" >(<?php echo (new NumberFormatter("es", NumberFormatter::SPELLOUT))->format( floatval(number_format($xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', '')) ); ?> /100 M.N.)</p>
+            <h3 class="linea" >Importe con leta: </h3><p class="linea" >(<?php echo (new NumberFormatter("es", NumberFormatter::SPELLOUT))->format( floatval(number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', '')) ); ?> /100 M.N.)</p>
         </div>
         <div class="aliniacion-vertical flotar-derecha" >
             <h3 class="linea" >Descuento: </h3><p class="linea" ><?php echo 0 ?></p>
@@ -243,7 +243,7 @@
 
     <p class="p-15" >
         Debe(mos) y pagare(mos) incondicionalmente por este pagaré a la orden de MARIO ALBERTO VERDUZCO COTA en LOS MOCHIS el día <?php echo $datos_factura_electronica['Fecha'] . ' ' . $datos_factura_electronica['Hora'] ?>
-        la cantidad de (<?php echo (new NumberFormatter("es", NumberFormatter::SPELLOUT))->format( floatval(number_format($xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', '')) ); ?> /100 M.N.) valor recibido a mi(nuestra) entera satisfaccion este pagaré forma parte de una serie
+        la cantidad de (<?php echo (new NumberFormatter("es", NumberFormatter::SPELLOUT))->format( floatval(number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', '')) ); ?> /100 M.N.) valor recibido a mi(nuestra) entera satisfaccion este pagaré forma parte de una serie
         numeral del 1 al 0 y todos estan sujetos a la condicion de que al no pagarse cualquiera de ellos a su vencimiento serán exigibles todos los que le sigan en numero, ademas de
         <br>
         Nombre: <?php echo $datos['cliente']['Razon_Social'] ?>
