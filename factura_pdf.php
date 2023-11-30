@@ -143,7 +143,7 @@
             <br>
             <p class="linea" >Fecha de certificación: </p><p class="linea" ><?php echo $xml->xpath('//tfd:TimbreFiscalDigital')[0]['FechaTimbrado'] ?></p>
             <br>
-            <p class="linea" >Num. Serie del CSD: </p><p class="linea" ><?php echo $xml->xpath('//tfd:Comprobante')[0]['NoCertificado'] ?></p>
+            <p class="linea" >Num. Serie del CSD: </p><p class="linea" ><?php echo $xml->xpath('//cfdi:Comprobante')[0]['NoCertificado'] ?></p>
             <br>
             <p class="linea" >CSD del SAT: </p><p class="linea" ><?php echo $xml->xpath('//tfd:TimbreFiscalDigital')[0]['NoCertificadoSAT'] ?></p>
         </div>
