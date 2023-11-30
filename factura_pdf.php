@@ -20,7 +20,7 @@
 
     $datos_factura_electronica = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    $xml = simplexml_load_file('C:/Sistema Marver/Facturas/XML/A_' . str_pad((string)$pedido['FolioComprobante'], 10, '0', STR_PAD_LEFT) . '.XML');
+    $xml = simplexml_load_file('C:/Sistema Marver/Facturas/XML/A_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML');
 
 ?>
 <!DOCTYPE html>
