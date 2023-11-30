@@ -21,6 +21,11 @@
     $datos_factura_electronica = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
     $Comprobante = simplexml_load_file( 'C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML' );
+
+    print_r( $Comprobante->getNamespaces(true) );
+
+    $Comprobante->registerXPathNamespace('tfd', 'http://www.sat.gob.mx/TimbreFiscalDigital');
+    $Comprobante->registerXPathNamespace('cfdi', 'http://www.sat.gob.mx/cfd/4');
 ?>
 <!DOCTYPE html>
 <html lang='es'>
