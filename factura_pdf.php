@@ -186,7 +186,7 @@
       <tbody>
         <?php
 
-            echo var_dump($Comprobante->children('cfdi', true)->Conceptos->Conceptos->children('cfdi', true));
+            echo var_dump($Comprobante->children('cfdi', true)->Conceptos->children('cfdi', true));
 
             foreach ($Comprobante->children('cfdi', true)->Conceptos->children('cfdi', true) as $concepto) {
 
