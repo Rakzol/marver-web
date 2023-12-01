@@ -262,6 +262,21 @@
                     }
                 }
                 echo $salida ?></p>
+
+            <h3>Cadena original del complemento de certificación digital del SAT</h3>
+            <p class="me-10" ><?php
+                $salida = "";
+                $acumulador_salto = 0;
+                foreach( str_split( '||1.0|' . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] . '|' . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['FechaTimbrado'] . '|' .
+                        . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['SelloSAT'] . '|' . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['NoCertificadoSAT'] . '||' ) as $caracter ){
+                    $acumulador_salto += 1;
+                    $salida .= $caracter;
+                    if( $acumulador_salto == 60 ){
+                        $acumulador_salto = 0;
+                        $salida .= '<br>';
+                    }
+                }
+                echo $salida ?></p>
         </div>
     </div>
 
