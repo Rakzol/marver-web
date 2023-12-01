@@ -126,7 +126,7 @@
 </head>
 
 <body>
-
+<br><br><br><br><br><br><br>
     <div class="contenedor texto-centrado" >
         <img class="aliniacion-vertical" src="img/logo.png" width="150">
         <div class="aliniacion-vertical contenedor-central" >
