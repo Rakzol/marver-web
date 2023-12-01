@@ -65,7 +65,7 @@
 
     *{
         font-family:"Open Sans",sans-serif;
-        font-size: 12px;
+        font-size: 10px;
     }
 
     .texto-centrado{
