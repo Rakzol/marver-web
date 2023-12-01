@@ -26,7 +26,7 @@
     $xml->registerXPathNamespace('tfd', 'http://www.sat.gob.mx/TimbreFiscalDigital');
     $xml->registerXPathNamespace('cfdi', 'http://www.sat.gob.mx/cfd/4');
 
-    QRcode::png("asdasdasd", "qr/");
+    QRcode::png("asdasdasd", "qr/" . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] . ".png");
 ?>
 <!DOCTYPE html>
 <html lang='es'>
