@@ -128,10 +128,8 @@
             <h3><?php echo $xml->xpath('//cfdi:Emisor')[0]['Nombre'] ?></h3>
             <h3><?php echo $xml->xpath('//cfdi:Emisor')[0]['Rfc'] ?></h3>
             <p>SANTOS DEGOLLADO 451 CENTRO LOS MOCHIS</p>
-            <p>SINALOA MEXICO CP.81200</p>
+            <p>SINALOA MEXICO CP.<?php echo $xml->xpath('//cfdi:Comprobante')[0]['LugarExpedicion'] ?></p>
             <p>TEL.8123595</p>
-            <h3>Lugar de expedición</h3>
-            <p><?php echo $xml->xpath('//cfdi:Comprobante')[0]['LugarExpedicion'] ?></p>
             <h3>Regimen</h3>
             <p><?php echo $xml->xpath('//cfdi:Emisor')[0]['RegimenFiscal'] ?> Persona Física con Actividades<br>Empresariales y Profesionales</p>
         </div>
