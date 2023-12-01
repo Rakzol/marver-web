@@ -246,7 +246,7 @@
             </div>
             <h3 class="linea" >Importe con leta: </h3><p class="linea" >(<?php echo (new NumberFormatter("es", NumberFormatter::SPELLOUT))->format( floatval(number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', '')) ); ?> /100 M.N.)</p>
             <h3>Sello Digital del CFDI</h3>
-            <p class="me-10" ><?php
+            <p class="me-10" style="font-size: 10px;" ><?php
                 $salida = "";
                 $acumulador_salto = 0;
                 foreach( str_split( $xml->xpath('//cfdi:Comprobante')[0]['Sello']) as $caracter ){
