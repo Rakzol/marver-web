@@ -1,5 +1,6 @@
 <?php
-    ob_start();
+    // ob_start();
+    include "phpqrcode/qrlib.php";
     require_once('modelo/inicializar_datos.php');
     header("Content-Type: text/html");
 
@@ -24,6 +25,8 @@
 
     $xml->registerXPathNamespace('tfd', 'http://www.sat.gob.mx/TimbreFiscalDigital');
     $xml->registerXPathNamespace('cfdi', 'http://www.sat.gob.mx/cfd/4');
+
+    QRcode::png("asdasdasd", "tmp/");
 ?>
 <!DOCTYPE html>
 <html lang='es'>
@@ -309,28 +312,28 @@
 
 </html>
 <?php
-    $html = ob_get_clean();
+    // $html = ob_get_clean();
 
-    require_once 'dompdf/autoload.inc.php';
+    // require_once 'dompdf/autoload.inc.php';
 
-    use Dompdf\Dompdf;
-    use Dompdf\Options;
+    // use Dompdf\Dompdf;
+    // use Dompdf\Options;
 
-    $options = new Options();
-    // $options->set('isRemoteEnabled', true);
-    $options->set('chroot', __DIR__);
-    // $options->set('tempDir', 'tamporaldir');
-    // $options->set('isHtml5ParserEnabled', true);
-    // $options->set('isPhpEnabled', true);
-    // $options->set('debugPng', true);
-    // $options->set('debugCss', true);
+    // $options = new Options();
+    // // $options->set('isRemoteEnabled', true);
+    // $options->set('chroot', __DIR__);
+    // // $options->set('tempDir', 'tamporaldir');
+    // // $options->set('isHtml5ParserEnabled', true);
+    // // $options->set('isPhpEnabled', true);
+    // // $options->set('debugPng', true);
+    // // $options->set('debugCss', true);
 
-    $dompdf = new Dompdf($options);
+    // $dompdf = new Dompdf($options);
 
-    $dompdf->loadHtml($html);
+    // $dompdf->loadHtml($html);
 
-    $dompdf->render();
+    // $dompdf->render();
 
-    $dompdf->stream("preventa " . $_GET['folio'] . ".pdf", array("Attachment" => true));
-    //file_put_contents('filename.pdf', $dompdf->output());
+    // $dompdf->stream("preventa " . $_GET['folio'] . ".pdf", array("Attachment" => true));
+    // //file_put_contents('filename.pdf', $dompdf->output());
 ?>
