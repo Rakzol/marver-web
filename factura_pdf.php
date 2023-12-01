@@ -226,9 +226,12 @@
             <div><h3 class="linea" >Subtotal: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['SubTotal'], 2, '.', ',') ?></p></div>
             <h3 class="linea" >Iva: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('/cfdi:Comprobante/cfdi:Impuestos')[0]['TotalImpuestosTrasladados'], 2, '.', ',') ?></p>
             <div><h3 class="linea" >Total: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', ',') ?></p></div>
-            <?php QRcode::png("tesasdvl claskdkls lñsdsakl lksdklñakl 11 wad.-,asdas456", "qr/" . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] . ".png") ?>
+            <?php QRcode::png( "?re=" . $xml->xpath('//cfdi:Emisor')[0]['Rfc'] . 
+                                "&rr=" . $xml->xpath('//cfdi:Receptor')[0]['Rfc'] . 
+                                "&tt=" ( str_pad( explode('.',$xml->xpath('//cfdi:Comprobante')[0]['Total'])[0], 10, '0', STR_PAD_LEFT ) . '.' . str_pad( explode('.',$xml->xpath('//cfdi:Comprobante')[0]['Total'])[1], 6, '0', STR_PAD_RIGHT ) ) . 
+                                "&id=" . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] , "qr/" . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] . ".png") ?>
             <img width="150" height="150" style="background: red;" src="<?php echo "qr/" . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] . ".png" ?>" alt="">
-            
+
         </div>
         <div class="aliniacion-vertical" >
             <h3 class="linea" >Total de codigos: </h3><p class="linea me-10" ><?php echo $total_codigos ?></p>
