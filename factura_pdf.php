@@ -170,7 +170,7 @@
                 ?></P>
                 <h3 class="linea" >Uso de CFDI: </h3><p class="linea" ><?php echo $xml->xpath('//cfdi:Receptor')[0]['UsoCFDI'] ?></p>
             </div>
-        <div class="aliniacion-vertical" >
+        <div class="aliniacion-vertical" style="padding-top: 10px;" >
             <h3 class="linea" style="padding-top: 10px;" >Vendedor: </h3><p class="linea" ><?php echo $datos_venta['Vendedor'] ?></p>
             <div>
                 <h3 class="linea" >Cajero: </h3><p class="linea" ><?php echo $datos_venta['Cajero'] ?></p>
