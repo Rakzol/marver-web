@@ -23,7 +23,7 @@
 
     $xml = simplexml_load_file( 'C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML' );
 
-    if( !$xml ){
+    if( $xml == false ){
         exit();
     }
 
