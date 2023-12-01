@@ -225,7 +225,7 @@
             <div><h3 class="linea" >Total: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', ',') ?></p></div>
             <?php QRcode::png("tesasdvl claskdkls lñsdsakl lksdklñakl 11 wad.-,asdas456", "qr/" . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] . ".png") ?>
             <img width="150" height="150" style="background: red;" src="<?php echo "qr/" . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] . ".png" ?>" alt="">
-            <?php unlink("qr/" . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] . ".png") ?>
+            
         </div>
         <div class="aliniacion-vertical" >
             <h3 class="linea" >Total de codigos: </h3><p class="linea me-10" ><?php echo $total_codigos ?></p>
