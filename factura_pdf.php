@@ -21,11 +21,12 @@
 
     $datos_factura_electronica = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    $xml = simplexml_load_file( 'C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML' );
-
-    if( $xml == false ){
+    if( !file_exists('C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML') ){
+        echo "<h1>Factura no timbrada</h1>";
         exit();
     }
+
+    $xml = simplexml_load_file( 'C:/Sistema Marver/Facturas/XML/' . $datos_factura_electronica['Serie'] . '_' . str_pad((string)$_GET['folio_comprobante'], 10, '0', STR_PAD_LEFT) . '.XML' );
 
     $xml->registerXPathNamespace('tfd', 'http://www.sat.gob.mx/TimbreFiscalDigital');
     $xml->registerXPathNamespace('cfdi', 'http://www.sat.gob.mx/cfd/4');
@@ -41,8 +42,6 @@
     <link href="img/logo_solo.png" rel="icon">
 
     <link href="css/estado_fuentes.css" rel="stylesheet">
-
-
 <style>
         .dinero {
             color: green;
@@ -126,7 +125,7 @@
 </head>
 
 <body>
-    
+
     <div class="contenedor texto-centrado" >
         <img class="aliniacion-vertical" src="img/logo.png" width="150">
         <div class="aliniacion-vertical contenedor-central" >
