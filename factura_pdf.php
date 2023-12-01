@@ -142,7 +142,7 @@
             <h3 class="linea" >Fecha: </h3><p class="linea" ><?php echo $datos_factura_electronica['Fecha'] . ' ' . $datos_factura_electronica['Hora'] ?></p>
             <br>
             <h3 class="linea me-10" >Serie <?php echo $datos_factura_electronica['Serie'] ?> </h3><h3 class="linea" >Folio <?php echo $_GET['folio_comprobante'] ?></h3>
-            <h3 style="padding-top: 10px;" >Folio Fiscal</h3>
+            <h3 style="padding-top: 15px;" >Folio Fiscal</h3>
             <p class="linea" ><?php echo $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] ?></p>
             <br>
             <p class="linea" >Fecha de certificación: </p><p class="linea" ><?php echo $xml->xpath('//tfd:TimbreFiscalDigital')[0]['FechaTimbrado'] ?></p>
@@ -245,7 +245,7 @@
                 <!-- <h3 class="linea" >Cuenta: </h3><p class="linea" ></p> -->
             </div>
             <h3 class="linea" >Importe con leta: </h3><p class="linea" >(<?php echo (new NumberFormatter("es", NumberFormatter::SPELLOUT))->format( floatval(number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', '')) ); ?> /100 M.N.)</p>
-            <h3 style="padding-top: 10px;" >Sello Digital del CFDI</h3>
+            <h3 style="padding-top: 15px;" >Sello Digital del CFDI</h3>
             <p class="me-10" style="font-size: 8px;" ><?php
                 $salida = "";
                 $acumulador_salto = 0;
