@@ -655,24 +655,26 @@
                                 window.URL.revokeObjectURL(url);
                             });
 
-                            fetch('modelo/descargar_pdf',{
-                                method: 'POST',
-                                body: datos_descarga
-                            })
-                            .then(response =>{
-                                nombre_pdf = response.headers.get('Content-Disposition').split('filename=')[1];
-                                return response.blob();
-                            })
-                            .then(blob => {
-                                let url = window.URL.createObjectURL(new Blob([blob]));
-                                let a = document.createElement('a');
-                                a.href = url;
-                                a.download = nombre_pdf;
-                                document.body.appendChild(a);
-                                a.click();
-                                a.remove();
-                                window.URL.revokeObjectURL(url);
-                            });
+                            // fetch('modelo/descargar_pdf',{
+                            //     method: 'POST',
+                            //     body: datos_descarga
+                            // })
+                            // .then(response =>{
+                            //     nombre_pdf = response.headers.get('Content-Disposition').split('filename=')[1];
+                            //     return response.blob();
+                            // })
+                            // .then(blob => {
+                            //     let url = window.URL.createObjectURL(new Blob([blob]));
+                            //     let a = document.createElement('a');
+                            //     a.href = url;
+                            //     a.download = nombre_pdf;
+                            //     document.body.appendChild(a);
+                            //     a.click();
+                            //     a.remove();
+                            //     window.URL.revokeObjectURL(url);
+                            // });
+
+                            window.open('https://www.marverrefacciones.mx/factura_pdf?folio_comprobante=' + respuesta_json['pedido']['FolioComprobante']);
 
                         });
                     }else if( respuesta_json['pedido']['Tipocomprobante'] == 2 ){
