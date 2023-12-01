@@ -674,7 +674,8 @@
                             //     window.URL.revokeObjectURL(url);
                             // });
 
-                            window.open('https://www.marverrefacciones.mx/factura_pdf?folio_comprobante=' + respuesta_json['pedido']['FolioComprobante']);
+                            let ventana = window.open('https://www.marverrefacciones.mx/factura_pdf?folio_comprobante=' + respuesta_json['pedido']['FolioComprobante']);
+                            ventana.close();
 
                         });
                     }else if( respuesta_json['pedido']['Tipocomprobante'] == 2 ){
