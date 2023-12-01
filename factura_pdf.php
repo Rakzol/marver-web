@@ -155,7 +155,7 @@
 
     <div class="contenedor texto-centrado" >
         <div class="aliniacion-vertical me-30" >
-                <h3 style="padding-top: 10px;" ><?php echo $xml->xpath('//cfdi:Receptor')[0]['Rfc'] ?></h3>
+                <h3 style="padding-top: 15px;" ><?php echo $xml->xpath('//cfdi:Receptor')[0]['Rfc'] ?></h3>
                 <p><?php echo $datos['cliente']['Clave'] . " " . $xml->xpath('//cfdi:Receptor')[0]['Nombre'] ?></p>
                 <P><?php echo
                     $datos['cliente']['Domicilio'] . " " .
@@ -170,15 +170,15 @@
                 ?></P>
                 <h3 class="linea" >Uso de CFDI: </h3><p class="linea" ><?php echo $xml->xpath('//cfdi:Receptor')[0]['UsoCFDI'] ?></p>
             </div>
-        <div class="aliniacion-vertical" style="padding-top: 10px;" >
-            <h3 class="linea" style="padding-top: 10px;" >Vendedor: </h3><p class="linea" ><?php echo $datos_venta['Vendedor'] ?></p>
+        <div class="aliniacion-vertical" style="padding-top: 15px;" >
+            <h3 class="linea" >Vendedor: </h3><p class="linea" ><?php echo $datos_venta['Vendedor'] ?></p>
             <div>
                 <h3 class="linea" >Cajero: </h3><p class="linea" ><?php echo $datos_venta['Cajero'] ?></p>
             </div>
         </div>
     </div>
 
-    <table class="margen-auto" style="padding-top: 10px;" >
+    <table class="margen-auto" style="padding-top: 15px;" >
       <thead>
         <tr>
           <th>Cantidad</th>
@@ -220,7 +220,7 @@
       </tbody>
     </table>
 
-    <div class="contenedor p-15" style="padding-top: 10px;" >
+    <div class="contenedor p-15" style="padding-top: 15px;" >
          <div class="aliniacion-vertical flotar-derecha" >
             <h3 class="linea" >Descuento: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Descuento'], 2, '.', ',') ?></p>
             <div><h3 class="linea" >Subtotal: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['SubTotal'], 2, '.', ',') ?></p></div>
@@ -290,7 +290,7 @@
         </div>
     </div>
 
-    <div class="contenedor p-15" >
+    <div class="contenedor" >
         <h3 class="linea" >Bueno por: <?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', ',') ?></h3>
     </div>
 
