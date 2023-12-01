@@ -290,7 +290,7 @@
         </div>
     </div>
 
-    <div class="contenedor" style="padding-left: 10px;" >
+    <div class="contenedor" style="padding-left: 5px;" >
         <h3 class="linea" >Bueno por: <?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', ',') ?></h3>
     </div>
 
