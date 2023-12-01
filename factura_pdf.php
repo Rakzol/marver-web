@@ -206,9 +206,9 @@
                     "<td class='corrido' >" . $atributos["ClaveProdServ"] . "</td>".
                     "<td class='corrido' >" . $atributos["NoIdentificacion"] . "</td>".
                     "<td>" . $atributos["Descripcion"] . "</td>".
-                    "<td>" .  number_format( 100 * (float)$atributos["Descuento"] / (float)$atributos['Importe'] , 2, '.', ',') . "</td>".
-                    "<td class=\"dinero\" >" . number_format((float)$atributos["ValorUnitario"], 2, '.', ',') . "</td>".
-                    "<td class=\"dinero\" >" . number_format((float)$atributos["Importe"], 2, '.', ',') . "</td>".
+                    "<td class='corrido' >" .  number_format( 100 * (float)$atributos["Descuento"] / (float)$atributos['Importe'] , 2, '.', ',') . "</td>".
+                    "<td class=\"dinero corrido\" >" . number_format((float)$atributos["ValorUnitario"], 2, '.', ',') . "</td>".
+                    "<td class=\"dinero corrido\" >" . number_format((float)$atributos["Importe"], 2, '.', ',') . "</td>".
                     "</tr>";
 
             }
