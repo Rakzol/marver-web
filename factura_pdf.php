@@ -26,7 +26,7 @@
     $xml->registerXPathNamespace('tfd', 'http://www.sat.gob.mx/TimbreFiscalDigital');
     $xml->registerXPathNamespace('cfdi', 'http://www.sat.gob.mx/cfd/4');
 
-    QRcode::png("asdasdasd", "qr/" . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] . ".png");
+    // QRcode::png("asdasdasd", "qr/" . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] . ".png");
 ?>
 <!DOCTYPE html>
 <html lang='es'>
@@ -225,6 +225,7 @@
             <div><h3 class="linea" >Subtotal: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['SubTotal'], 2, '.', ',') ?></p></div>
             <h3 class="linea" >Iva: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('/cfdi:Comprobante/cfdi:Impuestos')[0]['TotalImpuestosTrasladados'], 2, '.', ',') ?></p>
             <div><h3 class="linea" >Total: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', ',') ?></p></div>
+            <img width="500" height="500" style="background: red;" src="" alt="">
         </div>
         <div class="aliniacion-vertical" >
             <h3 class="linea" >Total de codigos: </h3><p class="linea me-10" ><?php echo $total_codigos ?></p>
