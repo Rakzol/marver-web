@@ -252,7 +252,7 @@
                 foreach( str_split( $xml->xpath('//cfdi:Comprobante')[0]['Sello']) as $caracter ){
                     $acumulador_salto += 1;
                     $salida .= $caracter;
-                    if( $acumulador_salto == 60 ){
+                    if( $acumulador_salto == 100 ){
                         $acumulador_salto = 0;
                         $salida .= '<br>';
                     }
@@ -266,7 +266,7 @@
                 foreach( str_split( $xml->xpath('//tfd:TimbreFiscalDigital')[0]['SelloSAT']) as $caracter ){
                     $acumulador_salto += 1;
                     $salida .= $caracter;
-                    if( $acumulador_salto == 60 ){
+                    if( $acumulador_salto == 100 ){
                         $acumulador_salto = 0;
                         $salida .= '<br>';
                     }
@@ -281,7 +281,7 @@
                         . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['SelloSAT'] . '|' . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['NoCertificadoSAT'] . '||' ) as $caracter ){
                     $acumulador_salto += 1;
                     $salida .= $caracter;
-                    if( $acumulador_salto == 60 ){
+                    if( $acumulador_salto == 100 ){
                         $acumulador_salto = 0;
                         $salida .= '<br>';
                     }
