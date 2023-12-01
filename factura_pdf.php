@@ -1,4 +1,5 @@
 <?php
+    exit();
     ob_start();
     include "phpqrcode/qrlib.php";
     require_once('modelo/inicializar_datos.php');
