@@ -155,7 +155,7 @@
 
     <div class="contenedor texto-centrado" >
         <div class="aliniacion-vertical me-30" >
-                <h3><?php echo $xml->xpath('//cfdi:Receptor')[0]['Rfc'] ?></h3>
+                <h3 style="padding-top: 10px;" ><?php echo $xml->xpath('//cfdi:Receptor')[0]['Rfc'] ?></h3>
                 <p><?php echo $datos['cliente']['Clave'] . " " . $xml->xpath('//cfdi:Receptor')[0]['Nombre'] ?></p>
                 <P><?php echo
                     $datos['cliente']['Domicilio'] . " " .
@@ -171,7 +171,7 @@
                 <h3 class="linea" >Uso de CFDI: </h3><p class="linea" ><?php echo $xml->xpath('//cfdi:Receptor')[0]['UsoCFDI'] ?></p>
             </div>
         <div class="aliniacion-vertical" >
-            <h3 class="linea" >Vendedor: </h3><p class="linea" ><?php echo $datos_venta['Vendedor'] ?></p>
+            <h3 class="linea" style="padding-top: 10px;" >Vendedor: </h3><p class="linea" ><?php echo $datos_venta['Vendedor'] ?></p>
             <div>
                 <h3 class="linea" >Cajero: </h3><p class="linea" ><?php echo $datos_venta['Cajero'] ?></p>
             </div>
@@ -220,7 +220,7 @@
       </tbody>
     </table>
 
-    <div class="contenedor p-15" >
+    <div class="contenedor p-15" style="padding-top: 10px;" >
          <div class="aliniacion-vertical flotar-derecha" >
             <h3 class="linea" >Descuento: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Descuento'], 2, '.', ',') ?></p>
             <div><h3 class="linea" >Subtotal: </h3><p class="linea" ><?php echo number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['SubTotal'], 2, '.', ',') ?></p></div>
@@ -245,7 +245,7 @@
                 <!-- <h3 class="linea" >Cuenta: </h3><p class="linea" ></p> -->
             </div>
             <h3 class="linea" >Importe con leta: </h3><p class="linea" >(<?php echo (new NumberFormatter("es", NumberFormatter::SPELLOUT))->format( floatval(number_format((float)$xml->xpath('//cfdi:Comprobante')[0]['Total'], 2, '.', '')) ); ?> /100 M.N.)</p>
-            <h3>Sello Digital del CFDI</h3>
+            <h3 style="padding-top: 10px;" >Sello Digital del CFDI</h3>
             <p class="me-10" style="font-size: 8px;" ><?php
                 $salida = "";
                 $acumulador_salto = 0;
