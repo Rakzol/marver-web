@@ -178,7 +178,7 @@
         </div>
     </div>
 
-    <table class="margen-auto" >
+    <table class="margen-auto" style="padding-top: 10px;" >
       <thead>
         <tr>
           <th>Cantidad</th>
