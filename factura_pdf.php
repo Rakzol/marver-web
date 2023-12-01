@@ -117,7 +117,7 @@
     }
 
     .p-15{
-        padding: 15px;
+        padding: 5px;
     }
 
 </style>
