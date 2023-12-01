@@ -277,7 +277,7 @@
             <p class="me-10" style="font-size: 8px;" ><?php
                 $salida = "";
                 $acumulador_salto = 0;
-                foreach( str_split( '||1.0|' . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] . '|' . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['FechaTimbrado'] . '|' 
+                foreach( str_split( '||1.1|' . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['UUID'] . '|' . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['FechaTimbrado'] . '|' 
                         . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['SelloSAT'] . '|' . $xml->xpath('//tfd:TimbreFiscalDigital')[0]['NoCertificadoSAT'] . '||' ) as $caracter ){
                     $acumulador_salto += 1;
                     $salida .= $caracter;
