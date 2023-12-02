@@ -343,6 +343,6 @@
 
     $dompdf->render();
 
-    $dompdf->stream("preventa " . $_GET['folio'] . ".pdf", array("Attachment" => true));
+    $dompdf->stream("factura_" . $_GET['folio_comprobante'] . ".pdf", array("Attachment" => true));
     //file_put_contents('filename.pdf', $dompdf->output());
 ?>
