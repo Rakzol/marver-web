@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<h1>Enviar Coordenadas de Posición Actual</h1>
+<button onclick="sendCurrentLocation()">Enviar Coordenadas</button>
+<div id="result"></div>
+
+<script>
+    function sendCurrentLocation() {
+        // Verificar si el navegador soporta la geolocalización
+        if ('geolocation' in navigator) {
+            // Obtener la posición actual
+            navigator.geolocation.getCurrentPosition(position => {
+                // Coordenadas de la posición actual
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                // Crear un formulario y agregar los campos de coordenadas
+                const formData = new FormData();
+                formData.append('latitud', latitude);
+                formData.append('longitud', longitude);
+
+                // URL del servidor o API que recibirá las coordenadas
+                const apiUrl = 'modelo/posicion';
+
+                // Configuración de la solicitud POST
+                const options = {
+                    method: 'POST',
+                    body: formData,
+                };
+
+                // Haciendo la solicitud POST con fetch
+                fetch(apiUrl, options)
+                    .then(response => {
+                        // Verificando si la solicitud fue exitosa (código de respuesta 2xx)
+                        if (!response.ok) {
+                            throw new Error(`Error en la solicitud: ${response.statusText}`);
+                        }
+                        // Parseando la respuesta como JSON
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Manipulando los datos recibidos
+                        document.getElementById('result').innerHTML = `
+                            <p>Coordenadas enviadas con éxito:</p>
+                            <p>Latitud: ${data.latitude}</p>
+                            <p>Longitud: ${data.longitude}</p>
+                        `;
+                    })
+                    .catch(error => {
+                        // Capturando y manejando errores
+                        console.error('Error:', error);
+                        document.getElementById('result').innerHTML = 'Error al enviar las coordenadas.';
+                    });
+            }, error => {
+                // Manejar errores de geolocalización
+                console.error('Error de geolocalización:', error);
+                document.getElementById('result').innerHTML = 'Error al obtener la posición actual.';
+            });
+        } else {
+            // El navegador no soporta geolocalización
+            document.getElementById('result').innerHTML = 'El navegador no soporta geolocalización.';
+        }
+    }
+
+    setInterval( ()=>{ sendCurrentLocation(); }, 1000 );
+</script>
+</body>
+</html>
