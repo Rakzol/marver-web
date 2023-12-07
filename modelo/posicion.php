@@ -3,9 +3,9 @@
         header('Content-Type: application/json');
 
         //// Inicio de sesion
-        $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=CatalagoLM;TrustServerCertificate=true','MARITE','2505M$RITE');
+        $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
-        
+
         $preparada = $conexion->prepare('INSERT INTO posicion VALUES( GETDATE(), :latitud, :longitud )');
         $preparada->bindValue(':latitud', $_POST['latitud']);
         $preparada->bindValue(':longitud', $_POST['longitud']);
