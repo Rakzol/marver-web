@@ -11,7 +11,7 @@
         $preparada->bindValue(':longitud', $_POST['longitud']);
         $preparada->execute();
 
-        echo '{"longitud": ' . $_POST['latitud'] . ', "longitud": ' . $_POST['longitud'] . '}';
+        echo '{"latitud": ' . $_POST['latitud'] . ', "longitud": ' . $_POST['longitud'] . '}';
     }catch( Exception $exception ) {
         header('HTTP/1.1 500 ' . $exception->getMessage());
     }
