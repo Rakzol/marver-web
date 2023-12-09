@@ -1,7 +1,5 @@
 <?php
     try{
-        sleep(10);
-
         header('Content-Type: application/json');
 
         //// Inicio de sesion
