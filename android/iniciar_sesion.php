@@ -2,6 +2,9 @@
     try{
         header('Content-Type: application/json');
 
+        $_POST['usuario'] = "asdasd";
+        $_POST['contraseña'] = "aasdasd";
+
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=CatalagoLM;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
         
