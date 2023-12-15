@@ -18,7 +18,7 @@
             exit();
         }
 
-        $preparada = $conexion->prepare('SELECT usuario, latitud, longitud FROM ( SELECT usuario, latitud, longitud, ROW_NUMBER() OVER ( PARTITION BY usuario ORDER BY fecha DESC) AS fila FROM posiciones ) AS ordenado WHERE fila = 1');
+        $preparada = $conexion->prepare('SELECT usuario, Nombre, latitud, longitud FROM ( SELECT usuario, Nombre, latitud, longitud, ROW_NUMBER() OVER ( PARTITION BY usuario ORDER BY fecha DESC) AS fila FROM posiciones INNER JOIN Vendedores ON Vendedores.Clave = usuario ) AS ordenado WHERE fila = 1');
         $preparada->execute();
 
         echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
