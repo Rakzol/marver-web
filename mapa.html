@@ -38,6 +38,8 @@
                     console.error('Error al solicitar los años: ', error);
                 })
                 .then(respuesta_json => {
+                    const { AdvancedMarkerElement } = google.maps.importLibrary("marker");
+                    
                     respuesta_json.forEach((usuario) => {
                         let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == usuario['usuario']; });
                         if (usuario_encontrado) {
@@ -63,7 +65,7 @@
 
         async function initMap() {
             const { Map, InfoWindow } = await google.maps.importLibrary("maps");
-            const { Marker } = await google.maps.importLibrary("marker");
+            //const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
             map = new Map(document.getElementById("map"), {
                 center: { lat: 25.7934016, lng: -108.9881652 },
