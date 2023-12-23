@@ -39,7 +39,7 @@
                 })
                 .then(respuesta_json => {
                     const { AdvancedMarkerElement } = google.maps.importLibrary("marker");
-                    
+
                     respuesta_json.forEach((usuario) => {
                         let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == usuario['usuario']; });
                         if (usuario_encontrado) {
@@ -48,7 +48,7 @@
                             usuarios.push({
                                 id: usuario['usuario'],
                                 nombre: usuario['Nombre'],
-                                marcador: new google.maps.AdvancedMarkerElement({
+                                marcador: new AdvancedMarkerElement({
                                     map: map,
                                     position: { lat: usuario['latitud'], lng: usuario['longitud'] }
                                 })
