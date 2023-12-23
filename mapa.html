@@ -46,7 +46,7 @@
                             usuarios.push({
                                 id: usuario['usuario'],
                                 nombre: usuario['Nombre'],
-                                marcador: new Marker({
+                                marcador: new google.maps.Marker({
                                     map: map,
                                     position: { lat: usuario['latitud'], lng: usuario['longitud'] }
                                 })
