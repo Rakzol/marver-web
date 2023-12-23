@@ -38,10 +38,22 @@
                     console.error('Error al solicitar los años: ', error);
                 })
                 .then(respuesta_json => {
-                    respuesta_json.forEach( (usuario)=>{
-                        let usuario_encontrado = usuarios.find( (usuario_buscar) => { return usuario_buscar['id'] == usuario['usuario']; } );
+                    respuesta_json.forEach((usuario) => {
+                        let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == usuario['usuario']; });
+                        if (usuario_encontrado) {
+
+                        } else {
+                            usuarios.push({
+                                id: usuario['usuario'],
+                                nombre: usuario['Nombre'],
+                                marcador: new Marker({
+                                    map: map,
+                                    position: { lat: usuario['latitud'], lng: usuario['longitud'] }
+                                })
+                            });
+                        }
                         console.log(usuario_encontrado);
-                    } );
+                    });
                 });
         }
 
@@ -59,23 +71,17 @@
                 mapId: '7845e7dffe8cea37'
             });
 
-            const marker = new Marker({
-                map: map,
-                position: { lat: 25.7934016, lng: -108.9881652 },
-                title: "Uluru",
-            });
+            // const infowindow = new InfoWindow({
+            //     content: 'asdasdasdasdasdasdasdasdasdasd',
+            //     ariaLabel: "Uluru",
+            // });
 
-            const infowindow = new InfoWindow({
-                content: 'asdasdasdasdasdasdasdasdasdasd',
-                ariaLabel: "Uluru",
-            });
-
-            marker.addListener("click", () => {
-                infowindow.open({
-                    anchor: marker,
-                    map,
-                });
-            });
+            // marker.addListener("click", () => {
+            //     infowindow.open({
+            //         anchor: marker,
+            //         map,
+            //     });
+            // });
 
             setInterval(actualizacion_logica, 500);
             setInterval(actualizacion_visual, 1500);
