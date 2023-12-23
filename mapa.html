@@ -39,7 +39,8 @@
                 })
                 .then(respuesta_json => {
                     respuesta_json.forEach( (usuario)=>{
-                        console.log(usuario);
+                        let usuario_encontrado = usuarios.find( (usuario_buscar) => { return usuario_buscar['id'] == usuario['usuario']; } );
+                        console.log(usuario_encontrado);
                     } );
                 });
         }
