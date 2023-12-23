@@ -38,35 +38,17 @@
                     console.error('Error al solicitar los años: ', error);
                 })
                 .then(respuesta_json => {
-                    //procesar(respuesta_json);
-                    const { AdvancedMarkerElement } = google.maps.importLibrary("marker");
-
-respuesta_json.forEach((usuario) => {
-    let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == usuario['usuario']; });
-    if (usuario_encontrado) {
-
-    } else {
-        usuarios.push({
-            id: usuario['usuario'],
-            nombre: usuario['Nombre'],
-            marcador: new AdvancedMarkerElement({
-                map: map,
-                position: { lat: usuario['latitud'], lng: usuario['longitud'] }
-            })
-        });
-    }
-    console.log(usuario_encontrado);
-});
+                    procesar_logica(respuesta_json);
                 });
         }
 
-        async function procesar(respuesta_json) {
+        async function procesar_logica(respuesta_json) {
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
             respuesta_json.forEach((usuario) => {
                 let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == usuario['usuario']; });
                 if (usuario_encontrado) {
-
+                    usuario_encontrado['marcador'].position = { lat: usuario['latitud'], lng: usuario['longitud'] };
                 } else {
                     usuarios.push({
                         id: usuario['usuario'],
