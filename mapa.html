@@ -20,6 +20,7 @@
     </style>
     <script type="module">
         let map;
+        let usuarios = [];
 
         function actualizacion_logica() {
             let datos = new FormData();
@@ -37,8 +38,14 @@
                     console.error('Error al solicitar los años: ', error);
                 })
                 .then(respuesta_json => {
-                    console.log(respuesta_json);
+                    respuesta_json.forEach( (usuario)=>{
+                        console.log(usuario);
+                    } );
                 });
+        }
+
+        function actualizacion_visual() {
+
         }
 
         async function initMap() {
@@ -70,6 +77,7 @@
             });
 
             setInterval(actualizacion_logica, 500);
+            setInterval(actualizacion_visual, 1500);
         }
 
         initMap();
