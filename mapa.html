@@ -38,11 +38,11 @@
                     console.error('Error al solicitar los años: ', error);
                 })
                 .then(respuesta_json => {
-                    procesar();
+                    procesar(respuesta_json);
                 });
         }
 
-        async function procesar() {
+        async function procesar(respuesta_json) {
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
             respuesta_json.forEach((usuario) => {
