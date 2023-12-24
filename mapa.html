@@ -76,7 +76,7 @@
             console.log(latitud, longitud);
             new AdvancedMarkerElement({
                             map: map,
-                            position: { lat: latitud, lng: longitud }
+                            position: new google.maps.LatLng(latitud, longitud)
                         });
 
             setTimeout(procesar_vista, 100);
