@@ -73,6 +73,7 @@
 
             let latitud = (Math.random() * (180) - 90).toFixed(4);
             let longitud = (Math.random() * (360) - 180).toFixed(4);
+            console.log(latitud, longitud);
             new AdvancedMarkerElement({
                             map: map,
                             position: { lat: latitud, lng: longitud }
