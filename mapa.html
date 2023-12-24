@@ -63,8 +63,15 @@
             });
         }
 
-        function actualizacion_visual() {
+        async function procesar_vista() {
+            const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
+            new AdvancedMarkerElement({
+                            map: map,
+                            position: { lat: (Math.random() * (180) - 90).toFixed(4), lng: (Math.random() * (360) - 180).toFixed(4) }
+                        });
+
+            setTimeout(procesar_vista, 100);
         }
 
         async function initMap() {
@@ -95,7 +102,7 @@
             // });
 
             setInterval(actualizacion_logica, 500);
-            setInterval(actualizacion_visual, 1500);
+            setTimeout(procesar_vista, 100);
         }
 
         initMap();
