@@ -20,9 +20,6 @@
     </style>
     <script type="module">
 
-        let imagen = document.createElement('img');
-        imagen.src = 'https://www.marverrefacciones.mx/android/marcador.png';
-
         let mapa;
         let usuarios = [];
         let frame = 1;
@@ -55,6 +52,9 @@
                 if (usuario_encontrado) {
                     usuario_encontrado['posicion_nueva'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
                 } else {
+
+                    let imagen = document.createElement('img');
+                    imagen.src = 'https://www.marverrefacciones.mx/android/marcador.png';
 
                     let marcador = new AdvancedMarkerElement({
                         content: imagen,
