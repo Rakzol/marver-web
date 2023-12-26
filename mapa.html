@@ -21,6 +21,7 @@
     <script type="module">
         let map;
         let usuarios = [];
+        let frame = 1;
 
         function actualizacion_logica() {
             let datos = new FormData();
@@ -48,7 +49,7 @@
             respuesta_json.forEach((usuario) => {
                 let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == usuario['usuario']; });
                 if (usuario_encontrado) {
-                    usuario_encontrado['marcador'].position = { lat: usuario['latitud'], lng: usuario['longitud'] };
+                    usuario_encontrado['posicion_nueva'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
                 } else {
                     usuarios.push({
                         id: usuario['usuario'],
@@ -56,30 +57,48 @@
                         marcador: new AdvancedMarkerElement({
                             map: map,
                             position: { lat: usuario['latitud'], lng: usuario['longitud'] }
-                        })
+                        }),
+                        posicion_inicial: { lat: usuario['latitud'], lng: usuario['longitud'] },
+                        posicion_final: { lat: usuario['latitud'], lng: usuario['longitud'] },
+                        posicion_nueva: { lat: usuario['latitud'], lng: usuario['longitud'] }
                     });
                 }
-                console.log(usuario_encontrado);
             });
         }
 
         async function procesar_vista() {
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
-            // new AdvancedMarkerElement({
-            //                 map: map,
-            //                 position: { lat: 25.7934016, lng: -108.9881652 }
-            //             });
+            usuarios.forEach((usuario) => {
 
-            let latitud = (Math.random() * (180) - 90).toFixed(7);
-            let longitud = (Math.random() * (360) - 180).toFixed(7);
-            console.log(latitud, longitud);
-            new AdvancedMarkerElement({
-                            map: map,
-                            position: new google.maps.LatLng(latitud, longitud)
-                        });
+                if (frame == 1) {
+                    usuario['posicion_final'] = { lat: usuario['posicion_nueva']['lat'], lng: usuario['posicion_nueva']['lng'] };
+                }
 
-            setTimeout(procesar_vista, 100);
+                if (usuario['posicion_inicial']['lat'] != usuario['posicion_final']['lat'] || usuario['posicion_inicial']['lng'] != usuario['posicion_final']['lng']) {
+
+                    let latitud_dif_abs = Math.abs(usuario['posicion_inicial']['lat'] - usuario['posicion_final']['lat']) * frame / 150;
+                    let longitud_dif_abs = Math.abs(Math.abs(usuario['posicion_inicial']['lng']) + usuario['posicion_final']['lng']) * frame / 150;
+
+                    let latitud = usuario['posicion_inicial']['lat'] >= usuario['posicion_final']['lat'] ? usuario['posicion_inicial']['lat'] - latitud_dif_abs : usuario['posicion_inicial']['lat'] + latitud_dif_abs;
+                    let longitud = usuario['posicion_inicial']['lng'] >= usuario['posicion_final']['lng'] ? usuario['posicion_inicial']['lng'] - longitud_dif_abs : usuario['posicion_inicial']['lng'] + longitud_dif_abs;
+
+                    usuario['marcador'].position = { lat: latitud, lng: longitud};
+                }
+
+                if (frame == 150) {
+                    usuario['posicion_inicial'] = { lat: usuario['posicion_final']['lat'], lng: usuario['posicion_final']['lng'] };
+                }
+
+            });
+
+            if (frame == 150) {
+                frame = 1;
+            } else {
+                frame++;
+            }
+
+            setTimeout(procesar_vista, 10);
         }
 
         async function initMap() {
@@ -92,10 +111,10 @@
                 mapId: '7845e7dffe8cea37'
             });
 
-            new AdvancedMarkerElement({
-                            map: map,
-                            position: { lat: 25.7934016, lng: -108.9881652 }
-                        });
+            // new AdvancedMarkerElement({
+            //     map: map,
+            //     position: { lat: 25.7934016, lng: -108.9881652 }
+            // });
 
             // const infowindow = new InfoWindow({
             //     content: 'asdasdasdasdasdasdasdasdasdasd',
@@ -110,7 +129,7 @@
             // });
 
             setInterval(actualizacion_logica, 500);
-            setTimeout(procesar_vista, 100);
+            setTimeout(procesar_vista, 10);
         }
 
         initMap();
