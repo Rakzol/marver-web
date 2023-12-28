@@ -186,6 +186,7 @@
                     //Parar El Seguimiento
                     if (fijado == usuario['id']) {
                         mapa.panTo(usuario['marcador'].position);
+                        console.log(usuario['velocidad']);
                         document.getElementById('velocidadRepartidor').innerText = usuario['velocidad'].toFixed(1) + ' Km/h';
                     }
                 }
