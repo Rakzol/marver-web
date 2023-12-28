@@ -117,6 +117,9 @@
                             mapa.setZoom(17.5);
                             mapa.panTo(usuarioLista['marcador'].position);
 
+                            document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
+                            document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
+
                             marcador.click();
                         });
 
@@ -218,8 +221,8 @@
         <div class="flex-grow-1" id="mapa"></div>
 
         <div class="card text-center border-0">
-            <h5 class="card-header" id="txtIdRepartidor" >
-                Repartidor : <strong>15</strong>
+            <h5 class="card-header" >
+                Repartidor : <strong id="txtIdRepartidor" >15</strong>
             </h5>
             <div class="card-body">
                 <h5 class="card-title" id="txtNombreRepartidor" >Carlos Gilberto Jaime Rosas</h5>
