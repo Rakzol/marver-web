@@ -66,12 +66,14 @@
         }
 
         async function procesar_logica(respuesta_json) {
+
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
             respuesta_json.forEach((usuario) => {
                 let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == usuario['usuario']; });
                 if (usuario_encontrado) {
                     usuario_encontrado['posicion_nueva'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
+                    usuario_encontrado['velocidad'] = usuario['velocidad'];
                 } else {
 
                     let imagen = document.createElement('img');
@@ -94,20 +96,51 @@
                         });
                     });
 
-                    usuarios.push({
+                    let usuario = {
                         id: usuario['usuario'],
                         nombre: usuario['Nombre'],
                         marcador: marcador,
+                        velocidad: usuario['velocidad'],
                         posicion_inicial: { lat: usuario['latitud'], lng: usuario['longitud'] },
                         posicion_final: { lat: usuario['latitud'], lng: usuario['longitud'] },
                         posicion_nueva: { lat: usuario['latitud'], lng: usuario['longitud'] }
+                    };
+
+                    usuarios.push(usuario);
+
+                    let li = document.createElement('li');
+
+                    li.addEventListener('click', () => {
+                        document.getElementById('btnCerrarModal').click();
+                        fijado = usuario['id'];
+
+                        mapa.setZoom(17.5);
+                        mapa.panTo(usuario['marcador'].position);
+
+                        document.getElementById('txtIdRepartidor').innerText = usuario['id'];
+                        document.getElementById('txtNombreRepartidor').innerText = usuario['nombre'];
+                        document.getElementById('velocidadRepartidor').innerText = usuario['velocidad'] + ' Km/h';
+
+                        infowindow.open({
+                            anchor: usuario['marcador'],
+                            map: mapa,
+                        });
                     });
 
-                    let listaRepartidores = document.getElementById('listaRepartidores');
+                    li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+                    li.innerText = usuario['nombre'];
+
+                    let span = document.createElement('span');
+                    span.classList.add('badge', 'bg-primary', 'rounded-pill');
+                    span.innerText = usuario['id'];
+
+                    li.appendChild(span);
+                    listaRepartidores.appendChild(li);
+
+                    /*let listaRepartidores = document.getElementById('listaRepartidores');
                     listaRepartidores.replaceChildren();
 
                     usuarios.forEach((usuarioLista) => {
-                        //<li class="list-group-item d-flex justify-content-between align-items-center">A list item<span class="badge bg-primary rounded-pill">50</span></li>
                         let li = document.createElement('li');
 
                         li.addEventListener('click', () => {
@@ -135,7 +168,7 @@
 
                         li.appendChild(span);
                         listaRepartidores.appendChild(li);
-                    });
+                    });*/
                 }
             });
         }
@@ -147,6 +180,12 @@
 
                 if (frame == 1) {
                     usuario['posicion_final'] = { lat: usuario['posicion_nueva']['lat'], lng: usuario['posicion_nueva']['lng'] };
+                    //Comenzar Seguimiento
+                    //Parar El Seguimiento
+                    if (fijado == usuario['id']) {
+                        mapa.panTo(usuario['marcador'].position);
+                        document.getElementById('velocidadRepartidor').innerText = usuario['velocidad'].toFixed(1) + ' Km/h';
+                    }
                 }
 
                 if (usuario['posicion_inicial']['lat'] != usuario['posicion_final']['lat'] || usuario['posicion_inicial']['lng'] != usuario['posicion_final']['lng']) {
@@ -162,11 +201,6 @@
 
                 if (frame == 150) {
                     usuario['posicion_inicial'] = { lat: usuario['posicion_final']['lat'], lng: usuario['posicion_final']['lng'] };
-//Comenzar Seguimiento
-//Parar El Seguimiento
-                    if (fijado == usuario['id']) {
-                        mapa.panTo(usuario['marcador'].position);
-                    }
                 }
 
             });
@@ -230,7 +264,7 @@
             </h5>
             <div class="card-body">
                 <h5 class="card-title" id="txtNombreRepartidor">Carlos Gilberto Jaime Rosas</h5>
-                <p class="card-text">0.0 Km/h</p>
+                <p class="card-text" id="velocidadRepartidor">0.0 Km/h</p>
                 <a href="#" id="btnBuscarRepartidor" class="btn btn-primary" data-bs-toggle="modal"
                     data-bs-target="#modalSelector">Buscar Repartidor</a>
             </div>
