@@ -162,7 +162,8 @@
 
                 if (frame == 150) {
                     usuario['posicion_inicial'] = { lat: usuario['posicion_final']['lat'], lng: usuario['posicion_final']['lng'] };
-
+//Comenzar Seguimiento
+//Parar El Seguimiento
                     if (fijado == usuario['id']) {
                         mapa.panTo(usuario['marcador'].position);
                     }
