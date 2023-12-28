@@ -101,6 +101,24 @@
                         posicion_final: { lat: usuario['latitud'], lng: usuario['longitud'] },
                         posicion_nueva: { lat: usuario['latitud'], lng: usuario['longitud'] }
                     });
+
+                    let listaRepartidores = document.getElementById('listaRepartidores');
+
+                    listaRepartidores.replaceChildren();
+
+                    usuarios.forEach( (usuarioLista)=>{
+                        //<li class="list-group-item d-flex justify-content-between align-items-center">A list item<span class="badge bg-primary rounded-pill">50</span></li>
+                        let li = document.createElement('li');
+                        li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+                        li.innerText = usuarioLista['nombre'];
+
+                        let span = document.createElement('span');
+                        span.classList.add('badge', 'bg-primary', 'rounded-pill');
+                        span.innerText = usuarioLista['id'];
+
+                        li.appendChild(span);
+                        listaRepartidores.appendChild(li);
+                    } );
                 }
             });
         }
@@ -150,8 +168,8 @@
                 mapId: '7845e7dffe8cea37'
             });
 
-            setInterval(actualizacion_logica, 500);
-            setTimeout(procesar_vista, 10);
+            //setInterval(actualizacion_logica, 500);
+            //setTimeout(procesar_vista, 10);
         }
 
         initMap();
@@ -169,451 +187,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <ol class="list-group">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A list item
-                            <span class="badge bg-primary rounded-pill">50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A second list item
-                            <span class="badge bg-primary rounded-pill">15</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            A third list item
-                            <span class="badge bg-primary rounded-pill">16</span>
-                        </li>
+                    <ol class="list-group" id="listaRepartidores" >
                     </ol>
                 </div>
                 <div class="modal-footer">
@@ -625,19 +199,19 @@
 
     <div class="d-flex h-100 flex-column">
 
-        <div class="card">
-            <div class="card-header">
-                Repartidor
-            </div>
+        <div class="flex-grow-1" id="mapa"></div>
+
+        <div class="card text-center border-0">
+            <h5 class="card-header">
+                Repartidor : 15
+            </h5>
             <div class="card-body">
-                <h5 class="card-title">Sin repartidor seleccionado</h5>
-                <p class="card-text">Movimiento libre</p>
-                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelector">Seleccionar
-                    Repartidor</a>
+                <h5 class="card-title">Carlos Gilberto Jaime Rosas</h5>
+                <p class="card-text">0.0 Km/h</p>
+                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelector">Buscar Repartidor</a>
             </div>
         </div>
 
-        <div class="flex-grow-1" id="mapa"></div>
     </div>
 
     <script>(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
