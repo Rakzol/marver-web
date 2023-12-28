@@ -18,10 +18,11 @@
             exit();
         }
 
-        $preparada = $conexion->prepare('INSERT INTO posiciones VALUES( :usuario, :latitud, :longitud, GETDATE() )');
+        $preparada = $conexion->prepare('INSERT INTO posiciones VALUES( :usuario, :latitud, :longitud, :velocidad, GETDATE() )');
         $preparada->bindValue(':usuario', $usuarios[0]['Clave']);
         $preparada->bindValue(':latitud', $_POST['latitud']);
         $preparada->bindValue(':longitud', $_POST['longitud']);
+        $preparada->bindValue(':velocidad', $_POST['velocidad']);
         $preparada->execute();
 
         $resultado["status"] = 0;
