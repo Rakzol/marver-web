@@ -16,12 +16,13 @@
             exit();
         }
 
-        $preparada = $conexion->prepare('SELECT Contraseña FROM Vendedores WHERE Nombre = :usuario AND Contraseña = :contrasena');
+        $preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Nombre = :usuario AND Contraseña = :contrasena');
         $preparada->bindValue(':usuario', $_POST['usuario']);
         $preparada->bindValue(':contrasena', $_POST['contraseña']);
         $preparada->execute();
 
-        if( count($preparada->fetchAll(PDO::FETCH_ASSOC)) == 0 ){
+        $registros = $preparada->fetchAll(PDO::FETCH_ASSOC);
+        if( count($registros) == 0 ){
             $resultado['usuario'] = true;
             $resultado['contraseña'] = false;
             echo json_encode($resultado);
@@ -30,6 +31,7 @@
 
         $resultado['usuario'] = true;
         $resultado['contraseña'] = true;
+        $resultado['id'] = $registros[0]['Clave'];
         echo json_encode($resultado);
     }catch( Exception $exception ) {
         header('HTTP/1.1 500 ' . $exception->getMessage());
