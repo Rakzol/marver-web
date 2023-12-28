@@ -103,7 +103,6 @@
                     });
 
                     let listaRepartidores = document.getElementById('listaRepartidores');
-
                     listaRepartidores.replaceChildren();
 
                     usuarios.forEach( (usuarioLista)=>{
@@ -168,8 +167,8 @@
                 mapId: '7845e7dffe8cea37'
             });
 
-            //setInterval(actualizacion_logica, 500);
-            //setTimeout(procesar_vista, 10);
+            setInterval(actualizacion_logica, 500);
+            setTimeout(procesar_vista, 10);
         }
 
         initMap();
