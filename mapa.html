@@ -121,7 +121,7 @@
 
                         document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
                         document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
-                        document.getElementById('velocidadRepartidor').innerText = usuarioLista['velocidad'] + ' Km/h';
+                        document.getElementById('velocidadRepartidor').innerText = usuarioLista['velocidad'].toFixed(1) + ' Km/h';
 
                         infowindow.open({
                             anchor: usuarioLista['marcador'],
