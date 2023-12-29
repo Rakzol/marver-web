@@ -111,6 +111,7 @@
                         fijado = usuarioLista['id'];
 
                         mapa.setZoom(21);
+                        mapa.setMapTypeId(google.maps.MapTypeId.SATELLITE);
                         mapa.panTo(usuarioLista['marcador'].position);
 
                         document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
@@ -132,6 +133,7 @@
                         fijado = usuarioLista['id'];
 
                         mapa.setZoom(21);
+                        mapa.setMapTypeId(google.maps.MapTypeId.SATELLITE);
                         mapa.panTo(usuarioLista['marcador'].position);
 
                         document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
@@ -246,6 +248,7 @@
                 zoom: 13.36,
                 mapId: '7845e7dffe8cea37'
             });
+            mapa.setMapTypeId(google.maps.MapTypeId.SATELLITE);
 
             setInterval(actualizacion_logica, 500);
             setTimeout(procesar_vista, 10);
