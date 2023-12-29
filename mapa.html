@@ -87,17 +87,6 @@
                         position: { lat: usuario['latitud'], lng: usuario['longitud'] }
                     });
 
-                    let infowindow = new google.maps.InfoWindow({
-                        content: '<p style="margin: 0;" ><strong>' + usuario['usuario'] + ' </strong>' + usuario['Nombre'] + '</p>'
-                    });
-
-                    marcador.addListener("click", () => {
-                        infowindow.open({
-                            anchor: marcador,
-                            map: mapa,
-                        });
-                    });
-
                     let usuarioLista = {
                         id: usuario['usuario'],
                         nombre: usuario['Nombre'],
@@ -107,6 +96,26 @@
                         posicion_final: { lat: usuario['latitud'], lng: usuario['longitud'] },
                         posicion_nueva: { lat: usuario['latitud'], lng: usuario['longitud'] }
                     };
+
+                    let infowindow = new google.maps.InfoWindow({
+                        content: '<p style="margin: 0;" ><strong>' + usuarioLista['id'] + ' </strong>' + usuarioLista['nombre'] + '</p>'
+                    });
+
+                    marcador.addListener("click", () => {
+                        fijado = usuarioLista['id'];
+
+                        mapa.setZoom(17.5);
+                        mapa.panTo(usuarioLista['marcador'].position);
+
+                        document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
+                        document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
+                        //velocidadRepartidor.innerText = (usuarioLista['velocidad'] * 3.7).toFixed(1) + ' Km/h';
+
+                        infowindow.open({
+                            anchor: usuarioLista['marcador'],
+                            map: mapa,
+                        });
+                    });
 
                     usuarios.push(usuarioLista);
 
@@ -121,7 +130,7 @@
 
                         document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
                         document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
-                        velocidadRepartidor.innerText = (usuarioLista['velocidad'] * 3.7).toFixed(1) + ' Km/h';
+                        //velocidadRepartidor.innerText = (usuarioLista['velocidad'] * 3.7).toFixed(1) + ' Km/h';
 
                         infowindow.open({
                             anchor: usuarioLista['marcador'],
