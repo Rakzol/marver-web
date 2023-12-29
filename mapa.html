@@ -180,13 +180,17 @@
 
             usuarios.forEach((usuario) => {
 
+                if (fijado == usuario['id']) {
+                    if (frame % 50 == 0) {
+                        mapa.panTo(usuario['marcador'].position);
+                    }
+                }
+
                 if (frame == 1) {
                     usuario['posicion_final'] = { lat: usuario['posicion_nueva']['lat'], lng: usuario['posicion_nueva']['lng'] };
                     //Comenzar Seguimiento
                     //Parar El Seguimiento
                     if (fijado == usuario['id']) {
-                        mapa.panTo(usuario['marcador'].position);
-                        console.log(usuario['velocidad']);
                         document.getElementById('velocidadRepartidor').innerText = (usuario['velocidad'] * 3.7).toFixed(1) + ' Km/h';
                     }
                 }
