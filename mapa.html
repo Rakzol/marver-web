@@ -121,7 +121,7 @@
 
                         document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
                         document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
-                        document.getElementById('velocidadRepartidor').innerText = usuarioLista['velocidad'].toFixed(1) + ' Km/h';
+                        document.getElementById('velocidadRepartidor').innerText = (usuarioLista['velocidad'] * 3.7).toFixed(1) + ' Km/h';
 
                         infowindow.open({
                             anchor: usuarioLista['marcador'],
@@ -187,7 +187,7 @@
                     if (fijado == usuario['id']) {
                         mapa.panTo(usuario['marcador'].position);
                         console.log(usuario['velocidad']);
-                        document.getElementById('velocidadRepartidor').innerText = usuario['velocidad'].toFixed(1) + ' Km/h';
+                        document.getElementById('velocidadRepartidor').innerText = (usuario['velocidad'] * 3.7).toFixed(1) + ' Km/h';
                     }
                 }
 
