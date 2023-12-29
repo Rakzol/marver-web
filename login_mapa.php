@@ -416,6 +416,92 @@
     </div>
     <!-- Spinner End -->
 
+    <!-- Brand & Contact Start -->
+    <div class="container-fluid py-3 px-5 wow fadeIn barra-redes" data-wow-delay="0.1s">
+        <div class="row align-items-center top-bar">
+            <div class="col-lg-8 col-md-12 text-center text-lg-start">
+                <a href="https://www.marverrefacciones.mx/" class="navbar-brand m-0 p-0" style="display: block;">
+                    <!-- <h1 class="fw-bold text-primary m-0"><i class="fa fa-laptop-code me-3"></i>Marver</h1> -->
+                    <img class="logo_principal" style="width: 90px;" src="img/logo.png" alt="Logo">
+                </a>
+            </div>
+            <div id="contenedor_redes" class="col-lg-4 col-md-6 d-lg-block">
+                <div class="row">
+                    <div class="col-2">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <a href="https://www.facebook.com/refaccionesparaautos/" target="_blank"
+                                class="iconos fondo-facebook flex-shrink-0 btn-lg-square border rounded-circle"><i
+                                    class="fab fa-facebook text-primary"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <a href="https://www.instagram.com/marverrefacciones/" target="_blank"
+                                class="iconos fondo-instagram flex-shrink-0 btn-lg-square border rounded-circle"><i
+                                    class="fab fa-instagram text-primary"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <a href="mailto:ventas@marverrefacciones.mx" target="_blank"
+                                class="iconos flex-shrink-0 btn-lg-square border rounded-circle"><i
+                                    class="far fa-envelope text-primary"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <a href="https://wa.me/5216681721870" target="_blank"
+                                class="iconos fondo-whatsapp flex-shrink-0 btn-lg-square border rounded-circle"><i
+                                    class="fab fa-whatsapp text-primary"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <a href="https://m.me/refaccionesparaautos" target="_blank"
+                                class="iconos fondo-messenger flex-shrink-0 btn-lg-square border rounded-circle"><i
+                                    class="fab fa-facebook-messenger text-primary"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Brand & Contact End -->
+
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-xxl bg-primary navbar-dark sticky-top py-xxl-0 px-xxl-5 wow fadeIn"
+        data-wow-delay="0.1s">
+        <a href="https://www.marverrefacciones.mx/" class="navbar-brand ms-3 d-xxl-none">Marver</a>
+        <button type="button" class="navbar-toggler me-3" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav p-3 p-xxl-0">
+                <a href="https://www.marverrefacciones.mx/" class="nav-item nav-link active">INICIO</a>
+                <a href="https://www.marverrefacciones.mx/#nosotros" class="nav-item nav-link">NOSOTROS</a>
+                <a href="https://www.marverrefacciones.mx/catalogo.php" class="nav-item nav-link">REFACCIONES</a>
+                <a href="https://www.marverrefacciones.mx/#proveedores" class="nav-item nav-link">PROVEEDORES</a>
+                <a href="https://www.marverrefacciones.mx/#inicio-tips" class="nav-item nav-link">TIPS</a>
+                <a href="https://www.marverrefacciones.mx/#sucursales" class="nav-item nav-link">SUCURSALES</a>
+                <a href="https://www.marverrefacciones.mx/#contenedor_correo" class="nav-item nav-link">CONTACTO</a>
+            </div>
+            <div class="navbar-nav ms-auto p-3 p-xxl-0">
+                <?php
+                    if(isset($_SESSION['usuario'])){
+                        echo '<a href="https://www.marverrefacciones.mx/estado_de_cuenta" class="nav-item nav-link"><i class="fa-solid fa-file"></i> ESTADO DE CUENTA</a>';
+                        echo '<a href="https://www.marverrefacciones.mx/pedidos.php" class="nav-item nav-link"><i class="fa-solid fa-truck"></i> PEDIDOS</a>';
+                        echo '<a href="https://www.marverrefacciones.mx/carrito.php" class="nav-item nav-link"><i class="fa-solid fa-cart-shopping"></i> CARRITO</a>';
+                        echo '<a href="https://www.marverrefacciones.mx/modelo/cerrar_sesion.php" class="nav-item nav-link"><i class="fa-solid fa-power-off"></i> CERRAR SESIÓN</a>';
+                    }else{
+                        echo '<a href="https://www.marverrefacciones.mx/login.php" class="nav-item nav-link"><i class="fa-solid fa-right-to-bracket"></i> INICIAR SESIÓN</a>';
+                    }
+                ?>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
     <section class="h-100 gradient-form">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
@@ -440,10 +526,10 @@
                                                 placeholder="Nombre de usuario" spellcheck="false" />
                                             <label class="form-label" for="correo">Usuario</label>
                                             <div class="valid-feedback">
-                                                Correo registrado.
+                                                Usuario registrado.
                                               </div>
                                             <div class="invalid-feedback">
-                                                Correo no registrado.
+                                                Usuario no registrado.
                                             </div>
                                         </div>
 
@@ -455,17 +541,6 @@
                                             </div>
                                         </div>
 
-                                        <div class="text-center pt-1 mb-5 pb-1">
-                                            <button onclick="iniciar_sesion();"
-                                                class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3"
-                                                style="border-width: 0px;" type="button">Iniciar sesión</button>
-                                            <a class="text-muted" href="#!">¿Olvidó su contraseña?</a>
-                                        </div>
-
-                                        <div class="d-flex align-items-center justify-content-center pb-4">
-                                            <p class="mb-0 me-2">¿No tiene cuenta?</p>
-                                            <button type="button" class="btn btn-outline-danger">Crear cuenta</button>
-                                        </div>
 
                                     </form>
 
