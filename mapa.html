@@ -44,6 +44,7 @@
         let usuarios = [];
         let frame = 1;
         let fijado = 0;
+        let velocidadRepartidor;
 
         function actualizacion_logica() {
             let datos = new FormData();
@@ -121,7 +122,7 @@
 
                         document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
                         document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
-                        document.getElementById('velocidadRepartidor').innerText = (usuarioLista['velocidad'] * 3.7).toFixed(1) + ' Km/h';
+                        velocidadRepartidor.innerText = (usuarioLista['velocidad'] * 3.7).toFixed(1) + ' Km/h';
 
                         infowindow.open({
                             anchor: usuarioLista['marcador'],
@@ -183,6 +184,7 @@
                 if (fijado == usuario['id']) {
                     //if (frame % 10 == 0) {
                         mapa.panTo(usuario['marcador'].position);
+                        velocidadRepartidor.innerText = (usuario['velocidad'] * 3.7).toFixed(1) + ' Km/h';
                     //}
                 }
 
@@ -190,9 +192,9 @@
                     usuario['posicion_final'] = { lat: usuario['posicion_nueva']['lat'], lng: usuario['posicion_nueva']['lng'] };
                     //Comenzar Seguimiento
                     //Parar El Seguimiento
-                    if (fijado == usuario['id']) {
-                        document.getElementById('velocidadRepartidor').innerText = (usuario['velocidad'] * 3.7).toFixed(1) + ' Km/h';
-                    }
+                    // if (fijado == usuario['id']) {
+                    //     velocidadRepartidor.innerText = (usuario['velocidad'] * 3.7).toFixed(1) + ' Km/h';
+                    // }
                 }
 
                 if (usuario['posicion_inicial']['lat'] != usuario['posicion_final']['lat'] || usuario['posicion_inicial']['lng'] != usuario['posicion_final']['lng']) {
@@ -233,6 +235,8 @@
 
             setInterval(actualizacion_logica, 500);
             setTimeout(procesar_vista, 10);
+
+            velocidadRepartidor = document.getElementById('velocidadRepartidor');
         }
 
         initMap();
