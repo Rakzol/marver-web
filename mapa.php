@@ -1,6 +1,6 @@
 <?php
     session_start();
-    
+
     if(!isset($_SESSION['usuario_mapa'])){
         header("Location: https://www.marverrefacciones.mx/login_mapa.php");
         exit();
@@ -110,7 +110,7 @@
                     marcador.addListener("click", () => {
                         fijado = usuarioLista['id'];
 
-                        mapa.setZoom(18);
+                        mapa.setZoom(21);
                         mapa.panTo(usuarioLista['marcador'].position);
 
                         document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
@@ -131,7 +131,7 @@
                         document.getElementById('btnCerrarModal').click();
                         fijado = usuarioLista['id'];
 
-                        mapa.setZoom(18);
+                        mapa.setZoom(21);
                         mapa.panTo(usuarioLista['marcador'].position);
 
                         document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
