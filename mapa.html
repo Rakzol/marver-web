@@ -181,8 +181,8 @@
             usuarios.forEach((usuario) => {
 
                 if (fijado == usuario['id']) {
-                    if (frame % 50 == 0) {
-                        mapa.setCenter(usuario['marcador'].position);
+                    if (frame % 10 == 0) {
+                        mapa.panTo(usuario['marcador'].position);
                     }
                 }
 
