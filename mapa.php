@@ -46,7 +46,7 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script type="module">
 
-        let mapa;
+        var mapa;
         let usuarios = [];
         let frame = 1;
         let fijado = 0;
