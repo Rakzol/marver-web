@@ -541,6 +541,17 @@
                                             </div>
                                         </div>
 
+                                        <div class="text-center pt-1 mb-5 pb-1">
+                                            <button onclick="iniciar_sesion();"
+                                                class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3"
+                                                style="border-width: 0px;" type="button">Iniciar sesión</button>
+                                            <a class="text-muted" href="#!">¿Olvidó su contraseña?</a>
+                                        </div>
+
+                                        <div class="d-flex align-items-center justify-content-center pb-4">
+                                            <p class="mb-0 me-2">¿No tiene cuenta?</p>
+                                            <button type="button" class="btn btn-outline-danger">Crear cuenta</button>
+                                        </div>
 
                                     </form>
 
@@ -582,7 +593,7 @@
 
         function iniciar_sesion() {
             let datos = new FormData();
-            datos.append('correo', correo.value);
+            datos.append('usuario', correo.value);
             datos.append('contraseña', contraseña.value);
 
             fetch('android/iniciar_sesion_web', {
@@ -596,13 +607,13 @@
                     alert('Error al iniciar sesion: ' + error);
                 })
                 .then(respuesta_json => {
-                    correo.classList.add( respuesta_json.correo ? 'is-valid' : 'is-invalid' );
-                    correo.classList.remove( !respuesta_json.correo ? 'is-valid' : 'is-invalid' );
+                    correo.classList.add( respuesta_json.usuario ? 'is-valid' : 'is-invalid' );
+                    correo.classList.remove( !respuesta_json.usuario ? 'is-valid' : 'is-invalid' );
                     contraseña.classList.add( respuesta_json.contraseña ? 'is-valid' : 'is-invalid' );
                     contraseña.classList.remove( !respuesta_json.contraseña ? 'is-valid' : 'is-invalid' );
 
-                    if(respuesta_json.correo && respuesta_json.contraseña){
-                        document.location.href = 'https://www.marverrefacciones.mx/catalogo.php';
+                    if(respuesta_json.usuario && respuesta_json.contraseña){
+                        document.location.href = 'https://www.marverrefacciones.mx/mapa.php';
                     }
                 });
         }

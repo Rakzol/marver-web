@@ -1,3 +1,9 @@
+<?php
+    if(!isset($_SESSION['usuario_mapa'])){
+        header("Location: https://www.marverrefacciones.mx/login_mapa.php");
+        exit();
+    }
+?>
 <!DOCTYPE html>
 <html class="h-100" lang="es">
 
@@ -47,10 +53,8 @@
 
         function actualizacion_logica() {
             let datos = new FormData();
-            datos.append('usuario', 'alexis');
-            datos.append('contraseña', '8899');
 
-            fetch('android/posiciones', {
+            fetch('android/posiciones_web', {
                 method: 'POST',
                 body: datos
             })
