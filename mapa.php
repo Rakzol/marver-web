@@ -1,4 +1,6 @@
 <?php
+    session_start();
+    
     if(!isset($_SESSION['usuario_mapa'])){
         header("Location: https://www.marverrefacciones.mx/login_mapa.php");
         exit();
