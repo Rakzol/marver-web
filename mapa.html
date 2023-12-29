@@ -183,7 +183,7 @@
 
                 if (fijado == usuario['id']) {
                     velocidadRepartidor.innerText = (usuario['velocidad'] * 3.7).toFixed(1) + ' Km/h';
-                    if (frame % 100 == 0) {
+                    if (frame % 50 == 0) {
                         mapa.panTo(usuario['marcador'].position);
                     }
                 }
