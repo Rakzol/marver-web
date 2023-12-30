@@ -175,7 +175,7 @@
                     marcador.addListener("click", () => {
                         fijado = usuarioLista['id'];
 
-                        mapa.setZoom(18.25);
+                        mapa.setZoom(18.5);
                         mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
                         mapa.panTo(usuarioLista['marcador'].position);
 
@@ -197,7 +197,7 @@
                         document.getElementById('btnCerrarModal').click();
                         fijado = usuarioLista['id'];
 
-                        mapa.setZoom(18.25);
+                        mapa.setZoom(18.5);
                         mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
                         mapa.panTo(usuarioLista['marcador'].position);
 
