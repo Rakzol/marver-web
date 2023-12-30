@@ -327,8 +327,9 @@
     <script>
 
         document.getElementById('modalSelector').addEventListener('hidden.bs.modal', function () {
-            console.log('bluera');
-            document.getElementById('btnBuscarRepartidor').blur();
+            setTimeout(() => {
+                document.getElementById('btnBuscarRepartidor').blur();
+            }, 2000);
         });
 
     </script>
