@@ -326,9 +326,8 @@
 
     <script>
 
-        var miModal = new bootstrap.Modal(document.getElementById('modalSelector'));
-        miModal._element.addEventListener('hidden.bs.modal', function () {
-            console.log('El modal se ha cerrado');
+        document.getElementById('modalSelector').addEventListener('hidden.bs.modal', function () {
+            document.getElementById('btnBuscarRepartidor').blur();
         });
 
     </script>
