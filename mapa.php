@@ -176,7 +176,7 @@
                         fijado = usuarioLista['id'];
 
                         mapa.setZoom(21);
-                        mapa.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+                        mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
                         mapa.panTo(usuarioLista['marcador'].position);
 
                         document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
@@ -198,7 +198,7 @@
                         fijado = usuarioLista['id'];
 
                         mapa.setZoom(21);
-                        mapa.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+                        mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
                         mapa.panTo(usuarioLista['marcador'].position);
 
                         document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
