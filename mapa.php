@@ -329,7 +329,7 @@
         document.getElementById('modalSelector').addEventListener('hidden.bs.modal', function () {
             setTimeout(() => {
                 document.getElementById('btnBuscarRepartidor').blur();
-            }, 2000);
+            }, 1000);
         });
 
     </script>
