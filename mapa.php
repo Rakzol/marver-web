@@ -44,8 +44,71 @@
     <link href="css/style.css" rel="stylesheet">
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+</head>
+
+<body class="h-100">
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalSelector" tabindex="-1" aria-labelledby="modalSelectorLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalSelectorLabel">Repartidores</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ol class="list-group" id="listaRepartidores">
+                    </ol>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnCerrarModal" type="button" class="btn btn-primary"
+                        data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex h-100 flex-column">
+
+        <div class="flex-grow-1" id="mapa"></div>
+
+        <div class="card text-center border-0">
+            <h5 class="card-header">
+                Repartidor : <strong id="txtIdRepartidor"></strong>
+            </h5>
+            <div class="card-body">
+                <h5 class="card-title" id="txtNombreRepartidor">Seleccione un Repartidor</h5>
+                <p class="card-text" id="velocidadRepartidor">0.0 Km/h</p>
+                <a href="#" id="btnBuscarRepartidor" class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#modalSelector">Buscar Repartidor</a>
+                <div class="form-check form-switch d-inline-block ms-2 mt-2" >
+                    <input class="form-check-input" id="seguirRepartidor" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                    <label class="form-check-label ms-1" for="flexSwitchCheckChecked">Seguir repartidor</label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MDB -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.js"></script>
+
+    <!-- JavaScript Libraries -->
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/counterup/counterup.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/lightbox/js/lightbox.min.js"></script> -->
+
+    <!-- Template Javascript -->
+    <!-- <script src="js/main.js"></script> -->
+
     <script>(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
             ({ key: "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo", v: "weekly" });</script>
+            
     <script type="module">
 
         let mapa;
@@ -114,7 +177,6 @@
 
                         mapa.setZoom(21);
                         mapa.setMapTypeId(google.maps.MapTypeId.SATELLITE);
-                        console.log(mapa);
                         mapa.panTo(usuarioLista['marcador'].position);
 
                         document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
@@ -137,7 +199,6 @@
 
                         mapa.setZoom(21);
                         mapa.setMapTypeId(google.maps.MapTypeId.SATELLITE);
-                        console.log(mapa);
                         mapa.panTo(usuarioLista['marcador'].position);
 
                         document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
@@ -252,7 +313,6 @@
                 zoom: 13.36,
                 mapId: '7845e7dffe8cea37'
             });
-            console.log(mapa);
 
             setInterval(actualizacion_logica, 500);
             setTimeout(procesar_vista, 10);
@@ -263,68 +323,6 @@
 
         initMap();
     </script>
-</head>
-
-<body class="h-100">
-
-    <!-- Modal -->
-    <div class="modal fade" id="modalSelector" tabindex="-1" aria-labelledby="modalSelectorLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalSelectorLabel">Repartidores</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <ol class="list-group" id="listaRepartidores">
-                    </ol>
-                </div>
-                <div class="modal-footer">
-                    <button id="btnCerrarModal" type="button" class="btn btn-primary"
-                        data-bs-dismiss="modal">Cancelar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="d-flex h-100 flex-column">
-
-        <div class="flex-grow-1" id="mapa"></div>
-
-        <div class="card text-center border-0">
-            <h5 class="card-header">
-                Repartidor : <strong id="txtIdRepartidor"></strong>
-            </h5>
-            <div class="card-body">
-                <h5 class="card-title" id="txtNombreRepartidor">Seleccione un Repartidor</h5>
-                <p class="card-text" id="velocidadRepartidor">0.0 Km/h</p>
-                <a href="#" id="btnBuscarRepartidor" class="btn btn-primary" data-bs-toggle="modal"
-                data-bs-target="#modalSelector">Buscar Repartidor</a>
-                <div class="form-check form-switch d-inline-block ms-2 mt-2" >
-                    <input class="form-check-input" id="seguirRepartidor" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
-                    <label class="form-check-label ms-1" for="flexSwitchCheckChecked">Seguir repartidor</label>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- MDB -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.js"></script>
-
-    <!-- JavaScript Libraries -->
-    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/counterup/counterup.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/lightbox/js/lightbox.min.js"></script> -->
-
-    <!-- Template Javascript -->
-    <!-- <script src="js/main.js"></script> -->
-
 </body>
 
 </html>
