@@ -181,7 +181,7 @@
 
                         document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
                         document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
-                        //velocidadRepartidor.innerText = (usuarioLista['velocidad'] * 3.7).toFixed(1) + ' Km/h';
+                        //velocidadRepartidor.innerText = (usuarioLista['velocidad'] * 3.6).toFixed(1) + ' Km/h';
 
                         infowindow.open({
                             anchor: usuarioLista['marcador'],
@@ -203,7 +203,7 @@
 
                         document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
                         document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
-                        //velocidadRepartidor.innerText = (usuarioLista['velocidad'] * 3.7).toFixed(1) + ' Km/h';
+                        //velocidadRepartidor.innerText = (usuarioLista['velocidad'] * 3.6).toFixed(1) + ' Km/h';
 
                         infowindow.open({
                             anchor: usuarioLista['marcador'],
@@ -263,7 +263,7 @@
             usuarios.forEach((usuario) => {
 
                 if (fijado == usuario['id'] ) {
-                    velocidadRepartidor.innerText = (usuario['velocidad'] * 3.7).toFixed(1) + ' Km/h';
+                    velocidadRepartidor.innerText = (usuario['velocidad'] * 3.6).toFixed(1) + ' Km/h';
                     if (frame % 50 == 0 && seguirRepartidor.checked) {
                         mapa.panTo(usuario['marcador'].position);
                     }
@@ -274,7 +274,7 @@
                     //Comenzar Seguimiento
                     //Parar El Seguimiento
                     // if (fijado == usuario['id']) {
-                    //     velocidadRepartidor.innerText = (usuario['velocidad'] * 3.7).toFixed(1) + ' Km/h';
+                    //     velocidadRepartidor.innerText = (usuario['velocidad'] * 3.6).toFixed(1) + ' Km/h';
                     // }
                 }
 
