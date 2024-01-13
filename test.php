@@ -20,7 +20,7 @@
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
             print_r($repartidor);
 
-            $preparada = $conexion->prepare("SELECT * FROM posiciones WHERE usuario = :repartidor");
+            $preparada = $conexion->prepare("SELECT * FROM posiciones WHERE usuario = :repartidor AND ( latitud > 25.794299 OR latitud < 25.794249 ) AND ( longitud > -108.98565 OR longitud < -108.9863133 )");
             $preparada->bindValue(':repartidor', $repartidor['usuario']);
             $preparada->execute();
 
