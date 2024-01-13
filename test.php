@@ -16,7 +16,9 @@
         $preparada->execute();
 
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $fila ){
-            echo $fila;
+            if( $fila['id'] % 1000 == 0 ){
+                echo $fila;
+            }
         }
 
         // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
