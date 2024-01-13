@@ -16,7 +16,7 @@
         $preparada->execute();
 
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $fila ){
-            if( $fila['id'] % 10000 == 0 ){
+            if( $fila['id'] % 1000000 == 0 ){
                 print_r($fila);
             }
         }
