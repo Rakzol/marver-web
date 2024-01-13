@@ -19,6 +19,17 @@
 
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
             print_r($repartidor);
+
+            $preparada = $conexion->prepare("SELECT * FROM posiciones WHERE usuario = :repartidor");
+            $preparada->bindValue(':repartidor', $repartidor['usuario']);
+            $preparada->execute();
+
+            foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $posicion ){
+                if( $posicion['id'] % 10000 == 0 ){
+                    print_r($posicion);
+                }
+            }
+
         }
 
         // echo json_encode($resultado, JSON_UNESCAPED_UNICODE);
