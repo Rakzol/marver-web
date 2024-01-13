@@ -21,7 +21,7 @@
             }
         }
 
-        // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
+        // echo json_encode($resultado, JSON_UNESCAPED_UNICODE);
     }catch( Exception $exception ) {
         header('HTTP/1.1 500 ' . $exception->getMessage());
     }
