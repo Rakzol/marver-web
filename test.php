@@ -15,7 +15,9 @@
         $preparada = $conexion->prepare("SELECT * FROM posiciones");
         $preparada->execute();
 
-        $preparada->fetchAll(PDO::FETCH_ASSOC);
+        foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $fila ){
+            echo $fila;
+        }
 
         // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
     }catch( Exception $exception ) {
