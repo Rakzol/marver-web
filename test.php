@@ -48,8 +48,8 @@
                         if( $posicion['velocidad'] <= $velocidad_limite ){
                             $posicion_buena = [];
                         }else{
-                            if( new DateTime($posicion_buena['fecha'])->getTimestamp() - new DateTime($posicion['fecha'])->getTimestamp() >= $segundos_fin ){
-                                if( new DateTime($posicion_mala['fecha'])->getTimestamp() - new DateTime($posicion_mala['fecha'])->getTimestamp() >= $segundos_inicio ){
+                            if( (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion['fecha']))->getTimestamp() >= $segundos_fin ){
+                                if( (new DateTime($posicion_mala['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp() >= $segundos_inicio ){
                                     print_r( [$posicion_mala,$posicion_mala] );
                                 }
                             }
