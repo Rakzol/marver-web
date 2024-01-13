@@ -70,6 +70,7 @@
         }
 
         echo count($resultados);
+        print_r($resultados);
         // echo json_encode($resultado, JSON_UNESCAPED_UNICODE);
     }catch( Exception $exception ) {
         header('HTTP/1.1 500 ' . $exception->getMessage());
