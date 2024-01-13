@@ -52,6 +52,8 @@
                                 if( (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp() >= $segundos_inicio ){
                                     print_r( [$posicion_mala,$posicion_buena] );
                                 }
+                                $posicion_mala = [];
+                                $posicion_buena = [];
                             }
                         }
                     }
