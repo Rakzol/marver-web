@@ -61,6 +61,12 @@
                 
             }
 
+            if($posicion_mala){
+                if( (new DateTime(end($posiciones)['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp() >= $segundos_inicio ){
+                    $resultados[] = [$posicion_mala,end($posiciones)];
+                }
+            }
+
         }
 
         echo count($resultados);
