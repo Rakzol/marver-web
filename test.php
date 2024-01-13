@@ -50,7 +50,7 @@
                         }else{
                             if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($posicion_buena['fecha']))->getTimestamp() >= $segundos_fin ){
                                 if( (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp() >= $segundos_inicio ){
-                                    print_r( [$posicion_mala,$posicion_buena] );
+                                    $resultados[] = [$posicion_mala,$posicion_buena];
                                 }
                                 $posicion_mala = [];
                                 $posicion_buena = [];
@@ -63,6 +63,7 @@
 
         }
 
+        echo count($resultados);
         // echo json_encode($resultado, JSON_UNESCAPED_UNICODE);
     }catch( Exception $exception ) {
         header('HTTP/1.1 500 ' . $exception->getMessage());
