@@ -12,7 +12,7 @@
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
-        $preparada = $conexion->prepare("SELECT usuario FROM posiciones WHERE fecha >= :dia_inicial AND fecha < :dia_final GROUP BY usuario");
+        $preparada = $conexion->prepare("SELECT usuario FROM posiciones WHERE fecha >= :dia_inicial AND fecha < :dia_final AND ( latitud > 25.794299 OR latitud < 25.794249 ) AND ( longitud > -108.98565 OR longitud < -108.9863133 ) GROUP BY usuario");
         $preparada->bindValue(':dia_inicial', '2010-12-28');
         $preparada->bindValue(':dia_final', '2050-12-28');
         $preparada->execute();
@@ -25,7 +25,7 @@
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
             print_r($repartidor);
 
-            $preparada = $conexion->prepare("SELECT * FROM posiciones WHERE usuario = :repartidor");
+            $preparada = $conexion->prepare("SELECT * FROM posiciones WHERE usuario = :repartidor AND ( latitud > 25.794299 OR latitud < 25.794249 ) AND ( longitud > -108.98565 OR longitud < -108.9863133 )");
             $preparada->bindValue(':repartidor', $repartidor['usuario']); 
             $preparada->execute();
 
