@@ -12,7 +12,7 @@
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
-        $preparada = $conexion->prepare("SELECT Clave, Nombre FROM posiciones INNER JOIN Vendedores ON Vendedores.Clave = posiciones.usuario WHERE fecha >= :dia_inicial AND fecha < :dia_final AND ( latitud > 25.7944994 OR latitud < 25.7941221 ) AND ( longitud > -108.9851520 OR longitud < -108.9866105 ) GROUP BY Clave, Nombre");
+        $preparada = $conexion->prepare("SELECT Clave, Nombre FROM posiciones INNER JOIN Vendedores ON Vendedores.Clave = posiciones.usuario WHERE fecha >= :dia_inicial AND fecha < :dia_final AND 6371 * 2 * ASIN( SQRT( POWER(SIN(RADIANS((25.794227 - latitud) / 2)), 2) + COS(RADIANS(25.794227)) * COS(RADIANS(latitud)) * POWER(SIN(RADIANS((-108.985983 - longitud) / 2)), 2) ) ) >= 0.04 GROUP BY Clave, Nombre");
         $preparada->bindValue(':dia_inicial', '2010-12-28');
         $preparada->bindValue(':dia_final', '2050-12-28');
         $preparada->execute();
@@ -25,7 +25,7 @@
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
             print_r($repartidor);
 
-            $preparada = $conexion->prepare("SELECT * FROM posiciones WHERE usuario = :repartidor AND fecha >= :dia_inicial AND fecha < :dia_final AND ( latitud > 25.7944994 OR latitud < 25.7941221 ) AND ( longitud > -108.9851520 OR longitud < -108.9866105 )");
+            $preparada = $conexion->prepare("SELECT * FROM posiciones WHERE usuario = :repartidor AND fecha >= :dia_inicial AND fecha < :dia_final AND 6371 * 2 * ASIN( SQRT( POWER(SIN(RADIANS((25.794227 - latitud) / 2)), 2) + COS(RADIANS(25.794227)) * COS(RADIANS(latitud)) * POWER(SIN(RADIANS((-108.985983 - longitud) / 2)), 2) ) ) >= 0.04");
             $preparada->bindValue(':repartidor', $repartidor['Clave']);
             $preparada->bindValue(':dia_inicial', '2010-12-28');
             $preparada->bindValue(':dia_final', '2050-12-28');
