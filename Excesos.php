@@ -441,21 +441,6 @@
     </table>
   </div>
 
-    <ul class="pagination justify-content-center mt-3">
-        <li class="page-item"><a class="page-link" href="#" onclick="event.preventDefault(); pagina_anterior();"
-                id="anterior">&#60;</a></li>
-        <li class="page-item"><a class="page-link" href="#" onclick="event.preventDefault(); primera_pagina();"
-                id="primera">0</a></li>
-        <li class="page-item"><input type="number" class="page-link" id="pagina" placeholder="0" style="width: 5rem;">
-        </li>
-        <li class="page-item"></li><button type="button" class="btn btn-primary" style="border-radius: 0px;"
-            onclick="ir_pagina();">Ir</button></li>
-        <li class="page-item"><a class="page-link" href="#" onclick="event.preventDefault(); ultima_pagina();"
-                id="ultima">0</a></li>
-        <li class="page-item"><a class="page-link" href="#" onclick="event.preventDefault(); siguiente_pagina();"
-                id="siguiente">&#62;</a></li>
-    </ul>
-
     <script>
         function descargar(){
             document.querySelector("#descargar_pdf").innerHTML = 'Descargando <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
