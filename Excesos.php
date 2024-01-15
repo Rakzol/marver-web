@@ -411,35 +411,35 @@
     <!-- Spinner End -->
 
     <div class="container mt-3 p-3 bg-white rounded">
-    <h1 class="text-center" >Excesos</h1>
-    <!-- dia minutos limite de reposo velocidad limite de conduccion -->
-    <table class="table mb-0">
-      <thead>
+        <h1 class="text-center" >Excesos</h1>
+        <!-- dia minutos limite de reposo velocidad limite de conduccion -->
+        <table class="table mb-0">
+        <thead>
+            <tr>
+            <th>Clave</th>
+            <th class="d-none d-md-table-cell" >Nombre</th>
+            <th>Tipo</th>
+            <th>Duración</th>
+            <th class="d-none d-md-table-cell" >Velocidad</th>
+            <th class="d-none d-md-table-cell" >Fecha</th>
+            <th>Mapa</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        <!-- <tfoot>
         <tr>
-          <th>Clave</th>
-          <th class="d-none d-md-table-cell" >Nombre</th>
-          <th class="d-none d-md-table-cell" >Tipo</th>
-          <th>Duración</th>
-          <th>Velocidad</th>
-          <th class="d-none d-md-table-cell" >Fecha</th>
-          <th>Mapa</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-      <!-- <tfoot>
-      <tr>
-          <th class="d-none d-md-table-cell" ></th>
-          <th class="d-none d-md-table-cell" ></th>
-          <th>Totales:</th>
-          <th class="dinero" id="importe_total" ></th>
-          <th class="dinero" id="abono_total" ></th>
-          <th class="dinero d-none d-md-table-cell" id="deuda_total" ></th>
-          <th></th>
-        </tr>
-    </tfoot> -->
-    </table>
-  </div>
+            <th class="d-none d-md-table-cell" ></th>
+            <th class="d-none d-md-table-cell" ></th>
+            <th>Totales:</th>
+            <th class="dinero" id="importe_total" ></th>
+            <th class="dinero" id="abono_total" ></th>
+            <th class="dinero d-none d-md-table-cell" id="deuda_total" ></th>
+            <th></th>
+            </tr>
+        </tfoot> -->
+        </table>
+    </div>
 
     <script>
         function descargar(){
