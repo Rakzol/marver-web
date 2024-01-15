@@ -25,8 +25,10 @@
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
             print_r($repartidor);
 
-            $preparada = $conexion->prepare("SELECT * FROM posiciones WHERE usuario = :repartidor AND ( latitud > 25.7944994 OR latitud < 25.7941221 ) AND ( longitud > -108.9851520 OR longitud < -108.9866105 )");
-            $preparada->bindValue(':repartidor', $repartidor['Clave']); 
+            $preparada = $conexion->prepare("SELECT * FROM posiciones WHERE usuario = :repartidor AND fecha >= :dia_inicial AND fecha < :dia_final AND ( latitud > 25.7944994 OR latitud < 25.7941221 ) AND ( longitud > -108.9851520 OR longitud < -108.9866105 )");
+            $preparada->bindValue(':repartidor', $repartidor['Clave']);
+            $preparada->bindValue(':dia_inicial', '2010-12-28');
+            $preparada->bindValue(':dia_final', '2050-12-28');
             $preparada->execute();
 
             $posicion_mala = [];
