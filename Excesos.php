@@ -13,7 +13,7 @@
     <meta charset='UTF-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <title>Tiempos</title>
+    <title>Excesos</title>
 
 
     <!-- Font Awesome -->
@@ -411,7 +411,8 @@
     <!-- Spinner End -->
 
     <div class="container mt-3 p-3 bg-white rounded">
-    <h1 class="text-center" >Estado de Cuenta</h1>
+    <h1 class="text-center" >Excesos</h1>
+    <!-- dia minutos limite de reposo velocidad limite de conduccion -->
     <table class="table mb-0">
     <caption class="text-center mb-0 pb-0 pt-3" ><button class="btn btn-primary" onclick="descargar();" id="descargar_pdf" style="width: 146px;" >Descargar PDF</button></caption>
       <thead>
