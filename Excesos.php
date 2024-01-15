@@ -414,24 +414,21 @@
     <h1 class="text-center" >Excesos</h1>
     <!-- dia minutos limite de reposo velocidad limite de conduccion -->
     <table class="table mb-0">
-    <caption class="text-center mb-0 pb-0 pt-3" ><button class="btn btn-primary" onclick="descargar();" id="descargar_pdf" style="width: 146px;" >Descargar PDF</button></caption>
       <thead>
         <tr>
-          <th>Folio</th>
-          <th class="d-none d-md-table-cell" >Inicio</th>
-          <th class="d-none d-md-table-cell" >Vencimiento</th>
-          <th>Importe</th>
-          <th>Abono</th>
-          <th class="d-none d-md-table-cell" >Debe</th>
-          <th>Detalle</th>
+          <th>Clave</th>
+          <th class="d-none d-md-table-cell" >Nombre</th>
+          <th class="d-none d-md-table-cell" >Tipo</th>
+          <th>Duración</th>
+          <th>Velocidad</th>
+          <th class="d-none d-md-table-cell" >Fecha</th>
+          <th>Mapa</th>
         </tr>
       </thead>
       <tbody>
       </tbody>
-      <tfoot>
+      <!-- <tfoot>
       <tr>
-        <!-- class="d-none d-md-table-cell" -->
-        <!-- class="d-md-none" -->
           <th class="d-none d-md-table-cell" ></th>
           <th class="d-none d-md-table-cell" ></th>
           <th>Totales:</th>
@@ -440,7 +437,7 @@
           <th class="dinero d-none d-md-table-cell" id="deuda_total" ></th>
           <th></th>
         </tr>
-    </tfoot>
+    </tfoot> -->
     </table>
   </div>
 
