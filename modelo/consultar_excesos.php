@@ -45,7 +45,7 @@
                     }
                 }else{
                     if(!$posicion_buena){
-                        if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($ultima_posicion['fecha']))->getTimestamp() <= 4 ){
+                        if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($ultima_posicion['fecha']))->getTimestamp() <= 60 ){
                             $ultima_posicion = $posicion;
                             if( $posicion['velocidad'] > $velocidad_limite ){
                                 $posicion_buena = $posicion;
@@ -70,7 +70,7 @@
                             }
                         }
                     }else{
-                        if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($ultima_posicion['fecha']))->getTimestamp() <= 4 ){
+                        if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($ultima_posicion['fecha']))->getTimestamp() <= 60 ){
                             $ultima_posicion = $posicion;
                             if( $posicion['velocidad'] <= $velocidad_limite ){
                                 $posicion_buena = [];
