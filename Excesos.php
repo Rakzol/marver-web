@@ -421,13 +421,13 @@
             </div>
 
             <div class="form-floating">
-                <input type="number" class="form-control" id="tiempo_limite">
-                <label for="tiempo_limite">Tiempo Limite</label>
+                <input type="number" class="form-control" id="tiempo_limite" value="10">
+                <label for="tiempo_limite">Tiempo Limite ( Minutos )</label>
             </div>
 
             <div class="form-floating">
-                <input type="number" class="form-control" id="velocidad_limite">
-                <label for="velocidad_limite">Velocidad Limite</label>
+                <input type="number" class="form-control" id="velocidad_limite" value="60">
+                <label for="velocidad_limite">Velocidad Limite Km/h</label>
             </div> 
 
         </div>
