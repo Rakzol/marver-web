@@ -167,6 +167,11 @@
             if (frame == 100) {
                 frame = 1;
                 cursor.value += 1;
+
+                if(cursor.value == posiciones.length){
+                    cursor.value = 0;
+                }
+
                 marcador.position = { lat: posicion_final['lat'], lng: posicion_final['lng'] };
             } else {
                 frame++;
@@ -183,7 +188,7 @@
             seguirRepartidor = document.getElementById('seguirRepartidor');
             cursor = document.getElementById('cursor');
 
-            cursor.max = posiciones.length;
+            cursor.max = posiciones.length - 1;
 
             document.getElementById('txtIdRepartidor').innerText = <?php echo $_GET['id']; ?>;
             document.getElementById('txtNombreRepartidor').innerText = '<?php echo $_GET['nombre']; ?>';
