@@ -474,7 +474,15 @@
 
             document.getElementById('spinner').classList.add('show');
 
-            fetch('modelo/consultar_excesos')
+            let datos_exceso = new FormData();
+            datos_exceso.append('fecha', document.getElementById('fecha').value);
+            datos_exceso.append('tiempo_limite', document.getElementById('tiempo_limite') * 60);
+            datos_exceso.append('velocidad_limite', document.getElementById('velocidad_limite') / 3.6);
+
+            fetch('modelo/consultar_excesos',{
+                    method: 'POST',
+                    body: datos_exceso
+                })
                 .then((respuesta) => {
                     return respuesta.json();
                 })
