@@ -149,8 +149,8 @@
 
             if (frame == 1) {
                 posicion_inicial = { lat: marcador.position['lat'], lng: marcador.position['lng'] };
-                posicion_final = { lat: posiciones[cursor.value]['latitud'], lng: posiciones[cursor.value]['longitud'] };
-                velocidadRepartidor.innerText = (posiciones[cursor.value]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
+                posicion_final = { lat: posiciones[cursor.valueAsNumber]['latitud'], lng: posiciones[cursor.valueAsNumber]['longitud'] };
+                velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
             }
 
             if (posicion_inicial['lat'] != posicion_final['lat'] || posicion_inicial['lng'] != posicion_final['lng']) {
@@ -166,11 +166,10 @@
 
             if (frame == 100) {
                 frame = 1;
-                cursor.value += 1;
-                console.log(cursor.value);
+                cursor.valueAsNumber += 1;
 
-                if(cursor.value == posiciones.length){
-                    cursor.value = 0;
+                if(cursor.valueAsNumber == posiciones.length){
+                    cursor.valueAsNumber = 0;
                 }
 
                 marcador.position = { lat: posicion_final['lat'], lng: posicion_final['lng'] };
