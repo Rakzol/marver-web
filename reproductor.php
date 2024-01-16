@@ -131,7 +131,12 @@
             ({ key: "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo", v: "weekly" });</script>
 
     <script>
-        window.mapa;
+
+    </script>
+
+    <script type="module">
+
+window.mapa;
         window.seguirRepartidor;
         window.velocidadRepartidor;
         window.marcador;
@@ -139,9 +144,6 @@
         window.posicion_final;
         window.cursor;
         window.frame = 1;
-    </script>
-
-    <script type="module">
 
         async function procesar_vista() {
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
