@@ -402,7 +402,7 @@
 <body>
 
     <!-- Spinner Start -->
-    <div id="spinner" manual = 'no'
+    <div id="spinner" manual = 'si'
         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status">
         </div>
@@ -429,6 +429,8 @@
                 <input type="number" class="form-control" id="velocidad_limite" value="60">
                 <label for="velocidad_limite">Velocidad Limite Km/h</label>
             </div> 
+
+            <button type="button" class="btn btn-primary">Acrualizar</button>
 
         </div>
 
@@ -463,48 +465,31 @@
 
     <script>
 
-        let primera;
-        let ultima;
-        let pagina;
-        let facturas_pagina = 9;
-        let facturas = [];
-        let cuerpo_facturas;
+        let cuerpo_excesos;
+
+        function actualizar_excesos(){
+            document.getElementById('spinner').classList.add('d-none');
+
+            fetch('modelo/consultar_excesos')
+                .then((respuesta) => {
+                    return respuesta.json();
+                })
+                .catch(error => {
+                    console.error('Error al solicitar los excesos: ', error);
+                    document.getElementById('spinner').classList.remove('d-none');
+                })
+                .then(respuesta_json => {
+                    console.log(respuesta_json);
+                    document.getElementById('spinner').classList.remove('d-none');
+                });
+        }
 
         window.addEventListener('load', () => {
             document.getElementById('fecha').valueAsDate = new Date();
 
-            primera = document.getElementById('primera');
-            ultima = document.getElementById('ultima');
-            pagina = document.getElementById('pagina');
-            cuerpo_facturas = document.querySelector('tbody');
+            cuerpo_excesos = document.querySelector('tbody');
 
-            // fetch('modelo/consultar_facturas')
-            //     .then((respuesta) => {
-            //         return respuesta.json();
-            //     })
-            //     .catch(error => {
-            //         console.error('Error al solicitar las facturas: ', error);
-            //     })
-            //     .then(respuesta_json => {
-            //         document.querySelector("#importe_total").innerText = respuesta_json[1].toLocaleString('es-MX', {
-            //             minimumFractionDigits: 2,
-            //             maximumFractionDigits: 2,
-            //             });
-            //         document.querySelector("#abono_total").innerText = respuesta_json[2].toLocaleString('es-MX', {
-            //             minimumFractionDigits: 2,
-            //             maximumFractionDigits: 2,
-            //             });
-            //         document.querySelector("#deuda_total").innerText = (respuesta_json[1] - respuesta_json[2]).toLocaleString('es-MX', {
-            //             minimumFractionDigits: 2,
-            //             maximumFractionDigits: 2,
-            //             });
-            //         facturas = respuesta_json[0];
-            //         //console.log(facturas);
-            //         primera.innerText = facturas.length ? 1 : 0;
-            //         pagina.valueAsNumber = facturas.length ? 1 : 0;
-            //         ultima.innerText = Math.ceil(facturas.length / facturas_pagina);
-            //         mostrar_facturas();
-            //     });
+            actualizar_excesos();
         });
 
         function mostrar_facturas() {
