@@ -168,7 +168,7 @@
                 frame = 1;
                 cursor.valueAsNumber += 1;
 
-                if(cursor.valueAsNumber == posiciones.length){
+                if(cursor.valueAsNumber == posiciones.length - 1){
                     cursor.valueAsNumber = 0;
                 }
 
