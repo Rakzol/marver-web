@@ -513,6 +513,8 @@
                     document.getElementById('spinner').classList.remove('show');
                 })
                 .then(excesos_json => {
+                    console.log(excesos_json);
+                    
                     cuerpo_excesos.replaceChildren();
 
                     excesos_json.forEach( (exceso)=>{
