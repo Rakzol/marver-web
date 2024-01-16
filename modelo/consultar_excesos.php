@@ -50,8 +50,9 @@
                                 $posicion_buena = $posicion;
                             }
                         }else{
-                            if( (new DateTime($ultima_posicion['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp() >= $_POST['tiempo_limite'] ){
-                                $resultados[] = [$posicion_mala,$ultima_posicion];
+                            $tiempo = (new DateTime($ultima_posicion['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp();
+                            if( $tiempo >= $_POST['tiempo_limite'] ){
+                                $resultados[] = [$repartidor,$tiempo,$posicion_mala,$ultima_posicion];
                             }
 
                             $posicion_mala = [];
@@ -70,8 +71,9 @@
                                 $posicion_buena = [];
                             }else{
                                 if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($posicion_buena['fecha']))->getTimestamp() >= $segundos_fin ){
-                                    if( (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp() >= $_POST['tiempo_limite'] ){
-                                        $resultados[] = [$posicion_mala,$posicion_buena];
+                                    $tiempo = (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp();
+                                    if( $tiempo >= $_POST['tiempo_limite'] ){
+                                        $resultados[] = [$repartidor,$tiempo,$posicion_mala,$posicion_buena];
                                     }
                                     $posicion_mala = [];
                                     $posicion_buena = [];
@@ -79,8 +81,9 @@
                                 }
                             }
                         }else{
-                            if( (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp() >= $_POST['tiempo_limite'] ){
-                                $resultados[] = [$posicion_mala,$posicion_buena];
+                            $tiempo = (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp();
+                            if( $tiempo >= $_POST['tiempo_limite'] ){
+                                $resultados[] = [$repartidor,$tiempo,$posicion_mala,$posicion_buena];
                             }
 
                             $posicion_mala = [];
@@ -98,8 +101,9 @@
             }
 
             if($posicion_mala){
-                if( (new DateTime(end($posiciones)['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp() >= $_POST['tiempo_limite'] ){
-                    $resultados[] = [$posicion_mala,end($posiciones)];
+                $tiempo = (new DateTime(end($posiciones)['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp();
+                if( $tiempo >= $_POST['tiempo_limite'] ){
+                    $resultados[] = [$repartidor,$tiempo,$posicion_mala,end($posiciones)];
                 }
             }
 
