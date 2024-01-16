@@ -155,8 +155,8 @@
 
             if (posicion_inicial['lat'] != posicion_final['lat'] || posicion_inicial['lng'] != posicion_final['lng']) {
 
-                let latitud_dif_abs = Math.abs(posicion_inicial['lat'] - posicion_final['lat']) * frame / 150;
-                let longitud_dif_abs = Math.abs(Math.abs(posicion_inicial['lng']) + posicion_final['lng']) * frame / 150;
+                let latitud_dif_abs = Math.abs(posicion_inicial['lat'] - posicion_final['lat']) * frame / 100;
+                let longitud_dif_abs = Math.abs(Math.abs(posicion_inicial['lng']) + posicion_final['lng']) * frame / 100;
 
                 let latitud = posicion_inicial['lat'] >= posicion_final['lat'] ? posicion_inicial['lat'] - latitud_dif_abs : posicion_inicial['lat'] + latitud_dif_abs;
                 let longitud = posicion_inicial['lng'] >= posicion_final['lng'] ? posicion_inicial['lng'] - longitud_dif_abs : posicion_inicial['lng'] + longitud_dif_abs;
