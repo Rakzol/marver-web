@@ -422,7 +422,7 @@
 
             <div class="form-floating">
                 <input type="number" class="form-control" id="tiempo_limite" value="10">
-                <label for="tiempo_limite">Tiempo Limite ( Minutos )</label>
+                <label for="tiempo_limite">Tiempo Limite (Minutos)</label>
             </div>
 
             <div class="form-floating">
