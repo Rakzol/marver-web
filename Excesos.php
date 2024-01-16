@@ -402,7 +402,7 @@
 <body>
 
     <!-- Spinner Start -->
-    <div id="spinner"
+    <div id="spinner" manual = 'si'
         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status">
         </div>
@@ -442,36 +442,6 @@
     </div>
 
     <script>
-        function descargar(){
-            document.querySelector("#descargar_pdf").innerHTML = 'Descargando <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
-            document.querySelector("#descargar_pdf").disabled = true;
-
-            fetch('https://www.marverrefacciones.mx/estado_cuenta').then((response) => {
-                return response.blob();
-            })
-            .then((blob) => {
-                let url = window.URL.createObjectURL(blob);
-
-                let a = document.createElement('a');
-                a.classList.add('d-none');
-                a.href = url;
-                a.download = 'estado de cuenta.pdf';
-
-                document.body.appendChild(a);
-                a.click();
-
-                window.URL.revokeObjectURL(url);
-                a.remove();
-
-                document.querySelector("#descargar_pdf").innerHTML = "Descargar PDF";
-                document.querySelector("#descargar_pdf").disabled = false;
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                document.querySelector("#descargar_pdf").innerHTML = "Descargar PDF";
-                document.querySelector("#descargar_pdf").disabled = false;
-            });
-        }
 
         let primera;
         let ultima;
@@ -514,32 +484,6 @@
                     mostrar_facturas();
                 });
         });
-
-        function pagina_anterior() {
-            if (pagina.valueAsNumber > 1) {
-                pagina.valueAsNumber -= 1;
-            }
-            mostrar_facturas();
-        }
-
-        function primera_pagina() {
-            pagina.valueAsNumber = primera.innerText;
-            mostrar_facturas();
-        }
-
-        function ir_pagina() {
-            mostrar_facturas();
-        }
-
-        function ultima_pagina() {
-            pagina.valueAsNumber = ultima.innerText;
-            mostrar_facturas();
-        }
-
-        function siguiente_pagina() {
-            pagina.valueAsNumber++;
-            mostrar_facturas();
-        }
 
         function mostrar_facturas() {
             cuerpo_facturas.replaceChildren();
