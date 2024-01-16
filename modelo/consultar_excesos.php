@@ -18,7 +18,7 @@
         $preparada->execute();
 
         $velocidad_limite = 2.22;
-        $segundos_inicio = 10;
+        $segundos_inicio = 600;
         $segundos_fin = 3;
 
         $resultados = [];
