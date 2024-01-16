@@ -486,7 +486,7 @@
             minutos = minutos < 10 ? '0' + minutos : minutos;
 
             // Construye la cadena de tiempo en formato AM/PM
-            let return horas + ':' + minutos + ' ' + periodo;
+            return horas + ':' + minutos + ' ' + periodo;
         }
 
         function actualizar_excesos(){
