@@ -415,23 +415,23 @@
 
         <div class="d-flex justify-content-center gap-3 flex-wrap" >
             <div class="form-floating">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-            <label for="floatingInput">Email address</label>
+            <input type="date" class="form-control" id="fecha">
+            <label for="fecha">Fecha</label>
             </div>
 
             <div class="form-floating">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-            <label for="floatingInput">Email address</label>
+            <input type="number" class="form-control" id="tiempo_limite">
+            <label for="tiempo_limite">Tiempo Limite</label>
             </div>
 
             <div class="form-floating">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-            <label for="floatingInput">Email address</label>
+            <input type="number" class="form-control" id="velocidad_limite">
+            <label for="velocidad_limite">Velocidad Limite</label>
             </div> 
         </div>
 
         <!-- dia minutos limite de reposo velocidad limite de conduccion -->
-        <table class="table mb-0">
+        <table class="table mb-0 mt-2">
         <thead>
             <tr>
             <th>Clave</th>
