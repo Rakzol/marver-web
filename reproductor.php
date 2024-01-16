@@ -139,6 +139,7 @@
         let posicion_inicial;
         let posicion_final;
         let cursor;
+        let frame = 1;
 
         async function procesar_vista() {
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
