@@ -471,7 +471,7 @@
         let cuerpo_facturas;
 
         window.addEventListener('load', () => {
-            document.getElementById('fehca').valueAsDate = new Date();
+            document.getElementById('fecha').valueAsDate = new Date();
 
             primera = document.getElementById('primera');
             ultima = document.getElementById('ultima');
