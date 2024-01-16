@@ -135,7 +135,7 @@
         let mapa;
         let seguirRepartidor;
         let velocidadRepartidor;
-        let marcador;
+        const marcador;
         let posicion_inicial;
         let posicion_final;
         let cursor;
