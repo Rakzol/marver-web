@@ -443,7 +443,7 @@
             <th>Tipo</th>
             <th>Duración</th>
             <th class="d-none d-md-table-cell" >Velocidad</th>
-            <th class="d-none d-md-table-cell" >Fecha</th>
+            <th class="d-none d-md-table-cell" >Horas</th>
             <th>Mapa</th>
             </tr>
         </thead>
@@ -466,6 +466,28 @@
     <script>
 
         let cuerpo_excesos;
+
+        function horas_formateadas(fecha){
+            let fechaActual = new Date(fecha);
+
+            // Obtiene las horas y minutos
+            let horas = fechaActual.getHours();
+            let minutos = fechaActual.getMinutes();
+
+            // Determina si es AM o PM
+            let periodo = horas >= 12 ? 'pm' : 'am';
+
+            // Convierte las horas al formato de 12 horas
+            horas = horas % 12;
+            horas = horas ? horas : 12; // Si es 0, establece las horas a 12
+
+            // Formatea las horas y minutos con ceros a la izquierda si es necesario
+            horas = horas < 10 ? '0' + horas : horas;
+            minutos = minutos < 10 ? '0' + minutos : minutos;
+
+            // Construye la cadena de tiempo en formato AM/PM
+            let return horas + ':' + minutos + ' ' + periodo;
+        }
 
         function actualizar_excesos(){
             setTimeout(() => {
@@ -490,8 +512,56 @@
                     console.error('Error al solicitar los excesos: ', error);
                     document.getElementById('spinner').classList.remove('show');
                 })
-                .then(respuesta_json => {
-                    console.log(respuesta_json);
+                .then(excesos_json => {
+                    cuerpo_excesos.replaceChildren();
+
+                    excesos_json.forEach( (exceso)=>{
+                        let tr = document.createElement('tr');
+
+                        let td = document.createElement('td');
+                        td.innerText = exceso[0]['Clave'];
+                        tr.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.innerText = exceso[0]['Nombre'];
+                        td.classList.add('d-none');
+                        td.classList.add('d-md-table-cell');
+                        tr.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.innerText = exceso[1];
+                        tr.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.innerText = (exceso[2] / 60).toFixed(1) + ' minutos';
+                        tr.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.innerText = exceso[3] + 'Km/h';
+                        td.classList.add('d-none');
+                        td.classList.add('d-md-table-cell');
+                        tr.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.innerText = horas_formateadas(exceso[4]['fecha']);
+                        td.classList.add('d-none');
+                        td.classList.add('d-md-table-cell');
+                        tr.appendChild(td);
+
+                        td = document.createElement('td');
+                        let button = document.createElement('button');
+                        button.onclick = ()=>{
+                            window.open('https://www.marverrefacciones.mx/mapa', '_blank');
+                        }
+                        button.innerText = 'Reproducir';
+                        button.classList.add('btn');
+                        button.classList.add('btn-primary');
+                        td.appendChild(button);
+                        tr.appendChild(td);
+
+                        cuerpo_excesos.appendChild(tr);
+                    } );
+
                     document.getElementById('spinner').classList.remove('show');
                 });
         }
@@ -503,69 +573,6 @@
 
             actualizar_excesos();
         });
-
-        function mostrar_facturas() {
-            cuerpo_facturas.replaceChildren();
-            let inicio = (pagina.valueAsNumber - 1) * facturas_pagina;
-            facturas.slice(inicio, inicio + facturas_pagina).forEach(factura => {
-                let tr = document.createElement('tr');
-
-                let td = document.createElement('td');
-                td.innerText = factura['FolioComprobante'];
-                tr.appendChild(td);
-
-                td = document.createElement('td');
-                td.innerText = factura['Fecha'];
-                td.classList.add('d-none');
-                td.classList.add('d-md-table-cell');
-                tr.appendChild(td);
-
-                td = document.createElement('td');
-                td.innerText = factura['FechaVencimiento'];
-                td.classList.add('d-none');
-                td.classList.add('d-md-table-cell');
-                tr.appendChild(td);
-
-                td = document.createElement('td');
-                td.innerText = factura['Importe'].toLocaleString('es-MX', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                    });
-                td.classList.add('dinero');
-                tr.appendChild(td);
-
-                td = document.createElement('td');
-                td.innerText = factura['Abono'].toLocaleString('es-MX', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                    });
-                td.classList.add('dinero');
-                tr.appendChild(td);
-
-                td = document.createElement('td');
-                td.innerText = (factura['Importe'] - factura['Abono']).toLocaleString('es-MX', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                    });
-                td.classList.add('dinero');
-                td.classList.add('d-none');
-                td.classList.add('d-md-table-cell');
-                tr.appendChild(td);
-
-                td = document.createElement('td');
-                let button = document.createElement('button');
-                button.onclick = ()=>{
-                    document.location.href = 'https://www.marverrefacciones.mx/pedido?folio=' + factura['Folio'];
-                }
-                button.innerText = 'Ver';
-                button.classList.add('btn');
-                button.classList.add('btn-primary');
-                td.appendChild(button);
-                tr.appendChild(td);
-                
-                cuerpo_facturas.appendChild(tr);
-            });
-        }
 
     </script>
 
