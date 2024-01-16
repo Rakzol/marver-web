@@ -476,8 +476,8 @@
 
             let datos_exceso = new FormData();
             datos_exceso.append('fecha', document.getElementById('fecha').value);
-            datos_exceso.append('tiempo_limite', document.getElementById('tiempo_limite') * 60);
-            datos_exceso.append('velocidad_limite', document.getElementById('velocidad_limite') / 3.6);
+            datos_exceso.append('tiempo_limite', document.getElementById('tiempo_limite').value * 60);
+            datos_exceso.append('velocidad_limite', document.getElementById('velocidad_limite').value / 3.6);
 
             fetch('modelo/consultar_excesos',{
                     method: 'POST',
