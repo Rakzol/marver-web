@@ -59,11 +59,12 @@
                             $posicion_buena = [];
                             $ultima_posicion = [];
 
-                            if( $posicion['id'] == 104498 ){
-                                print_r('a');
-                            }
-
                             if( $posicion['velocidad'] <= $velocidad_limite ){
+
+                                if( $posicion['id'] == 104498 ){
+                                    print_r('a');
+                                }
+
                                 $posicion_mala = $posicion;
                                 $ultima_posicion = $posicion;
                             }
