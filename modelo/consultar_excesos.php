@@ -33,6 +33,7 @@
 
             $posicion_mala = [];
             $posicion_buena = [];
+            $ultima_posicion = [];
 
             $posiciones = $preparada->fetchAll(PDO::FETCH_ASSOC);
             foreach( $posiciones as $posicion ){
@@ -40,22 +41,56 @@
                 if(!$posicion_mala){
                     if( $posicion['velocidad'] <= $velocidad_limite ){
                         $posicion_mala = $posicion;
+                        $ultima_posicion = $posicion;
                     }
                 }else{
                     if(!$posicion_buena){
-                        if( $posicion['velocidad'] > $velocidad_limite ){
-                            $posicion_buena = $posicion;
+                        if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($ultima_posicion['fecha']))->getTimestamp() <= 4 ){
+                            $ultima_posicion = $posicion;
+                            if( $posicion['velocidad'] > $velocidad_limite ){
+                                $posicion_buena = $posicion;
+                            }
+                        }else{
+                            if( (new DateTime($ultima_posicion['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp() >= $segundos_inicio ){
+                                $resultados[] = [$posicion_mala,$ultima_posicion];
+                            }
+
+                            $posicion_mala = [];
+                            $ultima_posicion = [];
+                            $posicion_buena = [];
+
+                            if( $posicion['velocidad'] <= $velocidad_limite ){
+                                $posicion_mala = $posicion;
+                                $ultima_posicion = $posicion;
+                            }
                         }
                     }else{
-                        if( $posicion['velocidad'] <= $velocidad_limite ){
-                            $posicion_buena = [];
-                        }else{
-                            if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($posicion_buena['fecha']))->getTimestamp() >= $segundos_fin ){
-                                if( (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp() >= $segundos_inicio ){
-                                    $resultados[] = [$posicion_mala,$posicion_buena];
-                                }
-                                $posicion_mala = [];
+                        if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($ultima_posicion['fecha']))->getTimestamp() <= 4 ){
+                            $ultima_posicion = $posicion;
+                            if( $posicion['velocidad'] <= $velocidad_limite ){
                                 $posicion_buena = [];
+                            }else{
+                                if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($posicion_buena['fecha']))->getTimestamp() >= $segundos_fin ){
+                                    if( (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp() >= $segundos_inicio ){
+                                        $resultados[] = [$posicion_mala,$posicion_buena];
+                                    }
+                                    $posicion_mala = [];
+                                    $posicion_buena = [];
+                                    $ultima_posicion = [];
+                                }
+                            }
+                        }else{
+                            if( (new DateTime($ultima_posicion['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp() >= $segundos_inicio ){
+                                $resultados[] = [$posicion_mala,$ultima_posicion];
+                            }
+
+                            $posicion_mala = [];
+                            $ultima_posicion = [];
+                            $posicion_buena = [];
+
+                            if( $posicion['velocidad'] <= $velocidad_limite ){
+                                $posicion_mala = $posicion;
+                                $ultima_posicion = $posicion;
                             }
                         }
                     }
