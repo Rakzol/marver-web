@@ -476,33 +476,33 @@
             pagina = document.getElementById('pagina');
             cuerpo_facturas = document.querySelector('tbody');
 
-            fetch('modelo/consultar_facturas')
-                .then((respuesta) => {
-                    return respuesta.json();
-                })
-                .catch(error => {
-                    console.error('Error al solicitar las facturas: ', error);
-                })
-                .then(respuesta_json => {
-                    document.querySelector("#importe_total").innerText = respuesta_json[1].toLocaleString('es-MX', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                        });
-                    document.querySelector("#abono_total").innerText = respuesta_json[2].toLocaleString('es-MX', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                        });
-                    document.querySelector("#deuda_total").innerText = (respuesta_json[1] - respuesta_json[2]).toLocaleString('es-MX', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                        });
-                    facturas = respuesta_json[0];
-                    //console.log(facturas);
-                    primera.innerText = facturas.length ? 1 : 0;
-                    pagina.valueAsNumber = facturas.length ? 1 : 0;
-                    ultima.innerText = Math.ceil(facturas.length / facturas_pagina);
-                    mostrar_facturas();
-                });
+            // fetch('modelo/consultar_facturas')
+            //     .then((respuesta) => {
+            //         return respuesta.json();
+            //     })
+            //     .catch(error => {
+            //         console.error('Error al solicitar las facturas: ', error);
+            //     })
+            //     .then(respuesta_json => {
+            //         document.querySelector("#importe_total").innerText = respuesta_json[1].toLocaleString('es-MX', {
+            //             minimumFractionDigits: 2,
+            //             maximumFractionDigits: 2,
+            //             });
+            //         document.querySelector("#abono_total").innerText = respuesta_json[2].toLocaleString('es-MX', {
+            //             minimumFractionDigits: 2,
+            //             maximumFractionDigits: 2,
+            //             });
+            //         document.querySelector("#deuda_total").innerText = (respuesta_json[1] - respuesta_json[2]).toLocaleString('es-MX', {
+            //             minimumFractionDigits: 2,
+            //             maximumFractionDigits: 2,
+            //             });
+            //         facturas = respuesta_json[0];
+            //         //console.log(facturas);
+            //         primera.innerText = facturas.length ? 1 : 0;
+            //         pagina.valueAsNumber = facturas.length ? 1 : 0;
+            //         ultima.innerText = Math.ceil(facturas.length / facturas_pagina);
+            //         mostrar_facturas();
+            //     });
         });
 
         function mostrar_facturas() {
