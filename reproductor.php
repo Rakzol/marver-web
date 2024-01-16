@@ -186,8 +186,8 @@
 
             cursor.max = posiciones.length;
 
-            document.getElementById('txtIdRepartidor').innerText = <?php $_GET['id']; ?>;
-            document.getElementById('txtNombreRepartidor').innerText = <?php $_GET['nombre']; ?>;
+            document.getElementById('txtIdRepartidor').innerText = <?php echo $_GET['id']; ?>;
+            document.getElementById('txtNombreRepartidor').innerText = <?php echo $_GET['nombre']; ?>;
 
             mapa = new Map(document.getElementById("mapa"), {
                 center: { lat: 25.7951169, lng: -108.99698492 },
