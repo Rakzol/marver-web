@@ -415,22 +415,22 @@
 
         <div class="d-flex justify-content-center gap-3 flex-wrap" >
 
-            <div class="form-floating">
+            <div class="form-floating" style="min-width: 210px;" >
                 <input type="date" class="form-control" id="fecha">
                 <label for="fecha">Fecha</label>
             </div>
 
-            <div class="form-floating">
+            <div class="form-floating" style="min-width: 210px;">
                 <input type="number" class="form-control" id="tiempo_limite" value="10">
                 <label for="tiempo_limite">Tiempo Limite (Minutos)</label>
             </div>
 
-            <div class="form-floating">
+            <div class="form-floating" style="min-width: 210px;">
                 <input type="number" class="form-control" id="velocidad_limite" value="60">
                 <label for="velocidad_limite">Velocidad Limite Km/h</label>
             </div> 
 
-            <button id="actualizar" onclick="actualizar_excesos();" type="button" class="btn btn-primary">Actualizar</button>
+            <button id="actualizar" onclick="actualizar_excesos();" type="button" class="btn btn-primary" style="min-width: 210px;">Actualizar</button>
 
         </div>
 
