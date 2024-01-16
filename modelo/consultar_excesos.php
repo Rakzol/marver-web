@@ -23,7 +23,7 @@
 
         $resultados = [];
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
-            print_r($repartidor);
+            // print_r($repartidor);
 
             $preparada = $conexion->prepare("SELECT * FROM posiciones WHERE usuario = :repartidor AND fecha >= :dia_inicial AND fecha < :dia_final AND 6371 * 2 * ASIN( SQRT( POWER(SIN(RADIANS((25.794227 - latitud) / 2)), 2) + COS(RADIANS(25.794227)) * COS(RADIANS(latitud)) * POWER(SIN(RADIANS((-108.985983 - longitud) / 2)), 2) ) ) >= 0.04");
             $preparada->bindValue(':repartidor', $repartidor['Clave']);
