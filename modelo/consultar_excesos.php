@@ -56,8 +56,8 @@
                             }
 
                             $posicion_mala = [];
-                            $ultima_posicion = [];
                             $posicion_buena = [];
+                            $ultima_posicion = [];
 
                             if( $posicion['velocidad'] <= $velocidad_limite ){
                                 $posicion_mala = $posicion;
@@ -80,13 +80,13 @@
                                 }
                             }
                         }else{
-                            if( (new DateTime($ultima_posicion['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp() >= $segundos_inicio ){
-                                $resultados[] = [$posicion_mala,$ultima_posicion];
+                            if( (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp() >= $segundos_inicio ){
+                                $resultados[] = [$posicion_mala,$posicion_buena];
                             }
 
                             $posicion_mala = [];
-                            $ultima_posicion = [];
                             $posicion_buena = [];
+                            $ultima_posicion = [];
 
                             if( $posicion['velocidad'] <= $velocidad_limite ){
                                 $posicion_mala = $posicion;
