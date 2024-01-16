@@ -19,7 +19,7 @@
         $preparada->bindValue(':dia_final', $_POST['fecha']);
         $preparada->execute();
 
-        $segundos_fin = 10;
+        $segundos_fin = 60;
 
         $resultados = [];
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
