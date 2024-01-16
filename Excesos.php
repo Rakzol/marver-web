@@ -469,7 +469,7 @@
 
         function actualizar_excesos(){
             setTimeout(() => {
-                document.getElementById('btnBuscarRepartidor').blur();
+                document.getElementById('actualizar').blur();
             }, 1000);
 
             document.getElementById('spinner').classList.add('show');
