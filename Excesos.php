@@ -413,7 +413,7 @@
     <div class="container mt-3 p-3 bg-white rounded">
         <h1 class="text-center" >Excesos</h1>
 
-        <div class="d-flex" >
+        <div class="d-flex justify-content-center" >
             <div class="form-floating mb-3">
             <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
             <label for="floatingInput">Email address</label>
