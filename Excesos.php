@@ -535,7 +535,11 @@
                         tr.appendChild(td);
 
                         td = document.createElement('td');
-                        td.innerText = (exceso[2] / 60).toFixed(1) + ' minutos';
+                        if( exceso[2] > 60 ){
+                            td.innerText = (exceso[2] / 60).toFixed(1) + ' minutos';
+                        }else{
+                            td.innerText = exceso[2] + ' segundos';
+                        }
                         tr.appendChild(td);
 
                         td = document.createElement('td');
