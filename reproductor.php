@@ -132,14 +132,14 @@
 
     <script type="module">
 
-        window.mapa = null;
-        window.seguirRepartidor = null;
-        window.velocidadRepartidor = null;
-        window.marcador = null;
-        window.posicion_inicial = null;
-        window.posicion_final = null;
-        window.cursor = null;
-        window.frame = 1;
+        let mapa;
+        let seguirRepartidor;
+        let velocidadRepartidor;
+        let marcador;
+        let posicion_inicial;
+        let posicion_final;
+        let cursor;
+        let frame = 1;
 
         async function procesar_vista() {
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
@@ -150,7 +150,7 @@
 
             if (frame == 1) {
                 posicion_inicial = { lat: marcador.position['lat'], lng: marcador.position['lng'] };
-                posicion_final = { lat: posiciones[cursor.value]['lat'], lng: posiciones[cursor.value]['lng'] };
+                posicion_final = { lat: posiciones[cursor.value]['latitud'], lng: posiciones[cursor.value]['longitud'] };
                 velocidadRepartidor.innerText = (posiciones[cursor.value]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
             }
 
