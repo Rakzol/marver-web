@@ -468,6 +468,10 @@
         let cuerpo_excesos;
 
         function actualizar_excesos(){
+            setTimeout(() => {
+                document.getElementById('btnBuscarRepartidor').blur();
+            }, 1000);
+
             document.getElementById('spinner').classList.add('show');
 
             fetch('modelo/consultar_excesos')
