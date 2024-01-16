@@ -24,7 +24,6 @@
     }
 ?>
 
-?>
 <!DOCTYPE html>
 <html class="h-100" lang="es">
 
@@ -187,7 +186,7 @@
             cursor.max = posiciones.length;
 
             document.getElementById('txtIdRepartidor').innerText = <?php echo $_GET['id']; ?>;
-            document.getElementById('txtNombreRepartidor').innerText = <?php echo '"' . $_GET['nombre'] . '"'; ?>;
+            document.getElementById('txtNombreRepartidor').innerText = '<?php echo $_GET['nombre']; ?>';
 
             mapa = new Map(document.getElementById("mapa"), {
                 center: { lat: 25.7951169, lng: -108.99698492 },
@@ -206,7 +205,7 @@
             });
 
             let infowindow = new google.maps.InfoWindow({
-                content: '<p style="margin: 0;" ><strong>' + <?php echo $_GET['id']; ?> + ' </strong>' + <?php echo '"' . $_GET['nombre'] . '"'; ?> + '</p>'
+                content: '<p style="margin: 0;" ><strong><?php echo $_GET['id']; ?> </strong><?php echo $_GET['nombre']; ?></p>'
             });
 
             marcador.addListener("click", () => {
