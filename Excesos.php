@@ -430,7 +430,7 @@
                 <label for="velocidad_limite">Velocidad Limite Km/h</label>
             </div> 
 
-            <button type="button" class="btn btn-primary">Acrualizar</button>
+            <button id="actualizar" onclick="actualizar_excesos();" type="button" class="btn btn-primary">Acrualizar</button>
 
         </div>
 
@@ -468,7 +468,7 @@
         let cuerpo_excesos;
 
         function actualizar_excesos(){
-            document.getElementById('spinner').classList.add('d-none');
+            document.getElementById('spinner').classList.add('show');
 
             fetch('modelo/consultar_excesos')
                 .then((respuesta) => {
@@ -476,11 +476,11 @@
                 })
                 .catch(error => {
                     console.error('Error al solicitar los excesos: ', error);
-                    document.getElementById('spinner').classList.remove('d-none');
+                    document.getElementById('spinner').classList.remove('show');
                 })
                 .then(respuesta_json => {
                     console.log(respuesta_json);
-                    document.getElementById('spinner').classList.remove('d-none');
+                    document.getElementById('spinner').classList.remove('show');
                 });
         }
 
