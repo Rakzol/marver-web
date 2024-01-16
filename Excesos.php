@@ -557,7 +557,7 @@
                         td = document.createElement('td');
                         let button = document.createElement('button');
                         button.onclick = ()=>{
-                            window.open('https://www.marverrefacciones.mx/mapa', '_blank');
+                            window.open('https://www.marverrefacciones.mx/mapa?id=' + exceso[0]['Clave'] + '&nombre=' + exceso[0]['Nombre'] + '&fecha=' + document.getElementById('fecha').value + '&posicion=' + exceso[4]['id'], '_blank');
                         }
                         button.innerText = 'Reproducir';
                         button.classList.add('btn');
