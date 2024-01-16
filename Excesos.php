@@ -414,17 +414,17 @@
         <h1 class="text-center" >Excesos</h1>
 
         <div class="d-flex justify-content-center gap-3 flex-wrap" >
-            <div class="form-floating mb-3">
+            <div class="form-floating">
             <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
             <label for="floatingInput">Email address</label>
             </div>
 
-            <div class="form-floating mb-3">
+            <div class="form-floating">
             <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
             <label for="floatingInput">Email address</label>
             </div>
 
-            <div class="form-floating mb-3">
+            <div class="form-floating">
             <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
             <label for="floatingInput">Email address</label>
             </div> 
