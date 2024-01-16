@@ -167,6 +167,7 @@
             if (frame == 100) {
                 frame = 1;
                 cursor.value += 1;
+                console.log(cursor.value);
 
                 if(cursor.value == posiciones.length){
                     cursor.value = 0;
