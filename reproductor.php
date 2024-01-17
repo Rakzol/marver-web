@@ -112,14 +112,7 @@
             ({ key: "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo", v: "weekly" });</script>
 
     <script>
-        function pausar(){
-            console.log("aaaa");
-            pausado = true;
-        }
-    </script>
-
-    <script type="module">
-
+        
         let mapa;
         let seguirRepartidor;
         let velocidadRepartidor;
@@ -130,6 +123,14 @@
         let cursor;
         let frame = 1;
         let pausado = false;
+
+        function pausar(){
+            console.log("aaaa");
+            pausado = true;
+        }
+    </script>
+
+    <script type="module">
 
         async function procesar_vista() {
             if(pausado){
