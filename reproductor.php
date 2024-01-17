@@ -112,7 +112,10 @@
             ({ key: "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo", v: "weekly" });</script>
 
     <script>
-
+        function pausar(){
+            console.log("aaaa");
+            pausado = true;
+        }
     </script>
 
     <script type="module">
@@ -126,15 +129,10 @@
         let posicion_final;
         let cursor;
         let frame = 1;
-        window.pausado = false;
-
-        function pausar(){
-            console.log("aaaa");
-            window.pausado = true;
-        }
+        let pausado = false;
 
         async function procesar_vista() {
-            if(window.pausado){
+            if(pausado){
                 console.log('saliendo');
                 return;
             }
