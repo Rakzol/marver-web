@@ -78,7 +78,7 @@
                 <h5 class="card-title" id="txtNombreRepartidor">Seleccione un Repartidor</h5>
                 <p class="card-text" id="velocidadRepartidor">0.0 Km/h</p>
                 <div class="form-check form-switch d-inline-block ms-2 mt-2" >
-                <button onclick="pausar();" class="btn btn-primary"><i class="fa-solid fa-pause"></i></button>
+                <button onclick="pausar();" class="btn btn-primary"><i class="fa-solid fa-pause" id="icono_pausar" ></i></button>
                 <button onclick="adelantar();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-right"></i></button>
                 <button onclick="retroceder();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-left"></i></button>
                 <button onclick="velocidad();" class="btn btn-primary"><i class="fa-solid fa-forward"></i>  <i class="fa-solid fa-1"></i></button>
@@ -112,7 +112,7 @@
             ({ key: "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo", v: "weekly" });</script>
 
     <script>
-        
+
         let mapa;
         let seguirRepartidor;
         let velocidadRepartidor;
@@ -125,8 +125,15 @@
         let pausado = false;
 
         function pausar(){
-            console.log("aaaa");
-            pausado = true;
+            if(pausado){
+                pausado = false;
+                document.getElementById("icono_pausar").classList.remove('fa-play');
+                document.getElementById("icono_pausar").classList.add('fa-pause');
+            }else{
+                pausado = true
+                document.getElementById("icono_pausar").classList.remove('fa-pause');
+                document.getElementById("icono_pausar").classList.add('fa-play');
+            }
         }
     </script>
 
