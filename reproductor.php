@@ -141,7 +141,7 @@
 
         async function procesar_vista() {
             if(pausado){
-                console.log('saliendo');
+                setTimeout(procesar_vista, 10);
                 return;
             }
 
