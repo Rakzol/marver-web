@@ -66,26 +66,6 @@
 
 <body class="h-100">
 
-    <!-- Modal -->
-    <div class="modal fade" id="modalSelector" tabindex="-1" aria-labelledby="modalSelectorLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalSelectorLabel">Repartidores</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <ol class="list-group" id="listaRepartidores">
-                    </ol>
-                </div>
-                <div class="modal-footer">
-                    <button id="btnCerrarModal" type="button" class="btn btn-primary"
-                        data-bs-dismiss="modal">Cancelar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="d-flex h-100 flex-column">
 
         <div class="flex-grow-1" id="mapa"></div>
@@ -97,9 +77,11 @@
             <div class="card-body">
                 <h5 class="card-title" id="txtNombreRepartidor">Seleccione un Repartidor</h5>
                 <p class="card-text" id="velocidadRepartidor">0.0 Km/h</p>
-                <a href="#" id="btnBuscarRepartidor" class="btn btn-primary" data-bs-toggle="modal"
-                data-bs-target="#modalSelector">Buscar Repartidor</a>
                 <div class="form-check form-switch d-inline-block ms-2 mt-2" >
+                <button onclick="pausar();" class="btn btn-primary"><i class="fa-solid fa-pause"></i></button>
+                <button onclick="adelantar();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-right"></i></button>
+                <button onclick="retroceder();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-left"></i></button>
+                <button onclick="velocidad();" class="btn btn-primary"><i class="fa-solid fa-forward"></i><i class="fa-solid fa-1"></i></button>
                     <label for="cursor" class="form-label" id="txtPosicion" >Posicion</label>
                     <input type="range" class="form-range" min="0" max="1" value="0" id="cursor">
                     <input class="form-check-input" id="seguirRepartidor" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
@@ -140,8 +122,13 @@
         let posicion_final;
         let cursor;
         let frame = 1;
+        let pausado = false;
 
         async function procesar_vista() {
+            if(pausado){
+                return;
+            }
+
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
             if (frame % 50 == 0 && seguirRepartidor.checked) {
