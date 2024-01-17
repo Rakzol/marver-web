@@ -112,10 +112,7 @@
             ({ key: "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo", v: "weekly" });</script>
 
     <script>
-        function pausar(){
-            console.log("aaaa");
-            window.pausado = true;
-        }
+
     </script>
 
     <script type="module">
@@ -130,6 +127,11 @@
         let cursor;
         let frame = 1;
         window.pausado = false;
+
+        function pausar(){
+            console.log("aaaa");
+            window.pausado = true;
+        }
 
         async function procesar_vista() {
             if(window.pausado){
