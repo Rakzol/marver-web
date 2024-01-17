@@ -100,7 +100,7 @@
                 <a href="#" id="btnBuscarRepartidor" class="btn btn-primary" data-bs-toggle="modal"
                 data-bs-target="#modalSelector">Buscar Repartidor</a>
                 <div class="form-check form-switch d-inline-block ms-2 mt-2" >
-                    <label for="cursor" class="form-label">Posicion</label>
+                    <label for="cursor" class="form-label" id="txtPosicion" >Posicion</label>
                     <input type="range" class="form-range" min="0" max="1" value="0" id="cursor">
                     <input class="form-check-input" id="seguirRepartidor" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
                     <label class="form-check-label ms-1" for="flexSwitchCheckChecked">Seguir repartidor</label>
@@ -134,6 +134,7 @@
         let mapa;
         let seguirRepartidor;
         let velocidadRepartidor;
+        let txtPosicion;
         let marcador;
         let posicion_inicial;
         let posicion_final;
@@ -151,6 +152,7 @@
                 posicion_inicial = { lat: marcador.position['lat'], lng: marcador.position['lng'] };
                 posicion_final = { lat: posiciones[cursor.valueAsNumber]['latitud'], lng: posiciones[cursor.valueAsNumber]['longitud'] };
                 velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
+                txtPosicion.innerText = posiciones[cursor.valueAsNumber]['fecha'];
             }
 
             if (posicion_inicial['lat'] != posicion_final['lat'] || posicion_inicial['lng'] != posicion_final['lng']) {
@@ -187,6 +189,7 @@
             velocidadRepartidor = document.getElementById('velocidadRepartidor');
             seguirRepartidor = document.getElementById('seguirRepartidor');
             cursor = document.getElementById('cursor');
+            txtPosicion = document.getElementById('txtPosicion');
 
             cursor.max = posiciones.length - 1;
 
