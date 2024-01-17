@@ -34,6 +34,7 @@
             $posicion_buena = [];
             $ultima_posicion = [];
             $velocidad_maxima = 0;
+            $id_maxima = 0;
 
             $posiciones = $preparada->fetchAll(PDO::FETCH_ASSOC);
             foreach( $posiciones as $posicion ){
@@ -43,12 +44,14 @@
                         $posicion_mala = $posicion;
                         $ultima_posicion = $posicion;
                         $velocidad_maxima = $posicion['velocidad'];
+                        $id_maxima = $posicion['id'];
                     }
                 }else{
                     if(!$posicion_buena){
                         if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($ultima_posicion['fecha']))->getTimestamp() <= 60 ){
                             $ultima_posicion = $posicion;
                             $velocidad_maxima = $posicion['velocidad'] > $velocidad_maxima ? $posicion['velocidad'] : $velocidad_maxima;
+                            $id_maxima = $posicion['velocidad'] > $velocidad_maxima ? $posicion['id'] : $id_maxima;
                             if( $posicion['velocidad'] < $_POST['velocidad_limite'] ){
                                 $posicion_buena = $posicion;
                             }
@@ -62,17 +65,20 @@
                             $posicion_buena = [];
                             $ultima_posicion = [];
                             $velocidad_maxima = 0;
+                            $id_maxima = 0;
 
                             if( $posicion['velocidad'] >= $_POST['velocidad_limite'] ){
                                 $posicion_mala = $posicion;
                                 $ultima_posicion = $posicion;
                                 $velocidad_maxima = $posicion['velocidad'];
+                                $id_maxima = $posicion['id'];
                             }
                         }
                     }else{
                         if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($ultima_posicion['fecha']))->getTimestamp() <= 60 ){
                             $ultima_posicion = $posicion;
                             $velocidad_maxima = $posicion['velocidad'] > $velocidad_maxima ? $posicion['velocidad'] : $velocidad_maxima;
+                            $id_maxima = $posicion['velocidad'] > $velocidad_maxima ? $posicion['id'] : $id_maxima;
                             if( $posicion['velocidad'] >= $_POST['velocidad_limite'] ){
                                 $posicion_buena = [];
                             }else{
@@ -85,6 +91,7 @@
                                     $posicion_buena = [];
                                     $ultima_posicion = [];
                                     $velocidad_maxima = 0;
+                                    $id_maxima = 0;
                                 }
                             }
                         }else{
@@ -97,11 +104,13 @@
                             $posicion_buena = [];
                             $ultima_posicion = [];
                             $velocidad_maxima = 0;
+                            $id_maxima = 0;
 
                             if( $posicion['velocidad'] >= $_POST['velocidad_limite'] ){
                                 $posicion_mala = $posicion;
                                 $ultima_posicion = $posicion;
                                 $velocidad_maxima = $posicion['velocidad'];
+                                $id_maxima = $posicion['id'];
                             }
                         }
                     }
