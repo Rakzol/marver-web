@@ -124,6 +124,7 @@
         let frame = 1;
         let pausado = false;
         let velocidad = 100;
+        let actualizaciones = 0;
 
         function pausar(){
             if(pausado){
@@ -168,22 +169,10 @@
 
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
-            if( velocidad == 100 ){
-                if (frame % 50 == 0 && seguirRepartidor.checked) {
+            actualizaciones++;
+            if (actualizaciones % 50 == 0 && seguirRepartidor.checked) {
                 mapa.panTo(marcador.position);
-            }
-            }else if(velocidad == 50){
-                if (frame % 25 == 0 && seguirRepartidor.checked) {
-                mapa.panTo(marcador.position);
-            }
-            }else if(velocidad == 25){
-                if (frame % 12 == 0 && seguirRepartidor.checked) {
-                mapa.panTo(marcador.position);
-            }
-            }else if(velocidad == 12){
-                if (frame % 6 == 0 && seguirRepartidor.checked) {
-                mapa.panTo(marcador.position);
-            }
+                actualizaciones = 0;
             }
 
             if (frame == 1) {
