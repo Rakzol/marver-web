@@ -122,7 +122,7 @@
         let posicion_final;
         let cursor;
         let frame = 1;
-        let pausado = false;
+        window.pausado = false;
 
         function pausar(){
             window.pausado = true;
