@@ -123,7 +123,7 @@
         let cursor;
         let frame = 1;
         let pausado = false;
-        let velocidad = 1000;
+        let velocidad = 100;
 
         function pausar(){
             if(pausado){
@@ -138,20 +138,20 @@
         }
 
         function reproduccion(){
-            if( velocidad == 1000 ){
-                velocidad = 500;
+            if( velocidad == 100 ){
+                velocidad = 50;
                 document.getElementById("icono_velocidad").classList.remove('fa-1');
                 document.getElementById("icono_velocidad").classList.add('fa-2');
-            }else if(velocidad == 500){
-                velocidad = 250;
+            }else if(velocidad == 50){
+                velocidad = 25;
                 document.getElementById("icono_velocidad").classList.remove('fa-2');
                 document.getElementById("icono_velocidad").classList.add('fa-4');
-            }else if(velocidad == 250){
-                velocidad = 125;
+            }else if(velocidad == 25){
+                velocidad = 12;
                 document.getElementById("icono_velocidad").classList.remove('fa-4');
                 document.getElementById("icono_velocidad").classList.add('fa-8');
-            }else if(velocidad == 125){
-                velocidad = 1000;
+            }else if(velocidad == 12){
+                velocidad = 100;
                 document.getElementById("icono_velocidad").classList.remove('fa-8');
                 document.getElementById("icono_velocidad").classList.add('fa-1');
             }
