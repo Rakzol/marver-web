@@ -129,7 +129,7 @@
         }
 
         async function procesar_vista() {
-            console.log()
+            console.log(pausado);
             if(pausado){
                 console.log('saliendo');
                 return;
