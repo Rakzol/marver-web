@@ -159,11 +159,11 @@
         }
 
         function adelantar(){
-            cursor.value += 60;
+            cursor.valueAsNumber += 60;
         }
 
         function retroceder(){
-            cursor.value -= 60;
+            cursor.valueAsNumber -= 60;
         }
     </script>
 
