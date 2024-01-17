@@ -125,12 +125,12 @@
         let pausado = false;
 
         function pausar(){
-            pausado = true;
+            window.pausado = true;
         }
 
         async function procesar_vista() {
             console.log(pausado);
-            if(pausado){
+            if(window.pausado){
                 console.log('saliendo');
                 return;
             }
