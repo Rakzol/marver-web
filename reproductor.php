@@ -191,7 +191,7 @@
                 marcador.position = { lat: latitud, lng: longitud };
             }
 
-            if (frame == velocidad) {
+            if (frame >= velocidad) {
                 frame = 1;
                 cursor.valueAsNumber += 1;
 
