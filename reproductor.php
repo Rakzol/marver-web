@@ -244,7 +244,7 @@
             marcador.addListener("click", () => {
                 mapa.setZoom(18.5);
                 mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
-                mapa.panTo(usuarioLista['marcador'].position);
+                mapa.panTo(marcador.position);
 
                 infowindow.open({
                     anchor: marcador,
