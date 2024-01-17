@@ -152,7 +152,8 @@
                 posicion_inicial = { lat: marcador.position['lat'], lng: marcador.position['lng'] };
                 posicion_final = { lat: posiciones[cursor.valueAsNumber]['latitud'], lng: posiciones[cursor.valueAsNumber]['longitud'] };
                 velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-                txtPosicion.innerText = posiciones[cursor.valueAsNumber]['fecha'];
+                let fecha = new Date(posiciones[cursor.valueAsNumber]['fecha']);
+                txtPosicion.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDay() < 10 ? '0' + fecha.getDay() : fecha.getDay() ) + ' ' + ( fecha.getHours() % 12 < 10 ? '0' + ( fecha.getHours() % 12 ) : fecha.getHours() % 12 ) + ':' + fecha.getMinutes() + '.' + fecha.getSeconds() + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
             }
 
             if (posicion_inicial['lat'] != posicion_final['lat'] || posicion_inicial['lng'] != posicion_final['lng']) {
