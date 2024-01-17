@@ -83,7 +83,7 @@
                 <button onclick="retroceder();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-left"></i></button>
                 <button onclick="reproduccion();" class="btn btn-primary"><i class="fa-solid fa-forward"></i>  <i class="fa-solid fa-1" id="icono_velocidad" ></i></button>
                     <label for="cursor" class="form-label" id="txtPosicion" >Posicion</label>
-                    <input type="range" class="form-range" min="0" max="1" value="0" id="cursor">
+                    <input type="range" onchange="actualizar_todo();" class="form-range" min="0" max="1" value="0" id="cursor">
                     <input class="form-check-input" id="seguirRepartidor" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
                     <label class="form-check-label ms-1" for="flexSwitchCheckChecked">Seguir repartidor</label>
                 </div>
@@ -160,10 +160,21 @@
 
         function adelantar(){
             cursor.valueAsNumber += 60;
+            actualizar_todo();
         }
 
         function retroceder(){
             cursor.valueAsNumber -= 60;
+            actualizar_todo();
+        }
+
+        function actualizar_todo(){
+            frame = 1;
+            velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
+            let fecha = new Date(posiciones[cursor.valueAsNumber]['fecha']);
+            txtPosicion.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDay() < 10 ? '0' + fecha.getDay() : fecha.getDay() ) + ' ' + ( fecha.getHours() % 12 < 10 ? '0' + ( fecha.getHours() % 12 ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + fecha.getSeconds() + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
+            marcador.position = { lat: posiciones[cursor.valueAsNumber]['latitud'], lng: posiciones[cursor.valueAsNumber]['longitud'] };
+            mapa.panTo(marcador.position);
         }
     </script>
 
@@ -188,7 +199,7 @@
                 posicion_final = { lat: posiciones[cursor.valueAsNumber]['latitud'], lng: posiciones[cursor.valueAsNumber]['longitud'] };
                 velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
                 let fecha = new Date(posiciones[cursor.valueAsNumber]['fecha']);
-                txtPosicion.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDay() < 10 ? '0' + fecha.getDay() : fecha.getDay() ) + ' ' + ( fecha.getHours() % 12 < 10 ? '0' + ( fecha.getHours() % 12 ) : fecha.getHours() % 12 ) + ':' + fecha.getMinutes() + '.' + fecha.getSeconds() + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
+                txtPosicion.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDay() < 10 ? '0' + fecha.getDay() : fecha.getDay() ) + ' ' + ( fecha.getHours() % 12 < 10 ? '0' + ( fecha.getHours() % 12 ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + fecha.getSeconds() + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
             }
 
             if (posicion_inicial['lat'] != posicion_final['lat'] || posicion_inicial['lng'] != posicion_final['lng']) {
