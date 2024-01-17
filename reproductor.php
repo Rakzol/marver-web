@@ -125,16 +125,15 @@
         window.pausado = false;
 
         function pausar(){
+            console.log("aaaa");
             window.pausado = true;
         }
 
         async function procesar_vista() {
-            console.log(pausado);
             if(window.pausado){
                 console.log('saliendo');
                 return;
             }
-            console.log('ejecutando');
 
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
