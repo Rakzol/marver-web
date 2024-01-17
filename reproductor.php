@@ -157,6 +157,14 @@
                 document.getElementById("icono_velocidad").classList.add('fa-1');
             }
         }
+
+        function adelantar(){
+            cursor.value += 60;
+        }
+
+        function retroceder(){
+            cursor.value -= 60;
+        }
     </script>
 
     <script type="module">
