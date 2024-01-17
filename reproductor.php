@@ -81,7 +81,7 @@
                 <button onclick="pausar();" class="btn btn-primary"><i class="fa-solid fa-pause" id="icono_pausar" ></i></button>
                 <button onclick="adelantar();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-right"></i></button>
                 <button onclick="retroceder();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-left"></i></button>
-                <button onclick="velocidad();" class="btn btn-primary"><i class="fa-solid fa-forward"></i>  <i class="fa-solid fa-1" id="icono_velocidad" ></i></button>
+                <button onclick="reproduccion();" class="btn btn-primary"><i class="fa-solid fa-forward"></i>  <i class="fa-solid fa-1" id="icono_velocidad" ></i></button>
                     <label for="cursor" class="form-label" id="txtPosicion" >Posicion</label>
                     <input type="range" class="form-range" min="0" max="1" value="0" id="cursor">
                     <input class="form-check-input" id="seguirRepartidor" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
@@ -137,7 +137,7 @@
             }
         }
 
-        function velocidad(){
+        function reproduccion(){
             if( velocidad == 1000 ){
                 velocidad = 500;
                 document.getElementById("icono_velocidad").classList.remove('fa-1');
