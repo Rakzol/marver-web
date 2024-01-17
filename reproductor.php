@@ -132,8 +132,10 @@
 
         async function procesar_vista() {
             if(pausado){
+                console.log('saliendo');
                 return;
             }
+            console.log('ejecutando');
 
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
