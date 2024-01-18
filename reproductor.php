@@ -122,7 +122,7 @@
         let posicion_final;
         let cursor;
         let frame = 1;
-        let pausado = false;
+        let pausado = true;
         let velocidad = 100;
         let actualizaciones = 0;
 
@@ -239,12 +239,16 @@
             txtPosicion = document.getElementById('txtPosicion');
 
             cursor.max = posiciones.length - 1;
+            cursor.value = posiciones.findIndex( posicion => posicion.id == <?php $_GET['posicion']; ?> );
+            velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
+            let fecha = new Date(posiciones[cursor.valueAsNumber]['fecha']);
+            txtPosicion.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDay() < 10 ? '0' + fecha.getDay() : fecha.getDay() ) + ' ' + ( fecha.getHours() % 12 < 10 ? '0' + ( fecha.getHours() % 12 ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
 
             document.getElementById('txtIdRepartidor').innerText = <?php echo $_GET['id']; ?>;
             document.getElementById('txtNombreRepartidor').innerText = '<?php echo $_GET['nombre']; ?>';
 
             mapa = new Map(document.getElementById("mapa"), {
-                center: { lat: 25.7951169, lng: -108.99698492 },
+                center: { lat: posiciones[cursor.valueAsNumber]['latitud'], lng: posiciones[cursor.valueAsNumber]['longitud'] },
                 zoom: 18.5,
                 mapId: '7845e7dffe8cea37',
                 mapTypeId: google.maps.MapTypeId.HYBRID
@@ -256,7 +260,7 @@
             marcador = new AdvancedMarkerElement({
                 content: imagen,
                 map: mapa,
-                position: { lat: 25.7951169, lng: -108.99698492 }
+                position: { lat: posiciones[cursor.valueAsNumber]['latitud'], lng: posiciones[cursor.valueAsNumber]['longitud'] }
             });
 
             let infowindow = new google.maps.InfoWindow({
@@ -273,6 +277,8 @@
                     map: mapa,
                 });
             });
+
+
 
             setTimeout(procesar_vista, 10);
         }
