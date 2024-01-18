@@ -50,8 +50,10 @@
                     if(!$posicion_buena){
                         if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($ultima_posicion['fecha']))->getTimestamp() <= 60 ){
                             $ultima_posicion = $posicion;
-                            $velocidad_maxima = $posicion['velocidad'] > $velocidad_maxima ? $posicion['velocidad'] : $velocidad_maxima;
-                            $id_maxima = $posicion['velocidad'] > $velocidad_maxima ? $posicion['id'] : $id_maxima;
+                            if($posicion['velocidad'] > $velocidad_maxima){
+                                $velocidad_maxima = $posicion['velocidad'];
+                                $id_maxima = $posicion['id'];
+                            }
                             if( $posicion['velocidad'] < $_POST['velocidad_limite'] ){
                                 $posicion_buena = $posicion;
                             }
@@ -77,8 +79,10 @@
                     }else{
                         if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($ultima_posicion['fecha']))->getTimestamp() <= 60 ){
                             $ultima_posicion = $posicion;
-                            $velocidad_maxima = $posicion['velocidad'] > $velocidad_maxima ? $posicion['velocidad'] : $velocidad_maxima;
-                            $id_maxima = $posicion['velocidad'] > $velocidad_maxima ? $posicion['id'] : $id_maxima;
+                            if($posicion['velocidad'] > $velocidad_maxima){
+                                $velocidad_maxima = $posicion['velocidad'];
+                                $id_maxima = $posicion['id'];
+                            }
                             if( $posicion['velocidad'] >= $_POST['velocidad_limite'] ){
                                 $posicion_buena = [];
                             }else{
