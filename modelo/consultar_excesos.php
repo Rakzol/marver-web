@@ -58,7 +58,7 @@
                         }else{
                             $tiempo = (new DateTime($ultima_posicion['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp();
                             // if( $tiempo >= $_POST['tiempo_limite'] ){
-                                $resultados[] = [$repartidor,'Velocidad',$tiempo,$velocidad_maxima,$posicion_mala,$ultima_posicion];
+                                $resultados[] = [$repartidor,'Velocidad',$tiempo,$velocidad_maxima,$posicion_mala,$ultima_posicion,$id_maxima];
                             // }
 
                             $posicion_mala = [];
@@ -85,7 +85,7 @@
                                 if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($posicion_buena['fecha']))->getTimestamp() >= $segundos_fin ){
                                     $tiempo = (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp();
                                     // if( $tiempo >= $_POST['tiempo_limite'] ){
-                                        $resultados[] = [$repartidor,'Velocidad',$tiempo,$velocidad_maxima,$posicion_mala,$posicion_buena];
+                                        $resultados[] = [$repartidor,'Velocidad',$tiempo,$velocidad_maxima,$posicion_mala,$posicion_buena,$id_maxima];
                                     // }
                                     $posicion_mala = [];
                                     $posicion_buena = [];
@@ -97,7 +97,7 @@
                         }else{
                             $tiempo = (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp();
                             // if( $tiempo >= $_POST['tiempo_limite'] ){
-                                $resultados[] = [$repartidor,'Velocidad',$tiempo,$velocidad_maxima,$posicion_mala,$posicion_buena];
+                                $resultados[] = [$repartidor,'Velocidad',$tiempo,$velocidad_maxima,$posicion_mala,$posicion_buena,$id_maxima];
                             // }
 
                             $posicion_mala = [];
@@ -122,12 +122,12 @@
                 if($posicion_buena){
                     $tiempo = (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp();
                     // if( $tiempo >= $_POST['tiempo_limite'] ){
-                        $resultados[] = [$repartidor,'Velocidad',$tiempo,$velocidad_maxima,$posicion_mala,$posicion_buena];
+                        $resultados[] = [$repartidor,'Velocidad',$tiempo,$velocidad_maxima,$posicion_mala,$posicion_buena,$id_maxima];
                     // }
                 }else{
                     $tiempo = (new DateTime(end($posiciones)['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp();
                     // if( $tiempo >= $_POST['tiempo_limite'] ){
-                        $resultados[] = [$repartidor,'Velocidad',$tiempo,$velocidad_maxima,$posicion_mala,end($posiciones)];
+                        $resultados[] = [$repartidor,'Velocidad',$tiempo,$velocidad_maxima,$posicion_mala,end($posiciones),$id_maxima];
                     // }
                 }
             }
@@ -136,7 +136,7 @@
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        $preparada = $conexion->prepare("SELECT Clave, Nombre FROM posiciones INNER JOIN Vendedores ON Vendedores.Clave = posiciones.usuario WHERE fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) AND 6371 * 2 * ASIN( SQRT( POWER(SIN(RADIANS((25.794227 - latitud) / 2)), 2) + COS(RADIANS(25.794227)) * COS(RADIANS(latitud)) * POWER(SIN(RADIANS((-108.985983 - longitud) / 2)), 2) ) ) >= 0.04 GROUP BY Clave, Nombre");
+        $preparada = $conexion->prepare("SELECT Clave, Nombre FROM posiciones INNER JOIN Vendedores ON Vendedores.Clave = posiciones.usuario WHERE fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) AND 6371 * 2 * ASIN( SQRT( POWER(SIN(RADIANS((25.794137 - latitud) / 2)), 2) + COS(RADIANS(25.794137)) * COS(RADIANS(latitud)) * POWER(SIN(RADIANS((-108.986085 - longitud) / 2)), 2) ) ) >= 0.055 GROUP BY Clave, Nombre");
         $preparada->bindValue(':dia_inicial', $_POST['fecha']);
         $preparada->bindValue(':dia_final', $_POST['fecha']);
         $preparada->execute();
@@ -146,7 +146,7 @@
 
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
 
-            $preparada = $conexion->prepare("SELECT * FROM posiciones WHERE usuario = :repartidor AND fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) AND 6371 * 2 * ASIN( SQRT( POWER(SIN(RADIANS((25.794227 - latitud) / 2)), 2) + COS(RADIANS(25.794227)) * COS(RADIANS(latitud)) * POWER(SIN(RADIANS((-108.985983 - longitud) / 2)), 2) ) ) >= 0.04");
+            $preparada = $conexion->prepare("SELECT * FROM posiciones WHERE usuario = :repartidor AND fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) AND 6371 * 2 * ASIN( SQRT( POWER(SIN(RADIANS((25.794137 - latitud) / 2)), 2) + COS(RADIANS(25.794137)) * COS(RADIANS(latitud)) * POWER(SIN(RADIANS((-108.986085 - longitud) / 2)), 2) ) ) >= 0.055");
             $preparada->bindValue(':repartidor', $repartidor['Clave']);
             $preparada->bindValue(':dia_inicial', $_POST['fecha']);
             $preparada->bindValue(':dia_final', $_POST['fecha']);
