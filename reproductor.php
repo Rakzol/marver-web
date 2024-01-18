@@ -78,7 +78,7 @@
                 <h5 class="card-title" id="txtNombreRepartidor">Seleccione un Repartidor</h5>
                 <p class="card-text" id="velocidadRepartidor">0.0 Km/h</p>
                 <div class="form-check form-switch d-inline-block ms-2 mt-2" >
-                <button onclick="pausar();" class="btn btn-primary"><i class="fa-solid fa-pause" id="icono_pausar" ></i></button>
+                <button onclick="pausar();" class="btn btn-primary"><i class="fa-solid fa-play" id="icono_pausar" ></i></button>
                 <button onclick="adelantar();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-right"></i></button>
                 <button onclick="retroceder();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-left"></i></button>
                 <button onclick="reproduccion();" class="btn btn-primary"><i class="fa-solid fa-forward"></i>  <i class="fa-solid fa-1" id="icono_velocidad" ></i></button>
