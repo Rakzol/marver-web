@@ -183,6 +183,7 @@
         }
 
         function infraccion(){
+            frame = 1;
             cursor.value = indice_infraccion;
             velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
             let fecha = new Date(posiciones[cursor.valueAsNumber]['fecha']);
