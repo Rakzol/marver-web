@@ -65,14 +65,10 @@
                     $velocidad_maxima = $posiciones[$indice + 1]['velocidad'] > $velocidad_maxima ? $posiciones[$indice + 1]['velocidad'] : $velocidad_maxima;
                     if( (new DateTime($posiciones[$indice + 1]['fecha']))->getTimestamp() - (new DateTime($posiciones[$indice]['fecha']))->getTimestamp() <= 10 ){
                         $distancia_total += distancia($posiciones[$indice]['latitud'], $posiciones[$indice]['longitud'],$posiciones[$indice + 1]['latitud'], $posiciones[$indice + 1]['longitud']);
-                        $indice += 2;
-                    }else{
-                        $indice += 1;
                     }
-                }else{
-                    $indice += 1;
                 }
-            }
+
+                $indice++;
 
             $resultados[] = [$repartidor['Clave'], $repartidor['Nombre'], $distancia_total, $velocidad_maxima];
         }
