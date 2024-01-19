@@ -433,6 +433,7 @@
                 <th>Clave</th>
                 <th>Nombre</th>
                 <th>Kilometros</th>
+                <th>Maxima</th>
                 <th>Mapa</th>
             </tr>
         </thead>
@@ -454,10 +455,70 @@
 
     <script>
 
+        function actualizar(){
+            document.getElementById('spinner').classList.add('show');
+
+            let cuerpo = document.querySelector('tbody');
+
+            let datos = new FormData();
+            datos.append('fecha', document.getElementById('fecha').value);
+
+            fetch('modelo/consultar_repartidores',{
+                    method: 'POST',
+                    body: datos
+                })
+                .then((respuesta) => {
+                    return respuesta.json();
+                })
+                .catch(error => {
+                    console.error('Error al solicitar los repartidores: ', error);
+                    document.getElementById('spinner').classList.remove('show');
+                })
+                .then(repartidores_json => {
+                    console.log(repartidores_json);
+
+                    cuerpo.replaceChildren();
+
+                    repartidores_json.forEach( (repartidor)=>{
+                        let tr = document.createElement('tr');
+
+                        let td = document.createElement('td');
+                        td.innerText = repartidor[0];
+                        tr.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.innerText = repartidor[1];
+                        tr.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.innerText = repartidor[2];
+                        tr.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.innerText = repartidor[3];
+                        tr.appendChild(td);
+
+                        td = document.createElement('td');
+                        let button = document.createElement('button');
+                        button.onclick = ()=>{
+                            // window.open('https://www.marverrefacciones.mx/reproductor?id=' + repartidor[0]['Clave'] + '&nombre=' + repartidor[0]['Nombre'] + '&fecha=' + document.getElementById('fecha').value + '&posicion=' + id_infraccion, '_blank');
+                        }
+                        button.innerText = 'Reproducir';
+                        button.classList.add('btn');
+                        button.classList.add('btn-primary');
+                        td.appendChild(button);
+                        tr.appendChild(td);
+
+                        cuerpo.appendChild(tr);
+                    } );
+
+                    document.getElementById('spinner').classList.remove('show');
+                });
+        }
+
         window.addEventListener('load', ()=>{
             document.getElementById('fecha').valueAsDate = new Date();
-
-
+            actualizar();
         } );
 
     </script>
