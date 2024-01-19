@@ -61,17 +61,17 @@
 
             while($indice < count($posiciones) ){
 
-                $velocidad_maxima = $posiciones[$indice]['velocidad'] > $velocidad_maxima ? $posiciones[$indice]['velocidad'] : $velocidad_maxima;
-                $id_maxima = $posiciones[$indice]['id'];
+                if($posiciones[$indice]['velocidad'] > $velocidad_maxima){
+                    $velocidad_maxima = $posiciones[$indice]['velocidad'];
+                    $id_maxima = $posiciones[$indice]['id'];
+                }
                 if( $indice + 1 < count($posiciones) ){
-                    $velocidad_maxima = $posiciones[$indice + 1]['velocidad'] > $velocidad_maxima ? $posiciones[$indice + 1]['velocidad'] : $velocidad_maxima;
-                    $id_maxima = $posiciones[$indice + 1]['id'];
                     if( (new DateTime($posiciones[$indice + 1]['fecha']))->getTimestamp() - (new DateTime($posiciones[$indice]['fecha']))->getTimestamp() <= 10 ){
                         $distancia_total += distancia($posiciones[$indice]['latitud'], $posiciones[$indice]['longitud'],$posiciones[$indice + 1]['latitud'], $posiciones[$indice + 1]['longitud']);
                     }
                 }
 
-                $indice += 1;
+                $indice++;
             }
 
             $resultados[] = [$repartidor['Clave'], $repartidor['Nombre'], $distancia_total, $velocidad_maxima, $id_maxima];
