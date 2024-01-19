@@ -47,7 +47,7 @@
         $resultados = [];
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
 
-            $preparada = $conexion->prepare("SELECT latitud, longitud, velocidad, fecha FROM posiciones WHERE usuario = :repartidor AND fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) AND velocidad > 2.22");
+            $preparada = $conexion->prepare("SELECT id, latitud, longitud, velocidad, fecha FROM posiciones WHERE usuario = :repartidor AND fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) AND velocidad > 2.22");
             $preparada->bindValue(':repartidor', $repartidor['Clave']);
             $preparada->bindValue(':dia_inicial', $_POST['fecha']);
             $preparada->bindValue(':dia_final', $_POST['fecha']);
@@ -56,13 +56,16 @@
             $posiciones = $preparada->fetchAll(PDO::FETCH_ASSOC);
             $distancia_total = 0;
             $velocidad_maxima = 0;
+            $id_maxima = 0;
             $indice = 0;
 
             while($indice < count($posiciones) ){
 
                 $velocidad_maxima = $posiciones[$indice]['velocidad'] > $velocidad_maxima ? $posiciones[$indice]['velocidad'] : $velocidad_maxima;
+                $id_maxima = $posiciones[$indice]['id'];
                 if( $indice + 1 < count($posiciones) ){
                     $velocidad_maxima = $posiciones[$indice + 1]['velocidad'] > $velocidad_maxima ? $posiciones[$indice + 1]['velocidad'] : $velocidad_maxima;
+                    $id_maxima = $posiciones[$indice + 1]['id'];
                     if( (new DateTime($posiciones[$indice + 1]['fecha']))->getTimestamp() - (new DateTime($posiciones[$indice]['fecha']))->getTimestamp() <= 10 ){
                         $distancia_total += distancia($posiciones[$indice]['latitud'], $posiciones[$indice]['longitud'],$posiciones[$indice + 1]['latitud'], $posiciones[$indice + 1]['longitud']);
                     }
@@ -70,8 +73,8 @@
 
                 $indice += 1;
             }
-            
-            $resultados[] = [$repartidor['Clave'], $repartidor['Nombre'], $distancia_total, $velocidad_maxima];
+
+            $resultados[] = [$repartidor['Clave'], $repartidor['Nombre'], $distancia_total, $velocidad_maxima, $id_maxima];
         }
 
         echo json_encode($resultados, JSON_UNESCAPED_UNICODE);
