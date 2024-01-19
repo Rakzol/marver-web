@@ -4,7 +4,7 @@
         //puede existir uan diferencia entre velocidades de 10 segundos para seguira contando
 
         session_start();
-        
+
         header('Content-Type: application/json');
 
         if(!isset($_SESSION['usuario_mapa'])){
@@ -47,7 +47,7 @@
         $resultados = [];
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
 
-            $preparada = $conexion->prepare("SELECT velocidad, fecha FROM posiciones WHERE usuario = :repartidor AND fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) AND velocidad > 2.22");
+            $preparada = $conexion->prepare("SELECT latitud, longitud, velocidad, fecha FROM posiciones WHERE usuario = :repartidor AND fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) AND velocidad > 2.22");
             $preparada->bindValue(':repartidor', $repartidor['Clave']);
             $preparada->bindValue(':dia_inicial', $_POST['fecha']);
             $preparada->bindValue(':dia_final', $_POST['fecha']);
