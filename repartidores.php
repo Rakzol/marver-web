@@ -422,7 +422,7 @@
 
             <a class="btn btn-primary" style="min-width: 210px;">Ratreo</a>
 
-            <a class="btn btn-primary" style="min-width: 210px;">Infracciones</a>
+            <a class="btn btn-primary" style="min-width: 210px;">Excesos</a>
 
         </div>
 
@@ -453,7 +453,13 @@
     </div>
 
     <script>
-        
+
+        window.addEventListener('load', ()=>{
+            document.getElementById('fecha').valueAsDate = new Date();
+
+
+        } );
+
     </script>
 
     <!-- <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'

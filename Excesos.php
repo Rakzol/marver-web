@@ -432,6 +432,9 @@
 
             <button id="actualizar" onclick="actualizar_excesos();" type="button" class="btn btn-primary" style="min-width: 210px;">Actualizar</button>
 
+            <a class="btn btn-primary" >Rastreo</a>
+            <a class="btn btn-primary" >Repartidores</a>
+
         </div>
 
         <!-- dia minutos limite de reposo velocidad limite de conduccion -->
