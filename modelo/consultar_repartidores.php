@@ -68,8 +68,9 @@
                     }
                 }
 
-                $indice++;
-
+                $indice += 1;
+            }
+            
             $resultados[] = [$repartidor['Clave'], $repartidor['Nombre'], $distancia_total, $velocidad_maxima];
         }
 
