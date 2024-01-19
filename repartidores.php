@@ -495,7 +495,7 @@
                         tr.appendChild(td);
 
                         td = document.createElement('td');
-                        td.innerText = repartidor[3].toFixed(1) + ' Km/h';
+                        td.innerText = (repartidor[3] * 3.6).toFixed(1) + ' Km/h';
                         tr.appendChild(td);
 
                         td = document.createElement('td');
