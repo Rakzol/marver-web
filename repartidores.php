@@ -432,7 +432,7 @@
             <tr>
                 <th>Clave</th>
                 <th>Nombre</th>
-                <th>Kilometros</th>
+                <th>Recorrido</th>
                 <th>Maxima</th>
                 <th>Mapa</th>
             </tr>
@@ -491,11 +491,11 @@
                         tr.appendChild(td);
 
                         td = document.createElement('td');
-                        td.innerText = repartidor[2];
+                        td.innerText = repartidor[2].toFixed(1) + 'Km';
                         tr.appendChild(td);
 
                         td = document.createElement('td');
-                        td.innerText = repartidor[3];
+                        td.innerText = repartidor[3].toFixed(1) + 'Km/h';
                         tr.appendChild(td);
 
                         td = document.createElement('td');
