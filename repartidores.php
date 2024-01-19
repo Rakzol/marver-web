@@ -411,26 +411,18 @@
     <!-- Spinner End -->
 
     <div class="container mt-3 p-3 bg-white rounded">
-        <h1 class="text-center" >Excesos</h1>
+        <h1 class="text-center" >Repartidores</h1>
 
         <div class="d-flex justify-content-center gap-3 flex-wrap" >
 
             <div class="form-floating" style="min-width: 210px;" >
-                <input type="date" class="form-control" id="fecha">
+                <input onchange="actualizar();" type="date" class="form-control" id="fecha">
                 <label for="fecha">Fecha</label>
             </div>
 
-            <div class="form-floating" style="min-width: 210px;">
-                <input type="number" class="form-control" id="tiempo_limite" value="10">
-                <label for="tiempo_limite">Tiempo Limite (Minutos)</label>
-            </div>
+            <a class="btn btn-primary" style="min-width: 210px;">Ratreo</a>
 
-            <div class="form-floating" style="min-width: 210px;">
-                <input type="number" class="form-control" id="velocidad_limite" value="60">
-                <label for="velocidad_limite">Velocidad Limite Km/h</label>
-            </div> 
-
-            <button id="actualizar" onclick="actualizar_excesos();" type="button" class="btn btn-primary" style="min-width: 210px;">Actualizar</button>
+            <a class="btn btn-primary" style="min-width: 210px;">Infracciones</a>
 
         </div>
 
@@ -438,13 +430,10 @@
         <table class="table mb-0 mt-2">
         <thead>
             <tr>
-            <th>Clave</th>
-            <th class="d-none d-md-table-cell" >Nombre</th>
-            <th>Tipo</th>
-            <th>Duración</th>
-            <th class="d-none d-md-table-cell" >Velocidad</th>
-            <th class="d-none d-md-table-cell" >Horas</th>
-            <th>Mapa</th>
+                <th>Clave</th>
+                <th>Nombre</th>
+                <th>Kilometros</th>
+                <th>Mapa</th>
             </tr>
         </thead>
         <tbody>
@@ -464,123 +453,7 @@
     </div>
 
     <script>
-
-        let cuerpo_excesos;
-
-        function horas_formateadas(fecha){
-            let fechaActual = new Date(fecha);
-
-            // Obtiene las horas y minutos
-            let horas = fechaActual.getHours();
-            let minutos = fechaActual.getMinutes();
-
-            // Determina si es AM o PM
-            let periodo = horas >= 12 ? 'pm' : 'am';
-
-            // Convierte las horas al formato de 12 horas
-            horas = horas % 12;
-            horas = horas ? horas : 12; // Si es 0, establece las horas a 12
-
-            // Formatea las horas y minutos con ceros a la izquierda si es necesario
-            horas = horas < 10 ? '0' + horas : horas;
-            minutos = minutos < 10 ? '0' + minutos : minutos;
-
-            // Construye la cadena de tiempo en formato AM/PM
-            return horas + ':' + minutos + ' ' + periodo;
-        }
-
-        function actualizar_excesos(){
-            setTimeout(() => {
-                document.getElementById('actualizar').blur();
-            }, 1000);
-
-            document.getElementById('spinner').classList.add('show');
-
-            let datos_exceso = new FormData();
-            datos_exceso.append('fecha', document.getElementById('fecha').value);
-            datos_exceso.append('tiempo_limite', document.getElementById('tiempo_limite').value * 60);
-            datos_exceso.append('velocidad_limite', document.getElementById('velocidad_limite').value / 3.6);
-
-            fetch('modelo/consultar_excesos',{
-                    method: 'POST',
-                    body: datos_exceso
-                })
-                .then((respuesta) => {
-                    return respuesta.json();
-                })
-                .catch(error => {
-                    console.error('Error al solicitar los excesos: ', error);
-                    document.getElementById('spinner').classList.remove('show');
-                })
-                .then(excesos_json => {
-                    console.log(excesos_json);
-
-                    cuerpo_excesos.replaceChildren();
-
-                    excesos_json.forEach( (exceso)=>{
-                        let tr = document.createElement('tr');
-
-                        let td = document.createElement('td');
-                        td.innerText = exceso[0]['Clave'];
-                        tr.appendChild(td);
-
-                        td = document.createElement('td');
-                        td.innerText = exceso[0]['Nombre'];
-                        td.classList.add('d-none');
-                        td.classList.add('d-md-table-cell');
-                        tr.appendChild(td);
-
-                        td = document.createElement('td');
-                        td.innerText = exceso[1];
-                        tr.appendChild(td);
-
-                        td = document.createElement('td');
-                        if( exceso[2] > 60 ){
-                            td.innerText = (exceso[2] / 60).toFixed(1) + ' minutos';
-                        }else{
-                            td.innerText = exceso[2] + ' segundos';
-                        }
-                        tr.appendChild(td);
-
-                        td = document.createElement('td');
-                        td.innerText = (exceso[3] * 3.6).toFixed(1) + 'Km/h';
-                        td.classList.add('d-none');
-                        td.classList.add('d-md-table-cell');
-                        tr.appendChild(td);
-
-                        td = document.createElement('td');
-                        td.innerText = horas_formateadas(exceso[4]['fecha']);
-                        td.classList.add('d-none');
-                        td.classList.add('d-md-table-cell');
-                        tr.appendChild(td);
-
-                        td = document.createElement('td');
-                        let button = document.createElement('button');
-                        let id_infraccion = exceso.length < 7 ? exceso[4]['id'] : exceso[6];
-                        button.onclick = ()=>{
-                            window.open('https://www.marverrefacciones.mx/reproductor?id=' + exceso[0]['Clave'] + '&nombre=' + exceso[0]['Nombre'] + '&fecha=' + document.getElementById('fecha').value + '&posicion=' + id_infraccion, '_blank');
-                        }
-                        button.innerText = 'Reproducir';
-                        button.classList.add('btn');
-                        button.classList.add('btn-primary');
-                        td.appendChild(button);
-                        tr.appendChild(td);
-
-                        cuerpo_excesos.appendChild(tr);
-                    } );
-
-                    document.getElementById('spinner').classList.remove('show');
-                });
-        }
-
-        window.addEventListener('load', () => {
-            document.getElementById('fecha').valueAsDate = new Date();
-
-            cuerpo_excesos = document.querySelector('tbody');
-
-            actualizar_excesos();
-        });
-
+        
     </script>
 
     <!-- <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'
