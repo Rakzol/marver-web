@@ -17,6 +17,7 @@
         $preparada->execute();
 
         echo '<script>';
+        echo 'let indice_infraccion = 0;';
         echo 'let posiciones = ' . json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE) . ';';
         echo '</script>';
     }catch( Exception $exception ) {
@@ -84,7 +85,7 @@
                 <a class="btn btn-primary" >Rastreo</a>
                 <a class="btn btn-primary" >Excesos</a>
                 <a class="btn btn-primary" >Repartidores</a>
-                <a class="btn btn-primary" >Infraccion</a>
+                <button onclick="infraccion();" class="btn btn-primary"><i class="fa-solid fa-triangle-exclamation"></i></button>
                 <button onclick="reproduccion();" class="btn btn-primary"><i class="fa-solid fa-forward"></i>  <i class="fa-solid fa-1" id="icono_velocidad" ></i></button>
                     <label for="cursor" class="form-label" id="txtPosicion" >Posicion</label>
                     <input type="range" onchange="actualizar_todo();" class="form-range" min="0" max="1" value="0" id="cursor">
@@ -180,6 +181,14 @@
             marcador.position = { lat: posiciones[cursor.valueAsNumber]['latitud'], lng: posiciones[cursor.valueAsNumber]['longitud'] };
             mapa.panTo(marcador.position);
         }
+
+        function infraccion(){
+            cursor.value = indice_infraccion;
+            velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
+            let fecha = new Date(posiciones[cursor.valueAsNumber]['fecha']);
+            txtPosicion.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDay() < 10 ? '0' + fecha.getDay() : fecha.getDay() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
+            mapa.panTo(marcador.position);
+        }
     </script>
 
     <script type="module">
@@ -242,8 +251,10 @@
             cursor = document.getElementById('cursor');
             txtPosicion = document.getElementById('txtPosicion');
 
+            indice_infraccion = posiciones.findIndex( posicion => posicion.id == <?php echo $_GET['posicion']; ?> );
+
             cursor.max = posiciones.length - 1;
-            cursor.value = posiciones.findIndex( posicion => posicion.id == <?php echo $_GET['posicion']; ?> );
+            cursor.value = indice_infraccion;
             velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
             let fecha = new Date(posiciones[cursor.valueAsNumber]['fecha']);
             txtPosicion.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDay() < 10 ? '0' + fecha.getDay() : fecha.getDay() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
