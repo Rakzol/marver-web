@@ -89,7 +89,7 @@
                 <label for="cursor" class="form-label mb-0 d-block" id="txtPosicion" >Posicion</label>
                 <input type="range" onchange="actualizar_todo();" style="max-width: 390px;" class="form-range d-block m-auto" min="0" max="1" value="0" id="cursor">
 
-                <div class="d-flex justify-content-center gap-2 mb-3" >
+                <div class="d-flex justify-content-center gap-2" >
                     <button onclick="pausar();" class="btn btn-primary"><i class="fa-solid fa-play" id="icono_pausar" ></i></button>
                     <button onclick="adelantar();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-right"></i></button>
                     <button onclick="infraccion();" class="btn btn-primary"><i class="fa-solid fa-triangle-exclamation"></i></button>
@@ -97,9 +97,9 @@
                     <button onclick="reproduccion();" class="btn btn-primary"><i class="fa-solid fa-forward"></i>  <i class="fa-solid fa-1" id="icono_velocidad" ></i></button>
                 </div>
 
-                <a class="btn btn-primary" href="https://www.marverrefacciones.mx/mapa" target="_blank" >Rastreo</a>
-                <a class="btn btn-primary" href="https://www.marverrefacciones.mx/repartidores" target="_blank" >Repartidores</a>
-                <a class="btn btn-primary" href="https://www.marverrefacciones.mx/excesos" target="_blank"  >Excesos</a>
+                <a class="btn btn-primary mt-3" href="https://www.marverrefacciones.mx/mapa" target="_blank" >Rastreo</a>
+                <a class="btn btn-primary mt-3" href="https://www.marverrefacciones.mx/repartidores" target="_blank" >Repartidores</a>
+                <a class="btn btn-primary mt-3" href="https://www.marverrefacciones.mx/excesos" target="_blank"  >Excesos</a>
             </div>
         </div>
 
