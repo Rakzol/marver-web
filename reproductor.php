@@ -76,8 +76,10 @@
                 Repartidor : <strong id="txtIdRepartidor"></strong>
             </h5>
             <div class="card-body">
-                <h5 class="card-title" id="txtNombreRepartidor">Seleccione un Repartidor</h5>
-                <p class="card-text" id="velocidadRepartidor">0.0 Km/h</p>
+                <div class="d-flex justify-content-center gap-3" >
+                    <h5 class="card-title" id="txtNombreRepartidor">Seleccione un Repartidor</h5>
+                    <p class="card-text" id="velocidadRepartidor">0.0 Km/h</p>
+                <div>
                 <div class="form-check form-switch d-inline-block ms-2 mt-2" >
                 <button onclick="pausar();" class="btn btn-primary"><i class="fa-solid fa-play" id="icono_pausar" ></i></button>
                 <button onclick="adelantar();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-right"></i></button>
