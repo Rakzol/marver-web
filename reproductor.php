@@ -77,7 +77,7 @@
             </h5>
             <div class="card-body">
 
-                <div class="d-flex justify-content-center gap-3 mb-2" >
+                <div class="d-flex justify-content-center gap-2 mb-2" >
                     <h5 class="card-title mb-0 align-self-center" id="txtNombreRepartidor">Seleccione un Repartidor</h5>
                     <p class="card-text mb-0 align-self-center" id="velocidadRepartidor">0.0 Km/h</p>
                     <div class="form-check form-switch d-inline-block align-self-center" >
