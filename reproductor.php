@@ -78,9 +78,9 @@
             <div class="card-body">
 
                 <div class="d-flex justify-content-center gap-3" >
-                    <h5 class="card-title" id="txtNombreRepartidor">Seleccione un Repartidor</h5>
-                    <p class="card-text" id="velocidadRepartidor">0.0 Km/h</p>
-                    <div class="form-check form-switch d-inline-block ms-2 mt-2" >
+                    <h5 class="card-title align-self-center" id="txtNombreRepartidor">Seleccione un Repartidor</h5>
+                    <p class="card-text align-self-center" id="velocidadRepartidor">0.0 Km/h</p>
+                    <div class="form-check form-switch d-inline-block ms-2 mt-2 align-self-center" >
                         <input class="form-check-input" id="seguirRepartidor" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
                         <label class="form-check-label ms-1" for="flexSwitchCheckChecked">Seguir repartidor</label>
                     </div>
