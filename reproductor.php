@@ -97,9 +97,9 @@
                     <button onclick="reproduccion();" class="btn btn-primary"><i class="fa-solid fa-forward"></i>  <i class="fa-solid fa-1" id="icono_velocidad" ></i></button>
                 </div>
 
-                <a class="btn btn-primary" href="https://www.marverrefacciones.mx/mapa" style="min-width: 115px;" target="_blank" >Rastreo</a>
-                <a class="btn btn-primary" href="https://www.marverrefacciones.mx/repartidores" style="min-width: 120px;" target="_blank" >Repartidores</a>
-                <a class="btn btn-primary" href="https://www.marverrefacciones.mx/excesos" style="min-width: 115px;" target="_blank"  >Excesos</a>
+                <a class="btn btn-primary" href="https://www.marverrefacciones.mx/mapa" style="min-width: 110px;" target="_blank" >Rastreo</a>
+                <a class="btn btn-primary" href="https://www.marverrefacciones.mx/repartidores" target="_blank" >Repartidores</a>
+                <a class="btn btn-primary" href="https://www.marverrefacciones.mx/excesos" style="min-width: 110px;" target="_blank"  >Excesos</a>
             </div>
         </div>
 
