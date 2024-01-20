@@ -77,7 +77,7 @@
             </h5>
             <div class="card-body">
 
-                <div class="d-flex justify-content-center gap-2 mb-2" >
+                <div class="d-flex justify-content-center gap-3 mb-2" >
                     <h5 class="card-title mb-0 align-self-center" id="txtNombreRepartidor">Seleccione un Repartidor</h5>
                     <p class="card-text mb-0 align-self-center" id="velocidadRepartidor">0.0 Km/h</p>
                     <div class="form-check form-switch d-inline-block align-self-center" >
@@ -85,6 +85,9 @@
                         <label class="form-check-label ms-1" for="flexSwitchCheckChecked">Seguir repartidor</label>
                     </div>
                 </div>
+
+                <label for="cursor" class="form-label" id="txtPosicion" >Posicion</label>
+                <input type="range" onchange="actualizar_todo();" class="form-range" min="0" max="1" value="0" id="cursor">
 
                 <button onclick="pausar();" class="btn btn-primary"><i class="fa-solid fa-play" id="icono_pausar" ></i></button>
                 <button onclick="adelantar();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-right"></i></button>
@@ -94,8 +97,6 @@
                 <a class="btn btn-primary" >Repartidores</a>
                 <button onclick="infraccion();" class="btn btn-primary"><i class="fa-solid fa-triangle-exclamation"></i></button>
                 <button onclick="reproduccion();" class="btn btn-primary"><i class="fa-solid fa-forward"></i>  <i class="fa-solid fa-1" id="icono_velocidad" ></i></button>
-                <label for="cursor" class="form-label" id="txtPosicion" >Posicion</label>
-                <input type="range" onchange="actualizar_todo();" class="form-range" min="0" max="1" value="0" id="cursor">
             </div>
         </div>
 
