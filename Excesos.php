@@ -430,7 +430,7 @@
                 <label for="velocidad_limite">Velocidad Limite Km/h</label>
             </div> 
 
-            <button id="actualizar" onclick="actualizar_excesos();" type="button" class="btn btn-primary" style="min-width: 210px;">Actualizar</button>
+            <button id="actualizar" onclick="actualizar_excesos();" type="button" class="btn btn-primary align-self-center" style="min-width: 210px;">Actualizar</button>
 
         </div>
 

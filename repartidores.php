@@ -420,9 +420,9 @@
                 <label for="fecha">Fecha</label>
             </div>
 
-            <a class="btn btn-primary" style="min-width: 210px;">Ratreo</a>
+            <a class="btn btn-primary align-self-center" style="min-width: 210px;">Rastreo</a>
 
-            <a class="btn btn-primary" style="min-width: 210px;">Excesos</a>
+            <a class="btn btn-primary align-self-center" style="min-width: 210px;">Excesos</a>
 
         </div>
 
