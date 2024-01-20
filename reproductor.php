@@ -89,7 +89,7 @@
                 <label for="cursor" class="form-label mb-0 d-block" id="txtPosicion" >Posicion</label>
                 <input type="range" onchange="actualizar_todo();" style="max-width: 400px;" class="form-range d-block m-auto" min="0" max="1" value="0" id="cursor">
 
-                <div class="d-flex justify-content-center gap-3 mb-2" >
+                <div class="d-flex justify-content-center gap-2 mb-2" >
                     <button onclick="pausar();" class="btn btn-primary"><i class="fa-solid fa-play" id="icono_pausar" ></i></button>
                     <button onclick="adelantar();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-right"></i></button>
                     <button onclick="infraccion();" class="btn btn-primary"><i class="fa-solid fa-triangle-exclamation"></i></button>
