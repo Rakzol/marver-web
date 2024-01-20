@@ -420,8 +420,8 @@
                 <label for="fecha">Fecha</label>
             </div>
 
-            <a class="btn btn-primary align-self-center" style="min-width: 210px;" href="https://www.marverrefacciones.mx/mapa" target="_blank" >Rastreo</a>
-            <a class="btn btn-primary" href="https://www.marverrefacciones.mx/repartidores" target="_blank" style="min-width: 210px;">Repartidores</a>
+            <a class="btn btn-primary" style="min-width: 210px;" href="https://www.marverrefacciones.mx/mapa" target="_blank" >Rastreo</a>
+            <a class="btn btn-primary" style="min-width: 210px;" href="https://www.marverrefacciones.mx/repartidores" target="_blank">Repartidores</a>
 
         </div>
 
