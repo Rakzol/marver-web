@@ -86,8 +86,8 @@
                         <label class="form-check-label ms-1" for="flexSwitchCheckChecked">Seguir repartidor</label>
                     </div>
                 </div>
-                <a class="btn btn-primary" href="https://www.marverrefacciones.mx/excesos" target="_blank" >Excesos</a>
-                <a class="btn btn-primary" href="https://www.marverrefacciones.mx/repartidores" target="_blank">Repartidores</a>
+                <a class="btn btn-primary" style="min-width: 142px;" href="https://www.marverrefacciones.mx/excesos" target="_blank" >Excesos</a>
+                <a class="btn btn-primary" style="min-width: 142px;" href="https://www.marverrefacciones.mx/repartidores" target="_blank">Repartidores</a>
             </div>
         </div>
 
