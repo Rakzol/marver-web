@@ -79,7 +79,7 @@
             <div class="card-body">
                 <h5 class="card-title" id="txtNombreRepartidor">Seleccione un Repartidor</h5>
                 <p class="card-text mb-1" id="velocidadRepartidor">0.0 Km/h</p>
-                <div class="mb-1" >
+                <div class="mb-2" >
                     <button id="btnBuscarRepartidor" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelector">Buscar Repartidor</button>
                     <div class="form-check form-switch d-inline-block ms-2 mt-2" >
                         <input class="form-check-input" id="seguirRepartidor" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
