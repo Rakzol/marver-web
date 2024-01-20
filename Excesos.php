@@ -432,6 +432,10 @@
 
             <button id="actualizar" onclick="actualizar_excesos();" type="button" class="btn btn-primary" style="min-width: 210px;">Actualizar</button>
 
+        </div>
+
+        <div class="d-flex justify-content-center gap-3 flex-wrap" >
+
             <a class="btn btn-primary" href="https://www.marverrefacciones.mx/mapa" target="_blank" style="min-width: 210px;">Rastreo</a>
             <a class="btn btn-primary" href="https://www.marverrefacciones.mx/repartidores" target="_blank" style="min-width: 210px;">Repartidores</a>
 
