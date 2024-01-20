@@ -84,7 +84,7 @@
                         <input class="form-check-input" id="seguirRepartidor" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
                         <label class="form-check-label ms-1" for="flexSwitchCheckChecked">Seguir repartidor</label>
                     </div>
-                <div>
+                </div>
 
                 <button onclick="pausar();" class="btn btn-primary"><i class="fa-solid fa-play" id="icono_pausar" ></i></button>
                 <button onclick="adelantar();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-right"></i></button>
