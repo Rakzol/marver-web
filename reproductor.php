@@ -87,7 +87,7 @@
                 </div>
 
                 <label for="cursor" class="form-label mb-0 d-block" id="txtPosicion" >Posicion</label>
-                <input type="range" onchange="actualizar_todo();" style="max-width: 490px;" class="form-range d-block m-auto" min="0" max="1" value="0" id="cursor">
+                <input type="range" onchange="actualizar_todo();" style="max-width: 390px;" class="form-range d-block m-auto" min="0" max="1" value="0" id="cursor">
 
                 <div class="d-flex justify-content-center gap-2 mb-3" >
                     <button onclick="pausar();" class="btn btn-primary"><i class="fa-solid fa-play" id="icono_pausar" ></i></button>
