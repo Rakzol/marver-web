@@ -432,7 +432,7 @@
                 <th>Clave</th>
                 <th>Nombre</th>
                 <th>Recorrido</th>
-                <th>Maxima</th>
+                <th class="d-none d-md-table-cell" >Maxima</th>
                 <th>Mapa</th>
             </tr>
         </thead>
@@ -495,6 +495,8 @@
 
                         td = document.createElement('td');
                         td.innerText = (repartidor[3] * 3.6).toFixed(1) + ' Km/h';
+                        td.classList.add('d-none');
+                        td.classList.add('d-md-table-cell');
                         tr.appendChild(td);
 
                         td = document.createElement('td');

@@ -448,7 +448,7 @@
             <th>Clave</th>
             <th class="d-none d-md-table-cell" >Nombre</th>
             <th>Tipo</th>
-            <th>Duración</th>
+            <th class="d-none d-md-table-cell" >Duración</th>
             <th class="d-none d-md-table-cell" >Velocidad</th>
             <th class="d-none d-md-table-cell" >Horas</th>
             <th>Mapa</th>
@@ -547,6 +547,8 @@
                         }else{
                             td.innerText = exceso[2] + ' segundos';
                         }
+                        td.classList.add('d-none');
+                        td.classList.add('d-md-table-cell');
                         tr.appendChild(td);
 
                         td = document.createElement('td');
