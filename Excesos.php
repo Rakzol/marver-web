@@ -446,7 +446,7 @@
         <thead>
             <tr>
             <th>Clave</th>
-            <th class="d-none d-md-table-cell" >Nombre</th>
+            <th class="d-none d-sm-table-cell" >Nombre</th>
             <th>Tipo</th>
             <th class="d-none d-md-table-cell" >Duración</th>
             <th class="d-none d-md-table-cell" >Velocidad</th>
@@ -534,7 +534,7 @@
                         td = document.createElement('td');
                         td.innerText = exceso[0]['Nombre'];
                         td.classList.add('d-none');
-                        td.classList.add('d-md-table-cell');
+                        td.classList.add('d-sm-table-cell');
                         tr.appendChild(td);
 
                         td = document.createElement('td');

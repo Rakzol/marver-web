@@ -430,7 +430,7 @@
         <thead>
             <tr>
                 <th>Clave</th>
-                <th class="d-none d-md-table-cell" >Nombre</th>
+                <th class="d-none d-sm-table-cell" >Nombre</th>
                 <th>Recorrido</th>
                 <th class="d-none d-md-table-cell" >Maxima</th>
                 <th>Mapa</th>
@@ -488,7 +488,7 @@
                         td = document.createElement('td');
                         td.innerText = repartidor[1];
                         td.classList.add('d-none');
-                        td.classList.add('d-md-table-cell');
+                        td.classList.add('d-sm-table-cell');
                         tr.appendChild(td);
 
                         td = document.createElement('td');
