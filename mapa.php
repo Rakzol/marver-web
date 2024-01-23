@@ -317,7 +317,7 @@
                 mapId: '7845e7dffe8cea37'
             });
 
-            setInterval(actualizacion_logica, 500);
+            setInterval(actualizacion_logica, 4500);
             setTimeout(procesar_vista, 10);
 
             velocidadRepartidor = document.getElementById('velocidadRepartidor');
