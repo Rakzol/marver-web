@@ -283,8 +283,8 @@
 
                 if (usuario['posicion_inicial']['lat'] != usuario['posicion_final']['lat'] || usuario['posicion_inicial']['lng'] != usuario['posicion_final']['lng']) {
 
-                    let latitud_dif_abs = Math.abs(usuario['posicion_inicial']['lat'] - usuario['posicion_final']['lat']) * frame / 150;
-                    let longitud_dif_abs = Math.abs(Math.abs(usuario['posicion_inicial']['lng']) + usuario['posicion_final']['lng']) * frame / 150;
+                    let latitud_dif_abs = Math.abs(usuario['posicion_inicial']['lat'] - usuario['posicion_final']['lat']) * frame / 550;
+                    let longitud_dif_abs = Math.abs(Math.abs(usuario['posicion_inicial']['lng']) + usuario['posicion_final']['lng']) * frame / 550;
 
                     let latitud = usuario['posicion_inicial']['lat'] >= usuario['posicion_final']['lat'] ? usuario['posicion_inicial']['lat'] - latitud_dif_abs : usuario['posicion_inicial']['lat'] + latitud_dif_abs;
                     let longitud = usuario['posicion_inicial']['lng'] >= usuario['posicion_final']['lng'] ? usuario['posicion_inicial']['lng'] - longitud_dif_abs : usuario['posicion_inicial']['lng'] + longitud_dif_abs;
@@ -292,13 +292,13 @@
                     usuario['marcador'].position = { lat: latitud, lng: longitud };
                 }
 
-                if (frame == 150) {
+                if (frame == 550) {
                     usuario['posicion_inicial'] = { lat: usuario['posicion_final']['lat'], lng: usuario['posicion_final']['lng'] };
                 }
 
             });
 
-            if (frame == 150) {
+            if (frame == 550) {
                 frame = 1;
             } else {
                 frame++;
