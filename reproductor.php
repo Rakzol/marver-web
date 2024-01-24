@@ -172,12 +172,12 @@
         }
 
         function adelantar(){
-            cursor.valueAsNumber += 60;
+            cursor.valueAsNumber += 6;
             actualizar_todo();
         }
 
         function retroceder(){
-            cursor.valueAsNumber -= 60;
+            cursor.valueAsNumber -= 6;
             actualizar_todo();
         }
 
