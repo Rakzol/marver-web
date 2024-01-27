@@ -56,7 +56,6 @@
 
             $posicion_mala = [];
             $posicion_buena = [];
-            $ultima_posicion = [];
             $velocidad_maxima = 0;
             $id_maxima = 0;
 
@@ -66,79 +65,35 @@
                 if(!$posicion_mala){
                     if( $posicion['velocidad'] >= $_POST['velocidad_limite'] ){
                         $posicion_mala = $posicion;
-                        $ultima_posicion = $posicion;
                         $velocidad_maxima = $posicion['velocidad'];
                         $id_maxima = $posicion['id'];
                     }
                 }else{
                     if(!$posicion_buena){
-                        if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($ultima_posicion['fecha']))->getTimestamp() <= 60 ){
-                            $ultima_posicion = $posicion;
-                            if($posicion['velocidad'] > $velocidad_maxima){
-                                $velocidad_maxima = $posicion['velocidad'];
-                                $id_maxima = $posicion['id'];
-                            }
-                            if( $posicion['velocidad'] < $_POST['velocidad_limite'] ){
-                                $posicion_buena = $posicion;
-                            }
-                        }else{
-                            $tiempo = (new DateTime($ultima_posicion['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp();
-                            // if( $tiempo >= $_POST['tiempo_limite'] ){
-                                $resultados[] = [$repartidor,'Velocidad',$tiempo,$velocidad_maxima,$posicion_mala,$ultima_posicion,$id_maxima];
-                            // }
-
-                            $posicion_mala = [];
-                            $posicion_buena = [];
-                            $ultima_posicion = [];
-                            $velocidad_maxima = 0;
-                            $id_maxima = 0;
-
-                            if( $posicion['velocidad'] >= $_POST['velocidad_limite'] ){
-                                $posicion_mala = $posicion;
-                                $ultima_posicion = $posicion;
-                                $velocidad_maxima = $posicion['velocidad'];
-                                $id_maxima = $posicion['id'];
-                            }
+                        if($posicion['velocidad'] > $velocidad_maxima){
+                            $velocidad_maxima = $posicion['velocidad'];
+                            $id_maxima = $posicion['id'];
+                        }
+                        if( $posicion['velocidad'] < $_POST['velocidad_limite'] ){
+                            $posicion_buena = $posicion;
                         }
                     }else{
-                        if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($ultima_posicion['fecha']))->getTimestamp() <= 60 ){
-                            $ultima_posicion = $posicion;
-                            if($posicion['velocidad'] > $velocidad_maxima){
-                                $velocidad_maxima = $posicion['velocidad'];
-                                $id_maxima = $posicion['id'];
-                            }
-                            if( $posicion['velocidad'] >= $_POST['velocidad_limite'] ){
-                                $posicion_buena = [];
-                            }else{
-                                if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($posicion_buena['fecha']))->getTimestamp() >= $segundos_fin ){
-                                    $tiempo = (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp();
-                                    // if( $tiempo >= $_POST['tiempo_limite'] ){
-                                        $resultados[] = [$repartidor,'Velocidad',$tiempo,$velocidad_maxima,$posicion_mala,$posicion_buena,$id_maxima];
-                                    // }
-                                    $posicion_mala = [];
-                                    $posicion_buena = [];
-                                    $ultima_posicion = [];
-                                    $velocidad_maxima = 0;
-                                    $id_maxima = 0;
-                                }
-                            }
-                        }else{
-                            $tiempo = (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp();
-                            // if( $tiempo >= $_POST['tiempo_limite'] ){
-                                $resultados[] = [$repartidor,'Velocidad',$tiempo,$velocidad_maxima,$posicion_mala,$posicion_buena,$id_maxima];
-                            // }
-
-                            $posicion_mala = [];
+                        if($posicion['velocidad'] > $velocidad_maxima){
+                            $velocidad_maxima = $posicion['velocidad'];
+                            $id_maxima = $posicion['id'];
+                        }
+                        if( $posicion['velocidad'] >= $_POST['velocidad_limite'] ){
                             $posicion_buena = [];
-                            $ultima_posicion = [];
-                            $velocidad_maxima = 0;
-                            $id_maxima = 0;
-
-                            if( $posicion['velocidad'] >= $_POST['velocidad_limite'] ){
-                                $posicion_mala = $posicion;
-                                $ultima_posicion = $posicion;
-                                $velocidad_maxima = $posicion['velocidad'];
-                                $id_maxima = $posicion['id'];
+                        }else{
+                            if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($posicion_buena['fecha']))->getTimestamp() >= $segundos_fin ){
+                                $tiempo = (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp();
+                                // if( $tiempo >= $_POST['tiempo_limite'] ){
+                                    $resultados[] = [$repartidor,'Velocidad',$tiempo,$velocidad_maxima,$posicion_mala,$posicion_buena,$id_maxima];
+                                // }
+                                $posicion_mala = [];
+                                $posicion_buena = [];
+                                $velocidad_maxima = 0;
+                                $id_maxima = 0;
                             }
                         }
                     }
@@ -170,7 +125,7 @@
         $preparada->execute();
 
         $velocidad_parada = 2.22;
-        $segundos_fin = 3;
+        $segundos_fin = 5;
 
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
 
