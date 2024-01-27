@@ -182,7 +182,6 @@
 
             $posicion_mala = [];
             $posicion_buena = [];
-            $ultima_posicion = [];
 
             $posiciones = $preparada->fetchAll(PDO::FETCH_ASSOC);
             foreach( $posiciones as $posicion ){
@@ -190,61 +189,25 @@
                 if(!$posicion_mala){
                     if( $posicion['velocidad'] <= $velocidad_parada && distancia(25.794137, -108.986085, $posicion['latitud'], $posicion['longitud']) > 0.055 ){
                         $posicion_mala = $posicion;
-                        $ultima_posicion = $posicion;
                     }
                 }else{
                     if(!$posicion_buena){
-                        //if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($ultima_posicion['fecha']))->getTimestamp() <= 60 ){
-                            $ultima_posicion = $posicion;
-                            if( $posicion['velocidad'] > $velocidad_parada || distancia(25.794137, -108.986085, $posicion['latitud'], $posicion['longitud']) <= 0.055 ){
-                                $posicion_buena = $posicion;
-                            }
-                        /*}else{
-                            $tiempo = (new DateTime($ultima_posicion['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp();
-                            if( $tiempo >= $_POST['tiempo_limite'] ){
-                                $resultados[] = [$repartidor,'Tiempo',$tiempo,0,$posicion_mala,$ultima_posicion];
-                            }
-
-                            $posicion_mala = [];
-                            $posicion_buena = [];
-                            $ultima_posicion = [];
-
-                            if( $posicion['velocidad'] <= $velocidad_parada && distancia(25.794137, -108.986085, $posicion['latitud'], $posicion['longitud']) > 0.055 ){
-                                $posicion_mala = $posicion;
-                                $ultima_posicion = $posicion;
-                            }
-                        }*/
+                        if( $posicion['velocidad'] > $velocidad_parada || distancia(25.794137, -108.986085, $posicion['latitud'], $posicion['longitud']) <= 0.055 ){
+                            $posicion_buena = $posicion;
+                        }
                     }else{
-                        //if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($ultima_posicion['fecha']))->getTimestamp() <= 60 ){
-                            $ultima_posicion = $posicion;
-                            if( $posicion['velocidad'] <= $velocidad_parada && distancia(25.794137, -108.986085, $posicion['latitud'], $posicion['longitud']) > 0.055 ){
-                                $posicion_buena = [];
-                            }else{
-                                if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($posicion_buena['fecha']))->getTimestamp() >= $segundos_fin ){
-                                    $tiempo = (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp();
-                                    if( $tiempo >= $_POST['tiempo_limite'] ){
-                                        $resultados[] = [$repartidor,'Tiempo',$tiempo,0,$posicion_mala,$posicion_buena];
-                                    }
-                                    $posicion_mala = [];
-                                    $posicion_buena = [];
-                                    $ultima_posicion = [];
-                                }
-                            }
-                        /*}else{
-                            $tiempo = (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp();
-                            if( $tiempo >= $_POST['tiempo_limite'] ){
-                                $resultados[] = [$repartidor,'Tiempo',$tiempo,0,$posicion_mala,$posicion_buena];
-                            }
-
-                            $posicion_mala = [];
+                        if( $posicion['velocidad'] <= $velocidad_parada && distancia(25.794137, -108.986085, $posicion['latitud'], $posicion['longitud']) > 0.055 ){
                             $posicion_buena = [];
-                            $ultima_posicion = [];
-
-                            if( $posicion['velocidad'] <= $velocidad_parada && distancia(25.794137, -108.986085, $posicion['latitud'], $posicion['longitud']) > 0.055 ){
-                                $posicion_mala = $posicion;
-                                $ultima_posicion = $posicion;
+                        }else{
+                            if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($posicion_buena['fecha']))->getTimestamp() >= $segundos_fin ){
+                                $tiempo = (new DateTime($posicion_buena['fecha']))->getTimestamp() - (new DateTime($posicion_mala['fecha']))->getTimestamp();
+                                if( $tiempo >= $_POST['tiempo_limite'] ){
+                                    $resultados[] = [$repartidor,'Tiempo',$tiempo,0,$posicion_mala,$posicion_buena];
+                                }
+                                $posicion_mala = [];
+                                $posicion_buena = [];
                             }
-                        }*/
+                        }
                     }
                 }
                 
