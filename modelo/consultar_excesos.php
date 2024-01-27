@@ -12,6 +12,30 @@
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
+        function distancia($lat1, $lon1, $lat2, $lon2) {
+            // Radio de la Tierra en kilómetros
+            $earthRadius = 6371;
+        
+            // Convierte las coordenadas de grados a radianes
+            $lat1 = deg2rad($lat1);
+            $lon1 = deg2rad($lon1);
+            $lat2 = deg2rad($lat2);
+            $lon2 = deg2rad($lon2);
+        
+            // Diferencias de coordenadas
+            $dlat = $lat2 - $lat1;
+            $dlon = $lon2 - $lon1;
+        
+            // Fórmula de Haversine
+            $a = sin($dlat / 2) * sin($dlat / 2) + cos($lat1) * cos($lat2) * sin($dlon / 2) * sin($dlon / 2);
+            $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        
+            // Distancia en kilómetros
+            $distance = $earthRadius * $c;
+        
+            return $distance;
+        }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         $preparada = $conexion->prepare("SELECT Clave, Nombre FROM posiciones INNER JOIN Vendedores ON Vendedores.Clave = posiciones.usuario WHERE fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) GROUP BY Clave, Nombre");
@@ -140,7 +164,7 @@
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        $preparada = $conexion->prepare("SELECT Clave, Nombre FROM posiciones INNER JOIN Vendedores ON Vendedores.Clave = posiciones.usuario WHERE fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) AND 6371 * 2 * ASIN( SQRT( POWER(SIN(RADIANS((25.794137 - latitud) / 2)), 2) + COS(RADIANS(25.794137)) * COS(RADIANS(latitud)) * POWER(SIN(RADIANS((-108.986085 - longitud) / 2)), 2) ) ) >= 0.055 GROUP BY Clave, Nombre");
+        $preparada = $conexion->prepare("SELECT Clave, Nombre FROM posiciones INNER JOIN Vendedores ON Vendedores.Clave = posiciones.usuario WHERE fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) GROUP BY Clave, Nombre");
         $preparada->bindValue(':dia_inicial', $_POST['fecha']);
         $preparada->bindValue(':dia_final', $_POST['fecha']);
         $preparada->execute();
@@ -150,7 +174,7 @@
 
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
 
-            $preparada = $conexion->prepare("SELECT * FROM posiciones WHERE usuario = :repartidor AND fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) AND 6371 * 2 * ASIN( SQRT( POWER(SIN(RADIANS((25.794137 - latitud) / 2)), 2) + COS(RADIANS(25.794137)) * COS(RADIANS(latitud)) * POWER(SIN(RADIANS((-108.986085 - longitud) / 2)), 2) ) ) >= 0.055");
+            $preparada = $conexion->prepare("SELECT * FROM posiciones WHERE usuario = :repartidor AND fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final)");
             $preparada->bindValue(':repartidor', $repartidor['Clave']);
             $preparada->bindValue(':dia_inicial', $_POST['fecha']);
             $preparada->bindValue(':dia_final', $_POST['fecha']);
@@ -164,7 +188,7 @@
             foreach( $posiciones as $posicion ){
 
                 if(!$posicion_mala){
-                    if( $posicion['velocidad'] <= $velocidad_parada ){
+                    if( $posicion['velocidad'] <= $velocidad_parada && distancia(25.794137, -108.986085, $posicion['latitud'], $posicion['longitud']) > 0.055 ){
                         $posicion_mala = $posicion;
                         $ultima_posicion = $posicion;
                     }
@@ -172,7 +196,7 @@
                     if(!$posicion_buena){
                         if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($ultima_posicion['fecha']))->getTimestamp() <= 60 ){
                             $ultima_posicion = $posicion;
-                            if( $posicion['velocidad'] > $velocidad_parada ){
+                            if( $posicion['velocidad'] > $velocidad_parada || distancia(25.794137, -108.986085, $posicion['latitud'], $posicion['longitud']) <= 0.055 ){
                                 $posicion_buena = $posicion;
                             }
                         }else{
@@ -185,7 +209,7 @@
                             $posicion_buena = [];
                             $ultima_posicion = [];
 
-                            if( $posicion['velocidad'] <= $velocidad_parada ){
+                            if( $posicion['velocidad'] <= $velocidad_parada && distancia(25.794137, -108.986085, $posicion['latitud'], $posicion['longitud']) > 0.055 ){
                                 $posicion_mala = $posicion;
                                 $ultima_posicion = $posicion;
                             }
@@ -193,7 +217,7 @@
                     }else{
                         if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($ultima_posicion['fecha']))->getTimestamp() <= 60 ){
                             $ultima_posicion = $posicion;
-                            if( $posicion['velocidad'] <= $velocidad_parada ){
+                            if( $posicion['velocidad'] <= $velocidad_parada && distancia(25.794137, -108.986085, $posicion['latitud'], $posicion['longitud']) > 0.055 ){
                                 $posicion_buena = [];
                             }else{
                                 if( (new DateTime($posicion['fecha']))->getTimestamp() - (new DateTime($posicion_buena['fecha']))->getTimestamp() >= $segundos_fin ){
@@ -216,7 +240,7 @@
                             $posicion_buena = [];
                             $ultima_posicion = [];
 
-                            if( $posicion['velocidad'] <= $velocidad_parada ){
+                            if( $posicion['velocidad'] <= $velocidad_parada && distancia(25.794137, -108.986085, $posicion['latitud'], $posicion['longitud']) > 0.055 ){
                                 $posicion_mala = $posicion;
                                 $ultima_posicion = $posicion;
                             }
