@@ -18,7 +18,7 @@
             exit();
         }
 
-        $preparada = $conexion->prepare("""
+        $preparada = $conexion->prepare("
             SELECT
             CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) + ' ' + EnvioPedidoCliente.HoraEnvio AS fecha,
             CASE 
@@ -42,7 +42,7 @@
             AND HoraLlegada IS NULL
             AND Responsable = :vendedor
             ORDER BY CONVERT(DATETIME, REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, Fecha) , ' ', HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) ) DESC;
-        """);
+        ");
         $preparada->bindValue(':vendedor', $_POST['usuario']);
         $preparada->execute();
 
