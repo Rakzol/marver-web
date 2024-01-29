@@ -43,7 +43,7 @@
             AND Responsable = :vendedor
             ORDER BY CONVERT(DATETIME, REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, Fecha) , ' ', HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) ) DESC;
         ");
-        $preparada->bindValue(':vendedor', $_POST['usuario']);
+        $preparada->bindValue(':vendedor', $usuarios[0]['Clave']);
         $preparada->execute();
 
         echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
