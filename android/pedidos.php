@@ -20,15 +20,11 @@
 
         $preparada = $conexion->prepare("
             SELECT
-            CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) + ' ' + EnvioPedidoCliente.HoraEnvio AS fecha,
-            CASE 
-                WHEN PedidosCliente.Tipocomprobante = 1 THEN 'FACTURA'
-                WHEN PedidosCliente.Tipocomprobante = 2 THEN 'RECIBO'
-                WHEN PedidosCliente.Tipocomprobante = 3 THEN 'PREVENTA'
-                ELSE 'SIN TIPO'
-            END AS comprobante,
+            REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, Fecha) , ' ', HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) AS fecha,
+            PedidosCliente.Tipocomprobante AS comprobante,
             PedidosCliente.FolioComprobante AS folio,
-            CONVERT(VARCHAR, Clientes.Clave) + ' ' + Clientes.Razon_Social AS cliente,
+            Clientes.Clave AS cliente_clave,
+            Clientes.Razon_Social AS cliente_nombre,
             EnvioPedidoCliente.Responsable AS vendedor,
             PedidosCliente.CodigosFacturado AS codigos,
             PedidosCliente.UnidadesFacturado AS piezas,
