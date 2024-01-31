@@ -49,5 +49,9 @@
         // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
     }catch( Exception $exception ) {
         header('HTTP/1.1 500 ' . $exception->getMessage());
+
+        $resultado["status"] = 4;
+        $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " no es valido";
+        echo json_encode($resultado);
     }
 ?>
