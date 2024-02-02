@@ -34,12 +34,12 @@
             INNER JOIN PedidosCliente ON PedidosCliente.Folio = EnvioPedidoCliente.Pedido
             INNER JOIN Clientes ON Clientes.Clave = PedidosCliente.Cliente
             WHERE
-            Fecha = CONVERT(DATE, DATEADD( DAY, -1, GETDATE() ) )
+            Fecha = CONVERT(DATE, GETDATE())
             AND HoraLlegada IS NULL
             AND Responsable = :vendedor
             ORDER BY CONVERT(DATETIME, REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, Fecha) , ' ', HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) ) DESC;
         ");
-        //Fecha = CONVERT(DATE, GETDATE())
+        //Fecha = CONVERT(DATE, DATEADD( DAY, -1, GETDATE() ) )
         $preparada->bindValue(':vendedor', $usuarios[0]['Clave']);
         $preparada->execute();
 
