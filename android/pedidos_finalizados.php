@@ -20,7 +20,7 @@
 
         $preparada = $conexion->prepare("
             SELECT
-            REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, Fecha) , ' ', HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) AS fecha,
+            REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) , ' ', EnvioPedidoCliente.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) AS fecha,
             PedidosCliente.Tipocomprobante AS comprobante,
             PedidosCliente.FolioComprobante AS folio,
             Clientes.Clave AS cliente_clave,
@@ -33,11 +33,12 @@
             EnvioPedidoCliente
             INNER JOIN PedidosCliente ON PedidosCliente.Folio = EnvioPedidoCliente.Pedido
             INNER JOIN Clientes ON Clientes.Clave = PedidosCliente.Cliente
+            INNER JOIN Ventas ON Ventas.Folio = PedidosCliente.FolioComprobante AND Ventas.TipoComprobante = PedidosCliente.Tipocomprobante
             WHERE
-            Fecha = CONVERT(DATE, GETDATE())
-            AND HoraLlegada IS NULL
+            EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
+            AND ( Ventas.Status = 5 OR Ventas.Status = 2 )
             AND Responsable = :vendedor
-            ORDER BY CONVERT(DATETIME, REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, Fecha) , ' ', HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) ) DESC;
+            ORDER BY CONVERT(DATETIME, REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) , ' ', EnvioPedidoCliente.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) ) DESC
         ");
         //Fecha = CONVERT(DATE, DATEADD( DAY, -1, GETDATE() ) )
         $preparada->bindValue(':vendedor', $usuarios[0]['Clave']);
