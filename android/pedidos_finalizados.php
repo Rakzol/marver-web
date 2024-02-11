@@ -17,7 +17,7 @@
             echo json_encode($resultado);
             exit();
         }
-
+//EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
         $preparada = $conexion->prepare("
             SELECT
             REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) , ' ', EnvioPedidoCliente.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) AS fecha,
@@ -35,7 +35,7 @@
             INNER JOIN Clientes ON Clientes.Clave = PedidosCliente.Cliente
             INNER JOIN Ventas ON Ventas.Folio = PedidosCliente.FolioComprobante AND Ventas.TipoComprobante = PedidosCliente.Tipocomprobante
             WHERE
-            EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
+            EnvioPedidoCliente.Fecha = '2024-02-09'
             AND ( Ventas.Status = 5 OR Ventas.Status = 2 )
             AND Responsable = :vendedor
             ORDER BY CONVERT(DATETIME, REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) , ' ', EnvioPedidoCliente.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) ) DESC
