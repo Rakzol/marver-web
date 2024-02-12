@@ -19,32 +19,33 @@
             exit();
         }
 
-        $preparada = $conexion->prepare("SELECT PedidosCliente.Folio, EnvioPedidoCliente.Responsable FROM PedidosCliente LEFT JOIN EnvioPedidoCliente ON EnvioPedidoCliente.Pedido = PedidosCliente.Folio WHERE PedidosCliente.Folio = :folio");
+        $preparada = $conexion->prepare("SELECT Responsable FROM EnvioPedidoCliente INNER JOIN PedidosCliente ON PedidosCliente.Folio = EnvioPedidoCliente.Pedido WHERE PedidosCliente.FolioComprobante = :folio AND PedidosCliente.Tipocomprobante = :comprobante;");
         $preparada->bindValue(':folio', $_POST['folio']);
+        $preparada->bindValue(':comprobante', $_POST['comprobante']);
         $preparada->execute();
 
         $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC);
         if( count($pedido) == 0 ){
             $resultado["status"] = 2;
-            $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " no existe";
+            $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " no esta asignado";
             echo json_encode($resultado);
             exit();
         }
 
-        if( $pedido[0]['Responsable'] != NULL ){
+        if( $pedido[0]['Responsable'] != $usuarios[0]['Clave'] ){
             $resultado["status"] = 3;
             $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " ya esta asignado al repartidor: " . $pedido[0]['Responsable'];
             echo json_encode($resultado);
             exit();
         }
 
-        $preparada = $conexion->prepare("INSERT INTO EnvioPedidoClienteTest (Pedido, Responsable, Fecha, HoraEnvio) VALUES (:folio, :responsable, FORMAT(GETDATE(), 'yyyy-MM-dd'), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ) )");
+        $preparada = $conexion->prepare("UPDATE Ventas SET Status = 18 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
         $preparada->bindValue(':folio', $_POST['folio']);
-        $preparada->bindValue(':responsable', $usuarios[0]['Clave']);
+        $preparada->bindValue(':comprobante', $_POST['comprobante']);
         $preparada->execute();
 
         $resultado["status"] = 0;
-        $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " se asigno correctamente";
+        $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " se entrego correctamente";
         echo json_encode($resultado);
 
         // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
