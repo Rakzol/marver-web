@@ -39,7 +39,7 @@
             exit();
         }
 
-        $preparada = $conexion->prepare("UPDATE Ventas SET Status = 4 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
+        $preparada = $conexion->prepare("UPDATE Ventas SET Status = 18 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
         $preparada->bindValue(':folio', $_POST['folio']);
         $preparada->bindValue(':comprobante', $_POST['comprobante']);
         $preparada->execute();
