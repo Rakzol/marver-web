@@ -41,7 +41,10 @@
             exit();
         }
 
-        if(!file_put_contents( 'fotos/' . $_POST['nombre'] , $_POST['foto'] )){
+        $sin_espacios = str_replace(" ", "", $_POST['foto']);
+        $sin_salto = str_replace("\n", "", $sin_espacios);
+        $sin_reseteo = str_replace("\r", "", $sin_salto);
+        if(!file_put_contents( 'fotos/' . $_POST['nombre'] , $sin_reseteo )){
             $resultado["status"] = 4;
             $resultado["mensaje"] = "No se pudo almacenar la foto: " . $nombre;
             echo json_encode($resultado);
