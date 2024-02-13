@@ -52,7 +52,7 @@
         }
 
         $resultado["status"] = 0;
-        $resultado["mensaje"] = "El pedido con el folio: " . $nombre . " se entrego correctamente";
+        $resultado["mensaje"] = "El pedido con el folio: " . $nombre . " se entrego correctamente: " . $_POST['foto'];
         echo json_encode($resultado);
 
         // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
