@@ -58,7 +58,8 @@
 
         $resultado["status"] = 0;
         $resultado["mensaje"] = "El pedido con el folio: " . $nombre . " se entrego correctamente";
-        $resultado["eliminar"] = $preparada[0]['eliminar'];
+        //$resultado["eliminar"] = $preparada[0]['eliminar'];
+        $resultado["eliminar"] = 1;
         echo json_encode($resultado);
 
         // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
