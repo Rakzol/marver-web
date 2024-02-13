@@ -44,7 +44,7 @@
         /*$sin_espacios = str_replace(" ", "", $_POST['foto']);
         $sin_salto = str_replace("\n", "", $sin_espacios);
         $sin_reseteo = str_replace("\r", "", $sin_salto);*/
-        if(!file_put_contents( 'fotos/' . $_POST['nombre'] , base64_decode($_POST['foto']) )){
+        if(!file_put_contents( 'fotos/' . $_POST['nombre'] , base64_decode(str_replace(" ", "+", $_POST['foto'])) )){
             $resultado["status"] = 4;
             $resultado["mensaje"] = "No se pudo almacenar la foto: " . $nombre;
             echo json_encode($resultado);
@@ -52,7 +52,7 @@
         }
 
         $resultado["status"] = 0;
-        $resultado["mensaje"] = "El pedido con el folio: " . $nombre . " se entrego correctamente: " . $_POST['foto'];
+        $resultado["mensaje"] = "El pedido con el folio: " . $nombre . " se entrego correctamente: " . str_replace(" ", "+", $_POST['foto']);
         echo json_encode($resultado);
 
         // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
