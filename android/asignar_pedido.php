@@ -38,7 +38,7 @@
             exit();
         }
 
-        $preparada = $conexion->prepare("INSERT INTO EnvioPedidoClienteTest (Pedido, Responsable, Fecha, HoraEnvio) VALUES (:folio, :responsable, FORMAT(GETDATE(), 'yyyy-MM-dd'), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ) )");
+        $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio) VALUES (:folio, :responsable, FORMAT(GETDATE(), 'yyyy-MM-dd'), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ) )");
         $preparada->bindValue(':folio', $_POST['folio']);
         $preparada->bindValue(':responsable', $usuarios[0]['Clave']);
         $preparada->execute();
