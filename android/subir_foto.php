@@ -51,8 +51,14 @@
             exit();
         }
 
+        $preparada = $conexion->prepare("SELECT DATEDIFF(DAY, CONVERT(DATE, GETDATE()), FechaPedido) AS eliminar FROM PedidosCliente WHERE FolioComprobante = :folio AND Tipocomprobante = :comprobante;");
+        $preparada->bindValue(':folio', explode("c", $nombre )[0] );
+        $preparada->bindValue(':comprobante', explode("c", $nombre )[1] );
+        $preparada->execute();
+
         $resultado["status"] = 0;
         $resultado["mensaje"] = "El pedido con el folio: " . $nombre . " se entrego correctamente";
+        $resultado["eliminar"] = $preparada[0]['eliminar'];
         echo json_encode($resultado);
 
         // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
