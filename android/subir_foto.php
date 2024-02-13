@@ -41,7 +41,7 @@
             exit();
         }
 
-        if(!file_put_contents( 'fotos/' . $nombre , base64_decode($_POST['foto']) )){
+        if(!file_put_contents( 'fotos/' . $_POST['nombre'] , base64_decode($_POST['foto']) )){
             $resultado["status"] = 4;
             $resultado["mensaje"] = "No se pudo almacenar la foto: " . $nombre;
             echo json_encode($resultado);
