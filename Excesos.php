@@ -583,7 +583,9 @@
         }
 
         window.addEventListener('load', () => {
-            document.getElementById('fecha').valueAsDate = new Date();
+            let fechaHoy = new Date();
+            fechaHoy.setMinutes(fechaHoy.getMinutes() - fechaHoy.getTimezoneOffset());
+            document.getElementById('fecha').valueAsDate = fechaHoy;
 
             cuerpo_excesos = document.querySelector('tbody');
 
