@@ -266,15 +266,18 @@
 
             usuarios.forEach((usuario) => {
 
-                if (fijado == usuario['id'] ) {
-                    velocidadRepartidor.innerText = (usuario['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-                    if (frame % 50 == 0 && seguirRepartidor.checked) {
-                        mapa.panTo(usuario['marcador'].position);
-                    }
-                }
-
                 if(directo){
                     frame = 1;
+                }
+
+                if (fijado == usuario['id'] ) {
+                    velocidadRepartidor.innerText = (usuario['velocidad'] * 3.6).toFixed(1) + ' Km/h';
+                    if( directo ){
+                        mapa.setCenter(usuario['marcador'].position);
+                    }
+                    else if (frame % 50 == 0 && seguirRepartidor.checked) {
+                        mapa.panTo(usuario['marcador'].position);
+                    }
                 }
 
                 if (frame == 1) {
