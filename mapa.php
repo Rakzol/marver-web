@@ -120,6 +120,7 @@
         let fijado = 0;
         let velocidadRepartidor;
         let seguirRepartidor;
+        let directo = true;
 
         function actualizacion_logica() {
             let datos = new FormData();
@@ -272,6 +273,10 @@
                     }
                 }
 
+                if(directo){
+                    frame = 1;
+                }
+
                 if (frame == 1) {
                     usuario['posicion_final'] = { lat: usuario['posicion_nueva']['lat'], lng: usuario['posicion_nueva']['lng'] };
                     //Comenzar Seguimiento
@@ -279,6 +284,10 @@
                     // if (fijado == usuario['id']) {
                     //     velocidadRepartidor.innerText = (usuario['velocidad'] * 3.6).toFixed(1) + ' Km/h';
                     // }
+                }
+
+                if(directo){
+                    frame = 550;
                 }
 
                 if (usuario['posicion_inicial']['lat'] != usuario['posicion_final']['lat'] || usuario['posicion_inicial']['lng'] != usuario['posicion_final']['lng']) {
@@ -333,6 +342,12 @@
             setTimeout(() => {
                 document.getElementById('btnBuscarRepartidor').blur();
             }, 1000);
+        });
+
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState == 'visible') {
+                directo = true;
+            }
         });
 
     </script>
