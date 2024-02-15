@@ -313,6 +313,10 @@
                 frame++;
             }
 
+            if(directo){
+                directo = false;
+            }
+
             setTimeout(procesar_vista, 10);
         }
 
