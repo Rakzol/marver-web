@@ -272,7 +272,7 @@
 
                 if (fijado == usuario['id'] ) {
                     velocidadRepartidor.innerText = (usuario['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-                    if( directo ){
+                    if( directo && seguirRepartidor.checked ){
                         mapa.setCenter(usuario['marcador'].position);
                     }
                     else if (frame % 50 == 0 && seguirRepartidor.checked) {
@@ -290,13 +290,13 @@
                 }
 
                 if(directo){
-                    frame = 550;
+                    frame = 1050;
                 }
 
                 if (usuario['posicion_inicial']['lat'] != usuario['posicion_final']['lat'] || usuario['posicion_inicial']['lng'] != usuario['posicion_final']['lng']) {
 
-                    let latitud_dif_abs = Math.abs(usuario['posicion_inicial']['lat'] - usuario['posicion_final']['lat']) * frame / 550;
-                    let longitud_dif_abs = Math.abs(Math.abs(usuario['posicion_inicial']['lng']) + usuario['posicion_final']['lng']) * frame / 550;
+                    let latitud_dif_abs = Math.abs(usuario['posicion_inicial']['lat'] - usuario['posicion_final']['lat']) * frame / 1050;
+                    let longitud_dif_abs = Math.abs(Math.abs(usuario['posicion_inicial']['lng']) + usuario['posicion_final']['lng']) * frame / 1050;
 
                     let latitud = usuario['posicion_inicial']['lat'] >= usuario['posicion_final']['lat'] ? usuario['posicion_inicial']['lat'] - latitud_dif_abs : usuario['posicion_inicial']['lat'] + latitud_dif_abs;
                     let longitud = usuario['posicion_inicial']['lng'] >= usuario['posicion_final']['lng'] ? usuario['posicion_inicial']['lng'] - longitud_dif_abs : usuario['posicion_inicial']['lng'] + longitud_dif_abs;
@@ -304,13 +304,13 @@
                     usuario['marcador'].position = { lat: latitud, lng: longitud };
                 }
 
-                if (frame == 550) {
+                if (frame == 1050) {
                     usuario['posicion_inicial'] = { lat: usuario['posicion_final']['lat'], lng: usuario['posicion_final']['lng'] };
                 }
 
             });
 
-            if (frame == 550) {
+            if (frame == 1050) {
                 frame = 1;
             } else {
                 frame++;
