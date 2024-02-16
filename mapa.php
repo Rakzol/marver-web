@@ -333,7 +333,7 @@
                 mapId: '7845e7dffe8cea37'
             });
 
-            mapa.setCenter({'lat':25.800006,'lng':-108.999742});
+            mapa.setCenter({lat:25.817185, lng:-109.029960});
 
             setInterval(actualizacion_logica, 500);
             setTimeout(procesar_vista, 10);
