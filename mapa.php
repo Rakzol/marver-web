@@ -329,7 +329,8 @@
 
             mapa = new Map(document.getElementById("mapa"), {
                 center: { lat: 25.7951169, lng: -108.99698492 },
-                zoom: 13.36,
+                //zoom: 13.36,
+                zoom: 18,
                 mapId: '7845e7dffe8cea37'
             });
 
