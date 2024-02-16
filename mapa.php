@@ -272,10 +272,7 @@
 
                 if (fijado == usuario['id'] ) {
                     velocidadRepartidor.innerText = (usuario['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-                    if( directo && seguirRepartidor.checked ){
-                        mapa.setCenter(usuario['marcador'].position);
-                    }
-                    else if (frame % 50 == 0 && seguirRepartidor.checked) {
+                    if (frame % 50 == 0 && seguirRepartidor.checked) {
                         mapa.panTo(usuario['marcador'].position);
                     }
                 }
@@ -302,6 +299,10 @@
                     let longitud = usuario['posicion_inicial']['lng'] >= usuario['posicion_final']['lng'] ? usuario['posicion_inicial']['lng'] - longitud_dif_abs : usuario['posicion_inicial']['lng'] + longitud_dif_abs;
 
                     usuario['marcador'].position = { lat: latitud, lng: longitud };
+                }
+
+                if( directo && seguirRepartidor.checked ){
+                    mapa.setCenter(usuario['marcador'].position);
                 }
 
                 if (frame == 1050) {
@@ -332,8 +333,6 @@
                 zoom: 13.36,
                 mapId: '7845e7dffe8cea37'
             });
-
-            mapa.setCenter({lat:25.817185, lng:-109.029960});
 
             setInterval(actualizacion_logica, 500);
             setTimeout(procesar_vista, 10);
