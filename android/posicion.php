@@ -25,6 +25,8 @@
         $preparada->bindValue(':velocidad', $_POST['v']);
         $preparada->execute();
 
+        $resultado["status"] = 0;
+        echo json_encode($resultado);
     }catch( Exception $exception ) {
         header('HTTP/1.1 500 ' . $exception->getMessage());
     }
