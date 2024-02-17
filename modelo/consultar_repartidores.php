@@ -1,7 +1,7 @@
 <?php
     try{
-        //velocidades que las velocidad sea mayor a la de correr 2.22
-        //puede existir uan diferencia entre velocidades de 10 segundos para seguira contando
+        //velocidades que las velocidad sea mayor a la de correr 6
+        //puede existir uan diferencia entre velocidades de 30 segundos para seguira contando
 
         session_start();
 
@@ -39,7 +39,7 @@
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
-        $preparada = $conexion->prepare("SELECT Clave, Nombre FROM posiciones INNER JOIN Vendedores ON Vendedores.Clave = posiciones.usuario WHERE fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) AND velocidad > 2.22 GROUP BY Clave, Nombre");
+        $preparada = $conexion->prepare("SELECT Clave, Nombre FROM posiciones INNER JOIN Vendedores ON Vendedores.Clave = posiciones.usuario WHERE fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) AND velocidad > 6 GROUP BY Clave, Nombre");
         $preparada->bindValue(':dia_inicial', $_POST['fecha']);
         $preparada->bindValue(':dia_final', $_POST['fecha']);
         $preparada->execute();
@@ -47,7 +47,7 @@
         $resultados = [];
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
 
-            $preparada = $conexion->prepare("SELECT id, latitud, longitud, velocidad, fecha FROM posiciones WHERE usuario = :repartidor AND fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) AND velocidad > 2.22");
+            $preparada = $conexion->prepare("SELECT id, latitud, longitud, velocidad, fecha FROM posiciones WHERE usuario = :repartidor AND fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) AND velocidad > 6");
             $preparada->bindValue(':repartidor', $repartidor['Clave']);
             $preparada->bindValue(':dia_inicial', $_POST['fecha']);
             $preparada->bindValue(':dia_final', $_POST['fecha']);
@@ -66,7 +66,7 @@
                     $id_maxima = $posiciones[$indice]['id'];
                 }
                 if( $indice + 1 < count($posiciones) ){
-                    if( (new DateTime($posiciones[$indice + 1]['fecha']))->getTimestamp() - (new DateTime($posiciones[$indice]['fecha']))->getTimestamp() <= 10 ){
+                    if( (new DateTime($posiciones[$indice + 1]['fecha']))->getTimestamp() - (new DateTime($posiciones[$indice]['fecha']))->getTimestamp() <= 30 ){
                         $distancia_total += distancia($posiciones[$indice]['latitud'], $posiciones[$indice]['longitud'],$posiciones[$indice + 1]['latitud'], $posiciones[$indice + 1]['longitud']);
                     }
                 }
