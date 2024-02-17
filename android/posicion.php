@@ -25,6 +25,40 @@
         $preparada->bindValue(':velocidad', $_POST['v']);
         $preparada->execute();
 
+        /**********************************/
+        
+        $cabeceras = getallheaders();
+
+        // Captura los datos recibidos
+        // Para datos GET
+        $datosGET = $_GET;
+
+        // Para datos POST (Nota: esto puede ser un array vacío si el cuerpo de la petición no es form-data o x-www-form-urlencoded)
+        $datosPOST = $_POST;
+
+        // Para datos brutos enviados (ejemplo: JSON, XML, etc.)
+        $datosBrutos = file_get_contents('php://input');
+
+        // Combinar toda la información en una sola estructura
+        $informacionCompleta = [
+            'Cabeceras' => $cabeceras,
+            'GET' => $datosGET,
+            'POST' => $datosPOST,
+            'DatosBrutos' => $datosBrutos
+        ];
+
+        // Convertir la información a formato JSON para almacenamiento
+        $informacionJSON = json_encode($informacionCompleta, JSON_PRETTY_PRINT);
+
+        // Especificar la ruta del archivo donde se almacenarán los datos
+        $rutaArchivo = 'datos_recibidos.json';
+
+        // Guardar la información en el archivo
+        file_put_contents($rutaArchivo, $informacionJSON);
+        
+        /**********************************/
+        
+
         /*$resultado["status"] = 0;
         echo json_encode($resultado);*/
     }catch( Exception $exception ) {
