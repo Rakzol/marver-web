@@ -27,7 +27,7 @@
 
         /**********************************/
         
-        $cabeceras = getallheaders();
+        /*$cabeceras = getallheaders();
 
         // Captura los datos recibidos
         // Para datos GET
@@ -54,7 +54,7 @@
         $rutaArchivo = 'datos_recibidos.json';
 
         // Guardar la información en el archivo
-        file_put_contents($rutaArchivo, $informacionJSON);
+        file_put_contents($rutaArchivo, $informacionJSON);*/
         
         /**********************************/
         
