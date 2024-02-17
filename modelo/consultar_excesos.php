@@ -124,7 +124,7 @@
         $preparada->bindValue(':dia_final', $_POST['fecha']);
         $preparada->execute();
 
-        $velocidad_parada = 8.33;
+        $velocidad_parada = 6.5;
         $segundos_fin = 5;
 
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
