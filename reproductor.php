@@ -189,6 +189,7 @@
                 gap_reproduccion = 1;
             }else{
                 cursor.valueAsNumber = 0;
+                gap_reproduccion = 1;
             }
 
             velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
