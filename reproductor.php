@@ -227,6 +227,10 @@
                 velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber + gap_reproduccion]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
                 let fecha = new Date(posiciones[cursor.valueAsNumber + gap_reproduccion]['fecha']);
                 txtPosicion.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDate() < 10 ? '0' + fecha.getDate() : fecha.getDate() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
+            
+                if( gap_reproduccion > 0 ){
+                    gap_reproduccion = 0;
+                }
             }
 
             if (posicion_inicial['lat'] != posicion_final['lat'] || posicion_inicial['lng'] != posicion_final['lng']) {
