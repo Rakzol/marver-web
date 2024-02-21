@@ -185,7 +185,11 @@
         function actualizar_todo(){
             frame = 1;
 
-            gap_reproduccion = 1;
+            if( cursor.valueAsNumber + 1 <= posiciones.length - 1 ){
+                gap_reproduccion = 1;
+            }else{
+                cursor.valueAsNumber = 0;
+            }
 
             velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
             let fecha = new Date(posiciones[cursor.valueAsNumber]['fecha']);
