@@ -7,8 +7,8 @@
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
-        $preparada = $conexion->prepare("SELECT latitud, longitud FROM clientes_posiciones WHERE cliente = :cliente");
-        $preparada->bindValue(':cliente', $_POST['c']);
+        $preparada = $conexion->prepare("SELECT latitud, longitud FROM clientes_posiciones WHERE clave = :clave");
+        $preparada->bindValue(':clave', $_POST['c']);
         $preparada->execute();
 
         $clientes = $preparada->fetchAll(PDO::FETCH_ASSOC);
