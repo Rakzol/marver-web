@@ -3,7 +3,7 @@
         require_once('inicializar_datos.php');
 
         //Intentamos agregar una unidad extra al producto en carrito del usuario actual
-        $preparada = $datos['conexion_catalogo_sucursal']->prepare("
+        $preparada = $datos['conexion_base_sucursal']->prepare("
         IF EXISTS (SELECT 1 FROM clientes_posiciones WHERE clave = :clave_1)
         BEGIN
             UPDATE clientes_posiciones
