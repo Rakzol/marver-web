@@ -624,6 +624,19 @@
         window.addEventListener('load', () => {
             let new_background_image = "url('img/login/" + (Math.round(Math.random() * 14) + 1) + ".jpg')";
             document.querySelector('html').style.backgroundImage = new_background_image;
+
+            document.getElementById("correo").addEventListener("keypress", (e)=>{
+                if (event.key == "Enter") {
+                    document.getElementById("contraseña").focus();
+                }
+            });
+
+            document.getElementById("contraseña").addEventListener("keypress", (e)=>{
+                if (event.key == "Enter") {
+                    iniciar_sesion();
+                }
+            });
+
         });
     </script>
 
