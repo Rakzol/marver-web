@@ -371,6 +371,15 @@
         }
     </style>
 
+    <style>
+        #mapa{
+            margin: auto;
+            max-width: 400px;
+            aspect-ratio: 1 / 1;
+            width: 100%;
+        }
+    </style>
+
 </head>
 
 <body>
