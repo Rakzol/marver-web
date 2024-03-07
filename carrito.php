@@ -1146,6 +1146,7 @@ function actualizar_posicion(){
 
             document.getElementById("direccion").addEventListener("keypress", function(event) {
                 if (event.key === "Enter") {
+                    console.log("");
                     buscar_direccion();
                 }
                 });
