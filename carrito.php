@@ -1174,7 +1174,15 @@ function actualizar_posicion(){
             console.error('Error al pedir la posicion de pedido: ', error);
         })
         .then(respuesta_json => {
-            console.log(respuesta_json);
+            if(respuesta_json["latitud"] != "no" && respuesta_json["longitud"] != "no"){
+                marcador = new Marcadores({
+                        content: imagen,
+                        map: mapa,
+                        position: { lat: respuesta_json["latitud"], lng: respuesta_json["longitud"] }
+                    });
+                mapa.setCenter({ lat: respuesta_json["latitud"], lng: respuesta_json["longitud"] });
+                mapa.setZoom(18);
+            }
         });
 
     }
