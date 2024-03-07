@@ -1144,7 +1144,7 @@ imagen.src = 'https://www.marverrefacciones.mx/android/marcador_cliente.png';
                 if(results.length > 0){
                     console.log(results[0].geometry);
                     mapa.setCenter(results[0].geometry.location);
-                    mapa.setZoom(17);
+                    mapa.setZoom(18);
                 }
             }
         });
