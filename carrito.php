@@ -1108,8 +1108,6 @@ let xd;
         const { Map, InfoWindow } = await google.maps.importLibrary("maps");
         const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
         const { PlacesService } = await google.maps.importLibrary("places")
-        xd = PlacesService;
-        console.log(PlacesService);
 
         let mapa = new Map(document.getElementById("mapa"), {
             center: { lat: 25.7887317, lng: -108.994305 },
@@ -1124,7 +1122,8 @@ let xd;
         };
 
         //let service = new google.maps.places.PlacesService(mapa);
-        let service = PlacesService.places.PlacesService(mapa);
+        let service = new PlacesService(mapa);
+        console.log(service);
 
         service.findPlaceFromQuery(consulta, function(results, status) {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
