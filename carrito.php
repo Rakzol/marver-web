@@ -585,7 +585,7 @@
                                 <h5 class="mb-2">Ubicacón</h5>
                                 <div id="mapa" ></div>
                                 <h6 class="mb-1">Colonia</h6>
-                                <input type="text" class="form-control mb-2" disabled id="colonia" >
+                                <input type="text" class="form-control mt-1 mb-2" id="colonia" placeholder="calle y numero de casa" >
                             </div>
 
                         <div class="card-header py-3">
