@@ -1154,7 +1154,7 @@ function actualizar_posicion(){
 <script>
 
     function buscar_direccion() {
-        
+
         let consulta = {
             query: document.getElementById("direccion").value,
             fields: ['name', 'geometry'],
@@ -1163,7 +1163,6 @@ function actualizar_posicion(){
         let service = new ServicioLugares(mapa);
         
         service.findPlaceFromQuery(consulta, function(results, status) {
-            console.log(results, status);
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 if(results.length > 0){
                     if(marcador == null){
