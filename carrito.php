@@ -1103,6 +1103,7 @@
 
 let marcador = null;
 let imagen = document.createElement('img');
+let mapa;
 imagen.src = 'https://www.marverrefacciones.mx/android/marcador_cliente.png';
 
 function actualizar_posicion(){
@@ -1116,9 +1117,9 @@ function actualizar_posicion(){
     async function initMap() {
         const { Map, InfoWindow } = await google.maps.importLibrary("maps");
         const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-        const { PlacesService } = await google.maps.importLibrary("places")
+        const { PlacesService } = await google.maps.importLibrary("places");
 
-        let mapa = new Map(document.getElementById("mapa"), {
+        mapa = new Map(document.getElementById("mapa"), {
             center: { lat: 25.7887317, lng: -108.994305 },
             zoom: 12,
             mapId: '7845e7dffe8cea37',
@@ -1138,13 +1139,20 @@ function actualizar_posicion(){
             actualizar_posicion();
         });
 
+    }
+
+    async function buscar_direccion() {
+        const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+        const { PlacesService } = await google.maps.importLibrary("places");
+
         let consulta = {
-            query: 'Playa maviri 1929',
+            query: document.getElementById("direccion").innerText,
             fields: ['name', 'geometry'],
         };
 
         let service = new PlacesService(mapa);
-
+        
         service.findPlaceFromQuery(consulta, function(results, status) {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 if(results.length > 0){
@@ -1166,6 +1174,20 @@ function actualizar_posicion(){
     }
 
     initMap();
+</script>
+
+<script>
+    window.addEventListener("load"()=>{
+
+        document.getElementById("direccion").addEventListener("keypress", function(event) {
+            // Verifica si la tecla presionada es "Enter"
+            if (event.key === "Enter") {
+                // Lógica que deseas ejecutar cuando se presiona "Enter"
+                console.log("Se presionó Enter!");
+            }
+            });
+
+    });
 </script>
 
 <!-- <script src="https://www.paypal.com/sdk/js?&client-id=AWirsRs7Nml-lTS--1gL0ZNDvrBNB9pjHEuLHjlCM-h2DVMFB4LcNum5QdTkKMjAjb4UbV8YNzVK3Svo&currency=MXN"></script>
