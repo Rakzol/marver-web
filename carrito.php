@@ -1109,6 +1109,8 @@ let imagen = document.createElement('img');
 let mapa;
 imagen.src = 'https://www.marverrefacciones.mx/android/marcador_cliente.png';
 
+let Mapas;
+
 function actualizar_posicion(){
     console.log(marcador.position);
 }
@@ -1119,6 +1121,7 @@ function actualizar_posicion(){
 
     async function initMap() {
         const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+        Mapas = Map;
         const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
         const { PlacesService } = await google.maps.importLibrary("places");
 
