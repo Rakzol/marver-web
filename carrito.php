@@ -573,6 +573,11 @@
                         <div class="card-body">
 
                         <div class="card-header py-3">
+                                <h5 class="mb-2">Ubicacón</h5>
+                                <div id="mapa" ></div>
+                            </div>
+
+                        <div class="card-header py-3">
                                 <h5 class="mb-2">Tipo de compra</h5>
                                 <select class="form-select" aria-label="Default select example" id="tipo_de_compra" onchange="cambiar_tipo_decompra();">
                                 </select>
@@ -601,9 +606,6 @@
 
                             <div class="card-header py-3">
                                 <h5 class="mb-3">Dirección</h5>
-
-                                <h6 class="mb-1">Ubicación</h6>
-                                <div id="mapa" ></div>
 
                                 <h6 class="mb-1">Estado</h6>
                                 <input type="text" class="form-control mb-2" disabled id="estado" >
