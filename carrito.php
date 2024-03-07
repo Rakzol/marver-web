@@ -1113,7 +1113,24 @@ let Marcadores;
 let ServicioLugares;
 
 function actualizar_posicion(){
-    console.log(marcador.position);
+
+    let datos = new FormData();
+    datos.append('latitud', marcador.position.lat);
+    datos.append('longitud', marcador.position.lng);
+
+    fetch('modelo/actualizar_posicion', {
+        method: 'POST',
+        body: datos
+    })
+    .then((respuesta) => {
+        return respuesta.json();
+    })
+    .catch(error => {
+        console.error('Error al finalizar el actualizar posicion: ', error);
+    })
+    .then(respuesta_json => {
+        console.log(respuesta_json);
+    });
 }
 
 </script>
