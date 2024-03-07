@@ -1109,7 +1109,8 @@ let imagen = document.createElement('img');
 let mapa;
 imagen.src = 'https://www.marverrefacciones.mx/android/marcador_cliente.png';
 
-let Mapas;
+let Marcadores;
+let ServicioLugares;
 
 function actualizar_posicion(){
     console.log(marcador.position);
@@ -1121,9 +1122,10 @@ function actualizar_posicion(){
 
     async function initMap() {
         const { Map, InfoWindow } = await google.maps.importLibrary("maps");
-        Mapas = Map;
         const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+        Marcadores = AdvancedMarkerElement;
         const { PlacesService } = await google.maps.importLibrary("places");
+        ServicioLugares = PlacesService;
 
         mapa = new Map(document.getElementById("mapa"), {
             center: { lat: 25.7887317, lng: -108.994305 },
@@ -1144,36 +1146,27 @@ function actualizar_posicion(){
             }
             actualizar_posicion();
         });
-
-        window.addEventListener("load", ()=>{
-
-            document.getElementById("direccion").addEventListener("keypress", function(event) {
-                if (event.key === "Enter") {
-                    console.log("");
-                    buscar_direccion();
-                }
-                });
-
-            });
     }
 
-    async function buscar_direccion() {
-        const { Map, InfoWindow } = await google.maps.importLibrary("maps");
-        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-        const { PlacesService } = await google.maps.importLibrary("places");
+    initMap();
+</script>
+
+<script>
+
+    function buscar_direccion() {
 
         let consulta = {
             query: document.getElementById("direccion").innerText,
             fields: ['name', 'geometry'],
         };
 
-        let service = new PlacesService(mapa);
+        let service = new ServicioLugares(mapa);
         
         service.findPlaceFromQuery(consulta, function(results, status) {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 if(results.length > 0){
                     if(marcador == null){
-                        marcador = new AdvancedMarkerElement({
+                        marcador = new Marcadores({
                         content: imagen,
                         map: mapa,
                         position: results[0].geometry.location
@@ -1189,7 +1182,17 @@ function actualizar_posicion(){
         });
     }
 
-    initMap();
+    window.addEventListener("load", ()=>{
+
+    document.getElementById("direccion").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            console.log("");
+            buscar_direccion();
+        }
+        });
+
+    });
+
 </script>
 
 <!-- <script src="https://www.paypal.com/sdk/js?&client-id=AWirsRs7Nml-lTS--1gL0ZNDvrBNB9pjHEuLHjlCM-h2DVMFB4LcNum5QdTkKMjAjb4UbV8YNzVK3Svo&currency=MXN"></script>
