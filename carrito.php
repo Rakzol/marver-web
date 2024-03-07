@@ -1177,7 +1177,7 @@ function actualizar_posicion(){
 </script>
 
 <script>
-    window.addEventListener("load"()=>{
+    window.addEventListener("load", ()=>{
 
         document.getElementById("direccion").addEventListener("keypress", function(event) {
             // Verifica si la tecla presionada es "Enter"
