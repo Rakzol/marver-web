@@ -1118,8 +1118,8 @@ let marcador = null;
         });
 
         mapa.addListener("click", (e) => {
-            placeMarkerAndPanTo(e.latLng, map);
             console.log(e);
+            placeMarkerAndPanTo(e.latLng, map);
         });
 
         let consulta = {
