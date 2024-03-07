@@ -537,7 +537,7 @@
     <section class="h-100 gradient-custom">
         <div class="container py-5">
             <div class="row d-flex justify-content-center my-4">
-                <div class="col-md-8">
+                <div class="col-xl-8">
                     <div class="card mb-4">
                         <div class="card-header py-3">
                             <h5 class="" style="margin-bottom: 0;">Refacciones</h5>
@@ -553,7 +553,7 @@
                         <div class="card-body" id="contenedor_refacciones">
                         </div>
                     </div>
-                    <div class="card mb-4 mb-lg-0">
+                    <div class="card mb-4 mb-xl-0">
                         <div class="card-body">
                             <p><strong>Aceptamos</strong></p>
                             <img class="me-2" width="45px"
@@ -565,7 +565,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-xl-4">
                     <div class="card mb-4">
                         <div class="card-header py-3">
                             <h5 class="mb-0">Información de pedido</h5>
