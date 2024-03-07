@@ -1121,6 +1121,7 @@
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 if(results.length > 0){
                     map.setCenter(results[0].geometry.location);
+                    mapa.setZoom(20);
                 }
             }
         });
