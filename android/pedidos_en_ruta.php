@@ -17,7 +17,7 @@
             echo json_encode($resultado);
             exit();
         }
-/*
+
         $preparada = $conexion->prepare("
             SELECT
             REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) , ' ', EnvioPedidoCliente.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) AS fecha,
@@ -37,29 +37,6 @@
             WHERE
             EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
             AND Ventas.Status = 4
-            AND Responsable = :vendedor
-            ORDER BY CONVERT(DATETIME, REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) , ' ', EnvioPedidoCliente.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) ) DESC
-        ");
-*/
-        $preparada = $conexion->prepare("
-            SELECT
-            REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) , ' ', EnvioPedidoCliente.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) AS fecha,
-            PedidosCliente.Tipocomprobante AS comprobante,
-            PedidosCliente.FolioComprobante AS folio,
-            Clientes.Clave AS cliente_clave,
-            Clientes.Razon_Social AS cliente_nombre,
-            EnvioPedidoCliente.Responsable AS vendedor,
-            PedidosCliente.CodigosFacturado AS codigos,
-            PedidosCliente.UnidadesFacturado AS piezas,
-            PedidosCliente.TotalFacturado AS total
-            FROM
-            EnvioPedidoCliente
-            INNER JOIN PedidosCliente ON PedidosCliente.Folio = EnvioPedidoCliente.Pedido
-            INNER JOIN Clientes ON Clientes.Clave = PedidosCliente.Cliente
-            INNER JOIN Ventas ON Ventas.Folio = PedidosCliente.FolioComprobante AND Ventas.TipoComprobante = PedidosCliente.Tipocomprobante
-            WHERE
-            EnvioPedidoCliente.Fecha = '2024-03-06'
-            AND ( Ventas.Status = 5 OR Ventas.Status = 2 )
             AND Responsable = :vendedor
             ORDER BY CONVERT(DATETIME, REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) , ' ', EnvioPedidoCliente.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) ) DESC
         ");
