@@ -1104,8 +1104,8 @@
         const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
         let mapa = new Map(document.getElementById("mapa"), {
-            center: { lat: 25.7914752, lng: -108.9858936 },
-            zoom: 14,
+            center: { lat: 25.7888863, lng: -109.0052913 },
+            zoom: 13.13,
             mapId: '7845e7dffe8cea37',
             mapTypeId: google.maps.MapTypeId.HYBRID
         });
