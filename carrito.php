@@ -1099,19 +1099,19 @@
 
 <script type="module">
 
-async function initMap() {
-    const { Map, InfoWindow } = await google.maps.importLibrary("maps");
-    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+    async function initMap() {
+        const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
-    mapa = new Map(document.getElementById("mapa"), {
-        center: { lat: 25.7914752, lng: -108.9858936 },
-        zoom: 14,
-        mapId: '7845e7dffe8cea37',
-        mapTypeId: google.maps.MapTypeId.HYBRID
-    });
-}
+        let mapa = new Map(document.getElementById("mapa"), {
+            center: { lat: 25.7914752, lng: -108.9858936 },
+            zoom: 14,
+            mapId: '7845e7dffe8cea37',
+            mapTypeId: google.maps.MapTypeId.HYBRID
+        });
+    }
 
-initMap();
+    initMap();
 </script>
 
 <!-- <script src="https://www.paypal.com/sdk/js?&client-id=AWirsRs7Nml-lTS--1gL0ZNDvrBNB9pjHEuLHjlCM-h2DVMFB4LcNum5QdTkKMjAjb4UbV8YNzVK3Svo&currency=MXN"></script>
