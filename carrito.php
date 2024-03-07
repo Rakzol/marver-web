@@ -1109,6 +1109,21 @@
             mapId: '7845e7dffe8cea37',
             mapTypeId: google.maps.MapTypeId.HYBRID
         });
+
+        let consulta = {
+            query: 'Playa maviri 1929',
+            fields: ['name', 'geometry'],
+        };
+
+        let service = new google.maps.places.PlacesService(mapa);
+
+        service.findPlaceFromQuery(consulta, function(results, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                if(results.length > 0){
+                    map.setCenter(results[0].geometry.location);
+                }
+            }
+        });
     }
 
     initMap();
