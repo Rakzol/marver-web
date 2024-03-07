@@ -584,6 +584,8 @@
                         <div class="card-header py-3">
                                 <h5 class="mb-2">Ubicacón</h5>
                                 <div id="mapa" ></div>
+                                <h6 class="mb-1">Colonia</h6>
+                                <input type="text" class="form-control mb-2" disabled id="colonia" >
                             </div>
 
                         <div class="card-header py-3">
