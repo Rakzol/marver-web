@@ -1163,6 +1163,7 @@ function actualizar_posicion(){
         let service = new ServicioLugares(mapa);
         
         service.findPlaceFromQuery(consulta, function(results, status) {
+            console.log(results, status);
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 if(results.length > 0){
                     if(marcador == null){
@@ -1185,8 +1186,7 @@ function actualizar_posicion(){
     window.addEventListener("load", ()=>{
 
     document.getElementById("direccion").addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-            console.log("");
+        if (event.key == "Enter") {
             buscar_direccion();
         }
         });
