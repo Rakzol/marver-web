@@ -586,6 +586,9 @@
                                 <div id="mapa" ></div>
                                 <h6 class="mb-2 mt-2">Dirección</h6>
                                 <input type="text" class="form-control mb-2" id="direccion" placeholder="calle y numero de casa" >
+                                <button type="button" onclick="buscar_direccion();" class="btn btn-primary btn-lg btn-block">
+                                Buscar Dirección
+                                </button>
                             </div>
 
                         <div class="card-header py-3">
@@ -1180,10 +1183,8 @@ function actualizar_posicion(){
     window.addEventListener("load", ()=>{
 
         document.getElementById("direccion").addEventListener("keypress", function(event) {
-            // Verifica si la tecla presionada es "Enter"
             if (event.key === "Enter") {
-                // Lógica que deseas ejecutar cuando se presiona "Enter"
-                console.log("Se presionó Enter!");
+                buscar_direccion();
             }
             });
 
