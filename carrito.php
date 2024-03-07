@@ -1103,6 +1103,10 @@ let marcador = null;
 let imagen = document.createElement('img');
 imagen.src = 'https://www.marverrefacciones.mx/android/marcador_cliente.png';
 
+function actualizar_posicion(){
+    console.log(marcador.position);
+}
+
 </script>
 
 <script type="module">
