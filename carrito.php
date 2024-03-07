@@ -1102,7 +1102,8 @@
     async function initMap() {
         const { Map, InfoWindow } = await google.maps.importLibrary("maps");
         const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-        const {PlacesService} = await google.maps.importLibrary("places")
+        const { PlacesService } = await google.maps.importLibrary("places")
+        console.log(PlacesService);
 
         let mapa = new Map(document.getElementById("mapa"), {
             center: { lat: 25.7887317, lng: -108.994305 },
