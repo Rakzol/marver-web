@@ -1155,6 +1155,8 @@ function actualizar_posicion(){
 
     function buscar_direccion() {
 
+        console.log(document.getElementById("direccion").innerText)
+
         let consulta = {
             query: document.getElementById("direccion").innerText,
             fields: ['name', 'geometry'],
