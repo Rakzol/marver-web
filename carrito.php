@@ -1099,7 +1099,8 @@
 
 <script>
 
-let xd;
+let marcador = null;
+
 </script>
 
 <script type="module">
@@ -1107,7 +1108,7 @@ let xd;
     async function initMap() {
         const { Map, InfoWindow } = await google.maps.importLibrary("maps");
         const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-        //const { PlacesService } = await google.maps.importLibrary("places")
+        const { PlacesService } = await google.maps.importLibrary("places")
 
         let mapa = new Map(document.getElementById("mapa"), {
             center: { lat: 25.7887317, lng: -108.994305 },
@@ -1116,18 +1117,22 @@ let xd;
             mapTypeId: google.maps.MapTypeId.HYBRID
         });
 
+        mapa.addListener("click", (e) => {
+            placeMarkerAndPanTo(e.latLng, map);
+            console.log(e);
+        });
+
         let consulta = {
             query: 'Playa maviri 1929',
             fields: ['name', 'geometry'],
         };
 
-        let service = new google.maps.places.PlacesService(mapa);
-        //let service = new PlacesService(mapa);
-        console.log(service);
+        let service = new PlacesService(mapa);
 
         service.findPlaceFromQuery(consulta, function(results, status) {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 if(results.length > 0){
+                    console.log(results[0].geometry);
                     mapa.setCenter(results[0].geometry.location);
                     mapa.setZoom(20);
                 }
