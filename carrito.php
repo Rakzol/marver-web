@@ -1129,7 +1129,7 @@ imagen.src = 'https://www.marverrefacciones.mx/android/marcador_cliente.png';
             }else{
                 marcador.position = e.latLng;
             }
-
+            actualizar_posicion();
         });
 
         let consulta = {
@@ -1142,9 +1142,18 @@ imagen.src = 'https://www.marverrefacciones.mx/android/marcador_cliente.png';
         service.findPlaceFromQuery(consulta, function(results, status) {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 if(results.length > 0){
-                    console.log(results[0].geometry);
+                    if(marcador == null){
+                        marcador = new AdvancedMarkerElement({
+                        content: imagen,
+                        map: mapa,
+                        position: results[0].geometry.location
+                    });
+                    }else{
+                        marcador.position = results[0].geometry.location;
+                    }
                     mapa.setCenter(results[0].geometry.location);
                     mapa.setZoom(18);
+                    actualizar_posicion();
                 }
             }
         });
