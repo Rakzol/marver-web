@@ -1118,7 +1118,7 @@
         };
 
         //let service = new google.maps.places.PlacesService(mapa);
-        let service = PlacesService(mapa);
+        let service = PlacesService.places.PlacesService(mapa);
 
         service.findPlaceFromQuery(consulta, function(results, status) {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
