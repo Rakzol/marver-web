@@ -1113,7 +1113,47 @@ function actualizar_posicion(){
     console.log(marcador.position);
 }
 
-async function buscar_direccion() {
+</script>
+
+<script type="module">
+
+    async function initMap() {
+        const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+        const { PlacesService } = await google.maps.importLibrary("places");
+
+        mapa = new Map(document.getElementById("mapa"), {
+            center: { lat: 25.7887317, lng: -108.994305 },
+            zoom: 12,
+            mapId: '7845e7dffe8cea37',
+            mapTypeId: google.maps.MapTypeId.HYBRID
+        });
+
+        mapa.addListener("click", (e) => {
+            if(marcador == null){
+                    marcador = new AdvancedMarkerElement({
+                    content: imagen,
+                    map: mapa,
+                    position: e.latLng
+                });
+            }else{
+                marcador.position = e.latLng;
+            }
+            actualizar_posicion();
+        });
+
+        window.addEventListener("load", ()=>{
+
+            document.getElementById("direccion").addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    buscar_direccion();
+                }
+                });
+
+            });
+    }
+
+    async function buscar_direccion() {
         const { Map, InfoWindow } = await google.maps.importLibrary("maps");
         const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
         const { PlacesService } = await google.maps.importLibrary("places");
@@ -1145,50 +1185,7 @@ async function buscar_direccion() {
         });
     }
 
-</script>
-
-<script type="module">
-
-    async function initMap() {
-        const { Map, InfoWindow } = await google.maps.importLibrary("maps");
-        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-        const { PlacesService } = await google.maps.importLibrary("places");
-
-        mapa = new Map(document.getElementById("mapa"), {
-            center: { lat: 25.7887317, lng: -108.994305 },
-            zoom: 12,
-            mapId: '7845e7dffe8cea37',
-            mapTypeId: google.maps.MapTypeId.HYBRID
-        });
-
-        mapa.addListener("click", (e) => {
-            if(marcador == null){
-                    marcador = new AdvancedMarkerElement({
-                    content: imagen,
-                    map: mapa,
-                    position: e.latLng
-                });
-            }else{
-                marcador.position = e.latLng;
-            }
-            actualizar_posicion();
-        });
-
-    }
-
     initMap();
-</script>
-
-<script>
-    window.addEventListener("load", ()=>{
-
-        document.getElementById("direccion").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                buscar_direccion();
-            }
-            });
-
-    });
 </script>
 
 <!-- <script src="https://www.paypal.com/sdk/js?&client-id=AWirsRs7Nml-lTS--1gL0ZNDvrBNB9pjHEuLHjlCM-h2DVMFB4LcNum5QdTkKMjAjb4UbV8YNzVK3Svo&currency=MXN"></script>
