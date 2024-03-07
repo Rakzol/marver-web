@@ -1163,6 +1163,20 @@ function actualizar_posicion(){
             }
             actualizar_posicion();
         });
+
+        fetch('modelo/obtener_posicion_pedido', {
+            method: 'GET'
+        })
+        .then((respuesta) => {
+            return respuesta.json();
+        })
+        .catch(error => {
+            console.error('Error al pedir la posicion de pedido: ', error);
+        })
+        .then(respuesta_json => {
+            console.log(respuesta_json);
+        });
+
     }
 
     initMap();
