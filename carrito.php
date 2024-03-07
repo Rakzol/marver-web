@@ -602,6 +602,9 @@
                             <div class="card-header py-3">
                                 <h5 class="mb-3">Dirección</h5>
 
+                                <h6 class="mb-1">Ubicación</h6>
+                                <div id="mapa" ></div>
+
                                 <h6 class="mb-1">Estado</h6>
                                 <input type="text" class="form-control mb-2" disabled id="estado" >
 
