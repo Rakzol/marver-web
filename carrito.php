@@ -1100,6 +1100,8 @@
 <script>
 
 let marcador = null;
+let imagen = document.createElement('img');
+imagen.src = 'https://www.marverrefacciones.mx/android/marcador_cliente.png';
 
 </script>
 
@@ -1118,8 +1120,16 @@ let marcador = null;
         });
 
         mapa.addListener("click", (e) => {
-            console.log(e);
-            placeMarkerAndPanTo(e.latLng, map);
+            if(marcador == null){
+                    marcador = new AdvancedMarkerElement({
+                    content: imagen,
+                    map: mapa,
+                    position: e.latLng
+                });
+            }else{
+                marcador.position = e.latLng;
+            }
+
         });
 
         let consulta = {
