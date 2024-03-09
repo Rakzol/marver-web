@@ -1164,7 +1164,7 @@ function actualizar_posicion(){
             setTimeout(() => {
                 document.querySelector('.alert').innerText = "";
             }, 250);
-        }, 2000);
+        }, 3000);
 
         console.log(respuesta_json);
     });
