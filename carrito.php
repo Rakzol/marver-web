@@ -384,6 +384,15 @@
 
 <body>
 
+<div class="alert align-items-center alert-success alert-dismissible fade show d-none" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+            <use xlink:href="#check-circle-fill" />
+        </svg>
+        <div>
+            Refaccion agregada al carrito.
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 
     <!-- Spinner Start -->
     <div id="spinner" manual='si' 
@@ -1129,6 +1138,12 @@ function actualizar_posicion(){
         console.error('Error al finalizar el actualizar posicion: ', error);
     })
     .then(respuesta_json => {
+        let alerta = document.querySelector('.alert').cloneNode(true);
+                    alerta.querySelector('div').innerText = 'Posicion actualizada correctamente';
+                    alerta.classList.add('d-flex');
+                    alerta.classList.remove('d-none');
+                    document.querySelector('body').appendChild(alerta);
+                    setTimeout(() => { new bootstrap.Alert(alerta).close(); }, 2000);
         console.log(respuesta_json);
     });
 }
