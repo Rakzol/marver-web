@@ -598,7 +598,7 @@
                                 </button>
 
                                 <div class="alert alert-success mt-3 mb-1" role="alert">
-                                Dirección actualizada correctamente
+                                
                                 </div>
 
                             </div>
@@ -1153,9 +1153,17 @@ function actualizar_posicion(){
         alerta.style.height = "60px";
 
         setTimeout(() => {
+            document.querySelector('.alert').innerText = "Dirección actualizada correctamente";
+        }, 500);
+
+        setTimeout(() => {
             alerta.style.border = "0px";
             alerta.style.padding = "0px";
             alerta.style.height = "0px";
+
+            setTimeout(() => {
+                document.querySelector('.alert').innerText = "";
+            }, 500);
         }, 2000);
 
         console.log(respuesta_json);
