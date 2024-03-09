@@ -1154,7 +1154,7 @@ function actualizar_posicion(){
 
         setTimeout(() => {
             document.querySelector('.alert').innerText = "Dirección actualizada correctamente";
-        }, 250);
+        }, 500);
 
         setTimeout(() => {
             alerta.style.border = "0px";
@@ -1163,8 +1163,8 @@ function actualizar_posicion(){
 
             setTimeout(() => {
                 document.querySelector('.alert').innerText = "";
-            }, 250);
-        }, 3000);
+            }, 500);
+        }, 4000);
 
         console.log(respuesta_json);
     });
