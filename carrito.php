@@ -379,6 +379,12 @@
             width: 100%;
         }
 
+        .alert{
+            border: 0px;
+            padding: 0px;
+            height: 0px;
+            transition: 1s;
+        }
     </style>
 
 </head>
@@ -1141,6 +1147,17 @@ function actualizar_posicion(){
                     alerta.classList.remove('d-none');
                     document.querySelector('body').appendChild(alerta);
                     setTimeout(() => { new bootstrap.Alert(alerta).close(); }, 2000);*/
+        alerta = document.querySelector('.alert');
+        alerta.style.border = "1px";
+        alerta.style.padding = "20px";
+        alerta.style.height = "60px";
+
+        setTimeout(() => {
+            alerta.style.border = "0px";
+            alerta.style.padding = "0px";
+            alerta.style.height = "0px";
+        }, 2000);
+
         console.log(respuesta_json);
     });
 }
