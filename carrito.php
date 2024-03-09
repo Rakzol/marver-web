@@ -591,7 +591,7 @@
                                 Buscar Dirección
                                 </button>
 
-                                <div class="alert alert-success mb-3 mb-1" role="alert">
+                                <div class="alert alert-success mt-3 mb-1" role="alert">
                                 Dirección actualizada correctamente
                                 </div>
 
