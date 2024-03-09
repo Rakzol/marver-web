@@ -15,13 +15,13 @@
         BEGIN
             INSERT INTO clientes_posiciones (clave, latitud, longitud) VALUES (:clave_3, :latitud_2, :longitud_2);
         END");
-        $preparada->bindValue(':clave_1', $_POST['cliente']);
-        $preparada->bindValue(':clave_2', $_POST['cliente']);
-        $preparada->bindValue(':clave_3', $_POST['cliente']);
-        $preparada->bindValue(':latitud_1', $_POST['latitud']);
-        $preparada->bindValue(':longitud_1', $_POST['longitud']);
-        $preparada->bindValue(':latitud_2', $_POST['latitud']);
-        $preparada->bindValue(':longitud_2', $_POST['longitud']);
+        $preparada->bindValue(':clave_1', $_POST['c']);
+        $preparada->bindValue(':clave_2', $_POST['c']);
+        $preparada->bindValue(':clave_3', $_POST['c']);
+        $preparada->bindValue(':latitud_1', $_POST['la']);
+        $preparada->bindValue(':longitud_1', $_POST['lo']);
+        $preparada->bindValue(':latitud_2', $_POST['la']);
+        $preparada->bindValue(':longitud_2', $_POST['lo']);
         $preparada->execute();
 
         $resultado["actualizada"] = true;
