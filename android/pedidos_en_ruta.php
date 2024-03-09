@@ -5,8 +5,8 @@
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
-        $preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Nombre = :usuario AND Contraseña = :contrasena');
-        $preparada->bindValue(':usuario', $_POST['usuario']);
+        $preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Clave = :clave AND Contraseña = :contrasena');
+        $preparada->bindValue(':clave', $_POST['clave']);
         $preparada->bindValue(':contrasena', $_POST['contraseña']);
         $preparada->execute();
 
@@ -41,7 +41,7 @@
             ORDER BY CONVERT(DATETIME, REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) , ' ', EnvioPedidoCliente.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) ) DESC
         ");
         //Fecha = CONVERT(DATE, DATEADD( DAY, -1, GETDATE() ) )
-        $preparada->bindValue(':vendedor', $usuarios[0]['Clave']);
+        $preparada->bindValue(':vendedor', $_POST['clave']);
         $preparada->execute();
 
         echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);

@@ -5,8 +5,8 @@
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
-        $preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Nombre = :usuario AND Contraseña = :contrasena');
-        $preparada->bindValue(':usuario', $_POST['usuario']);
+        $preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Clave = :clave AND Contraseña = :contrasena');
+        $preparada->bindValue(':clave', $_POST['clave']);
         $preparada->bindValue(':contrasena', $_POST['contraseña']);
         $preparada->execute();
 
@@ -34,7 +34,7 @@
             exit();
         }
 
-        if( $pedido[0]['Responsable'] != $usuarios[0]['Clave'] ){
+        if( $pedido[0]['Responsable'] != $_POST['clave'] ){
             $resultado["status"] = 3;
             $resultado["mensaje"] = "El pedido con el folio: " . $nombre . " ya esta asignado al repartidor: " . $pedido[0]['Responsable'];
             echo json_encode($resultado);

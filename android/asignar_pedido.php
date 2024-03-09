@@ -5,8 +5,8 @@
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
-        $preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Nombre = :usuario AND Contraseña = :contrasena');
-        $preparada->bindValue(':usuario', $_POST['usuario']);
+        $preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Clave = :clave AND Contraseña = :contrasena');
+        $preparada->bindValue(':clave', $_POST['clave']);
         $preparada->bindValue(':contrasena', $_POST['contraseña']);
         $preparada->execute();
 
@@ -40,7 +40,7 @@
 
         $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio) VALUES (:folio, :responsable, FORMAT(GETDATE(), 'yyyy-MM-dd'), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ) )");
         $preparada->bindValue(':folio', $_POST['folio']);
-        $preparada->bindValue(':responsable', $usuarios[0]['Clave']);
+        $preparada->bindValue(':responsable', $_POST['clave']);
         $preparada->execute();
 
         $resultado["status"] = 0;

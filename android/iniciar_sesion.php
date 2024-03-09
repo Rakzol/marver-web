@@ -5,8 +5,8 @@
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
         
-        $preparada = $conexion->prepare('SELECT Nombre FROM Vendedores WHERE Nombre = :usuario');
-        $preparada->bindValue(':usuario', $_POST['usuario']);
+        $preparada = $conexion->prepare('SELECT Nombre FROM Vendedores WHERE Clave = :clave');
+        $preparada->bindValue(':clave', $_POST['clave']);
         $preparada->execute();
 
         if( count($preparada->fetchAll(PDO::FETCH_ASSOC)) == 0 ){
@@ -16,8 +16,8 @@
             exit();
         }
 
-        $preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Nombre = :usuario AND Contraseña = :contrasena');
-        $preparada->bindValue(':usuario', $_POST['usuario']);
+        $preparada = $conexion->prepare('SELECT Nombre FROM Vendedores WHERE Clave = :clave AND Contraseña = :contrasena');
+        $preparada->bindValue(':clave', $_POST['clave']);
         $preparada->bindValue(':contrasena', $_POST['contraseña']);
         $preparada->execute();
 
@@ -31,7 +31,7 @@
 
         $resultado['usuario'] = true;
         $resultado['contraseña'] = true;
-        $resultado['id'] = $registros[0]['Clave'];
+        $resultado['nombre'] = $registros[0]['Nombre'];
         echo json_encode($resultado);
     }catch( Exception $exception ) {
         header('HTTP/1.1 500 ' . $exception->getMessage());
