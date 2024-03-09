@@ -378,6 +378,13 @@
             aspect-ratio: 1 / 1;
             width: 100%;
         }
+
+        .alert {
+            z-index: 2000;
+            position: fixed !important;
+            right: 1rem;
+            top: 1rem;
+        }
     </style>
 
 </head>
