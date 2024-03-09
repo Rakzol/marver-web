@@ -1153,7 +1153,7 @@ function actualizar_posicion(){
         alerta.style.height = "60px";
 
         setTimeout(() => {
-            document.querySelector('.alert').innerText = "Dirección actualizada correctamente";
+            document.querySelector('.alert').innerText = "Dirección actualizada.";
         }, 250);
 
         setTimeout(() => {
