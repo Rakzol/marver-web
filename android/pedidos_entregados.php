@@ -28,12 +28,19 @@
             EnvioPedidoCliente.Responsable AS vendedor,
             PedidosCliente.CodigosFacturado AS codigos,
             PedidosCliente.UnidadesFacturado AS piezas,
-            PedidosCliente.TotalFacturado AS total
+            PedidosCliente.TotalFacturado AS total,
+            clientes_posiciones.latitud AS latitud,
+			clientes_posiciones.longitud AS longitud,
+			clientes_posiciones.numero_exterior AS numero_exterior,
+			clientes_posiciones.numero_interior AS numero_interior,
+			clientes_posiciones.observaciones AS observaciones,
+			clientes_posiciones.calle AS calle
             FROM
             EnvioPedidoCliente
             INNER JOIN PedidosCliente ON PedidosCliente.Folio = EnvioPedidoCliente.Pedido
             INNER JOIN Clientes ON Clientes.Clave = PedidosCliente.Cliente
             INNER JOIN Ventas ON Ventas.Folio = PedidosCliente.FolioComprobante AND Ventas.TipoComprobante = PedidosCliente.Tipocomprobante
+            LEFT JOIN clientes_posiciones ON clientes_posiciones.clave = PedidosCliente.Cliente
             WHERE
             EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
             AND Ventas.Status = 18
