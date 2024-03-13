@@ -43,11 +43,12 @@
             LEFT JOIN clientes_posiciones ON clientes_posiciones.clave = PedidosCliente.Cliente
             WHERE
             EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
-            AND Ventas.Status = 4
+            AND ( Ventas.Status = 5 OR Ventas.Status = 2 )
             AND Responsable = :vendedor
             ORDER BY CONVERT(DATETIME, REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) , ' ', EnvioPedidoCliente.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) ) DESC
         ");
-        //Fecha = CONVERT(DATE, DATEADD( DAY, -1, GETDATE() ) )
+        //EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
+        //AND Ventas.Status = 4
         $preparada->bindValue(':vendedor', $_POST['clave']);
         $preparada->execute();
 
