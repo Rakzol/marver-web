@@ -42,7 +42,7 @@
             INNER JOIN Ventas ON Ventas.Folio = PedidosCliente.FolioComprobante AND Ventas.TipoComprobante = PedidosCliente.Tipocomprobante
             LEFT JOIN clientes_posiciones ON clientes_posiciones.clave = PedidosCliente.Cliente
             WHERE
-            EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
+            EnvioPedidoCliente.Fecha = '2024-03-13'
             AND ( Ventas.Status = 5 OR Ventas.Status = 2 )
             AND Responsable = :vendedor
             ORDER BY CONVERT(DATETIME, REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) , ' ', EnvioPedidoCliente.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) ) DESC
