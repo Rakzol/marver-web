@@ -19,7 +19,7 @@
         }
 
         $preparada = $conexion->prepare("
-            SELECT
+            SELECT TOP 5
             REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) , ' ', EnvioPedidoCliente.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) AS fecha,
             PedidosCliente.Tipocomprobante AS comprobante,
             PedidosCliente.FolioComprobante AS folio,
