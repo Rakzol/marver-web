@@ -35,7 +35,6 @@
 			clientes_posiciones.numero_interior AS numero_interior,
 			clientes_posiciones.observaciones AS observaciones,
 			clientes_posiciones.calle AS calle,
-			MoviemientosVenta.Importe * -1 AS feria,
 			MoviemientosVenta.Feria + (MoviemientosVenta.Importe * -1) AS regreso
             FROM
             EnvioPedidoCliente

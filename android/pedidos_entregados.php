@@ -35,8 +35,7 @@
 			clientes_posiciones.numero_interior AS numero_interior,
 			clientes_posiciones.observaciones AS observaciones,
 			clientes_posiciones.calle AS calle,
-			MoviemientosVenta.Importe * -1 AS feria,
-			MoviemientosVenta.Feria + (MoviemientosVenta.Importe * -1) AS regreso
+			MoviemientosVenta.Feria + (MoviemientosVenta.Importe * -1) AS feria
             FROM
             EnvioPedidoCliente
             INNER JOIN PedidosCliente ON PedidosCliente.Folio = EnvioPedidoCliente.Pedido
