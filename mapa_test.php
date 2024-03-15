@@ -141,17 +141,58 @@
         }
 
         function procesar_logica(respuesta_json) {
-            clearTimeout(id_procesar_vista);
 
             respuesta_json.forEach((usuario) => {
 
                 let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == usuario['usuario']; });
 
                 if (usuario_encontrado) {
+
                     usuario_encontrado['frame'] = 0
                     usuario_encontrado['posicion_inicial'] = usuario_encontrado['marcador'].position;
                     usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
                     usuario_encontrado['velocidad'] = usuario['velocidad'];
+
+                    if( usuario_encontrado['posicion_inicial']['lat'] != usuario_encontrado['posicion_final']['lat'] || usuario_encontrado['posicion_inicial']['lng'] != usuario_encontrado['posicion_final']['lng'] ){
+                        fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-Goog-Api-Key": "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo",
+                                "X-Goog-FieldMask": "routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline"
+                            },
+                            body: JSON.stringify({
+                                origin: {
+                                    location: {
+                                        latLng: {
+                                            latitude: usuario_encontrado['posicion_inicial']['lat'],
+                                            longitude: usuario_encontrado['posicion_inicial']['lng']
+                                        }
+                                    }
+                                },
+                                destination: {
+                                    location: {
+                                        latLng: {
+                                            latitude: usuario_encontrado['posicion_final']['lat'],
+                                            longitude: usuario_encontrado['posicion_final']['lng']
+                                        }
+                                    }
+                                },
+                                travelMode: "TWO_WHEELER",
+                                routingPreference: "TRAFFIC_AWARE"
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            clearTimeout(id_procesar_vista);
+                            console.log(data);
+                            id_procesar_vista = setTimeout(procesar_vista, 10);
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                    }
+
                 } else {
 
                     let imagen = document.createElement('img');
@@ -169,6 +210,7 @@
                         marcador: marcador,
                         velocidad: usuario['velocidad'],
                         frame: 0,
+                        polilinea: 69,
                         posicion_inicial: { lat: usuario['latitud'], lng: usuario['longitud'] },
                         posicion_final: { lat: usuario['latitud'], lng: usuario['longitud'] }
                     };
