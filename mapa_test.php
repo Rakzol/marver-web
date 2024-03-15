@@ -118,8 +118,9 @@
         let seguirRepartidor;
         let id_procesar_vista;
 
-        ElementoMarcadorAvanzado;
-        VentanaInformacion;
+        let ElementoMarcadorAvanzado;
+        let VentanaInformacion;
+        let Esferica;
 
         function actualizacion_logica() {
             let datos = new FormData();
