@@ -122,7 +122,14 @@
         let VentanaInformacion;
         let Esferica;
 
+        let consultas_polilineas = 0;
+
         function actualizacion_logica() {
+            if(consultas_polilineas > 0){
+                setTimeout(actualizacion_logica, 1000);
+                return;
+            }
+
             let datos = new FormData();
 
             fetch('android/posiciones_web', {
@@ -137,10 +144,12 @@
                 })
                 .then(respuesta_json => {
                     procesar_logica(respuesta_json);
+                    setTimeout(actualizacion_logica, 1000);
                 });
         }
 
         function procesar_logica(respuesta_json) {
+            clearTimeout(id_procesar_vista);
 
             respuesta_json.forEach((usuario) => {
 
@@ -154,6 +163,8 @@
                     usuario_encontrado['velocidad'] = usuario['velocidad'];
 
                     if( usuario_encontrado['posicion_inicial']['lat'] != usuario_encontrado['posicion_final']['lat'] || usuario_encontrado['posicion_inicial']['lng'] != usuario_encontrado['posicion_final']['lng'] ){
+                        consultas_polilineas += 1;
+
                         fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
                             method: "POST",
                             headers: {
@@ -268,6 +279,8 @@
                     listaRepartidores.appendChild(li);
                 }
             });
+
+            id_procesar_vista = setTimeout(procesar_vista, 10);
         }
 
         function procesar_vista() {
@@ -327,7 +340,7 @@
                 mapId: '7845e7dffe8cea37'
             });
 
-            setInterval(actualizacion_logica, 1000);
+            setTimeout(actualizacion_logica, 1000);
             id_procesar_vista = setTimeout(procesar_vista, 10);
 
             velocidadRepartidor = document.getElementById('velocidadRepartidor');
