@@ -38,6 +38,7 @@
         if( count($preparada->fetchAll(PDO::FETCH_ASSOC)) == 0 ){
             $resultado['usuario'] = false;
             $resultado['contraseña'] = false;
+            $resultado['perfil'] = false;
             echo json_encode($resultado);
             exit();
         }
