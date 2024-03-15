@@ -198,7 +198,11 @@
                             clearTimeout(id_procesar_vista);
                             consultas_polilineas -= 1;
                             console.log(data);
+                            console.log(usuario_encontrado['posicion_inicial']);
+                            console.log(usuario_encontrado['posicion_final']);
                             usuario_encontrado['posicion_inicial'] = usuario_encontrado['posicion_final'];
+                            console.log(usuario_encontrado['posicion_inicial']);
+                            console.log(usuario_encontrado['posicion_final']);
                             id_procesar_vista = setTimeout(procesar_vista, 10);
                         })
                         .catch(error => {
