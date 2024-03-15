@@ -186,6 +186,7 @@
                         .then(data => {
                             clearTimeout(id_procesar_vista);
                             console.log(data);
+                            usuario_encontrado['posicion_inicial'] = usuario_encontrado['posicion_final'];
                             id_procesar_vista = setTimeout(procesar_vista, 10);
                         })
                         .catch(error => {
