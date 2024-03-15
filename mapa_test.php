@@ -168,7 +168,7 @@
                         nombre: usuario['Nombre'],
                         marcador: marcador,
                         velocidad: usuario['velocidad'],
-                        frame = 0,
+                        frame: 0,
                         posicion_inicial: { lat: usuario['latitud'], lng: usuario['longitud'] },
                         posicion_final: { lat: usuario['latitud'], lng: usuario['longitud'] }
                     };
