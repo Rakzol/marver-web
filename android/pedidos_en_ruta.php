@@ -5,7 +5,7 @@
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
-        $preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Clave = :clave AND Contraseña = :contrasena');
+        /*$preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Clave = :clave AND Contraseña = :contrasena');
         $preparada->bindValue(':clave', $_POST['clave']);
         $preparada->bindValue(':contrasena', $_POST['contraseña']);
         $preparada->execute();
@@ -16,7 +16,7 @@
             $resultado["status"] = 1;
             echo json_encode($resultado);
             exit();
-        }
+        }*/
 
         $preparada = $conexion->prepare("
             SELECT
