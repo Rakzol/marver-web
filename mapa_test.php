@@ -272,7 +272,7 @@
         async function initMap() {
             const { Map, InfoWindow } = await google.maps.importLibrary("maps");
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-            const { Spherical } = await google.maps.importLibrary("geometry");
+            const { spherical } = await google.maps.importLibrary("geometry");
 
             ElementoMarcadorAvanzado = AdvancedMarkerElement;
             VentanaInformacion = InfoWindow;
