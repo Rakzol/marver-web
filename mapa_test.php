@@ -273,7 +273,7 @@
 
             usuarios.forEach((usuario) => {
 
-                if (fijado == usuario['id'] ) {
+                /*if (fijado == usuario['id'] ) {
                     velocidadRepartidor.innerText = (usuario['velocidad'] * 3.6).toFixed(1) + ' Km/h';
                     if (frame % 50 == 0 && seguirRepartidor.checked) {
                         mapa.panTo(usuario['marcador'].position);
@@ -289,9 +289,9 @@
                     let longitud = usuario['posicion_inicial']['lng'] >= usuario['posicion_final']['lng'] ? usuario['posicion_inicial']['lng'] - longitud_dif_abs : usuario['posicion_inicial']['lng'] + longitud_dif_abs;
 
                     usuario['marcador'].position = { lat: latitud, lng: longitud };
-                }
+                }*/
 
-                if (frame == 1800) {
+                /*if (frame == 1800) {
                     usuario['posicion_inicial'] = { lat: usuario['posicion_final']['lat'], lng: usuario['posicion_final']['lng'] };
                 }
 
@@ -299,7 +299,7 @@
                 frame = 1;
                 } else {
                     frame++;
-                }
+                }*/
             });
 
             id_procesar_vista = setTimeout(procesar_vista, 10);
