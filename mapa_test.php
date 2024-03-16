@@ -328,7 +328,7 @@
                                 {lat: usuario['polilineas'][c]['lat'](), lng: usuario['polilineas'][c]['lng']()}, 
                                 {lat: usuario['polilineas'][c+1]['lat'](), lng: usuario['polilineas'][c+1]['lng']()});
 
-                        metros_acumulados += metros_plilinea;
+                        metros_acumulados += metros_polilinea;
                         if( metros_acumulados >= metros_recorridos){
                             console.log(c);
                         }
