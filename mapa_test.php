@@ -317,7 +317,7 @@
                         return;
                     }
 
-                    console.log(usuario['frame'] / 1800 * ['ruta']['routes'][0]['distanceMeters']);
+                    console.log(usuario['frame'] / 1800 * usuario['ruta']['routes'][0]['distanceMeters']);
 
                     usuario['frame'] += 1;
 
