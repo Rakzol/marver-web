@@ -331,6 +331,7 @@
                         metros_acumulados += metros_polilinea;
                         if( metros_acumulados >= metros_recorridos){
                             console.log(c);
+                            break;
                         }
 
                     }
