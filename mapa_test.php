@@ -158,11 +158,11 @@
                 if (usuario_encontrado) {
 
                     usuario_encontrado['frame'] = 0
-                    usuario_encontrado['posicion_inicial'] = usuario_encontrado['marcador'].position;
+                    usuario_encontrado['posicion_inicial'] = { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] };
                     usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
                     usuario_encontrado['velocidad'] = usuario['velocidad'];
 
-                    if( usuario_encontrado['posicion_inicial']['lat'] != usuario_encontrado['posicion_final']['lat'] || usuario_encontrado['posicion_inicial']['lng'] != usuario_encontrado['posicion_final']['lng'] ){
+                    if( usuario_encontrado['marcador'].position['lat'] != usuario_encontrado['posicion_final']['lat'] || usuario_encontrado['marcador'].position['lng'] != usuario_encontrado['posicion_final']['lng'] ){
                         consultas_polilineas += 1;
 
                         fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
@@ -198,10 +198,10 @@
                             clearTimeout(id_procesar_vista);
                             consultas_polilineas -= 1;
                             console.log(data);
-                            console.log(usuario_encontrado['posicion_inicial']);
+                            console.log(usuario_encontrado['marcador'].position);
                             console.log(usuario_encontrado['posicion_final']);
-                            usuario_encontrado['posicion_inicial'] = usuario_encontrado['posicion_final'];
-                            console.log(usuario_encontrado['posicion_inicial']);
+                            usuario_encontrado['marcador'].position = { lat: usuario_encontrado['posicion_final']['lat'], lng: usuario_encontrado['posicion_final']['lng'] };
+                            console.log(usuario_encontrado['marcador'].position);
                             console.log(usuario_encontrado['posicion_final']);
                             id_procesar_vista = setTimeout(procesar_vista, 10);
                         })
