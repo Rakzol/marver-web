@@ -126,6 +126,7 @@
         let Esferica;
         let Codificador;
         let Polilinea;
+        let LimitesLatitudLongitud;
 
         let consultas_polilineas = 0;
 
@@ -271,7 +272,13 @@
                                     usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
                                     usuario_encontrado['latitudes_longitudes'] = Codificador.decodePath(ruta['routes'][0]['polyline']['encodedPolyline']);
 
-                                    if( usuario_encontrado['polilinea'] != undefined ){
+                                    let latitud_longitud_limite = new LimitesLatitudLongitud();
+                                    usuario_encontrado['latitudes_longitudes'].forEach((latitud_longitud)=>{
+                                        latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
+                                    });
+                                    mapa.fitBounds(latitud_longitud_limite, 250);
+
+                                    /*if( usuario_encontrado['polilinea'] != undefined ){
                                         usuario_encontrado['polilinea'].setMap(null);
                                     }
 
@@ -283,7 +290,7 @@
                                         strokeWeight: 3
                                     });
 
-                                    usuario_encontrado['polilinea'].setMap(mapa);
+                                    usuario_encontrado['polilinea'].setMap(mapa);*/
 
                                     /* inicio: Marcadores y polilineas secundarias */
                                     polilineas.forEach( (polilinea)=>{
@@ -410,7 +417,13 @@
                             usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
                             usuario_encontrado['latitudes_longitudes'] = Codificador.decodePath(ruta['routes'][0]['polyline']['encodedPolyline']);
 
-                            if( usuario_encontrado['polilinea'] != undefined ){
+                            let latitud_longitud_limite = new LimitesLatitudLongitud();
+                            usuario_encontrado['latitudes_longitudes'].forEach((latitud_longitud)=>{
+                                latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
+                            });
+                            mapa.fitBounds(latitud_longitud_limite, 250);
+
+                            /*if( usuario_encontrado['polilinea'] != undefined ){
                                 usuario_encontrado['polilinea'].setMap(null);
                             }
               
@@ -422,7 +435,7 @@
                                 strokeWeight: 3
                             });
 
-                            usuario_encontrado['polilinea'].setMap(mapa);
+                            usuario_encontrado['polilinea'].setMap(mapa);*/
 
                             consultas_polilineas -= 1;
                             id_procesar_vista = setTimeout(procesar_vista, 10);
@@ -470,9 +483,9 @@
 
                         fijado = usuarioLista['id'];
 
-                        mapa.setZoom(18.5);
-                        mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
-                        mapa.panTo(usuarioLista['marcador'].position);
+                        //mapa.setZoom(18.5);
+                        //mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
+                        //mapa.panTo(usuarioLista['marcador'].position);
 
                         document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
                         document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
@@ -496,9 +509,9 @@
 
                         fijado = usuarioLista['id'];
 
-                        mapa.setZoom(18.5);
-                        mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
-                        mapa.panTo(usuarioLista['marcador'].position);
+                        //mapa.setZoom(18.5);
+                        //mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
+                        //mapa.panTo(usuarioLista['marcador'].position);
 
                         document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
                         document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
@@ -574,12 +587,14 @@
             const { Map, InfoWindow, Polyline } = await google.maps.importLibrary("maps");
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
             const { spherical, encoding } = await google.maps.importLibrary("geometry");
+            const { LatLngBounds } = await google.maps.importLibrary("core");
 
             ElementoMarcadorAvanzado = AdvancedMarkerElement;
             VentanaInformacion = InfoWindow;
             Esferica = spherical;
             Codificador = encoding;
             Polilinea = Polyline;
+            LimitesLatitudLongitud = LatLngBounds;
 
             mapa = new Map(document.getElementById("mapa"), {
                 center: { lat: 25.7951169, lng: -108.99698492 },
