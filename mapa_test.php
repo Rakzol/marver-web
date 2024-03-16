@@ -310,6 +310,19 @@
 
             usuarios.forEach((usuario) => {
 
+                if(usuario['ruta'] != undefined){
+
+                    if( usuario['frame'] + 1 >= 1800){
+                        // pintar en la ultima posicion y borrar polilinea
+                        return;
+                    }
+
+                    console.log(usuario['frame'] / 1800 * ['ruta']['routes'][0]['distanceMeters']);
+
+                    usuario['frame'] += 1;
+
+                }
+
                 /*if (fijado == usuario['id'] ) {
                     velocidadRepartidor.innerText = (usuario['velocidad'] * 3.6).toFixed(1) + ' Km/h';
                     if (frame % 50 == 0 && seguirRepartidor.checked) {
