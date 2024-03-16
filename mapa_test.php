@@ -168,6 +168,8 @@
                     if( fijado == usuario_encontrado['id'] && ( consultar_pedidos || usuario_encontrado['posicion_final']['lat'] != usuario['latitud'] || usuario_encontrado['posicion_final']['lng'] != usuario['longitud'] ) ){
                         consultas_polilineas += 1;
 
+                        velocidadRepartidor.innerText = usuario_encontrado['velocidad'];
+
                         let datos_envio = new FormData();
                         datos_envio.append('clave',fijado);
 
