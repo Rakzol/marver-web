@@ -331,9 +331,9 @@
                         metros_acumulados += metros_polilinea;
                         if( metros_acumulados >= metros_recorridos){
                             console.log(c);
+                            Esferica.interpolate(from, to, fraction);
                             break;
                         }
-
                     }
 
                     usuario['frame'] += 1;
