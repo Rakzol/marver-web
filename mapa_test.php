@@ -358,7 +358,7 @@
                                     }
                                     /* fin: Marcadores y polilineas secundarias */
 
-                                    mapa.fitBounds(latitud_longitud_limite,10);
+                                    mapa.fitBounds(latitud_longitud_limite, 30);
 
                                     consultar_pedidos = false;
                                     consultas_polilineas -= 1;
