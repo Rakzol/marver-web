@@ -168,7 +168,7 @@
                             headers: {
                                 "Content-Type": "application/json",
                                 "X-Goog-Api-Key": "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo",
-                                "X-Goog-FieldMask": "routes.distanceMeters,routes.polyline.encodedPolyline,routes.legs.steps.distanceMeters,routes.legs.steps.startLocation,routes.legs.steps.endLocation"
+                                "X-Goog-FieldMask": "routes.distanceMeters,routes.polyline"
                             },
                             body: JSON.stringify({
                                 origin: {
