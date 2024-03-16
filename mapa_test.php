@@ -262,6 +262,9 @@
                                 .then(ruta => {
                                     clearTimeout(id_procesar_vista);
 
+                                    if(!ruta['routes'][0].hasOwnProperty('distanceMeters')){
+                                        ruta['routes'][0]['distanceMeters'] = 0;
+                                    }
                                     usuario_encontrado['metros_recorrer'] = ruta['routes'][0]['distanceMeters'];
                                     usuario_encontrado['frame'] = 0
                                     usuario_encontrado['posicion_inicial'] = { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] };
