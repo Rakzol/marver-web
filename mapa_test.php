@@ -320,6 +320,7 @@
                                                 map: mapa,
                                                 position: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] }
                                             }));
+                                            console.log(leg);
                                         }
                                     }else{
                                         let leg = rutas['routes'][0]['legs'][0];
