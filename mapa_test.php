@@ -314,12 +314,12 @@
 
                 if(usuario['ruta'] != undefined){
 
-                    if( usuario['frame'] + 1 >= 1800){
+                    if( usuario['frame'] + 1 >= 1600){
                         // pintar en la ultima posicion y borrar polilinea
                         return;
                     }
 
-                    let metros_recorridos = usuario['frame'] / 1800 * usuario['ruta']['routes'][0]['distanceMeters'];
+                    let metros_recorridos = usuario['frame'] / 1600 * usuario['ruta']['routes'][0]['distanceMeters'];
 
                     let metros_acumulados = 0;
 
@@ -355,8 +355,8 @@
 
                 if (usuario['posicion_inicial']['lat'] != usuario['posicion_final']['lat'] || usuario['posicion_inicial']['lng'] != usuario['posicion_final']['lng']) {
 
-                    let latitud_dif_abs = Math.abs(usuario['posicion_inicial']['lat'] - usuario['posicion_final']['lat']) * frame / 1800;
-                    let longitud_dif_abs = Math.abs(Math.abs(usuario['posicion_inicial']['lng']) + usuario['posicion_final']['lng']) * frame / 1800;
+                    let latitud_dif_abs = Math.abs(usuario['posicion_inicial']['lat'] - usuario['posicion_final']['lat']) * frame / 1600;
+                    let longitud_dif_abs = Math.abs(Math.abs(usuario['posicion_inicial']['lng']) + usuario['posicion_final']['lng']) * frame / 1600;
 
                     let latitud = usuario['posicion_inicial']['lat'] >= usuario['posicion_final']['lat'] ? usuario['posicion_inicial']['lat'] - latitud_dif_abs : usuario['posicion_inicial']['lat'] + latitud_dif_abs;
                     let longitud = usuario['posicion_inicial']['lng'] >= usuario['posicion_final']['lng'] ? usuario['posicion_inicial']['lng'] - longitud_dif_abs : usuario['posicion_inicial']['lng'] + longitud_dif_abs;
@@ -364,11 +364,11 @@
                     usuario['marcador'].position = { lat: latitud, lng: longitud };
                 }*/
 
-                /*if (frame == 1800) {
+                /*if (frame == 1600) {
                     usuario['posicion_inicial'] = { lat: usuario['posicion_final']['lat'], lng: usuario['posicion_final']['lng'] };
                 }
 
-                if (frame == 1800) {
+                if (frame == 1600) {
                 frame = 1;
                 } else {
                     frame++;
