@@ -276,6 +276,7 @@
                                     usuario_encontrado['latitudes_longitudes'].forEach((latitud_longitud)=>{
                                         latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
                                     });
+                                    console.log(latitud_longitud_limite);
                                     mapa.fitBounds(latitud_longitud_limite, 250);
 
                                     /*if( usuario_encontrado['polilinea'] != undefined ){
@@ -303,7 +304,6 @@
                                     });
                                     marcadores = [];
 
-                                    console.log(rutas);
                                     if( rutas['routes'][0]['legs'].length > 1 ){
                                         for( c = 0; c < rutas['routes'][0]['legs'].length - 1; c++ ){
                                             let leg = rutas['routes'][0]['legs'][c];
@@ -327,7 +327,6 @@
                                                 map: mapa,
                                                 position: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] }
                                             }));
-                                            console.log(leg);
                                         }
                                     }else{
                                         let leg = rutas['routes'][0]['legs'][0];
@@ -421,6 +420,7 @@
                             usuario_encontrado['latitudes_longitudes'].forEach((latitud_longitud)=>{
                                 latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
                             });
+                            console.log(latitud_longitud_limite);
                             mapa.fitBounds(latitud_longitud_limite, 250);
 
                             /*if( usuario_encontrado['polilinea'] != undefined ){
