@@ -310,6 +310,8 @@
 
             usuarios.forEach((usuario) => {
 
+                usuario['frame'] += 1;
+
                 if(usuario['ruta'] != undefined){
 
                     if( usuario['frame'] + 1 >= 1800){
@@ -319,7 +321,6 @@
 
                     let metros_recorridos = usuario['frame'] / 1800 * usuario['ruta']['routes'][0]['distanceMeters'];
 
-                    let posicion;
                     let metros_acumulados = 0;
 
                     for(let c = 0; c < usuario['polilineas'].length - 1; c += 2 ){
@@ -342,8 +343,6 @@
                             break;
                         }
                     }
-
-                    usuario['frame'] += 1;
 
                 }
 
