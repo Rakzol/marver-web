@@ -317,7 +317,23 @@
                         return;
                     }
 
-                    console.log(usuario['frame'] / 1800 * usuario['ruta']['routes'][0]['distanceMeters']);
+                    let metros_recorridos = usuario['frame'] / 1800 * usuario['ruta']['routes'][0]['distanceMeters'];
+
+                    let posicion;
+                    let metros_acumulados = 0;
+
+                    for(let c = 0; c < usuario['polilineas'].length - 1; c += 2 ){
+
+                        let metros_polilinea = Esferica.computeDistanceBetween( 
+                                {lat: usuario['polilineas'][c]['lat'](), lng: usuario['polilineas'][c]['lng']()}, 
+                                {lat: usuario['polilineas'][c+1]['lat'](), lng: usuario['polilineas'][c+1]['lng']()});
+
+                        metros_acumulados += metros_plilinea;
+                        if( metros_acumulados >= metros_recorridos){
+                            console.log(c);
+                        }
+
+                    }
 
                     usuario['frame'] += 1;
 
