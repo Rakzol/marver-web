@@ -214,7 +214,7 @@
                                 strokeWeight: 2
                             });
 
-                            usuario_encontrado['polilinea'].setMap(map);
+                            usuario_encontrado['polilinea'].setMap(mapa);
 
                             consultas_polilineas -= 1;
                             id_procesar_vista = setTimeout(procesar_vista, 10);
