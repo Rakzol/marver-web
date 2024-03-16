@@ -179,7 +179,8 @@
                             json_intermedios = [];
 
                             usuario_encontrado['pedidos'].forEach( (pedido) =>{
-                                json_intermedios.push({
+                                if( pedido['latitud'] != null && pedido['longitud'] != null ){
+                                    json_intermedios.push({
                                     location:{
                                         latLng:{
                                             latitude: pedido['latitud'],
@@ -187,6 +188,7 @@
                                         }
                                     }
                                 });
+                                }
                             });
 
                             json_envio = {
