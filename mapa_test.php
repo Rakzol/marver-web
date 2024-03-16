@@ -332,9 +332,10 @@
                         metros_acumulados += metros_polilinea;
                         if( metros_acumulados >= metros_recorridos){
 
-                            let metros_reocrrido_tramo = metros_acumulados - metros_recorridos;
+                            let metros_recorridos_tramo = metros_acumulados - metros_recorridos;
 
-                            let posicion_nueva = Esferica.interpolate( polilinea_final, polilinea_inicial, metros_reocrrido_tramo / metros_polilinea );
+                            console.log(metros_recorridos_tramo / metros_polilinea);
+                            let posicion_nueva = Esferica.interpolate( polilinea_final, polilinea_inicial, metros_recorridos_tramo / metros_polilinea );
                             usuario['marcador'].position = { lat: posicion_nueva['lat'](), lng: posicion_nueva['lng']() };
                             break;
                         }
