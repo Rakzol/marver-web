@@ -330,6 +330,8 @@
                         let metros_polilinea = Esferica.computeDistanceBetween( polilinea_inicial, polilinea_final);
 
                         metros_acumulados += metros_polilinea;
+                        console.log('metros_acumulados: ' + metros_acumulados);
+                        console.log('metros_recorridos: ' + metros_recorridos);
                         if( metros_acumulados >= metros_recorridos){
 
                             let metros_recorridos_tramo = metros_acumulados - metros_recorridos;
