@@ -206,8 +206,9 @@
                                 usuario_encontrado['polilinea'].setMap(null);
                             }
 
+                            usuario_encontrado['polilineas'] = Codificador.decodePath(usuario_encontrado['ruta']['routes'][0]['polyline']['encodedPolyline']);
                             usuario_encontrado['polilinea'] = new Polilinea({
-                                path: Codificador.decodePath(usuario_encontrado['ruta']['routes'][0]['polyline']['encodedPolyline']),
+                                path: usuario_encontrado['polilineas'],
                                 geodesic: true,
                                 strokeColor: '#FF0000',
                                 strokeOpacity: 1.0,
@@ -244,6 +245,7 @@
                         frame: 0,
                         ruta: undefined,
                         polilinea: undefined,
+                        polilineas: undefined,
                         posicion_inicial: { lat: usuario['latitud'], lng: usuario['longitud'] },
                         posicion_final: { lat: usuario['latitud'], lng: usuario['longitud'] }
                     };
