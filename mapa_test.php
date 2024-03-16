@@ -121,6 +121,8 @@
         let ElementoMarcadorAvanzado;
         let VentanaInformacion;
         let Esferica;
+        let Codificador;
+        let Polilinea;
 
         let consultas_polilineas = 0;
 
@@ -194,10 +196,25 @@
                             clearTimeout(id_procesar_vista);
 
                             console.log(data);
+
                             usuario_encontrado['ruta'] = data;
                             usuario_encontrado['frame'] = 0
                             usuario_encontrado['posicion_inicial'] = { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] };
                             usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
+
+                            if( usuario_encontrado['polilinea'] != undefined ){
+                                usuario_encontrado['polilinea'].setMap(null);
+                            }
+
+                            usuario_encontrado['polilinea'] = new Polilinea({
+                                path: Codificador.decodePath(usuario_encontrado['ruta']['routes'][0]['polyline']['encodedPolyline']),
+                                geodesic: true,
+                                strokeColor: '#FF0000',
+                                strokeOpacity: 1.0,
+                                strokeWeight: 2
+                            });
+
+                            usuario_encontrado['polilinea'].setMap(map);
 
                             consultas_polilineas -= 1;
                             id_procesar_vista = setTimeout(procesar_vista, 10);
@@ -226,6 +243,7 @@
                         velocidad: usuario['velocidad'],
                         frame: 0,
                         ruta: undefined,
+                        polilinea: undefined,
                         posicion_inicial: { lat: usuario['latitud'], lng: usuario['longitud'] },
                         posicion_final: { lat: usuario['latitud'], lng: usuario['longitud'] }
                     };
@@ -329,13 +347,15 @@
     <script type="module">
 
         async function initMap() {
-            const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+            const { Map, InfoWindow, Polyline } = await google.maps.importLibrary("maps");
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-            const { spherical } = await google.maps.importLibrary("geometry");
+            const { spherical, encoding } = await google.maps.importLibrary("geometry");
 
             ElementoMarcadorAvanzado = AdvancedMarkerElement;
             VentanaInformacion = InfoWindow;
             Esferica = spherical;
+            Codificador = encoding;
+            Polilinea = Polyline;
 
             mapa = new Map(document.getElementById("mapa"), {
                 center: { lat: 25.7951169, lng: -108.99698492 },
