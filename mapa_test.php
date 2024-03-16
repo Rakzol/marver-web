@@ -193,6 +193,7 @@
                         .then(data => {
                             clearTimeout(id_procesar_vista);
 
+                            console.log(data);
                             usuario_encontrado['ruta'] = data;
                             usuario_encontrado['frame'] = 0
                             usuario_encontrado['posicion_inicial'] = { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] };
