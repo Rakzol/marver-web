@@ -323,7 +323,7 @@
 
                     let metros_acumulados = 0;
 
-                    for(let c = 0; c < usuario['polilineas'].length - 1; c += 2 ){
+                    for(let c = 0; c < usuario['polilineas'].length - 1; c++ ){
 
                         let polilinea_inicial = {lat: usuario['polilineas'][c]['lat'](), lng: usuario['polilineas'][c]['lng']()};
                         let polilinea_final = {lat: usuario['polilineas'][c+1]['lat'](), lng: usuario['polilineas'][c+1]['lng']()};
@@ -338,7 +338,7 @@
                             let metros_recorridos_tramo = metros_acumulados - metros_recorridos;
 
                             console.log(metros_recorridos_tramo / metros_polilinea);
-                            let posicion_nueva = Esferica.interpolate( polilinea_final, polilinea_inicial, metros_recorridos_tramo / metros_polilinea );
+                            let posicion_nueva = Esferica.interpolate( polilinea_inicial, polilinea_final, metros_recorridos_tramo / metros_polilinea );
                             usuario['marcador'].position = { lat: posicion_nueva['lat'](), lng: posicion_nueva['lng']() };
                             break;
                         }
