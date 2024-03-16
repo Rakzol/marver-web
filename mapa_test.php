@@ -157,12 +157,8 @@
 
                 if (usuario_encontrado) {
 
-                    usuario_encontrado['frame'] = 0
-                    usuario_encontrado['posicion_inicial'] = { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] };
-                    usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
                     usuario_encontrado['velocidad'] = usuario['velocidad'];
-
-                    if( usuario_encontrado['marcador'].position['lat'] != usuario_encontrado['posicion_final']['lat'] || usuario_encontrado['marcador'].position['lng'] != usuario_encontrado['posicion_final']['lng'] ){
+                    if( usuario_encontrado['posicion_final']['lat'] != usuario['latitud'] || usuario_encontrado['posicion_final']['lng'] != usuario['longitud']){
                         consultas_polilineas += 1;
 
                         fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
@@ -170,7 +166,7 @@
                             headers: {
                                 "Content-Type": "application/json",
                                 "X-Goog-Api-Key": "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo",
-                                "X-Goog-FieldMask": "routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline,routes.legs"
+                                "X-Goog-FieldMask": "routes.distanceMeters,routes.polyline.encodedPolyline,routes.legs.steps.startLocation,routes.legs.steps.endLocation"
                             },
                             body: JSON.stringify({
                                 origin: {
@@ -196,13 +192,13 @@
                         .then(response => response.json())
                         .then(data => {
                             clearTimeout(id_procesar_vista);
+
+                            usuario_encontrado['ruta'] = data;
+                            usuario_encontrado['frame'] = 0
+                            usuario_encontrado['posicion_inicial'] = { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] };
+                            usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
+
                             consultas_polilineas -= 1;
-                            console.log(data);
-                            console.log(usuario_encontrado['marcador'].position);
-                            console.log(usuario_encontrado['posicion_final']);
-                            usuario_encontrado['marcador'].position = { lat: usuario_encontrado['posicion_final']['lat'], lng: usuario_encontrado['posicion_final']['lng'] };
-                            console.log(usuario_encontrado['marcador'].position);
-                            console.log(usuario_encontrado['posicion_final']);
                             id_procesar_vista = setTimeout(procesar_vista, 10);
                         })
                         .catch(error => {
@@ -228,7 +224,7 @@
                         marcador: marcador,
                         velocidad: usuario['velocidad'],
                         frame: 0,
-                        polilinea: 69,
+                        ruta: undefined,
                         posicion_inicial: { lat: usuario['latitud'], lng: usuario['longitud'] },
                         posicion_final: { lat: usuario['latitud'], lng: usuario['longitud'] }
                     };
