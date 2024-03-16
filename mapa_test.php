@@ -274,6 +274,7 @@
 
                                     let latitud_longitud_limite = new LimitesLatitudLongitud();
                                     usuario_encontrado['latitudes_longitudes'].forEach((latitud_longitud)=>{
+                                        console.log({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
                                         latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
                                     });
                                     console.log(latitud_longitud_limite);
