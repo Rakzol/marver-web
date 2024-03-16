@@ -118,6 +118,7 @@
         let seguirRepartidor;
         let id_procesar_vista;
         let consultar_pedidos = false;
+        let polilineas = [];
 
         let ElementoMarcadorAvanzado;
         let VentanaInformacion;
@@ -231,7 +232,7 @@
                             .then(data => {
                                 clearTimeout(id_procesar_vista);
 
-                                /*usuario_encontrado['ruta'] = data;
+                                usuario_encontrado['metros_recorrer'] = data['routes'][0]['legs'][0]['distanceMeters'];
                                 usuario_encontrado['frame'] = 0
                                 usuario_encontrado['posicion_inicial'] = { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] };
                                 usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
@@ -240,16 +241,16 @@
                                     usuario_encontrado['polilinea'].setMap(null);
                                 }
 
-                                usuario_encontrado['polilineas'] = Codificador.decodePath(usuario_encontrado['ruta']['routes'][0]['polyline']['encodedPolyline']);
+                                usuario_encontrado['latitudes_longitudes'] = Codificador.decodePath(data['routes'][0]['legs'][0]['polyline']['encodedPolyline']);
                                 usuario_encontrado['polilinea'] = new Polilinea({
-                                    path: usuario_encontrado['polilineas'],
+                                    path: usuario_encontrado['latitudes_longitudes'],
                                     geodesic: true,
-                                    strokeColor: '#FF0000',
+                                    strokeColor: '#00FF00',
                                     strokeOpacity: 1.0,
-                                    strokeWeight: 2
+                                    strokeWeight: 5
                                 });
 
-                                usuario_encontrado['polilinea'].setMap(mapa);*/
+                                usuario_encontrado['polilinea'].setMap(mapa);
 
                                 consultar_pedidos = false;
                                 consultas_polilineas -= 1;
@@ -302,7 +303,7 @@
                         .then(data => {
                             clearTimeout(id_procesar_vista);
 
-                            usuario_encontrado['ruta'] = data;
+                            usuario_encontrado['metros_recorrer'] = data['routes'][0]['distanceMeters'];
                             usuario_encontrado['frame'] = 0
                             usuario_encontrado['posicion_inicial'] = { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] };
                             usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
@@ -311,13 +312,13 @@
                                 usuario_encontrado['polilinea'].setMap(null);
                             }
 
-                            usuario_encontrado['polilineas'] = Codificador.decodePath(usuario_encontrado['ruta']['routes'][0]['polyline']['encodedPolyline']);
+                            usuario_encontrado['latitudes_longitudes'] = Codificador.decodePath(data['routes'][0]['polyline']['encodedPolyline']);
                             usuario_encontrado['polilinea'] = new Polilinea({
-                                path: usuario_encontrado['polilineas'],
+                                path: usuario_encontrado['latitudes_longitudes'],
                                 geodesic: true,
                                 strokeColor: '#FF0000',
                                 strokeOpacity: 1.0,
-                                strokeWeight: 2
+                                strokeWeight: 5
                             });
 
                             usuario_encontrado['polilinea'].setMap(mapa);
@@ -349,10 +350,9 @@
                         marcador: marcador,
                         velocidad: usuario['velocidad'],
                         frame: 0,
-                        ruta: undefined,
+                        metros_recorrer: undefined,
+                        latitudes_longitudes: undefined,
                         polilinea: undefined,
-                        polilineas: undefined,
-                        pedidos: undefined,
                         posicion_inicial: { lat: usuario['latitud'], lng: usuario['longitud'] },
                         posicion_final: { lat: usuario['latitud'], lng: usuario['longitud'] }
                     };
@@ -427,7 +427,7 @@
 
             usuarios.forEach((usuario) => {
 
-                if(usuario['ruta'] != undefined){
+                if(usuario['latitudes_longitudes'] != undefined && usuario['metros_recorrer'] != undefined){
 
                     usuario['frame'] += 1;
 
@@ -435,14 +435,14 @@
                         return;
                     }
 
-                    let metros_recorridos = usuario['frame'] / 1600 * usuario['ruta']['routes'][0]['distanceMeters'];
+                    let metros_recorridos = usuario['frame'] / 1600 * usuario['metros_recorrer'];
 
                     let metros_acumulados = 0;
 
-                    for(let c = 0; c < usuario['polilineas'].length - 1; c++ ){
+                    for(let c = 0; c < usuario['latitudes_longitudes'].length - 1; c++ ){
 
-                        let polilinea_inicial = {lat: usuario['polilineas'][c]['lat'](), lng: usuario['polilineas'][c]['lng']()};
-                        let polilinea_final = {lat: usuario['polilineas'][c+1]['lat'](), lng: usuario['polilineas'][c+1]['lng']()};
+                        let polilinea_inicial = {lat: usuario['latitudes_longitudes'][c]['lat'](), lng: usuario['latitudes_longitudes'][c]['lng']()};
+                        let polilinea_final = {lat: usuario['latitudes_longitudes'][c+1]['lat'](), lng: usuario['latitudes_longitudes'][c+1]['lng']()};
 
                         let metros_polilinea = Esferica.computeDistanceBetween( polilinea_inicial, polilinea_final);
 
