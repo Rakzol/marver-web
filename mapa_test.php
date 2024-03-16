@@ -296,6 +296,7 @@
                                     });
                                     marcadores = [];
 
+                                    console.log(rutas);
                                     if( rutas['routes'][0]['legs'].length > 1 ){
                                         for( c = 1; c < rutas['routes'][0]['legs'].length - 1; c++ ){
                                             let leg = rutas['routes'][0]['legs'][c];
@@ -308,8 +309,8 @@
                                                 strokeWeight: 3
                                             });
 
-                                            polilineas.push(polilinea);
                                             polilinea.setMap(mapa);
+                                            polilineas.push(polilinea);
 
                                             let imagen = document.createElement('img');
                                             imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_cliente_' + (c + 1) +'.png';
