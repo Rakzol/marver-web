@@ -161,7 +161,7 @@
 
                 let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == usuario['usuario']; });
 
-                if (usuario_encontrado) {
+                if (usuario_encontrado != undefined) {
 
                     usuario_encontrado['velocidad'] = usuario['velocidad'];
 
@@ -362,7 +362,9 @@
 
                                     mapa.fitBounds(latitud_longitud_limite,150);
 
-                                    consultar_pedidos = false;
+                                    if(fijado == usuario_encontrado['id']){
+                                        consultar_pedidos = false;
+                                    }
                                     consultas_polilineas -= 1;
                                     id_procesar_vista = setTimeout(procesar_vista, 10);
                                 })
