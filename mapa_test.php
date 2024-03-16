@@ -330,8 +330,10 @@
 
                         metros_acumulados += metros_polilinea;
                         if( metros_acumulados >= metros_recorridos){
-                            console.log(c);
-                            Esferica.interpolate(from, to, fraction);
+
+                            let metros_reocrrido_tramo = metros_acumulados - metros_recorridos;
+
+                            console.log( Esferica.interpolate(from, to, metros_reocrrido_tramo / metros_polilinea ) );
                             break;
                         }
                     }
