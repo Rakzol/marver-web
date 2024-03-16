@@ -179,8 +179,15 @@
                             json_intermedios = [];
 
                             usuario_encontrado['pedidos'].forEach( (pedido) =>{
-                                console.log(pedido);
-                            } );
+                                json_intermedios.push({
+                                    location:{
+                                        latLng:{
+                                            latitude: pedido['latitud'],
+                                            longitude: pedido['longitud']
+                                        }
+                                    }
+                                });
+                            });
 
                             json_envio = {
                                     origin: {
@@ -202,6 +209,12 @@
                                     travelMode: "TWO_WHEELER",
                                     routingPreference: "TRAFFIC_AWARE"
                                 };
+
+
+                            if(json_intermedios.length > 0){
+                                json_envio['intermediates'] = json_intermedios;
+                                json_envio['optimizeWaypointOrder'] = 'true';
+                            }
 
                             fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
                                 method: "POST",
