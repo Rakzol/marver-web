@@ -172,16 +172,16 @@
                                 origin: {
                                     location: {
                                         latLng: {
-                                            latitude: usuario_encontrado['posicion_inicial']['lat'],
-                                            longitude: usuario_encontrado['posicion_inicial']['lng']
+                                            latitude: usuario_encontrado['marcador'].position['lat'],
+                                            longitude: usuario_encontrado['marcador'].position['lng']
                                         }
                                     }
                                 },
                                 destination: {
                                     location: {
                                         latLng: {
-                                            latitude: usuario_encontrado['posicion_final']['lat'],
-                                            longitude: usuario_encontrado['posicion_final']['lng']
+                                            latitude: usuario['latitud'],
+                                            longitude: usuario['longitud']
                                         }
                                     }
                                 },
