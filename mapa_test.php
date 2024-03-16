@@ -162,7 +162,7 @@
 
                     usuario_encontrado['velocidad'] = usuario['velocidad'];
 
-                    if( fijado > 0 && ( consultar_pedidos || usuario_encontrado['posicion_final']['lat'] != usuario['latitud'] || usuario_encontrado['posicion_final']['lng'] != usuario['longitud'] ) ){
+                    if( fijado == usuario_encontrado['id'] && ( consultar_pedidos || usuario_encontrado['posicion_final']['lat'] != usuario['latitud'] || usuario_encontrado['posicion_final']['lng'] != usuario['longitud'] ) ){
                         consultas_polilineas += 1;
 
                         let datos_envio = new FormData();
@@ -230,6 +230,7 @@
 
                                 usuario_encontrado['polilinea'].setMap(mapa);*/
 
+                                consultar_pedidos = false;
                                 consultas_polilineas -= 1;
                                 id_procesar_vista = setTimeout(procesar_vista, 10);
                             })
