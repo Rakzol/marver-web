@@ -298,7 +298,7 @@
 
                                     console.log(rutas);
                                     if( rutas['routes'][0]['legs'].length > 1 ){
-                                        for( c = 1; c < rutas['routes'][0]['legs'].length - 1; c++ ){
+                                        for( c = 0; c < rutas['routes'][0]['legs'].length - 1; c++ ){
                                             let leg = rutas['routes'][0]['legs'][c];
 
                                             let polilinea = new Polilinea({
