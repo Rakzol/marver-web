@@ -334,7 +334,8 @@
 
                             let metros_reocrrido_tramo = metros_acumulados - metros_recorridos;
 
-                            console.log( Esferica.interpolate(  polilinea_inicial, polilinea_final, metros_reocrrido_tramo / metros_polilinea ) );
+                            let posicion_nueva = Esferica.interpolate(  polilinea_inicial, polilinea_final, metros_reocrrido_tramo / metros_polilinea );
+                            usuario['marcador'].position = { lat: posicion_nueva['lat'](), lng: posicion_nueva['lng']() };
                             break;
                         }
                     }
