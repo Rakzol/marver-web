@@ -175,7 +175,13 @@
                         .then(respuesta => respuesta.json())
                         .then(datos => {
                             
-                            console.log(datos);
+                            usuario_encontrado['pedidos'] = datos;
+                            json_intermedios = [];
+
+                            usuario_encontrado['pedidos'].forEach( (pedido) =>{
+                                console.log(pedido);
+                            } );
+
                             json_envio = {
                                     origin: {
                                         location: {
@@ -202,7 +208,7 @@
                                 headers: {
                                     "Content-Type": "application/json",
                                     "X-Goog-Api-Key": "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo",
-                                    "X-Goog-FieldMask": "routes.distanceMeters,routes.polyline"
+                                    "X-Goog-FieldMask": "routes.duration,routes.distanceMeters,routes.legs.distanceMeters,routes.optimizedIntermediateWaypointIndex,routes.legs.duration,routes.legs.polyline.encodedPolyline,routes.legs.startLocation,routes.legs.endLocation"
                                 },
                                 body: JSON.stringify(json_envio)
                             })
@@ -331,6 +337,7 @@
                         ruta: undefined,
                         polilinea: undefined,
                         polilineas: undefined,
+                        pedidos: undefined,
                         posicion_inicial: { lat: usuario['latitud'], lng: usuario['longitud'] },
                         posicion_final: { lat: usuario['latitud'], lng: usuario['longitud'] }
                     };
