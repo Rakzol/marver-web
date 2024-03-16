@@ -195,8 +195,6 @@
                         .then(data => {
                             clearTimeout(id_procesar_vista);
 
-                            console.log(data);
-
                             usuario_encontrado['ruta'] = data;
                             usuario_encontrado['frame'] = 0
                             usuario_encontrado['posicion_inicial'] = { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] };
@@ -331,13 +329,10 @@
                         let metros_polilinea = Esferica.computeDistanceBetween( polilinea_inicial, polilinea_final);
 
                         metros_acumulados += metros_polilinea;
-                        console.log('metros_acumulados: ' + metros_acumulados);
-                        console.log('metros_recorridos: ' + metros_recorridos);
                         if( metros_acumulados >= metros_recorridos){
 
                             let metros_recorridos_tramo = metros_acumulados - metros_recorridos;
 
-                            console.log(metros_recorridos_tramo / metros_polilinea);
                             let posicion_nueva = Esferica.interpolate( polilinea_final, polilinea_inicial, metros_recorridos_tramo / metros_polilinea );
                             usuario['marcador'].position = { lat: posicion_nueva['lat'](), lng: posicion_nueva['lng']() };
                             break;
