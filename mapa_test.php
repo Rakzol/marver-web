@@ -273,13 +273,7 @@
                                     usuario_encontrado['latitudes_longitudes'] = Codificador.decodePath(ruta['routes'][0]['polyline']['encodedPolyline']);
 
                                     let latitud_longitud_limite = new LimitesLatitudLongitud();
-                                    usuario_encontrado['latitudes_longitudes'].forEach((latitud_longitud)=>{
-                                        console.log({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
-                                        latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
-                                    });
-                                    console.log(latitud_longitud_limite);
-                                    mapa.fitBounds(latitud_longitud_limite, 250);
-
+                                    
                                     /*if( usuario_encontrado['polilinea'] != undefined ){
                                         usuario_encontrado['polilinea'].setMap(null);
                                     }
@@ -309,8 +303,13 @@
                                         for( c = 0; c < rutas['routes'][0]['legs'].length - 1; c++ ){
                                             let leg = rutas['routes'][0]['legs'][c];
 
+                                            let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
+                                            latitudes_longitudes.forEach((latitud_longitud)=>{
+                                                latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
+                                            });
+
                                             let polilinea = new Polilinea({
-                                                path: Codificador.decodePath(leg['polyline']['encodedPolyline']),
+                                                path: latitudes_longitudes,
                                                 geodesic: true,
                                                 strokeColor: c == 0 ? '#6495ED' : '#000000',
                                                 strokeOpacity: 1.0,
@@ -332,8 +331,13 @@
                                     }else{
                                         let leg = rutas['routes'][0]['legs'][0];
 
+                                        let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
+                                            latitudes_longitudes.forEach((latitud_longitud)=>{
+                                                latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
+                                        });
+
                                         let polilinea = new Polilinea({
-                                            path: Codificador.decodePath(leg['polyline']['encodedPolyline']),
+                                            path: latitudes_longitudes,
                                             geodesic: true,
                                             strokeColor: '#6495ED',
                                             strokeOpacity: 1.0,
@@ -353,6 +357,8 @@
                                         }));
                                     }
                                     /* fin: Marcadores y polilineas secundarias */
+
+                                    mapa.fitBounds(latitud_longitud_limite, 250);
 
                                     consultar_pedidos = false;
                                     consultas_polilineas -= 1;
@@ -416,13 +422,6 @@
                             usuario_encontrado['posicion_inicial'] = { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] };
                             usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
                             usuario_encontrado['latitudes_longitudes'] = Codificador.decodePath(ruta['routes'][0]['polyline']['encodedPolyline']);
-
-                            let latitud_longitud_limite = new LimitesLatitudLongitud();
-                            usuario_encontrado['latitudes_longitudes'].forEach((latitud_longitud)=>{
-                                latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
-                            });
-                            console.log(latitud_longitud_limite);
-                            mapa.fitBounds(latitud_longitud_limite, 250);
 
                             /*if( usuario_encontrado['polilinea'] != undefined ){
                                 usuario_encontrado['polilinea'].setMap(null);
