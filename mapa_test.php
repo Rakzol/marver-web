@@ -199,8 +199,8 @@
                                 origin: {
                                     location: {
                                         latLng: {
-                                            latitude: usuario_encontrado['marcador'].position['lat'],
-                                            longitude: usuario_encontrado['marcador'].position['lng']
+                                            latitude: usuario['latitud'],
+                                            longitude: usuario['longitud']
                                         }
                                     }
                                 },
@@ -276,19 +276,19 @@
 
                                     let latitud_longitud_limite = new LimitesLatitudLongitud();
                                     
-                                    /*if( usuario_encontrado['polilinea'] != undefined ){
+                                    if( usuario_encontrado['polilinea'] != undefined ){
                                         usuario_encontrado['polilinea'].setMap(null);
                                     }
 
                                     usuario_encontrado['polilinea'] = new Polilinea({
                                         path: usuario_encontrado['latitudes_longitudes'],
                                         geodesic: true,
-                                        strokeColor: '#FF0000',
+                                        strokeColor: '#6495ED',
                                         strokeOpacity: 1.0,
                                         strokeWeight: 3
                                     });
 
-                                    usuario_encontrado['polilinea'].setMap(mapa);*/
+                                    usuario_encontrado['polilinea'].setMap(mapa);
 
                                     /* inicio: Marcadores y polilineas secundarias */
                                     polilineas.forEach( (polilinea)=>{
@@ -425,11 +425,11 @@
                             usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
                             usuario_encontrado['latitudes_longitudes'] = Codificador.decodePath(ruta['routes'][0]['polyline']['encodedPolyline']);
 
-                            /*if( usuario_encontrado['polilinea'] != undefined ){
+                            if( usuario_encontrado['polilinea'] != undefined ){
                                 usuario_encontrado['polilinea'].setMap(null);
                             }
               
-                            usuario_encontrado['polilinea'] = new Polilinea({
+                            /*usuario_encontrado['polilinea'] = new Polilinea({
                                 path: usuario_encontrado['latitudes_longitudes'],
                                 geodesic: true,
                                 strokeColor: '#FF0000',
