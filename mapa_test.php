@@ -117,6 +117,7 @@
         let velocidadRepartidor;
         let seguirRepartidor;
         let id_procesar_vista;
+        let consultar_pedidos = false;
 
         let ElementoMarcadorAvanzado;
         let VentanaInformacion;
@@ -160,7 +161,91 @@
                 if (usuario_encontrado) {
 
                     usuario_encontrado['velocidad'] = usuario['velocidad'];
-                    if( usuario_encontrado['posicion_final']['lat'] != usuario['latitud'] || usuario_encontrado['posicion_final']['lng'] != usuario['longitud']){
+
+                    if( fijado > 0 && ( consultar_pedidos || usuario_encontrado['posicion_final']['lat'] != usuario['latitud'] || usuario_encontrado['posicion_final']['lng'] != usuario['longitud'] ) ){
+                        consultas_polilineas += 1;
+
+                        let datos_envio = new FormData();
+                        datos_envio.append('clave',fijado);
+
+                        fetch('android/pedidos_en_ruta', {
+                            method: "POST",
+                            body: datos_envio
+                        })
+                        .then(respuesta => respuesta.json())
+                        .then(datos => {
+                            
+                            console.log(datos);
+                            json_envio = {
+                                    origin: {
+                                        location: {
+                                            latLng: {
+                                                latitude: usuario_encontrado['marcador'].position['lat'],
+                                                longitude: usuario_encontrado['marcador'].position['lng']
+                                            }
+                                        }
+                                    },
+                                    destination: {
+                                        location: {
+                                            latLng: {
+                                                latitude: usuario['latitud'],
+                                                longitude: usuario['longitud']
+                                            }
+                                        }
+                                    },
+                                    travelMode: "TWO_WHEELER",
+                                    routingPreference: "TRAFFIC_AWARE"
+                                };
+
+                            fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-Goog-Api-Key": "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo",
+                                    "X-Goog-FieldMask": "routes.distanceMeters,routes.polyline"
+                                },
+                                body: JSON.stringify(json_envio)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                clearTimeout(id_procesar_vista);
+
+                                /*usuario_encontrado['ruta'] = data;
+                                usuario_encontrado['frame'] = 0
+                                usuario_encontrado['posicion_inicial'] = { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] };
+                                usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
+
+                                if( usuario_encontrado['polilinea'] != undefined ){
+                                    usuario_encontrado['polilinea'].setMap(null);
+                                }
+
+                                usuario_encontrado['polilineas'] = Codificador.decodePath(usuario_encontrado['ruta']['routes'][0]['polyline']['encodedPolyline']);
+                                usuario_encontrado['polilinea'] = new Polilinea({
+                                    path: usuario_encontrado['polilineas'],
+                                    geodesic: true,
+                                    strokeColor: '#FF0000',
+                                    strokeOpacity: 1.0,
+                                    strokeWeight: 2
+                                });
+
+                                usuario_encontrado['polilinea'].setMap(mapa);*/
+
+                                consultas_polilineas -= 1;
+                                id_procesar_vista = setTimeout(procesar_vista, 10);
+                            })
+                            .catch(error => {
+                                consultas_polilineas -= 1;
+                                console.error('Error:', error);
+                            });
+
+                        })
+                        .catch(error => {
+                            consultas_polilineas -= 1;
+                            console.error('Error:', error);
+                        });
+
+                    }
+                    else if( usuario_encontrado['posicion_final']['lat'] != usuario['latitud'] || usuario_encontrado['posicion_final']['lng'] != usuario['longitud'] ){
                         consultas_polilineas += 1;
 
                         fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
@@ -222,6 +307,7 @@
                             consultas_polilineas -= 1;
                             console.error('Error:', error);
                         });
+
                     }
 
                 } else {
@@ -253,6 +339,11 @@
                     });
 
                     marcador.addListener("click", () => {
+
+                        if(usuarioLista['id'] != fijado){
+                            consultar_pedidos = true;
+                        }
+
                         fijado = usuarioLista['id'];
 
                         mapa.setZoom(18.5);
@@ -274,6 +365,11 @@
 
                     li.addEventListener('click', () => {
                         document.getElementById('btnCerrarModal').click();
+
+                        if(usuarioLista['id'] != fijado){
+                            consultar_pedidos = true;
+                        }
+
                         fijado = usuarioLista['id'];
 
                         mapa.setZoom(18.5);
@@ -308,12 +404,11 @@
 
             usuarios.forEach((usuario) => {
 
-                usuario['frame'] += 1;
-
                 if(usuario['ruta'] != undefined){
 
-                    if( usuario['frame'] + 1 >= 1600){
-                        // pintar en la ultima posicion y borrar polilinea
+                    usuario['frame'] += 1;
+
+                    if( usuario['frame'] >= 1601){
                         return;
                     }
 
@@ -340,34 +435,6 @@
                     }
 
                 }
-
-                /*if (fijado == usuario['id'] ) {
-                    velocidadRepartidor.innerText = (usuario['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-                    if (frame % 50 == 0 && seguirRepartidor.checked) {
-                        mapa.panTo(usuario['marcador'].position);
-                    }
-                }
-
-                if (usuario['posicion_inicial']['lat'] != usuario['posicion_final']['lat'] || usuario['posicion_inicial']['lng'] != usuario['posicion_final']['lng']) {
-
-                    let latitud_dif_abs = Math.abs(usuario['posicion_inicial']['lat'] - usuario['posicion_final']['lat']) * frame / 1600;
-                    let longitud_dif_abs = Math.abs(Math.abs(usuario['posicion_inicial']['lng']) + usuario['posicion_final']['lng']) * frame / 1600;
-
-                    let latitud = usuario['posicion_inicial']['lat'] >= usuario['posicion_final']['lat'] ? usuario['posicion_inicial']['lat'] - latitud_dif_abs : usuario['posicion_inicial']['lat'] + latitud_dif_abs;
-                    let longitud = usuario['posicion_inicial']['lng'] >= usuario['posicion_final']['lng'] ? usuario['posicion_inicial']['lng'] - longitud_dif_abs : usuario['posicion_inicial']['lng'] + longitud_dif_abs;
-
-                    usuario['marcador'].position = { lat: latitud, lng: longitud };
-                }*/
-
-                /*if (frame == 1600) {
-                    usuario['posicion_inicial'] = { lat: usuario['posicion_final']['lat'], lng: usuario['posicion_final']['lng'] };
-                }
-
-                if (frame == 1600) {
-                frame = 1;
-                } else {
-                    frame++;
-                }*/
             });
 
             id_procesar_vista = setTimeout(procesar_vista, 10);
