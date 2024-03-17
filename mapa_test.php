@@ -525,7 +525,6 @@
                             }
                         }
 
-
                         fijado = usuarioLista['id'];
 
                         //mapa.setZoom(18.5);
