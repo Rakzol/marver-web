@@ -485,7 +485,7 @@
                             consultar_pedidos = true;
                         }
 
-                        let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == usuario['usuario']; });
+                        let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == fijado; });
                         if (usuario_encontrado != undefined) {
                             if( usuario_encontrado['polilinea'] != undefined ){
                                 usuario_encontrado['polilinea'].setMap(null);
@@ -518,7 +518,7 @@
                             consultar_pedidos = true;
                         }
 
-                        let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == usuario['usuario']; });
+                        let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == fijado; });
                         if (usuario_encontrado != undefined) {
                             if( usuario_encontrado['polilinea'] != undefined ){
                                 usuario_encontrado['polilinea'].setMap(null);
