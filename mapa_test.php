@@ -485,6 +485,13 @@
                             consultar_pedidos = true;
                         }
 
+                        let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == usuario['usuario']; });
+                        if (usuario_encontrado != undefined) {
+                            if( usuario_encontrado['polilinea'] != undefined ){
+                                usuario_encontrado['polilinea'].setMap(null);
+                            }
+                        }
+
                         fijado = usuarioLista['id'];
 
                         //mapa.setZoom(18.5);
@@ -510,6 +517,14 @@
                         if(usuarioLista['id'] != fijado){
                             consultar_pedidos = true;
                         }
+
+                        let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == usuario['usuario']; });
+                        if (usuario_encontrado != undefined) {
+                            if( usuario_encontrado['polilinea'] != undefined ){
+                                usuario_encontrado['polilinea'].setMap(null);
+                            }
+                        }
+
 
                         fijado = usuarioLista['id'];
 
