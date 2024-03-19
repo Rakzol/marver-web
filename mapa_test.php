@@ -483,23 +483,23 @@
 
                         if(usuarioLista['id'] != fijado){
                             consultar_pedidos = true;
-                        }
 
-                        let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == fijado; });
-                        if (usuario_encontrado != undefined) {
-                            if( usuario_encontrado['polilinea'] != undefined ){
-                                usuario_encontrado['polilinea'].setMap(null);
+                            let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == fijado; });
+                            if (usuario_encontrado != undefined) {
+                                if( usuario_encontrado['polilinea'] != undefined ){
+                                    usuario_encontrado['polilinea'].setMap(null);
+                                }
                             }
+
+                            fijado = usuarioLista['id'];
+
+                            //mapa.setZoom(18.5);
+                            //mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
+                            //mapa.panTo(usuarioLista['marcador'].position);
+
+                            document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
+                            document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
                         }
-
-                        fijado = usuarioLista['id'];
-
-                        //mapa.setZoom(18.5);
-                        //mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
-                        //mapa.panTo(usuarioLista['marcador'].position);
-
-                        document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
-                        document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
 
                         infowindow.open({
                             anchor: usuarioLista['marcador'],
@@ -516,23 +516,23 @@
 
                         if(usuarioLista['id'] != fijado){
                             consultar_pedidos = true;
-                        }
 
-                        let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == fijado; });
-                        if (usuario_encontrado != undefined) {
-                            if( usuario_encontrado['polilinea'] != undefined ){
-                                usuario_encontrado['polilinea'].setMap(null);
+                            let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == fijado; });
+                            if (usuario_encontrado != undefined) {
+                                if( usuario_encontrado['polilinea'] != undefined ){
+                                    usuario_encontrado['polilinea'].setMap(null);
+                                }
                             }
+
+                            fijado = usuarioLista['id'];
+
+                            //mapa.setZoom(18.5);
+                            //mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
+                            //mapa.panTo(usuarioLista['marcador'].position);
+
+                            document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
+                            document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
                         }
-
-                        fijado = usuarioLista['id'];
-
-                        //mapa.setZoom(18.5);
-                        //mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
-                        //mapa.panTo(usuarioLista['marcador'].position);
-
-                        document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
-                        document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
 
                         infowindow.open({
                             anchor: usuarioLista['marcador'],
