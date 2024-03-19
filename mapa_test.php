@@ -360,11 +360,11 @@
                                     }
                                     /* fin: Marcadores y polilineas secundarias */
 
-                                    mapa.fitBounds(latitud_longitud_limite,150);
-
-                                    if(fijado == usuario_encontrado['id']){
+                                    if(fijado == usuario_encontrado['id'] && consultar_pedidos){
+                                        mapa.fitBounds(latitud_longitud_limite,150);
                                         consultar_pedidos = false;
                                     }
+
                                     consultas_polilineas -= 1;
                                     id_procesar_vista = setTimeout(procesar_vista, 10);
                                 })
