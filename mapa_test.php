@@ -614,10 +614,6 @@
 
                             let posicion_nueva = Esferica.interpolate( polilinea_final, polilinea_inicial, metros_recorridos_tramo / metros_polilinea );
                             usuario['marcador'].position = { lat: posicion_nueva['lat'](), lng: posicion_nueva['lng']() };
-
-                            if(usuario['id'] == 30){
-                                console.log(usuario);
-                            }
                             break;
                         }
                     }
