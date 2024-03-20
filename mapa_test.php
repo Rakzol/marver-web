@@ -306,9 +306,6 @@
                                             let leg = rutas['routes'][0]['legs'][c];
 
                                             let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
-                                            latitudes_longitudes.forEach((latitud_longitud)=>{
-                                                latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
-                                            });
 
                                             if(c == 0){
                                                 console.log(Esferica.computeDistanceBetween( usuario_encontrado['posicion_inicial'], { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] } ));
@@ -318,10 +315,15 @@
                                                     usuario_encontrado['latitudes_longitudes'] = [];
                                                     usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
                                                     usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
+                                                    latitudes_longitudes = usuario_encontrado['latitudes_longitudes'];
                                                     //usuario_encontrado['posicion_inicial'] = { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] };
                                                     //usuario_encontrado['posicion_final'] = { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] };
                                                 }
                                             }
+
+                                            latitudes_longitudes.forEach((latitud_longitud)=>{
+                                                latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
+                                            });
 
                                             let polilinea = new Polilinea({
                                                 path: latitudes_longitudes,
@@ -347,9 +349,6 @@
                                         let leg = rutas['routes'][0]['legs'][0];
 
                                         let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
-                                        latitudes_longitudes.forEach((latitud_longitud)=>{
-                                                latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
-                                        });
 
                                         console.log(Esferica.computeDistanceBetween( usuario_encontrado['posicion_inicial'], { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] } ));
                                         if( Esferica.computeDistanceBetween( usuario_encontrado['posicion_inicial'], { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] } ) <= 60 ){
@@ -358,10 +357,14 @@
                                             usuario_encontrado['latitudes_longitudes'] = [];
                                             usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
                                             usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
-                                            console.log(usuario_encontrado['latitudes_longitudes']);
+                                            latitudes_longitudes = usuario_encontrado['latitudes_longitudes'];
                                             //usuario_encontrado['posicion_inicial'] = { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] };
                                             //usuario_encontrado['posicion_final'] = { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] };
                                         }
+
+                                        latitudes_longitudes.forEach((latitud_longitud)=>{
+                                                latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
+                                        });
 
                                         let polilinea = new Polilinea({
                                             path: latitudes_longitudes,
