@@ -165,13 +165,15 @@
 
                     usuario_encontrado['velocidad'] = usuario['velocidad'];
 
-                    if( fijado == usuario_encontrado['id'] && ( consultar_pedidos || usuario_encontrado['posicion_final']['lat'] != usuario['latitud'] || usuario_encontrado['posicion_final']['lng'] != usuario['longitud'] ) ){
+                    if( consultar_pedidos || usuario_encontrado['posicion_final']['lat'] != usuario['latitud'] || usuario_encontrado['posicion_final']['lng'] != usuario['longitud'] ){
                         consultas_polilineas += 1;
 
-                        velocidadRepartidor.innerText = (usuario_encontrado['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-
+                        if( fijado == usuario_encontrado['id'] ){
+                            velocidadRepartidor.innerText = (usuario_encontrado['velocidad'] * 3.6).toFixed(1) + ' Km/h';
+                        }
+                        
                         let datos_envio = new FormData();
-                        datos_envio.append('clave',fijado);
+                        datos_envio.append('clave',usuario_encontrado['id']);
 
                         fetch('android/pedidos_en_ruta_test', {
                             method: "POST",
@@ -233,167 +235,167 @@
                             .then(response => response.json())
                             .then(rutas => {
 
-                                fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                        "X-Goog-Api-Key": "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo",
-                                        "X-Goog-FieldMask": "routes.distanceMeters,routes.polyline"
-                                    },
-                                    body: JSON.stringify({
-                                        origin: {
-                                            location: {
-                                                latLng: {
-                                                    latitude: usuario_encontrado['marcador'].position['lat'],
-                                                    longitude: usuario_encontrado['marcador'].position['lng']
-                                                }
-                                            }
-                                        },
-                                        destination: {
-                                            location: {
-                                                latLng: {
-                                                    latitude: usuario['latitud'],
-                                                    longitude: usuario['longitud']
-                                                }
-                                            }
-                                        },
-                                        travelMode: "TWO_WHEELER",
-                                        routingPreference: "TRAFFIC_AWARE"
-                                    })
-                                })
-                                .then(response => response.json())
-                                .then(ruta => {
+                                let leg = rutas['routes'][0]['legs'][c];
+                                let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
+
+                                if( Esferica.computeDistanceBetween( usuario_encontrado['posicion_inicial'], { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] } ) <= 60 ){
                                     clearTimeout(id_procesar_vista);
-
-                                    if(!ruta['routes'][0].hasOwnProperty('distanceMeters')){
-                                        ruta['routes'][0]['distanceMeters'] = 0;
-                                    }
-                                    usuario_encontrado['metros_recorrer'] = ruta['routes'][0]['distanceMeters'];
-                                    usuario_encontrado['frame'] = 0
-                                    usuario_encontrado['posicion_inicial'] = { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] };
-                                    usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
-                                    usuario_encontrado['latitudes_longitudes'] = Codificador.decodePath(ruta['routes'][0]['polyline']['encodedPolyline']);
-
-                                    let latitud_longitud_limite = new LimitesLatitudLongitud();
                                     
-                                    if( usuario_encontrado['polilinea'] != undefined ){
-                                        usuario_encontrado['polilinea'].setMap(null);
-                                    }
+                                    usuario_encontrado['metros_recorrer'] = 0;
+                                    usuario_encontrado['polilinea'].setMap(null);
+                                    usuario_encontrado['latitudes_longitudes'] = [];
+                                    usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
+                                    usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
+                                    latitudes_longitudes = usuario_encontrado['latitudes_longitudes'];
 
-                                    usuario_encontrado['polilinea'] = new Polilinea({
-                                        path: usuario_encontrado['latitudes_longitudes'],
-                                        geodesic: true,
-                                        strokeColor: '#6495ED',
-                                        strokeOpacity: 1.0,
-                                        strokeWeight: 3
-                                    });
+                                    consultas_polilineas -= 1;
+                                    id_procesar_vista = setTimeout(procesar_vista, 10);
+                                }else{
 
-                                    usuario_encontrado['polilinea'].setMap(mapa);
-
-                                    /* inicio: Marcadores y polilineas secundarias */
-                                    polilineas.forEach( (polilinea)=>{
-                                        polilinea.setMap(null);
-                                    });
-                                    polilineas = [];
-
-                                    marcadores.forEach( (marcador)=>{
-                                        marcador.setMap(null);
-                                    });
-                                    marcadores = [];
-
-                                    if( rutas['routes'][0]['legs'].length > 1 ){
-                                        for( c = 0; c < rutas['routes'][0]['legs'].length - 1; c++ ){
-                                            let leg = rutas['routes'][0]['legs'][c];
-
-                                            let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
-
-                                            if(c == 0){
-                                                if( Esferica.computeDistanceBetween( usuario_encontrado['posicion_inicial'], { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] } ) <= 60 ){
-                                                    usuario_encontrado['metros_recorrer'] = 0;
-                                                    usuario_encontrado['polilinea'].setMap(null);
-                                                    usuario_encontrado['latitudes_longitudes'] = [];
-                                                    usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
-                                                    usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
-                                                    latitudes_longitudes = usuario_encontrado['latitudes_longitudes'];
+                                    fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            "X-Goog-Api-Key": "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo",
+                                            "X-Goog-FieldMask": "routes.distanceMeters,routes.polyline"
+                                        },
+                                        body: JSON.stringify({
+                                            origin: {
+                                                location: {
+                                                    latLng: {
+                                                        latitude: usuario_encontrado['marcador'].position['lat'],
+                                                        longitude: usuario_encontrado['marcador'].position['lng']
+                                                    }
                                                 }
-                                            }
+                                            },
+                                            destination: {
+                                                location: {
+                                                    latLng: {
+                                                        latitude: usuario['latitud'],
+                                                        longitude: usuario['longitud']
+                                                    }
+                                                }
+                                            },
+                                            travelMode: "TWO_WHEELER",
+                                            routingPreference: "TRAFFIC_AWARE"
+                                        })
+                                    })
+                                    .then(response => response.json())
+                                    .then(ruta => {
+                                        clearTimeout(id_procesar_vista);
 
-                                            latitudes_longitudes.forEach((latitud_longitud)=>{
-                                                latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
-                                            });
-
-                                            let polilinea = new Polilinea({
-                                                path: latitudes_longitudes,
-                                                geodesic: true,
-                                                strokeColor: c == 0 ? '#6495ED' : '#000000',
-                                                strokeOpacity: 1.0,
-                                                strokeWeight: 3
-                                            });
-
-                                            polilinea.setMap(mapa);
-                                            polilineas.push(polilinea);
-
-                                            let imagen = document.createElement('img');
-                                            imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_cliente_' + (c + 1) +'.png';
-
-                                            marcadores.push( new ElementoMarcadorAvanzado({
-                                                content: imagen,
-                                                map: mapa,
-                                                position: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] }
-                                            }));
+                                        if(!ruta['routes'][0].hasOwnProperty('distanceMeters')){
+                                            ruta['routes'][0]['distanceMeters'] = 0;
                                         }
-                                    }else{
-                                        let leg = rutas['routes'][0]['legs'][0];
+                                        usuario_encontrado['metros_recorrer'] = ruta['routes'][0]['distanceMeters'];
+                                        usuario_encontrado['frame'] = 0
+                                        usuario_encontrado['posicion_inicial'] = { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] };
+                                        usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
+                                        usuario_encontrado['latitudes_longitudes'] = Codificador.decodePath(ruta['routes'][0]['polyline']['encodedPolyline']);
 
-                                        let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
-
-                                        if( Esferica.computeDistanceBetween( usuario_encontrado['posicion_inicial'], { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] } ) <= 60 ){
-                                            usuario_encontrado['metros_recorrer'] = 0;
+                                        let latitud_longitud_limite = new LimitesLatitudLongitud();
+                                        
+                                        if( usuario_encontrado['polilinea'] != undefined ){
                                             usuario_encontrado['polilinea'].setMap(null);
-                                            usuario_encontrado['latitudes_longitudes'] = [];
-                                            usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
-                                            usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
-                                            latitudes_longitudes = usuario_encontrado['latitudes_longitudes'];
                                         }
 
-                                        latitudes_longitudes.forEach((latitud_longitud)=>{
-                                                latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
-                                        });
-
-                                        let polilinea = new Polilinea({
-                                            path: latitudes_longitudes,
+                                        usuario_encontrado['polilinea'] = new Polilinea({
+                                            path: usuario_encontrado['latitudes_longitudes'],
                                             geodesic: true,
                                             strokeColor: '#6495ED',
                                             strokeOpacity: 1.0,
                                             strokeWeight: 3
                                         });
 
-                                        polilineas.push(polilinea);
-                                        polilinea.setMap(mapa);
+                                        if( fijado == usuario_encontrado['id'] ){
+                                            usuario_encontrado['polilinea'].setMap(mapa);
+                                        }
 
-                                        let imagen = document.createElement('img');
-                                        imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_marver.png';
+                                        /* inicio: Marcadores y polilineas secundarias */
+                                        if( fijado == usuario_encontrado['id'] ){
+                                            polilineas.forEach( (polilinea)=>{
+                                            polilinea.setMap(null);
+                                            });
+                                            polilineas = [];
 
-                                        marcadores.push( new ElementoMarcadorAvanzado({
-                                            content: imagen,
-                                            map: mapa,
-                                            position: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] }
-                                        }));
-                                    }
-                                    /* fin: Marcadores y polilineas secundarias */
+                                            marcadores.forEach( (marcador)=>{
+                                                marcador.setMap(null);
+                                            });
+                                            marcadores = [];
 
-                                    if(fijado == usuario_encontrado['id'] && consultar_pedidos){
-                                        mapa.fitBounds(latitud_longitud_limite,150);
-                                        consultar_pedidos = false;
-                                    }
+                                            if( rutas['routes'][0]['legs'].length > 1 ){
+                                            for( c = 0; c < rutas['routes'][0]['legs'].length - 1; c++ ){
+                                                let leg = rutas['routes'][0]['legs'][c];
 
-                                    consultas_polilineas -= 1;
-                                    id_procesar_vista = setTimeout(procesar_vista, 10);
-                                })
-                                .catch(error => {
-                                    consultas_polilineas -= 1;
-                                    console.error('Error:', error);
-                                });
+                                                let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
+                                                latitudes_longitudes.forEach((latitud_longitud)=>{
+                                                    latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
+                                                });
+
+                                                let polilinea = new Polilinea({
+                                                    path: latitudes_longitudes,
+                                                    geodesic: true,
+                                                    strokeColor: c == 0 ? '#6495ED' : '#000000',
+                                                    strokeOpacity: 1.0,
+                                                    strokeWeight: 3
+                                                });
+
+                                                polilinea.setMap(mapa);
+                                                polilineas.push(polilinea);
+
+                                                let imagen = document.createElement('img');
+                                                imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_cliente_' + (c + 1) +'.png';
+
+                                                marcadores.push( new ElementoMarcadorAvanzado({
+                                                    content: imagen,
+                                                    map: mapa,
+                                                    position: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] }
+                                                }));
+                                            }
+                                            }else{
+                                                let leg = rutas['routes'][0]['legs'][0];
+                                                let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
+
+                                                latitudes_longitudes.forEach((latitud_longitud)=>{
+                                                    latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
+                                                });
+
+                                                let polilinea = new Polilinea({
+                                                    path: latitudes_longitudes,
+                                                    geodesic: true,
+                                                    strokeColor: '#6495ED',
+                                                    strokeOpacity: 1.0,
+                                                    strokeWeight: 3
+                                                });
+
+                                                polilineas.push(polilinea);
+                                                polilinea.setMap(mapa);
+
+                                                let imagen = document.createElement('img');
+                                                imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_marver.png';
+
+                                                marcadores.push( new ElementoMarcadorAvanzado({
+                                                    content: imagen,
+                                                    map: mapa,
+                                                    position: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] }
+                                                }));
+                                            }
+                                        }
+                                        /* fin: Marcadores y polilineas secundarias */
+
+                                        if(fijado == usuario_encontrado['id'] && consultar_pedidos){
+                                            mapa.fitBounds(latitud_longitud_limite,150);
+                                            consultar_pedidos = false;
+                                        }
+
+                                        consultas_polilineas -= 1;
+                                        id_procesar_vista = setTimeout(procesar_vista, 10);
+                                    })
+                                    .catch(error => {
+                                        consultas_polilineas -= 1;
+                                        console.error('Error:', error);
+                                    });
+                                }
 
                             })
                             .catch(error => {
@@ -408,73 +410,73 @@
                         });
 
                     }
-                    else if( usuario_encontrado['posicion_final']['lat'] != usuario['latitud'] || usuario_encontrado['posicion_final']['lng'] != usuario['longitud'] ){
-                        consultas_polilineas += 1;
+                    // else if( usuario_encontrado['posicion_final']['lat'] != usuario['latitud'] || usuario_encontrado['posicion_final']['lng'] != usuario['longitud'] ){
+                    //     consultas_polilineas += 1;
 
-                        fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "X-Goog-Api-Key": "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo",
-                                "X-Goog-FieldMask": "routes.distanceMeters,routes.polyline"
-                            },
-                            body: JSON.stringify({
-                                origin: {
-                                    location: {
-                                        latLng: {
-                                            latitude: usuario_encontrado['marcador'].position['lat'],
-                                            longitude: usuario_encontrado['marcador'].position['lng']
-                                        }
-                                    }
-                                },
-                                destination: {
-                                    location: {
-                                        latLng: {
-                                            latitude: usuario['latitud'],
-                                            longitude: usuario['longitud']
-                                        }
-                                    }
-                                },
-                                travelMode: "TWO_WHEELER",
-                                routingPreference: "TRAFFIC_AWARE"
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(ruta => {
-                            clearTimeout(id_procesar_vista);
+                    //     fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
+                    //         method: "POST",
+                    //         headers: {
+                    //             "Content-Type": "application/json",
+                    //             "X-Goog-Api-Key": "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo",
+                    //             "X-Goog-FieldMask": "routes.distanceMeters,routes.polyline"
+                    //         },
+                    //         body: JSON.stringify({
+                    //             origin: {
+                    //                 location: {
+                    //                     latLng: {
+                    //                         latitude: usuario_encontrado['marcador'].position['lat'],
+                    //                         longitude: usuario_encontrado['marcador'].position['lng']
+                    //                     }
+                    //                 }
+                    //             },
+                    //             destination: {
+                    //                 location: {
+                    //                     latLng: {
+                    //                         latitude: usuario['latitud'],
+                    //                         longitude: usuario['longitud']
+                    //                     }
+                    //                 }
+                    //             },
+                    //             travelMode: "TWO_WHEELER",
+                    //             routingPreference: "TRAFFIC_AWARE"
+                    //         })
+                    //     })
+                    //     .then(response => response.json())
+                    //     .then(ruta => {
+                    //         clearTimeout(id_procesar_vista);
 
-                            if(!ruta['routes'][0].hasOwnProperty('distanceMeters')){
-                                ruta['routes'][0]['distanceMeters'] = 0;
-                            }
-                            usuario_encontrado['metros_recorrer'] = ruta['routes'][0]['distanceMeters'];
-                            usuario_encontrado['frame'] = 0
-                            usuario_encontrado['posicion_inicial'] = { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] };
-                            usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
-                            usuario_encontrado['latitudes_longitudes'] = Codificador.decodePath(ruta['routes'][0]['polyline']['encodedPolyline']);
+                    //         if(!ruta['routes'][0].hasOwnProperty('distanceMeters')){
+                    //             ruta['routes'][0]['distanceMeters'] = 0;
+                    //         }
+                    //         usuario_encontrado['metros_recorrer'] = ruta['routes'][0]['distanceMeters'];
+                    //         usuario_encontrado['frame'] = 0
+                    //         usuario_encontrado['posicion_inicial'] = { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] };
+                    //         usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
+                    //         usuario_encontrado['latitudes_longitudes'] = Codificador.decodePath(ruta['routes'][0]['polyline']['encodedPolyline']);
 
-                            if( usuario_encontrado['polilinea'] != undefined ){
-                                usuario_encontrado['polilinea'].setMap(null);
-                            }
+                    //         if( usuario_encontrado['polilinea'] != undefined ){
+                    //             usuario_encontrado['polilinea'].setMap(null);
+                    //         }
               
-                            /*usuario_encontrado['polilinea'] = new Polilinea({
-                                path: usuario_encontrado['latitudes_longitudes'],
-                                geodesic: true,
-                                strokeColor: '#FF0000',
-                                strokeOpacity: 1.0,
-                                strokeWeight: 3
-                            });
+                    //         /*usuario_encontrado['polilinea'] = new Polilinea({
+                    //             path: usuario_encontrado['latitudes_longitudes'],
+                    //             geodesic: true,
+                    //             strokeColor: '#FF0000',
+                    //             strokeOpacity: 1.0,
+                    //             strokeWeight: 3
+                    //         });
 
-                            usuario_encontrado['polilinea'].setMap(mapa);*/
+                    //         usuario_encontrado['polilinea'].setMap(mapa);*/
 
-                            consultas_polilineas -= 1;
-                            id_procesar_vista = setTimeout(procesar_vista, 10);
-                        })
-                        .catch(error => {
-                            consultas_polilineas -= 1;
-                            console.error('Error:', error);
-                        });
+                    //         consultas_polilineas -= 1;
+                    //         id_procesar_vista = setTimeout(procesar_vista, 10);
+                    //     })
+                    //     .catch(error => {
+                    //         consultas_polilineas -= 1;
+                    //         console.error('Error:', error);
+                    //     });
 
-                    }
+                    // }
 
                 } else {
 
