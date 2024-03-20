@@ -305,6 +305,19 @@
                                         for( c = 0; c < rutas['routes'][0]['legs'].length - 1; c++ ){
                                             let leg = rutas['routes'][0]['legs'][c];
 
+                                            if(c == 0){
+                                                if( Esferica.computeDistanceBetween( usuario_encontrado['posicion_inicial'], { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] } ) <= 60 ){
+                                                    usuario_encontrado['metros_recorrer'] = 0;
+                                                    usuario_encontrado['polilinea'].setMap(null);
+                                                    let latitudes_longitudes_temporales = usuario_encontrado['latitudes_longitudes'];
+                                                    usuario_encontrado['latitudes_longitudes'] = [];
+                                                    usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes_temporales[latitudes_longitudes_temporales.length - 1]);
+                                                    usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes_temporales[latitudes_longitudes_temporales.length - 1]);
+                                                    usuario_encontrado['posicion_inicial'] = { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] };
+                                                    usuario_encontrado['posicion_final'] = { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] };
+                                                }
+                                            }
+
                                             let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
                                             latitudes_longitudes.forEach((latitud_longitud)=>{
                                                 latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
@@ -332,6 +345,17 @@
                                         }
                                     }else{
                                         let leg = rutas['routes'][0]['legs'][0];
+
+                                        if( Esferica.computeDistanceBetween( usuario_encontrado['posicion_inicial'], { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] } ) <= 60 ){
+                                            usuario_encontrado['metros_recorrer'] = 0;
+                                            usuario_encontrado['polilinea'].setMap(null);
+                                            let latitudes_longitudes_temporales = usuario_encontrado['latitudes_longitudes'];
+                                            usuario_encontrado['latitudes_longitudes'] = [];
+                                            usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes_temporales[latitudes_longitudes_temporales.length - 1]);
+                                            usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes_temporales[latitudes_longitudes_temporales.length - 1]);
+                                            usuario_encontrado['posicion_inicial'] = { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] };
+                                            usuario_encontrado['posicion_final'] = { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] };
+                                        }
 
                                         let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
                                             latitudes_longitudes.forEach((latitud_longitud)=>{
@@ -421,6 +445,9 @@
                         .then(ruta => {
                             clearTimeout(id_procesar_vista);
 
+                            if(!ruta['routes'][0].hasOwnProperty('distanceMeters')){
+                                ruta['routes'][0]['distanceMeters'] = 0;
+                            }
                             usuario_encontrado['metros_recorrer'] = ruta['routes'][0]['distanceMeters'];
                             usuario_encontrado['frame'] = 0
                             usuario_encontrado['posicion_inicial'] = { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] };
