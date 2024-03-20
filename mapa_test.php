@@ -306,6 +306,7 @@
                                             let leg = rutas['routes'][0]['legs'][c];
 
                                             if(c == 0){
+                                                console.log(Esferica.computeDistanceBetween( usuario_encontrado['posicion_inicial'], { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] } ));
                                                 if( Esferica.computeDistanceBetween( usuario_encontrado['posicion_inicial'], { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] } ) <= 60 ){
                                                     usuario_encontrado['metros_recorrer'] = 0;
                                                     usuario_encontrado['polilinea'].setMap(null);
@@ -346,6 +347,7 @@
                                     }else{
                                         let leg = rutas['routes'][0]['legs'][0];
 
+                                        console.log(Esferica.computeDistanceBetween( usuario_encontrado['posicion_inicial'], { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] } ));
                                         if( Esferica.computeDistanceBetween( usuario_encontrado['posicion_inicial'], { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] } ) <= 60 ){
                                             usuario_encontrado['metros_recorrer'] = 0;
                                             usuario_encontrado['polilinea'].setMap(null);
