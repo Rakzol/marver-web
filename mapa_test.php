@@ -245,6 +245,7 @@
                                     if( usuario_encontrado['polilinea'] != undefined ){
                                             usuario_encontrado['polilinea'].setMap(null);
                                     }
+                                    usuario_encontrado['frame'] = 0;
                                     usuario_encontrado['latitudes_longitudes'] = [];
                                     usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
                                     usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
@@ -302,7 +303,7 @@
                                             ruta['routes'][0]['distanceMeters'] = 0;
                                         }
                                         usuario_encontrado['metros_recorrer'] = ruta['routes'][0]['distanceMeters'];
-                                        usuario_encontrado['frame'] = 0
+                                        usuario_encontrado['frame'] = 0;
                                         usuario_encontrado['posicion_inicial'] = { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] };
                                         usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
                                         usuario_encontrado['latitudes_longitudes'] = Codificador.decodePath(ruta['routes'][0]['polyline']['encodedPolyline']);
