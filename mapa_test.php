@@ -241,7 +241,7 @@
                 }
 
                 if(consultar_pedidos){
-                    mapa.fitBounds(latitud_longitud_limite,50);
+                    mapa.fitBounds(latitud_longitud_limite,100);
                     consultar_pedidos = false;
                 }
             }
