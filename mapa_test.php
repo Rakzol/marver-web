@@ -235,7 +235,7 @@
                             .then(response => response.json())
                             .then(rutas => {
 
-                                let leg = rutas['routes'][0]['legs'][c];
+                                let leg = rutas['routes'][0]['legs'][0];
                                 let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
 
                                 if( Esferica.computeDistanceBetween( { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] }, { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] } ) <= 60 ){
