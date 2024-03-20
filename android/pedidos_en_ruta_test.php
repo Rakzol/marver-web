@@ -49,7 +49,7 @@
         ");
         //AND EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
         //AND Ventas.Status = 4
-        $preparada->bindValue(':vendedor', $_POST['clave']);
+        //$preparada->bindValue(':vendedor', $_POST['clave']);
         $preparada->execute();
 
         echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
