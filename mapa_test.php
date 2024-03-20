@@ -238,7 +238,7 @@
                                 let leg = rutas['routes'][0]['legs'][0];
                                 let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
 
-                                if( Esferica.computeDistanceBetween( { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] }, { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] } ) <= 60 ){
+                                if( Esferica.computeDistanceBetween( { lat: usuario['latitud'], lng: usuario['longitud'] }, { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] } ) <= 60 ){
                                     clearTimeout(id_procesar_vista);
                                     
                                     usuario_encontrado['metros_recorrer'] = 0;
