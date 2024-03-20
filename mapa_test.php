@@ -248,6 +248,7 @@
                                     usuario_encontrado['latitudes_longitudes'] = [];
                                     usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
                                     usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
+                                    usuario_encontrado['posicion_inicial'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
                                     usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
 
                                     if(fijado == usuario_encontrado['id'] && consultar_pedidos){
