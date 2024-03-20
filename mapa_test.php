@@ -588,6 +588,10 @@
 
             usuarios.forEach((usuario) => {
 
+                if(usuario['id'] == 30){
+                                console.log(usuario);
+                            }
+
                 if(usuario['latitudes_longitudes'] != undefined && usuario['metros_recorrer'] != undefined){
 
                     usuario['frame'] += 1;
