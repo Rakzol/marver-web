@@ -313,8 +313,8 @@
                                                     usuario_encontrado['latitudes_longitudes'] = [];
                                                     usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes_temporales[latitudes_longitudes_temporales.length - 1]);
                                                     usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes_temporales[latitudes_longitudes_temporales.length - 1]);
-                                                    usuario_encontrado['posicion_inicial'] = { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] };
-                                                    usuario_encontrado['posicion_final'] = { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] };
+                                                    //usuario_encontrado['posicion_inicial'] = { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] };
+                                                    //usuario_encontrado['posicion_final'] = { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] };
                                                 }
                                             }
 
@@ -353,8 +353,8 @@
                                             usuario_encontrado['latitudes_longitudes'] = [];
                                             usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes_temporales[latitudes_longitudes_temporales.length - 1]);
                                             usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes_temporales[latitudes_longitudes_temporales.length - 1]);
-                                            usuario_encontrado['posicion_inicial'] = { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] };
-                                            usuario_encontrado['posicion_final'] = { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] };
+                                            //usuario_encontrado['posicion_inicial'] = { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] };
+                                            //usuario_encontrado['posicion_final'] = { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] };
                                         }
 
                                         let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
