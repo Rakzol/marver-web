@@ -238,15 +238,21 @@
                                 let leg = rutas['routes'][0]['legs'][c];
                                 let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
 
-                                if( Esferica.computeDistanceBetween( usuario_encontrado['posicion_inicial'], { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] } ) <= 60 ){
+                                if( Esferica.computeDistanceBetween( { lat: usuario_encontrado['marcador'].position['lat'], lng: usuario_encontrado['marcador'].position['lng'] }, { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] } ) <= 60 ){
                                     clearTimeout(id_procesar_vista);
                                     
                                     usuario_encontrado['metros_recorrer'] = 0;
-                                    usuario_encontrado['polilinea'].setMap(null);
+                                    if( usuario_encontrado['polilinea'] != undefined ){
+                                            usuario_encontrado['polilinea'].setMap(null);
+                                    }
                                     usuario_encontrado['latitudes_longitudes'] = [];
                                     usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
                                     usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
-                                    latitudes_longitudes = usuario_encontrado['latitudes_longitudes'];
+
+                                    if(fijado == usuario_encontrado['id'] && consultar_pedidos){
+                                        mapa.fitBounds(usuario_encontrado['latitudes_longitudes'],150);
+                                        consultar_pedidos = false;
+                                    }
 
                                     consultas_polilineas -= 1;
                                     id_procesar_vista = setTimeout(procesar_vista, 10);
@@ -293,28 +299,27 @@
                                         usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
                                         usuario_encontrado['latitudes_longitudes'] = Codificador.decodePath(ruta['routes'][0]['polyline']['encodedPolyline']);
 
-                                        let latitud_longitud_limite = new LimitesLatitudLongitud();
-                                        
                                         if( usuario_encontrado['polilinea'] != undefined ){
                                             usuario_encontrado['polilinea'].setMap(null);
                                         }
 
-                                        usuario_encontrado['polilinea'] = new Polilinea({
-                                            path: usuario_encontrado['latitudes_longitudes'],
-                                            geodesic: true,
-                                            strokeColor: '#6495ED',
-                                            strokeOpacity: 1.0,
-                                            strokeWeight: 3
-                                        });
-
-                                        if( fijado == usuario_encontrado['id'] ){
-                                            usuario_encontrado['polilinea'].setMap(mapa);
-                                        }
-
                                         /* inicio: Marcadores y polilineas secundarias */
                                         if( fijado == usuario_encontrado['id'] ){
+
+                                            let latitud_longitud_limite = new LimitesLatitudLongitud();
+
+                                            usuario_encontrado['polilinea'] = new Polilinea({
+                                                path: usuario_encontrado['latitudes_longitudes'],
+                                                geodesic: true,
+                                                strokeColor: '#6495ED',
+                                                strokeOpacity: 1.0,
+                                                strokeWeight: 3
+                                            });
+
+                                            usuario_encontrado['polilinea'].setMap(mapa);
+
                                             polilineas.forEach( (polilinea)=>{
-                                            polilinea.setMap(null);
+                                                polilinea.setMap(null);
                                             });
                                             polilineas = [];
 
@@ -324,34 +329,34 @@
                                             marcadores = [];
 
                                             if( rutas['routes'][0]['legs'].length > 1 ){
-                                            for( c = 0; c < rutas['routes'][0]['legs'].length - 1; c++ ){
-                                                let leg = rutas['routes'][0]['legs'][c];
+                                                for( c = 0; c < rutas['routes'][0]['legs'].length - 1; c++ ){
+                                                    let leg = rutas['routes'][0]['legs'][c];
 
-                                                let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
-                                                latitudes_longitudes.forEach((latitud_longitud)=>{
-                                                    latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
-                                                });
+                                                    let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
+                                                    latitudes_longitudes.forEach((latitud_longitud)=>{
+                                                        latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
+                                                    });
 
-                                                let polilinea = new Polilinea({
-                                                    path: latitudes_longitudes,
-                                                    geodesic: true,
-                                                    strokeColor: c == 0 ? '#6495ED' : '#000000',
-                                                    strokeOpacity: 1.0,
-                                                    strokeWeight: 3
-                                                });
+                                                    let polilinea = new Polilinea({
+                                                        path: latitudes_longitudes,
+                                                        geodesic: true,
+                                                        strokeColor: c == 0 ? '#6495ED' : '#000000',
+                                                        strokeOpacity: 1.0,
+                                                        strokeWeight: 3
+                                                    });
 
-                                                polilinea.setMap(mapa);
-                                                polilineas.push(polilinea);
+                                                    polilinea.setMap(mapa);
+                                                    polilineas.push(polilinea);
 
-                                                let imagen = document.createElement('img');
-                                                imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_cliente_' + (c + 1) +'.png';
+                                                    let imagen = document.createElement('img');
+                                                    imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_cliente_' + (c + 1) +'.png';
 
-                                                marcadores.push( new ElementoMarcadorAvanzado({
-                                                    content: imagen,
-                                                    map: mapa,
-                                                    position: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] }
-                                                }));
-                                            }
+                                                    marcadores.push( new ElementoMarcadorAvanzado({
+                                                        content: imagen,
+                                                        map: mapa,
+                                                        position: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] }
+                                                    }));
+                                                }
                                             }else{
                                                 let leg = rutas['routes'][0]['legs'][0];
                                                 let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
@@ -380,12 +385,14 @@
                                                     position: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] }
                                                 }));
                                             }
-                                        }
-                                        /* fin: Marcadores y polilineas secundarias */
+                                        
+                                            /* fin: Marcadores y polilineas secundarias */
 
-                                        if(fijado == usuario_encontrado['id'] && consultar_pedidos){
-                                            mapa.fitBounds(latitud_longitud_limite,150);
-                                            consultar_pedidos = false;
+                                            if(consultar_pedidos){
+                                                mapa.fitBounds(latitud_longitud_limite,150);
+                                                consultar_pedidos = false;
+                                            }
+
                                         }
 
                                         consultas_polilineas -= 1;
