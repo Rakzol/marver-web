@@ -182,7 +182,7 @@
                             geodesic: true,
                             strokeColor: '#000000',
                             strokeOpacity: 0.5,
-                            strokeWeight: 2
+                            strokeWeight: 3
                         });
                         polilinea.setMap(mapa);
                         polilineas.push(polilinea);
@@ -237,7 +237,7 @@
                         geodesic: true,
                         strokeColor: '#6495ED',
                         strokeOpacity: 0.5,
-                        strokeWeight: 2
+                        strokeWeight: 3
                     });
                     usuario_encontrado['polilinea'].setMap(mapa);
                     polilineas.push(usuario_encontrado['polilinea']);
@@ -253,7 +253,7 @@
                         geodesic: true,
                         strokeColor: '#6495ED',
                         strokeOpacity: 0.5,
-                        strokeWeight: 2
+                        strokeWeight: 3
                     });
                     polilinea.setMap(mapa);
                     polilineas.push(polilinea);
