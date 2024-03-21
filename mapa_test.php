@@ -239,7 +239,10 @@
                         });
                     });
 
-                    marcador.click();
+                    infowindow.open({
+                        anchor: marcador,
+                        map: mapa,
+                    });
 
                     marcadores.push(marcador);
                 }
