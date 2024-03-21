@@ -249,7 +249,7 @@
 
                 if(consultar_pedidos){
                     xd = latitud_longitud_limite;
-                    mapa.fitBounds(latitud_longitud_limite);
+                    mapa.fitBounds(latitud_longitud_limite,150);
                     consultar_pedidos = false;
                 }
             }
