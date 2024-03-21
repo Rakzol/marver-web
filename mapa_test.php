@@ -248,8 +248,13 @@
                 }
 
                 if(consultar_pedidos){
-                    xd = latitud_longitud_limite;
-                    mapa.fitBounds(latitud_longitud_limite,150);
+                    if(!latitud_longitud_limite['isEmpty']()){
+                        mapa.fitBounds(latitud_longitud_limite,150);
+                    }else{
+                        mapa.setZoom(18.5);
+                        //mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
+                        mapa.panTo(usuarioLista['marcador'].position);
+                    }
                     consultar_pedidos = false;
                 }
             }
@@ -451,10 +456,6 @@ let xd;
                             consultar_pedidos = true;
                             fijado = usuarioLista['id'];
 
-                            //mapa.setZoom(18.5);
-                            //mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
-                            //mapa.panTo(usuarioLista['marcador'].position);
-
                             document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
                             document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
                         }
@@ -475,10 +476,6 @@ let xd;
                         if(usuarioLista['id'] != fijado){
                             consultar_pedidos = true;
                             fijado = usuarioLista['id'];
-
-                            //mapa.setZoom(18.5);
-                            //mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
-                            //mapa.panTo(usuarioLista['marcador'].position);
 
                             document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
                             document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
