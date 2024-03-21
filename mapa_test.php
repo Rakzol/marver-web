@@ -377,11 +377,9 @@
                             .then(response => response.json())
                             .then(rutas => {
 
+                                console.log(rutas);
                                 if(pedidos_consultados.length > 0 && fijado == usuario_encontrado['id']){
                                     orden_pedidos = rutas['routes'][0]['optimizedIntermediateWaypointIndex'];
-                                    console.log(orden_pedidos);
-                                    console.log(pedidos_consultados);
-                                    console.log(rutas);
                                 }
 
                                 let leg = rutas['routes'][0]['legs'][0];
