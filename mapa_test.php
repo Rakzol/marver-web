@@ -253,7 +253,7 @@
                     }else{
                         mapa.setZoom(18.5);
                         //mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
-                        mapa.panTo(usuario_encontrado['posicion_final']);
+                        mapa.panTo({lat: usuario_encontrado['latitudes_longitudes'][0]['lat'](), lng: usuario_encontrado['latitudes_longitudes'][0]['lng']()});
                     }
                     consultar_pedidos = false;
                 }
