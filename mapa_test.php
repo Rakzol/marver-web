@@ -181,7 +181,7 @@
                             path: latitudes_longitudes,
                             geodesic: true,
                             strokeColor: '#000000',
-                            strokeOpacity: 0.75,
+                            strokeOpacity: 1.0,
                             strokeWeight: 3
                         });
                         polilinea.setMap(mapa);
@@ -236,7 +236,7 @@
                         path: usuario_encontrado['latitudes_longitudes'],
                         geodesic: true,
                         strokeColor: '#6495ED',
-                        strokeOpacity: 0.75,
+                        strokeOpacity: 1.0,
                         strokeWeight: 3
                     });
                     usuario_encontrado['polilinea'].setMap(mapa);
@@ -252,7 +252,7 @@
                         path: latitudes_longitudes,
                         geodesic: true,
                         strokeColor: '#6495ED',
-                        strokeOpacity: 0.75,
+                        strokeOpacity: 1.0,
                         strokeWeight: 3
                     });
                     polilinea.setMap(mapa);
