@@ -121,6 +121,7 @@
         let polilineas = [];
         let marcadores = [];
         let info_windows = [];
+        let pedidos = [];
 
         let ElementoMarcadorAvanzado;
         let VentanaInformacion;
@@ -317,17 +318,19 @@ let xd;
                         .then(pedidos => {
 
                             json_intermedios = [];
+                            pedidos = [];
 
                             pedidos.forEach( (pedido) =>{
                                 if( pedido['latitud'] != null && pedido['longitud'] != null ){
+                                    pedidos.push(pedido);
                                     json_intermedios.push({
-                                    location:{
-                                        latLng:{
-                                            latitude: pedido['latitud'],
-                                            longitude: pedido['longitud']
+                                        location:{
+                                            latLng:{
+                                                latitude: pedido['latitud'],
+                                                longitude: pedido['longitud']
+                                            }
                                         }
-                                    }
-                                });
+                                    });
                                 }
                             });
 
