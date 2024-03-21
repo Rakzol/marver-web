@@ -515,17 +515,23 @@ let xd;
             id_procesar_vista = setTimeout(procesar_vista, 10);
         }
 
+        let contador_seguimiento = 0;
         function procesar_vista() {
+            contador_seguimiento += 1;
 
             usuarios.forEach((usuario) => {
 
                 if(usuario['latitudes_longitudes'] != undefined && usuario['metros_recorrer'] != undefined){
 
-                    usuario['frame'] += 1;
+                    if(contador_seguimiento >= 50 && seguirRepartidor.checked && fijado == usuario['id']){
+                        mapa.panTo(usuario['marcador'].position);
+                    }
 
-                    if( usuario['frame'] >= 2001){
+                    if( usuario['frame'] < 2001){
                         return;
                     }
+
+                    usuario['frame'] += 1;
 
                     let metros_recorridos = usuario['frame'] / 2000 * usuario['metros_recorrer'];
 
