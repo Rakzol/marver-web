@@ -281,7 +281,7 @@ let xd;
                         let datos_envio = new FormData();
                         datos_envio.append('clave',usuario_encontrado['id']);
 
-                        fetch('android/pedidos_en_ruta', {
+                        fetch('android/pedidos_en_ruta_test', {
                             method: "POST",
                             body: datos_envio
                         })
