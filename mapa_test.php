@@ -318,11 +318,16 @@
                         .then(pedidos => {
 
                             json_intermedios = [];
-                            pedidos_consultados = [];
+
+                            if( fijado == usuario_encontrado['id'] ){
+                                pedidos_consultados = [];
+                            }
 
                             pedidos.forEach( (pedido) =>{
                                 if( pedido['latitud'] != null && pedido['longitud'] != null ){
-                                    pedidos_consultados.push(pedido);
+                                    if( fijado == usuario_encontrado['id'] ){
+                                        pedidos_consultados.push(pedido);
+                                    }
                                     json_intermedios.push({
                                         location:{
                                             latLng:{
@@ -372,7 +377,7 @@
                             .then(response => response.json())
                             .then(rutas => {
 
-                                if(pedidos_consultados.length > 0){
+                                if(pedidos_consultados.length > 0 && fijado == usuario_encontrado['id']){
                                     orden_pedidos = rutas['routes'][0]['optimizedIntermediateWaypointIndex'];
                                     console.log(orden_pedidos);
                                     console.log(pedidos_consultados);
