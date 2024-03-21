@@ -239,6 +239,8 @@
                         });
                     });
 
+                    infowindow.open();
+
                     marcadores.push(marcador);
                 }
 
