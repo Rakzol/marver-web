@@ -82,7 +82,7 @@
                 <div>
                     <button id="btnBuscarRepartidor" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelector">Buscar Repartidor</button>
                     <div class="form-check form-switch d-inline-block ms-2 mt-2" >
-                        <input class="form-check-input" id="seguirRepartidor" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                        <input class="form-check-input" id="seguirRepartidor" type="checkbox" role="switch" id="flexSwitchCheckChecked">
                         <label class="form-check-label ms-1" for="flexSwitchCheckChecked">Seguir repartidor</label>
                     </div>
                 </div>
