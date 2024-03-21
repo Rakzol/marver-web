@@ -374,7 +374,7 @@ let xd;
 
                                 console.log(rutas);
                                 if(pedidos_consultados.length > 0){
-                                    orden_pedidos = rutas['arrayOrder'];
+                                    orden_pedidos = rutas['routes'][0]['optimizedIntermediateWaypointIndex'];
                                 }
 
                                 let leg = rutas['routes'][0]['legs'][0];
