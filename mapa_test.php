@@ -219,7 +219,7 @@
                         });
 
                         let infowindow = new VentanaInformacion({
-                            content: '<p style="margin: 0;" ><strong>' + c + ' </strong>' + c + '</p>'
+                            content: '<p style="margin: 0;" ><strong>' + pedidos[orden_pedidos[c]]  + ' </strong>' + c + '</p>'
                         });
 
                         marcador.addListener("click", () => {
@@ -371,6 +371,10 @@ let xd;
                             })
                             .then(response => response.json())
                             .then(rutas => {
+
+                                if(pedidos.length > 0){
+                                    orden_pedidos = rutas['arrayOrder'];
+                                }
 
                                 let leg = rutas['routes'][0]['legs'][0];
                                 let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
