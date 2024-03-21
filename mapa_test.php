@@ -528,7 +528,7 @@ let xd;
                         contador_seguimiento = 0;
                     }
 
-                    if( usuario['frame'] < 2001){
+                    if( usuario['frame'] > 1999){
                         return;
                     }
 
