@@ -211,11 +211,25 @@
                         let imagen = document.createElement('img');
                         imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_cliente_' + (c + 1) +'.png';
 
-                        marcadores.push( new ElementoMarcadorAvanzado({
+                        let marcador = new ElementoMarcadorAvanzado({
                             content: imagen,
                             map: mapa,
                             position: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] }
-                        }));
+                        });
+
+                        marcadores.push(marcador);
+
+                        let infowindow = new VentanaInformacion({
+                            content: '<p style="margin: 0;" ><strong>' + c + ' </strong>' + c + '</p>'
+                        });
+
+                        marcador.addListener("click", () => {
+                            infowindow.open({
+                                anchor: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] },
+                                map: mapa,
+                            });
+                        });
+
                     }
                 }else{
                     let leg = legs[0];
@@ -241,11 +255,24 @@
                     let imagen = document.createElement('img');
                     imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_marver.png';
 
-                    marcadores.push( new ElementoMarcadorAvanzado({
+                    let marcador = new ElementoMarcadorAvanzado({
                         content: imagen,
                         map: mapa,
                         position: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] }
-                    }));
+                    });
+
+                    marcadores.push(marcador);
+
+                    let infowindow = new VentanaInformacion({
+                        content: '<p style="margin: 0;" ><strong>0</strong>0</p>'
+                    });
+
+                    marcador.addListener("click", () => {
+                        infowindow.open({
+                            anchor: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] },
+                            map: mapa,
+                        });
+                    });
                 }
 
                 if(consultar_pedidos){
@@ -282,7 +309,7 @@ let xd;
                         let datos_envio = new FormData();
                         datos_envio.append('clave',usuario_encontrado['id']);
 
-                        fetch('android/pedidos_en_ruta_test', {
+                        fetch('android/pedidos_en_ruta', {
                             method: "POST",
                             body: datos_envio
                         })
