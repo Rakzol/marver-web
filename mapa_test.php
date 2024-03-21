@@ -156,7 +156,7 @@
                 });
         }
 
-        function dibujar_polilineas(usuario_encontrado, legs, polilinea_primera_leg){
+        function dibujar_polilineas(usuario_encontrado, ruta, polilinea_primera_leg){
 
             if( fijado == usuario_encontrado['id'] ){
 
@@ -188,8 +188,8 @@
                     });
                 }
 
-                for( c = 0 ; c < legs.length; c++ ){
-                    let leg = legs[c];
+                for( c = 0 ; c < ruta['legs'].length; c++ ){
+                    let leg = ruta['legs'][c];
                     
                     if( ( polilinea_primera_leg && c == 0 ) || c > 0 ){
                         let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
@@ -209,7 +209,7 @@
                     }
 
                     let imagen = document.createElement('img');
-                    if( c == legs.length - 1 ){
+                    if( c == ruta['legs'].length - 1 ){
                         imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_marver.png';
                     }else{
                         imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_cliente_' + (c + 1) +'.png';
@@ -222,8 +222,8 @@
                     });
 
                     let contenido = '';
-                    if( c == legs.length - 1 ){
-                        contenido = '<p style="margin: 0;" ><strong>' + leg['duration']  + ' </strong>' + leg['duration'] + '</p>';
+                    if( c == ruta['legs'].length - 1 ){
+                        contenido = '<p style="margin: 0;" ><strong>' + ruta['duration']  + ' </strong>' + ruta['duration'] + '</p>';
                     }else{
                         let indice = pedidos_consultados.length > 1 ? orden_pedidos[c] : 0;
                         contenido = '<p style="margin: 0;" ><strong>' + pedidos_consultados[indice]['folio']  + ' </strong>' + leg['duration'] + '</p>';
@@ -360,7 +360,7 @@
                                     usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
                                     usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
 
-                                    dibujar_polilineas(usuario_encontrado, rutas['routes'][0]['legs'], false);
+                                    dibujar_polilineas(usuario_encontrado, rutas['routes'][0], false);
 
                                     consultas_polilineas -= 1;
                                     id_procesar_vista = setTimeout(procesar_vista, 10);
@@ -406,7 +406,7 @@
                                         usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
                                         usuario_encontrado['latitudes_longitudes'] = Codificador.decodePath(ruta['routes'][0]['polyline']['encodedPolyline']);
 
-                                        dibujar_polilineas(usuario_encontrado, rutas['routes'][0]['legs'], true);
+                                        dibujar_polilineas(usuario_encontrado, rutas['routes'][0], true);
 
                                         consultas_polilineas -= 1;
                                         id_procesar_vista = setTimeout(procesar_vista, 10);
