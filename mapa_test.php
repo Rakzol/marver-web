@@ -120,6 +120,7 @@
         let consultar_pedidos = false;
         let polilineas = [];
         let marcadores = [];
+        let info_windows = [];
 
         let ElementoMarcadorAvanzado;
         let VentanaInformacion;
@@ -450,6 +451,8 @@ let xd;
                         content: '<p style="margin: 0;" ><strong>' + usuarioLista['id'] + ' </strong>' + usuarioLista['nombre'] + '</p>'
                     });
 
+                    info_windows.push(infowindow);
+
                     marcador.addListener("click", () => {
 
                         if(usuarioLista['id'] != fijado){
@@ -459,6 +462,10 @@ let xd;
                             document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
                             document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
                         }
+
+                        info_windows.forEach((info)=>{
+                            info.close();
+                        });
 
                         infowindow.open({
                             anchor: usuarioLista['marcador'],
@@ -480,6 +487,10 @@ let xd;
                             document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
                             document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
                         }
+
+                        info_windows.forEach((info)=>{
+                            info.close();
+                        });
 
                         infowindow.open({
                             anchor: usuarioLista['marcador'],
