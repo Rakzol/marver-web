@@ -525,6 +525,7 @@ let xd;
 
                     if(contador_seguimiento >= 50 && seguirRepartidor.checked && fijado == usuario['id']){
                         mapa.panTo(usuario['marcador'].position);
+                        contador_seguimiento = 0;
                     }
 
                     if( usuario['frame'] < 2001){
