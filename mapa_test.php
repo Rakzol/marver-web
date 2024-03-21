@@ -121,7 +121,7 @@
         let polilineas = [];
         let marcadores = [];
         let info_windows = [];
-        let pedidos = [];
+        let pedidos_consultados = [];
 
         let ElementoMarcadorAvanzado;
         let VentanaInformacion;
@@ -219,7 +219,7 @@
                         });
 
                         let infowindow = new VentanaInformacion({
-                            content: '<p style="margin: 0;" ><strong>' + pedidos[orden_pedidos[c]]  + ' </strong>' + c + '</p>'
+                            content: '<p style="margin: 0;" ><strong>' + pedidos_consultados[orden_pedidos[c]]['folio']  + ' </strong>' + c + '</p>'
                         });
 
                         marcador.addListener("click", () => {
@@ -318,11 +318,11 @@ let xd;
                         .then(pedidos => {
 
                             json_intermedios = [];
-                            pedidos = [];
+                            pedidos_consultados = [];
 
                             pedidos.forEach( (pedido) =>{
                                 if( pedido['latitud'] != null && pedido['longitud'] != null ){
-                                    pedidos.push(pedido);
+                                    pedidos_consultados.push(pedido);
                                     json_intermedios.push({
                                         location:{
                                             latLng:{
@@ -372,7 +372,8 @@ let xd;
                             .then(response => response.json())
                             .then(rutas => {
 
-                                if(pedidos.length > 0){
+                                console.log(rutas);
+                                if(pedidos_consultados.length > 0){
                                     orden_pedidos = rutas['arrayOrder'];
                                 }
 
