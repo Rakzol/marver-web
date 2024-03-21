@@ -43,8 +43,6 @@
             INNER JOIN Ventas ON Ventas.Folio = PedidosCliente.FolioComprobante AND Ventas.TipoComprobante = PedidosCliente.Tipocomprobante
             LEFT JOIN clientes_posiciones ON clientes_posiciones.clave = PedidosCliente.Cliente
             LEFT JOIN MoviemientosVenta ON MoviemientosVenta.Folio = PedidosCliente.FolioComprobante AND MoviemientosVenta.TipoComprobante = 11 AND MoviemientosVenta.Importe < 0
-            WHERE
-            Responsable = 9999
             ORDER BY CONVERT(DATETIME, REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) , ' ', EnvioPedidoCliente.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) ) DESC
         ");
         //AND EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
