@@ -172,40 +172,24 @@
 
                 let latitud_longitud_limite = new LimitesLatitudLongitud();
 
-                if(polilinea_primera_leg){
-                    usuario_encontrado['polilinea'] = new Polilinea({
-                    path: usuario_encontrado['latitudes_longitudes'],
-                    geodesic: true,
-                    strokeColor: '#6495ED',
-                    strokeOpacity: 1.0,
-                    strokeWeight: 3
-                    });
-                    usuario_encontrado['polilinea'].setMap(mapa);
-                    polilineas.push(usuario_encontrado['polilinea']);
-
-                    usuario_encontrado['latitudes_longitudes'].forEach((latitud_longitud)=>{
-                        latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
-                    });
-                }
-
                 for( c = 0 ; c < ruta['legs'].length; c++ ){
                     let leg = ruta['legs'][c];
                     
-                    if( ( polilinea_primera_leg && c == 0 ) || c > 0 ){
+                    if( c > 0 ){
                         let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
-                        latitudes_longitudes.forEach((latitud_longitud)=>{
-                            latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
-                        });
-
                         let polilinea = new Polilinea({
                             path: latitudes_longitudes,
                             geodesic: true,
-                            strokeColor: c == 0 ? '#6495ED' : '#000000',
-                            strokeOpacity: 1.0,
-                            strokeWeight: 3
+                            strokeColor: '#000000',
+                            strokeOpacity: 0.5,
+                            strokeWeight: 2
                         });
                         polilinea.setMap(mapa);
                         polilineas.push(polilinea);
+
+                        latitudes_longitudes.forEach((latitud_longitud)=>{
+                            latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
+                        });
                     }
 
                     let imagen = document.createElement('img');
@@ -245,6 +229,38 @@
                     });
 
                     marcadores.push(marcador);
+                }
+
+                if(polilinea_primera_leg){
+                    usuario_encontrado['polilinea'] = new Polilinea({
+                        path: usuario_encontrado['latitudes_longitudes'],
+                        geodesic: true,
+                        strokeColor: '#6495ED',
+                        strokeOpacity: 0.5,
+                        strokeWeight: 2
+                    });
+                    usuario_encontrado['polilinea'].setMap(mapa);
+                    polilineas.push(usuario_encontrado['polilinea']);
+
+                    usuario_encontrado['latitudes_longitudes'].forEach((latitud_longitud)=>{
+                        latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
+                    });
+
+                    let latitudes_longitudes = Codificador.decodePath(ruta['legs'][0]['polyline']['encodedPolyline']);
+
+                    let polilinea = new Polilinea({
+                        path: latitudes_longitudes,
+                        geodesic: true,
+                        strokeColor: '#6495ED',
+                        strokeOpacity: 0.5,
+                        strokeWeight: 2
+                    });
+                    polilinea.setMap(mapa);
+                    polilineas.push(polilinea);
+
+                    latitudes_longitudes.forEach((latitud_longitud)=>{
+                        latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
+                    });
                 }
 
                 if(consultar_pedidos){
