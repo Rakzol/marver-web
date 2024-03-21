@@ -188,54 +188,10 @@
                     });
                 }
 
-                if( legs.length > 1 ){
-                    for( c = 0 ; c < legs.length - 1; c++ ){
-                        let leg = legs[c];
-                        
-                        if( ( polilinea_primera_leg && c == 0 ) || c > 0 ){
-                            let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
-                            latitudes_longitudes.forEach((latitud_longitud)=>{
-                                latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
-                            });
-
-                            let polilinea = new Polilinea({
-                                path: latitudes_longitudes,
-                                geodesic: true,
-                                strokeColor: c == 0 ? '#6495ED' : '#000000',
-                                strokeOpacity: 1.0,
-                                strokeWeight: 3
-                            });
-                            polilinea.setMap(mapa);
-                            polilineas.push(polilinea);
-                        }
-
-                        let imagen = document.createElement('img');
-                        imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_cliente_' + (c + 1) +'.png';
-
-                        let marcador = new ElementoMarcadorAvanzado({
-                            content: imagen,
-                            map: mapa,
-                            position: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] }
-                        });
-
-                        let infowindow = new VentanaInformacion({
-                            content: '<p style="margin: 0;" ><strong>' + pedidos_consultados[orden_pedidos[c]]['folio']  + ' </strong>' + c + '</p>'
-                        });
-
-                        marcador.addListener("click", () => {
-                            infowindow.open({
-                                anchor: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] },
-                                map: mapa,
-                            });
-                        });
-
-                        marcadores.push(marcador);
-
-                    }
-                }else{
-                    let leg = legs[0];
-
-                    if(polilinea_primera_leg){
+                for( c = 0 ; c < legs.length; c++ ){
+                    let leg = legs[c];
+                    
+                    if( ( polilinea_primera_leg && c == 0 ) || c > 0 ){
                         let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
                         latitudes_longitudes.forEach((latitud_longitud)=>{
                             latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
@@ -244,17 +200,20 @@
                         let polilinea = new Polilinea({
                             path: latitudes_longitudes,
                             geodesic: true,
-                            strokeColor: '#6495ED',
+                            strokeColor: c == 0 ? '#6495ED' : '#000000',
                             strokeOpacity: 1.0,
                             strokeWeight: 3
                         });
-
-                        polilineas.push(polilinea);
                         polilinea.setMap(mapa);
+                        polilineas.push(polilinea);
                     }
 
                     let imagen = document.createElement('img');
-                    imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_marver.png';
+                    if( c == legs.length - 1 ){
+                        imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_marver.png';
+                    }else{
+                        imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_cliente_' + (c + 1) +'.png';
+                    }
 
                     let marcador = new ElementoMarcadorAvanzado({
                         content: imagen,
@@ -262,13 +221,20 @@
                         position: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] }
                     });
 
+                    let contenido = '';
+                    if( c == legs.length - 1 ){
+                        contenido = '<p style="margin: 0;" ><strong>' + leg['duration']  + ' </strong>' + leg['duration'] + '</p>';
+                    }else{
+                        let indice = pedidos_consultados.length > 1 ? orden_pedidos[c] : 0;
+                        contenido = '<p style="margin: 0;" ><strong>' + pedidos_consultados[indice]['folio']  + ' </strong>' + leg['duration'] + '</p>';
+                    }
                     let infowindow = new VentanaInformacion({
-                        content: '<p style="margin: 0;" ><strong>0</strong>0</p>'
+                        content: contenido
                     });
 
                     marcador.addListener("click", () => {
                         infowindow.open({
-                            anchor: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] },
+                            anchor: marcador,
                             map: mapa,
                         });
                     });
@@ -377,7 +343,6 @@
                             .then(response => response.json())
                             .then(rutas => {
 
-                                console.log(rutas);
                                 if(pedidos_consultados.length > 0 && fijado == usuario_encontrado['id']){
                                     orden_pedidos = rutas['routes'][0]['optimizedIntermediateWaypointIndex'];
                                 }
