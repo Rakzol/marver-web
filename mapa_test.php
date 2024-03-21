@@ -239,7 +239,7 @@
                         });
                     });
 
-                    infowindow.open();
+                    marcador.click();
 
                     marcadores.push(marcador);
                 }
