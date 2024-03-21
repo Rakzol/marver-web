@@ -217,8 +217,6 @@
                             position: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] }
                         });
 
-                        marcadores.push(marcador);
-
                         let infowindow = new VentanaInformacion({
                             content: '<p style="margin: 0;" ><strong>' + c + ' </strong>' + c + '</p>'
                         });
@@ -229,6 +227,8 @@
                                 map: mapa,
                             });
                         });
+
+                        marcadores.push(marcador);
 
                     }
                 }else{
@@ -261,8 +261,6 @@
                         position: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] }
                     });
 
-                    marcadores.push(marcador);
-
                     let infowindow = new VentanaInformacion({
                         content: '<p style="margin: 0;" ><strong>0</strong>0</p>'
                     });
@@ -273,6 +271,8 @@
                             map: mapa,
                         });
                     });
+
+                    marcadores.push(marcador);
                 }
 
                 if(consultar_pedidos){
