@@ -248,12 +248,13 @@
                 }
 
                 if(consultar_pedidos){
+                    xd = latitud_longitud_limite;
                     mapa.fitBounds(latitud_longitud_limite);
                     consultar_pedidos = false;
                 }
             }
         }
-
+let xd;
         function procesar_logica(respuesta_json) {
             clearTimeout(id_procesar_vista);
 
