@@ -12,7 +12,7 @@
         $rutas_repartidores = $preparada->fetchAll(PDO::FETCH_ASSOC);
         if(count($rutas_repartidores) == 0){
             $resultado["status"] = 1;
-            $resultado["mensaje"] = "No tiene rutas en curso" . http_build_query($_POST);
+            $resultado["mensaje"] = "No tiene rutas en curso -> " . $_POST['clave'] . " -> " . http_build_query($_POST);
             echo json_encode($resultado);
             exit();
         }else{
