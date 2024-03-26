@@ -6,13 +6,13 @@
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
         $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NULL');
-        $preparada->bindValue(':repartidor', $_POST['clave']);
+        $preparada->bindValue(':repartidor', $_GET['clave']);
         $preparada->execute();
 
         $rutas_repartidores = $preparada->fetchAll(PDO::FETCH_ASSOC);
         if(count($rutas_repartidores) == 0){
             $resultado["status"] = 1;
-            $resultado["mensaje"] = "No tiene rutas en curso -> " . $_POST['clave'] . " -> " . http_build_query($_POST);
+            $resultado["mensaje"] = "No tiene rutas en curso -> " . $_GET['clave'] . " -> " . http_build_query($_GET);
             echo json_encode($resultado);
             exit();
         }else{
