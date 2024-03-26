@@ -14,6 +14,7 @@
             $resultado["status"] = 1;
             $resultado["mensaje"] = "No tiene rutas en curso";
             echo json_encode($resultado);
+            exit();
         }else{
             $id_ruta_reparto = $rutas_repartidores[0]['id'];
         }
