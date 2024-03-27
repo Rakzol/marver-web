@@ -5,14 +5,14 @@
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
-        $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NULL');
+        $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL');
         $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
 
         $rutas_repartidores = $preparada->fetchAll(PDO::FETCH_ASSOC);
         if(count($rutas_repartidores) == 0){
             $resultado["status"] = 1;
-            $resultado["mensaje"] = "No tiene rutas en curso -> " . $_POST['clave'] . " -> " . http_build_query($_POST);
+            $resultado["mensaje"] = "No tiene rutas en curso";
             echo json_encode($resultado);
             exit();
         }else{
