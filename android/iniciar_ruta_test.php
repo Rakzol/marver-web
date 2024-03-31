@@ -90,7 +90,7 @@
             )
         );
 
-        $json_envio['optimizeWaypointOrder'] = 'true';
+        $json_envio['optimizeWaypointOrder'] = true;
 
         $curl = curl_init('https://routes.googleapis.com/directions/v2:computeRoutes');
         $cabecera = array(
@@ -100,7 +100,7 @@
         );
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $json_envio);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($json_envio));
         curl_setopt($curl, CURLOPT_HTTPHEADER, $cabecera);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
