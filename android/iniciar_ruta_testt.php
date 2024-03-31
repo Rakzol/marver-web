@@ -117,7 +117,6 @@
         curl_close($curl);
 
         $preparada = $conexion->prepare('UPDATE rutas_repartidores SET ruta = :ruta, fecha_inicio = GETDATE() WHERE id = :id');
-        echo $ruta_repartidor['id'];
         $preparada->bindValue(':ruta', $respuesta);
         $preparada->bindValue(':id', $ruta_repartidor['id']);
         $preparada->execute();
