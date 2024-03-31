@@ -68,6 +68,7 @@
                 )
             )
         );
+
         foreach($pedidos_repartidores as $pedido_repartidor){
             $intermediarios[] = array(
                 'location' => array(
@@ -78,6 +79,8 @@
                 )
             );
         }
+        $json_envio['intermediates'] = $intermediarios;
+        
         $json_envio['destination'] = array(
             'location' => array(
                 'latLng' => array(
@@ -87,7 +90,6 @@
             )
         );
 
-        $json_envio['intermediates'] = $intermediarios;
         $json_envio['optimizeWaypointOrder'] = true;
 
         echo json_encode($json_envio);
