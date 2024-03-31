@@ -102,6 +102,8 @@
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $json_envio);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $cabecera);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
 
         $respuesta = curl_exec($curl);
 
