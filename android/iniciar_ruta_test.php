@@ -116,7 +116,7 @@
             exit();
         }
 
-        curl_close($ch);
+        curl_close($curl);
 
         echo $respuesta;
 
