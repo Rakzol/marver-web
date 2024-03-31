@@ -80,7 +80,7 @@
             );
         }
         $json_envio['intermediates'] = $intermediarios;
-        
+
         $json_envio['destination'] = array(
             'location' => array(
                 'latLng' => array(
@@ -92,9 +92,7 @@
 
         $json_envio['optimizeWaypointOrder'] = true;
 
-        echo json_encode($json_envio);
-
-        /*$curl = curl_init('https://routes.googleapis.com/directions/v2:computeRoutes');
+        $curl = curl_init('https://routes.googleapis.com/directions/v2:computeRoutes');
         $cabecera = array(
             'Content-Type: application/json',
             'X-Goog-Api-Key: AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo',
@@ -103,8 +101,20 @@
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $json_envio);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $cabecera);*/
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $cabecera);
 
+        $respuesta = curl_exec($curl);
+
+        if ($respuesta == false) {
+            $resultado["status"] = 3;
+            $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
+            echo json_encode($resultado);
+            exit();
+        }
+
+        curl_close($ch);
+
+        echo $respuesta;
 
         // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
     }catch( Exception $exception ) {
