@@ -60,8 +60,16 @@
             exit();
         }
 
+        $json_envio['origin'] = array(
+            'location' => array(
+                'latLng' => array(
+                    'latitude' => 25.7942362,
+                    'longitude' => -108.9858341
+                )
+            )
+        );
         foreach($pedidos_repartidores as $pedido_repartidor){
-            $json_envio[] = array(
+            $intermediarios[] = array(
                 'location' => array(
                     'latLng' => array(
                         'latitude' => $pedido_repartidor['latitud'],
@@ -70,7 +78,19 @@
                 )
             );
         }
-        print_r($json_envio);
+        $json_envio['destination'] = array(
+            'location' => array(
+                'latLng' => array(
+                    'latitude' => 25.7942362,
+                    'longitude' => -108.9858341
+                )
+            )
+        );
+
+        $json_envio['intermediates'] = $intermediarios;
+        $json_envio['optimizeWaypointOrder'] = true;
+
+        echo json_encode($json_envio);
 
         /*$curl = curl_init('https://routes.googleapis.com/directions/v2:computeRoutes');
         $cabecera = array(
