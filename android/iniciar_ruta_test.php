@@ -90,7 +90,7 @@
             )
         );
 
-        $json_envio['optimizeWaypointOrder'] = true;
+        $json_envio['optimizeWaypointOrder'] = 'true';
 
         $curl = curl_init('https://routes.googleapis.com/directions/v2:computeRoutes');
         $cabecera = array(
