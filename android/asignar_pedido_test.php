@@ -35,14 +35,14 @@
         $preparada->execute();
 
         $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC);
-        if( count($pedido) == 0 && false ){
+        if( count($pedido) == 0 && true ){
             $resultado["status"] = 3;
             $resultado["mensaje"] = "El pedido con el folio: " . $_GET['folio'] . " no existe";
             echo json_encode($resultado);
             exit();
         }
 
-        if( $pedido[0]['Responsable'] != NULL && false ){
+        if( $pedido[0]['Responsable'] != NULL && true ){
             $resultado["status"] = 4;
             $resultado["mensaje"] = "El pedido con el folio: " . $_GET['folio'] . " ya esta asignado al repartidor: " . $pedido[0]['Responsable'];
             echo json_encode($resultado);
