@@ -43,7 +43,12 @@
         }
         $ruta_repartidor = $rutas_repartidores[0];
 
-        $preparada = $conexion->prepare("SELECT * FROM pedidos_repartidores WHERE ruta_repartidor = :ruta_repartidor");
+        $preparada = $conexion->prepare("
+            SELECT pr.folio, cp.latitud, cp.longitud FROM pedidos_repartidores pr
+            INNER JOIN PedidosCliente pc ON pc.Folio = pr.folio 
+            INNER JOIN clientes_posiciones cp ON cp.clave = pc.Cliente
+            WHERE pr.ruta_repartidor = :ruta_repartidor ORDER BY pr.folio;
+        ");
         $preparada->bindValue(':ruta_repartidor', $ruta_repartidor['id']);
         $preparada->execute();
 
