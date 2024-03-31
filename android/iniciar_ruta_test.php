@@ -70,7 +70,7 @@
                 )
             );
         }
-        echo $json_envio;
+        print_r($json_envio);
 
         /*$curl = curl_init('https://routes.googleapis.com/directions/v2:computeRoutes');
         $cabecera = array(
