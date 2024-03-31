@@ -54,7 +54,7 @@
 
         $pedidos_repartidores = $preparada->fetchAll(PDO::FETCH_ASSOC);
         if( count($pedidos_repartidores) == 0 ){
-            $resultado["status"] = 3;
+            $resultado["status"] = 4;
             $resultado["mensaje"] = "Ningun cliente tiene su ubicacion en el mapa";
             echo json_encode($resultado);
             exit();
@@ -108,7 +108,7 @@
         $respuesta = curl_exec($curl);
 
         if ($respuesta == false) {
-            $resultado["status"] = 3;
+            $resultado["status"] = 5;
             $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
             echo json_encode($resultado);
             exit();
@@ -121,13 +121,15 @@
         $preparada->bindValue(':id', $ruta_repartidor['id']);
         $preparada->execute();
 
+        $resultado["status"] = 0;
+        $resultado["mensaje"] = "Ruta iniciada correctamente";
         echo $respuesta;
 
         // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
     }catch( Exception $exception ) {
         // header('HTTP/1.1 500 ' . $exception->getMessage());
 
-        $resultado["status"] = 5;
+        $resultado["status"] = 6;
         $resultado["mensaje"] = "Error al inicializar la ruta";
         echo json_encode($resultado);
     }
