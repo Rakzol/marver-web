@@ -60,7 +60,30 @@
             exit();
         }
 
-        echo 69;
+        foreach($pedidos_repartidores as $pedido_repartidor){
+            $json_envio[] = array(
+                'location' => array(
+                    'latLng' => array(
+                        'latitude' => $pedido_repartidor['latitud'],
+                        'longitude' => $pedido_repartidor['longitud']
+                    )
+                )
+            );
+        }
+        echo $json_envio;
+
+        /*$curl = curl_init('https://routes.googleapis.com/directions/v2:computeRoutes');
+        $cabecera = array(
+            'Content-Type: application/json',
+            'X-Goog-Api-Key: AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo',
+            'X-Goog-FieldMask: routes.duration,routes.distanceMeters,routes.legs.distanceMeters,routes.optimizedIntermediateWaypointIndex,routes.legs.duration,routes.legs.polyline.encodedPolyline,routes.legs.startLocation,routes.legs.endLocation'
+        );
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $json_envio);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $cabecera);*/
+
+
         // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
     }catch( Exception $exception ) {
         // header('HTTP/1.1 500 ' . $exception->getMessage());
