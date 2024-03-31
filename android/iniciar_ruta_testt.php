@@ -116,6 +116,11 @@
 
         curl_close($curl);
 
+        $preparada = $conexion->prepare('UPDATE rutas_repartidores SET ruta = :ruta, fecha_inicio = GETDATE() WHERE id = :id');
+        $preparada->bindValue(':ruta', $respuesta);
+        $preparada->bindValue(':id', $ruta_repartidor['id']);
+        $preparada->execute();
+
         echo $respuesta;
 
         // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
