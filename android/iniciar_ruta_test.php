@@ -47,17 +47,8 @@
         $preparada->bindValue(':ruta_repartidor', $ruta_repartidor['id']);
         $preparada->execute();
 
-        $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC);
-        if( count($pedido) == 0 && false ){
-            $resultado["status"] = 3;
-            $resultado["mensaje"] = "El pedido con el folio: " . $_GET['folio'] . " no existe";
-            echo json_encode($resultado);
-            exit();
-        }
-
-        $resultado["status"] = 0;
-        $resultado["mensaje"] = "El pedido con el folio: " . $_GET['folio'] . " se asigno correctamente";
-        echo json_encode($resultado);
+        $pedidos_repartidores = $preparada->fetchAll(PDO::FETCH_ASSOC);
+        var_dump($pedidos_repartidores);
 
         // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
     }catch( Exception $exception ) {
