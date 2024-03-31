@@ -53,7 +53,12 @@
         $preparada->execute();
 
         $pedidos_repartidores = $preparada->fetchAll(PDO::FETCH_ASSOC);
-        var_dump($pedidos_repartidores);
+        if( count($pedidos_repartidores) == 0 ){
+            $resultado["status"] = 3;
+            $resultado["mensaje"] = "Ningun cliente tiene su ubicacion en el mapa";
+            echo json_encode($resultado);
+            exit();
+        }
 
         // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
     }catch( Exception $exception ) {
