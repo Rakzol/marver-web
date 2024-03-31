@@ -105,6 +105,8 @@
 
         $respuesta = curl_exec($curl);
 
+        echo $respuesta;
+
         if ($respuesta == false) {
             $resultado["status"] = 3;
             $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
