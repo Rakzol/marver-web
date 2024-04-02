@@ -19,18 +19,39 @@
             exit();
         }
 
-        $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
-        $preparada->bindValue(':repartidor', $_GET['clave']);
+        if(!isset($_GET['repartidor'])){
+            $_GET['repartidor'] = 0;
+        }
+
+        $preparada = $conexion->prepare('
+            SELECT id, usuario, latitud, longitud, velocidad, fecha
+            FROM (
+                SELECT id, usuario, latitud, longitud, velocidad, fecha,
+                    ROW_NUMBER() OVER (PARTITION BY usuario ORDER BY fecha DESC) AS indice
+                FROM posiciones WHERE usuario != :repartidor
+            ) AS posiciones
+            WHERE indice = 1;
+        ');
+        $preparada->bindValue(':repartidor', $_GET['repartidor']);
+        $preparada->execute();
+
+        $repartidores_pasados = json_decode($_GET['repartidores']);
+        foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
+            if(isset($repartidores_pasados[$repartidor['id']])){
+                echo 'sipi ' . $repartidor['id'] . '<br>';
+            }else{
+                echo 'nope ' . $repartidor['id'] . '<br>';
+            }
+        }
+
+        /*$preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
+        $preparada->bindValue(':repartidor', $_GET['repartidor']);
         $preparada->execute();
 
         $rutas_repartidores = $preparada->fetchAll(PDO::FETCH_ASSOC);
         if( count($rutas_repartidores) == 0 ){
-            $resultado["status"] = 0;
-            $resultado["mensaje"] = "Ningun cliente tiene su ubicacion en el mapa";
-            echo json_encode($resultado);
-            exit();
-        }
 
+        }
         $ruta_repartidor = $rutas_repartidores[0];
 
         $preparada = $conexion->prepare("
@@ -113,14 +134,28 @@
 
         $resultado["status"] = 0;
         $resultado["mensaje"] = "Ruta iniciada correctamente";
-        echo $respuesta;
-
-        // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
+        echo $respuesta;*/
     }catch( Exception $exception ) {
-        // header('HTTP/1.1 500 ' . $exception->getMessage());
-
         $resultado["status"] = 6;
-        $resultado["mensaje"] = "Error al inicializar la ruta";
+        $resultado["mensaje"] = "Error al calcular las rutas";
         echo json_encode($resultado);
     }
+
+    function distancia($lat1, $lon1, $lat2, $lon2) {
+        $lat1 = deg2rad($lat1);
+        $lon1 = deg2rad($lon1);
+        $lat2 = deg2rad($lat2);
+        $lon2 = deg2rad($lon2);
+
+        $earthRadius = 6371000;
+    
+        $deltaLat = $lat2 - $lat1;
+        $deltaLon = $lon2 - $lon1;
+        $a = sin($deltaLat / 2) * sin($deltaLat / 2) + cos($lat1) * cos($lat2) * sin($deltaLon / 2) * sin($deltaLon / 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        $distance = $earthRadius * $c;
+    
+        return $distance;
+    }
+
 ?>
