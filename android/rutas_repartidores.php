@@ -19,10 +19,6 @@
             exit();
         }
 
-        if(!isset($_GET['repartidor'])){
-            $_GET['repartidor'] = 0;
-        }
-
         $preparada = $conexion->prepare('
             SELECT id, usuario, latitud, longitud, velocidad, fecha
             FROM (
