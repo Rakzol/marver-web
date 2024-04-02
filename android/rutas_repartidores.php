@@ -19,6 +19,8 @@
             exit();
         }
 
+        $repartidor_seguido = json_decode($_GET['repartidor'],true);
+
         $preparada = $conexion->prepare('
             SELECT id, usuario, latitud, longitud, velocidad, fecha
             FROM (
@@ -28,7 +30,7 @@
             ) AS posiciones
             WHERE indice = 1;
         ');
-        $preparada->bindValue(':repartidor', $_GET['repartidor']);
+        $preparada->bindValue(':repartidor', $repartidor_seguido['id']);
         $preparada->execute();
 
         $repartidores_pasados = json_decode($_GET['repartidores'],true);
