@@ -38,10 +38,10 @@
         $repartidores_pasados = json_decode($_GET['repartidores']);
         print_r($repartidores_pasados);
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
-            if(isset($repartidores_pasados[$repartidor['id']])){
-                echo 'sipi ' . $repartidor['id'] . '<br>';
+            if(isset($repartidores_pasados[$repartidor['usuario']])){
+                echo 'sipi ' . $repartidor['usuario'] . '<br>';
             }else{
-                echo 'nope ' . $repartidor['id'] . '<br>';
+                echo 'nope ' . $repartidor['usuario'] . '<br>';
             }
         }
 
