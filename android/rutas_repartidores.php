@@ -36,6 +36,7 @@
         $preparada->execute();
 
         $repartidores_pasados = json_decode($_GET['repartidores']);
+        print_r($repartidores_pasados);
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
             if(isset($repartidores_pasados[$repartidor['id']])){
                 echo 'sipi ' . $repartidor['id'] . '<br>';
