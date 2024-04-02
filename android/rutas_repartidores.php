@@ -77,16 +77,14 @@
                     $resultado['repartidores'][] = array(
                         "repartidor" => $repartidor['usuario'],
                         "tipo" => "polilinea",
-                        "polilinea" => $respuesta,
-                        "distancia" => $distancia
+                        "polilinea" => json_decode($respuesta,true)['features'][0]['geometry']['coordinates']
                     );
                 }else{
                     $resultado['repartidores'][] = array(
                         "repartidor" => $repartidor['usuario'],
                         "tipo" => "llego",
                         "latitud" => "1235.45",
-                        "longitud" => "45.48",
-                        "distancia" => $distancia
+                        "longitud" => "45.48"
                     );
                 }
             }else{
