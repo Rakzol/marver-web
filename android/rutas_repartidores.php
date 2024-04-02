@@ -41,10 +41,43 @@
 
                 $distancia = distancia($repartidor_pasado['lat'], $repartidor_pasado['lon'], $repartidor['latitud'], $repartidor['longitud']);
                 if( $distancia > 50){
+
+                    $url = 'https://api.openrouteservice.org/v2/directions/driving-car';
+
+                    $curl = curl_init();
+
+                    $parametros = array(
+                        'api_key' => '5b3ce3597851110001cf6248199545457ba045d184173db169aebd0c',
+                        'start' => $repartidor_pasado['lon'] . ',' . $repartidor_pasado['lat'],
+                        'end' => $repartidor['longitud'] . ',' . $repartidor['latitud']
+                    );
+
+                    $cabecera = array(
+                        'Content-Type: application/json; charset=utf-8',
+                        'Accept: application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8'
+                    );
+
+                    curl_setopt($ch, CURLOPT_URL, $url . '?' . http_build_query($parametros));
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($curl, CURLOPT_HTTPHEADER, $cabecera);
+                    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+            
+                    $respuesta = curl_exec($curl);
+            
+                    if ($respuesta == false) {
+                        $resultado["status"] = 5;
+                        $resultado["mensaje"] = "Error con ors " . curl_error($curl);
+                        echo json_encode($resultado);
+                        exit();
+                    }
+            
+                    curl_close($curl);
+
                     $resultado['repartidores'][] = array(
                         "repartidor" => $repartidor['usuario'],
                         "tipo" => "polilinea",
-                        "polilinea" => "{}",
+                        "polilinea" => $respuesta,
                         "distancia" => $distancia
                     );
                 }else{
