@@ -57,7 +57,7 @@
                         'Accept: application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8'
                     );
 
-                    curl_setopt($ch, CURLOPT_URL, $url . '?' . http_build_query($parametros));
+                    curl_setopt($curl, CURLOPT_URL, $url . '?' . http_build_query($parametros));
                     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                     curl_setopt($curl, CURLOPT_HTTPHEADER, $cabecera);
                     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
