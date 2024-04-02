@@ -37,7 +37,8 @@
             if(isset($repartidores_pasados[$repartidor['usuario']])){
                 $repartidor_pasado = $repartidores_pasados[$repartidor['usuario']];
 
-                if(distancia($repartidor_pasado['lat'], $repartidor_pasado['lon'], $repartidor['latitud'], $repartidor['longitud']) > 50){
+                $distancia = distancia($repartidor_pasado['lat'], $repartidor_pasado['lon'], $repartidor['latitud'], $repartidor['longitud']);
+                if( $distancia > 50){
                     $resultado['repartidores'][] = array(
                         "repartidor" => $repartidor['usuario'],
                         "tipo" => "polilinea",
@@ -48,7 +49,8 @@
                         "repartidor" => $repartidor['usuario'],
                         "tipo" => "llego",
                         "latitud" => "1235.45",
-                        "longitud" => "45.48"
+                        "longitud" => "45.48",
+                        "distancia" => $distancia
                     );
                 }
             }else{
