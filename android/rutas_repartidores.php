@@ -36,15 +36,39 @@
         $preparada->execute();
 
         $repartidores_pasados = json_decode($_GET['repartidores'],true);
-        print_r($repartidores_pasados);
+
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
             if(isset($repartidores_pasados[$repartidor['usuario']])){
-                echo 'sipi ' . $repartidor['usuario'] . '<br>';
+                $repartidor_pasado = $repartidores_pasados[$repartidor['usuario']];
+
+                if(distancia($repartidor_pasado['lat'], $repartidor_pasado['lon'], $repartidor['latitud'], $repartidor['longitud']) > 50){
+                    $resultado['repartidores'][] = array(
+                        $repartidor['usuario'] => array(
+                            "tipo" => "polilinea",
+                            "polilinea" => "{}"
+                        )
+                    );
+                }else{
+                    $resultado['repartidores'][] = array(
+                        $repartidor['usuario'] => array(
+                            "tipo" => "llego",
+                            "latitud" => "1235.45",
+                            "longitud" => "45.48"
+                        )
+                    );
+                }
             }else{
-                echo 'nope ' . $repartidor['usuario'] . '<br>';
+                $resultado['repartidores'][] = array(
+                    $repartidor['usuario'] => array(
+                        "tipo" => "nuevo",
+                        "latitud" => "1235.45",
+                        "longitud" => "45.48"
+                    )
+                );  
             }
         }
 
+        echo json_encode($resultado);
         /*$preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
         $preparada->bindValue(':repartidor', $_GET['repartidor']);
         $preparada->execute();
