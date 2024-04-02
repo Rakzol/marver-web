@@ -42,7 +42,8 @@
                     $resultado['repartidores'][] = array(
                         "repartidor" => $repartidor['usuario'],
                         "tipo" => "polilinea",
-                        "polilinea" => "{}"
+                        "polilinea" => "{}",
+                        "distancia" => $distancia
                     );
                 }else{
                     $resultado['repartidores'][] = array(
