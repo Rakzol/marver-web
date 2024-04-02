@@ -43,27 +43,24 @@
 
                 if(distancia($repartidor_pasado['lat'], $repartidor_pasado['lon'], $repartidor['latitud'], $repartidor['longitud']) > 50){
                     $resultado['repartidores'][] = array(
-                        $repartidor['usuario'] => array(
-                            "tipo" => "polilinea",
-                            "polilinea" => "{}"
-                        )
+                        "repartidor" => $repartidor['usuario'],
+                        "tipo" => "polilinea",
+                        "polilinea" => "{}"
                     );
                 }else{
                     $resultado['repartidores'][] = array(
-                        $repartidor['usuario'] => array(
-                            "tipo" => "llego",
-                            "latitud" => "1235.45",
-                            "longitud" => "45.48"
-                        )
+                        "repartidor" => $repartidor['usuario'],
+                        "tipo" => "llego",
+                        "latitud" => "1235.45",
+                        "longitud" => "45.48"
                     );
                 }
             }else{
                 $resultado['repartidores'][] = array(
-                    $repartidor['usuario'] => array(
-                        "tipo" => "nuevo",
-                        "latitud" => "1235.45",
-                        "longitud" => "45.48"
-                    )
+                    "repartidor" => $repartidor['usuario'],
+                    "tipo" => "nuevo",
+                    "latitud" => "1235.45",
+                    "longitud" => "45.48"
                 );  
             }
         }
