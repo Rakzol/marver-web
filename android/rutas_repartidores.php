@@ -22,11 +22,13 @@
         $repartidor_seguido = json_decode($_GET['repartidor'],true);
 
         $preparada = $conexion->prepare('
-            SELECT id, usuario, latitud, longitud, velocidad, fecha
+            SELECT id, usuario, Nombre, latitud, longitud, velocidad, fecha
             FROM (
-                SELECT id, usuario, latitud, longitud, velocidad, fecha,
+                SELECT id, usuario, Nombre, latitud, longitud, velocidad, fecha,
                     ROW_NUMBER() OVER (PARTITION BY usuario ORDER BY fecha DESC) AS indice
-                FROM posiciones WHERE usuario != :repartidor
+                FROM posiciones
+                INNER JOIN Vendedores ON Vendedores.Clave = usuario
+                WHERE usuario != :repartidor
             ) AS posiciones
             WHERE indice = 1;
         ');
