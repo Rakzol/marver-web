@@ -184,7 +184,7 @@
         return $distance;
     }
 
-    function poliline_ors($lon1, $lat1, $lon2, $lat2){
+    function polilinea_ors($lon1, $lat1, $lon2, $lat2){
         $url = 'https://api.openrouteservice.org/v2/directions/driving-car';
 
         $curl = curl_init();
