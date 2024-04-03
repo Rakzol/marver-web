@@ -40,7 +40,7 @@
                 $repartidor_pasado = $repartidores_pasados[$repartidor['usuario']];
 
                 $distancia = distancia($repartidor_pasado['lat'], $repartidor_pasado['lon'], $repartidor['latitud'], $repartidor['longitud']);
-                if( $distancia > 20 ){
+                if( $distancia > 30 ){
 
                     $resultado['repartidores'][] = array(
                         "repartidor" => $repartidor['usuario'],
