@@ -40,59 +40,31 @@
                 $repartidor_pasado = $repartidores_pasados[$repartidor['usuario']];
 
                 $distancia = distancia($repartidor_pasado['lat'], $repartidor_pasado['lon'], $repartidor['latitud'], $repartidor['longitud']);
-                if( $distancia > 50){
-
-                    $url = 'https://api.openrouteservice.org/v2/directions/driving-car';
-
-                    $curl = curl_init();
-
-                    $parametros = array(
-                        'api_key' => '5b3ce3597851110001cf6248199545457ba045d184173db169aebd0c',
-                        'start' => $repartidor_pasado['lon'] . ',' . $repartidor_pasado['lat'],
-                        'end' => $repartidor['longitud'] . ',' . $repartidor['latitud']
-                    );
-
-                    $cabecera = array(
-                        'Content-Type: application/json; charset=utf-8',
-                        'Accept: application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8'
-                    );
-
-                    curl_setopt($curl, CURLOPT_URL, $url . '?' . http_build_query($parametros));
-                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($curl, CURLOPT_HTTPHEADER, $cabecera);
-                    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-                    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-            
-                    $respuesta = curl_exec($curl);
-            
-                    if ($respuesta == false) {
-                        $resultado["status"] = 5;
-                        $resultado["mensaje"] = "Error con ors " . curl_error($curl);
-                        echo json_encode($resultado);
-                        exit();
-                    }
-            
-                    curl_close($curl);
+                if( $distancia > 20 ){
 
                     $resultado['repartidores'][] = array(
                         "repartidor" => $repartidor['usuario'],
                         "tipo" => "polilinea",
-                        "polilinea" => json_decode($respuesta,true)['features'][0]['geometry']['coordinates']
+                        "polilinea" => polilinea_ors($repartidor_pasado['lon'], $repartidor_pasado['lat'], $repartidor['longitud'], $repartidor['latitud'])
                     );
                 }else{
+                    $coordenadas = polilinea_ors($repartidor['longitud'], $repartidor['latitud'], $repartidor['longitud'], $repartidor['latitud'])[0];
+
                     $resultado['repartidores'][] = array(
                         "repartidor" => $repartidor['usuario'],
-                        "tipo" => "llego",
-                        "latitud" => "1235.45",
-                        "longitud" => "45.48"
+                        "tipo" => "cercano",
+                        "latitud" => $coordenadas[1],
+                        "longitud" => $coordenadas[0]
                     );
                 }
             }else{
+                $coordenadas = polilinea_ors($repartidor['longitud'], $repartidor['latitud'], $repartidor['longitud'], $repartidor['latitud'])[0];
+
                 $resultado['repartidores'][] = array(
                     "repartidor" => $repartidor['usuario'],
                     "tipo" => "nuevo",
-                    "latitud" => "1235.45",
-                    "longitud" => "45.48"
+                    "latitud" => $coordenadas[1],
+                    "longitud" => $coordenadas[0]
                 );  
             }
         }
@@ -210,6 +182,42 @@
         $distance = $earthRadius * $c;
     
         return $distance;
+    }
+
+    function poliline_ors($lon1, $lat1, $lon2, $lat2){
+        $url = 'https://api.openrouteservice.org/v2/directions/driving-car';
+
+        $curl = curl_init();
+
+        $parametros = array(
+            'api_key' => '5b3ce3597851110001cf6248199545457ba045d184173db169aebd0c',
+            'start' => $lon1 . ',' . $lat1,
+            'end' => $lon2 . ',' . $lat2
+        );
+
+        $cabecera = array(
+            'Content-Type: application/json; charset=utf-8',
+            'Accept: application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8'
+        );
+
+        curl_setopt($curl, CURLOPT_URL, $url . '?' . http_build_query($parametros));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $cabecera);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+
+        $respuesta = curl_exec($curl);
+
+        if ($respuesta == false) {
+            $resultado["status"] = 5;
+            $resultado["mensaje"] = "Error con ors " . curl_error($curl);
+            echo json_encode($resultado);
+            exit();
+        }
+
+        curl_close($curl);
+
+        return json_decode($respuesta,true)['features'][0]['geometry']['coordinates'];
     }
 
 ?>
