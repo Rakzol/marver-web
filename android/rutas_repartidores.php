@@ -21,6 +21,12 @@
 
         $repartidor_seguido = json_decode($_GET['repartidor'],true);
 
+        $preparada = $conexion->prepare('SELECT latitud, longitud FROM posiciones WHERE usuario = :repartidor ORDER BY fecha DESC;');
+        $preparada->bindValue(':repartidor', $repartidor_seguido['id']);
+        $preparada->execute();
+
+        $posiciones_repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC);
+
         $preparada = $conexion->prepare('
             SELECT id, usuario, Nombre, latitud, longitud, velocidad, fecha
             FROM (
@@ -72,18 +78,47 @@
             }
         }
 
-        echo json_encode($resultado);
-        /*$preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
-        $preparada->bindValue(':repartidor', $_GET['repartidor']);
+        //echo json_encode($resultado);
+
+        $preparada = $conexion->prepare('SELECT TOP 1 id, ruta FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
+        $preparada->bindValue(':repartidor', $repartidor_seguido['id']);
         $preparada->execute();
 
         $rutas_repartidores = $preparada->fetchAll(PDO::FETCH_ASSOC);
+
         if( count($rutas_repartidores) == 0 ){
 
+            if( count($posiciones_repartidor) > 0 ){
+                $distancia = distancia($repartidor_seguido['lat'], $repartidor_seguido['lon'], $posiciones_repartidor[0]['latitud'], $posiciones_repartidor[0]['longitud']);
+                if( $distancia > 30 ){
+    
+                    $resultado['repartidor'] = array(
+                        "repartidor" => $repartidor_seguido['id'],
+                        "tipo" => "polilinea",
+                        "polilinea" => polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])
+                    );
+                }else{
+                    $coordenadas = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])[0];
+    
+                    $resultado['repartidor'] = array(
+                        "repartidor" => $repartidor_seguido['id'],
+                        "tipo" => "cercano",
+                        "latitud" => $coordenadas[1],
+                        "longitud" => $coordenadas[0]
+                    );
+                }
+            }
+
+            echo json_encode($resultado);
+            exit();
         }
         $ruta_repartidor = $rutas_repartidores[0];
 
-        $preparada = $conexion->prepare("
+        $resultado['ruta'] = $ruta_repartidor['ruta'];
+
+        echo json_encode($resultado);
+
+        /*$preparada = $conexion->prepare("
             SELECT pr.folio, cp.latitud, cp.longitud FROM pedidos_repartidores pr
             INNER JOIN PedidosCliente pc ON pc.Folio = pr.folio 
             INNER JOIN clientes_posiciones cp ON cp.clave = pc.Cliente
@@ -98,72 +133,8 @@
             $resultado["mensaje"] = "Ningun cliente tiene su ubicacion en el mapa";
             echo json_encode($resultado);
             exit();
-        }
+        }*/
 
-        $json_envio['origin'] = array(
-            'location' => array(
-                'latLng' => array(
-                    'latitude' => 25.7942362,
-                    'longitude' => -108.9858341
-                )
-            )
-        );
-
-        foreach($pedidos_repartidores as $pedido_repartidor){
-            $intermediarios[] = array(
-                'location' => array(
-                    'latLng' => array(
-                        'latitude' => $pedido_repartidor['latitud'],
-                        'longitude' => $pedido_repartidor['longitud']
-                    )
-                )
-            );
-        }
-        $json_envio['intermediates'] = $intermediarios;
-
-        $json_envio['destination'] = array(
-            'location' => array(
-                'latLng' => array(
-                    'latitude' => 25.7942362,
-                    'longitude' => -108.9858341
-                )
-            )
-        );
-
-        $json_envio['optimizeWaypointOrder'] = true;
-
-        $curl = curl_init('https://routes.googleapis.com/directions/v2:computeRoutes');
-        $cabecera = array(
-            'Content-Type: application/json',
-            'X-Goog-Api-Key: AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo',
-            'X-Goog-FieldMask: routes.duration,routes.distanceMeters,routes.legs.distanceMeters,routes.optimizedIntermediateWaypointIndex,routes.legs.duration,routes.legs.polyline.encodedPolyline,routes.legs.startLocation,routes.legs.endLocation'
-        );
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($json_envio));
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $cabecera);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-
-        $respuesta = curl_exec($curl);
-
-        if ($respuesta == false) {
-            $resultado["status"] = 5;
-            $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
-            echo json_encode($resultado);
-            exit();
-        }
-
-        curl_close($curl);
-
-        $preparada = $conexion->prepare('UPDATE rutas_repartidores SET ruta = :ruta, fecha_inicio = GETDATE() WHERE id = :id');
-        $preparada->bindValue(':ruta', $respuesta);
-        $preparada->bindValue(':id', $ruta_repartidor['id']);
-        $preparada->execute();
-
-        $resultado["status"] = 0;
-        $resultado["mensaje"] = "Ruta iniciada correctamente";
-        echo $respuesta;*/
     }catch( Exception $exception ) {
         $resultado["status"] = 6;
         $resultado["mensaje"] = "Error al calcular las rutas";
