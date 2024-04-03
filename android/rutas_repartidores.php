@@ -116,25 +116,46 @@
 
         $resultado['ruta'] = json_decode($ruta_repartidor['ruta'],true);
 
-        echo json_encode($resultado);
-
-        /*$preparada = $conexion->prepare("
-            SELECT pr.folio, cp.latitud, cp.longitud FROM pedidos_repartidores pr
-            INNER JOIN PedidosCliente pc ON pc.Folio = pr.folio 
-            INNER JOIN clientes_posiciones cp ON cp.clave = pc.Cliente
-            WHERE pr.ruta_repartidor = :ruta_repartidor ORDER BY pr.folio;
+        $preparada = $conexion->prepare("
+            SELECT
+            pedidos_repartidores.folio AS pedido,
+            REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) , ' ', EnvioPedidoCliente.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) AS fecha,
+            PedidosCliente.Tipocomprobante AS comprobante,
+            PedidosCliente.FolioComprobante AS folio,
+            Ventas.Status AS status,
+            Clientes.Clave AS cliente_clave,
+            Clientes.Razon_Social AS cliente_nombre,
+            PedidosCliente.CodigosFacturado AS codigos,
+            PedidosCliente.UnidadesFacturado AS piezas,
+            PedidosCliente.TotalFacturado AS total,
+            clientes_posiciones.latitud AS latitud,
+            clientes_posiciones.longitud AS longitud,
+            clientes_posiciones.numero_exterior AS numero_exterior,
+            clientes_posiciones.numero_interior AS numero_interior,
+            clientes_posiciones.observaciones AS observaciones,
+            clientes_posiciones.calle AS calle,
+            MoviemientosVenta.Importe * -1 AS feria
+            FROM
+            pedidos_repartidores
+            INNER JOIN EnvioPedidoCliente ON EnvioPedidoCliente.Pedido = pedidos_repartidores.folio
+            INNER JOIN PedidosCliente ON PedidosCliente.Folio = pedidos_repartidores.folio
+            INNER JOIN Clientes ON Clientes.Clave = PedidosCliente.Cliente
+            INNER JOIN Ventas ON Ventas.Folio = PedidosCliente.FolioComprobante AND Ventas.TipoComprobante = PedidosCliente.Tipocomprobante
+            INNER JOIN clientes_posiciones ON clientes_posiciones.clave = PedidosCliente.Cliente
+            LEFT JOIN MoviemientosVenta ON MoviemientosVenta.Folio = PedidosCliente.FolioComprobante AND MoviemientosVenta.TipoComprobante = 11 AND MoviemientosVenta.Importe < 0
+            WHERE
+            pedidos_repartidores.ruta_repartidor = :ruta_repartidor
+            ORDER BY pedidos_repartidores.folio
         ");
         $preparada->bindValue(':ruta_repartidor', $ruta_repartidor['id']);
         $preparada->execute();
 
-        $pedidos_repartidores = $preparada->fetchAll(PDO::FETCH_ASSOC);
-        if( count($pedidos_repartidores) == 0 ){
-            $resultado["status"] = 4;
-            $resultado["mensaje"] = "Ningun cliente tiene su ubicacion en el mapa";
-            echo json_encode($resultado);
-            exit();
-        }*/
+        $pedidos_repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC);
 
+        $resultado['pedidos'] = $pedidos_repartidor;
+
+        echo json_encode($resultado);
+        
     }catch( Exception $exception ) {
         $resultado["status"] = 6;
         $resultado["mensaje"] = "Error al calcular las rutas";
