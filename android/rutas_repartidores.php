@@ -114,9 +114,9 @@
         }
         $ruta_repartidor = $rutas_repartidores[0];
 
-        $resultado['ruta'] = $ruta_repartidor['ruta'];
+        $resultado['ruta'] = json_decode($ruta_repartidor['ruta'],true);
 
-        echo json_encode($resultado, JSON_UNESCAPED_UNICODE);
+        echo json_encode($resultado);
 
         /*$preparada = $conexion->prepare("
             SELECT pr.folio, cp.latitud, cp.longitud FROM pedidos_repartidores pr
