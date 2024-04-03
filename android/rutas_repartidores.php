@@ -180,7 +180,7 @@
     }
 
     function polilinea_ors($lon1, $lat1, $lon2, $lat2){
-        $url = 'http://10.10.10.130:8082/v2/directions/driving-car';
+        $url = 'http://10.10.10.130:8082/ors/v2/directions/driving-car';
 
         $curl = curl_init();
 
