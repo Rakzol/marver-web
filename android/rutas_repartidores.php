@@ -65,6 +65,7 @@
                 $resultado['repartidores'][] = array(
                     "repartidor" => $repartidor['usuario'],
                     "tipo" => "nuevo",
+                    "nombre" => $repartidor['nombre'],
                     "latitud" => $coordenadas[1],
                     "longitud" => $coordenadas[0]
                 );  
