@@ -63,8 +63,8 @@
         $json_envio['origin'] = array(
             'location' => array(
                 'latLng' => array(
-                    'latitude' => 25.7942362,
-                    'longitude' => -108.9858341
+                    'latitude' => 25.7941814,
+                    'longitude' => -108.9858957
                 )
             )
         );
@@ -84,8 +84,8 @@
         $json_envio['destination'] = array(
             'location' => array(
                 'latLng' => array(
-                    'latitude' => 25.7942362,
-                    'longitude' => -108.9858341
+                    'latitude' => 25.7941814,
+                    'longitude' => -108.9858957
                 )
             )
         );
