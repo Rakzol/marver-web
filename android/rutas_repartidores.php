@@ -191,7 +191,7 @@
     function normalizarEncodedPolyline($encodedPolyline){
         $retorno = '';
         foreach( str_split($encodedPolyline) as $caracter){
-            $retorno += $caracter;
+            $retorno .= $caracter;
         }
         return $retorno;
     }
