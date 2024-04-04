@@ -159,11 +159,13 @@
                 $leg = $resultado['ruta']['routes'][0]['legs'][0];
             }
         }else{
+            $indice_leg = 0;
             foreach( $resultado['ruta']['routes'][0]['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
                 if( $resultado['pedidos'][$indice_pedido]['status'] == 4 ){
-                    $leg = $resultado['ruta']['routes'][0]['legs'][0];
+                    $leg = $resultado['ruta']['routes'][0]['legs'][$indice_leg];
                     break;
                 }
+                $indice_leg += 1;
             }
         }
 
