@@ -175,10 +175,10 @@
 
         $resultado['leg'] = $leg;
 
-        echo json_encode($resultado);
+        //echo json_encode($resultado);
 
-        /*echo addslashes($leg['polyline']['encodedPolyline']);
-        foreach( decodePolyline(normalizarEncodedPolyline($leg['polyline']['encodedPolyline'])) as $point ){
+        echo stripslashes($leg['polyline']['encodedPolyline']);
+        /*foreach( decodePolyline(normalizarEncodedPolyline($leg['polyline']['encodedPolyline'])) as $point ){
             echo '[' . $point[1] . ',' . $point[0] . '],';
         }*/
         
