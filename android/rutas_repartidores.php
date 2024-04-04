@@ -192,6 +192,7 @@
         $retorno = '';
         foreach( str_split($encodedPolyline) as $caracter){
             $retorno .= $caracter;
+            echo $caracter;
         }
         return $retorno;
     }
