@@ -171,7 +171,7 @@
             $leg = $resultado['ruta']['routes'][0]['legs'][count($resultado['ruta']['routes'][0]['legs'])-1];
         }
 
-        echo json_encode($leg);
+        $resultado['leg'] = $leg;
 
         echo json_encode($resultado);
         
