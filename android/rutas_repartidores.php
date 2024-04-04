@@ -155,7 +155,7 @@
         $resultado['pedidos'] = $pedidos_repartidor;
 
         foreach( $resultado['ruta']['routes'][0]['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
-            echo $indice_pedido;
+            //echo $indice_pedido;
         }
 
         echo json_encode($resultado);
