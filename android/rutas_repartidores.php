@@ -176,6 +176,8 @@
         $resultado['leg'] = $leg;
 
         echo json_encode($resultado);
+
+        echo decodePolyline($leg['polyline']['encodedPolyline']);
         
     }catch( Exception $exception ) {
         $resultado["status"] = 6;
