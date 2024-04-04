@@ -154,7 +154,7 @@
 
         $resultado['pedidos'] = $pedidos_repartidor;
 
-        foreach( $resultado['ruta']['routes']['legs']['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
+        foreach( $resultado['ruta']['routes'][0]['legs']['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
             echo $indice_pedido;
         }
 
