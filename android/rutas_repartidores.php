@@ -154,6 +154,10 @@
 
         $resultado['pedidos'] = $pedidos_repartidor;
 
+        foreach( $resultado['ruta']['routes']['legs']['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
+            echo $indice_pedido;
+        }
+
         echo json_encode($resultado);
         
     }catch( Exception $exception ) {
@@ -213,6 +217,43 @@
         curl_close($curl);
 
         return json_decode($respuesta,true)['features'][0]['geometry']['coordinates'];
+    }
+
+    function decodePolyline($encoded)
+    {
+        $length = strlen($encoded);
+        $index = 0;
+        $points = array();
+        $lat = 0;
+        $lng = 0;
+    
+        while ($index < $length) {
+            // Decode latitude
+            $sum = 0;
+            $shift = 0;
+            do {
+                $char = ord(substr($encoded, $index++)) - 63;
+                $sum |= ($char & 0x1f) << $shift;
+                $shift += 5;
+            } while ($char >= 0x20);
+            $dlat = (($sum & 1) ? ~($sum >> 1) : ($sum >> 1));
+            $lat += $dlat;
+    
+            // Decode longitude
+            $sum = 0;
+            $shift = 0;
+            do {
+                $char = ord(substr($encoded, $index++)) - 63;
+                $sum |= ($char & 0x1f) << $shift;
+                $shift += 5;
+            } while ($char >= 0x20);
+            $dlng = (($sum & 1) ? ~($sum >> 1) : ($sum >> 1));
+            $lng += $dlng;
+    
+            $points[] = array($lat * 1e-5, $lng * 1e-5);
+        }
+    
+        return $points;
     }
 
 ?>
