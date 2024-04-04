@@ -154,9 +154,24 @@
 
         $resultado['pedidos'] = $pedidos_repartidor;
 
-        foreach( $resultado['ruta']['routes'][0]['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
-            //echo $indice_pedido;
+        if( $resultado['ruta']['routes'][0]['optimizedIntermediateWaypointIndex'][0] == -1 ){
+            if( $resultado['pedidos'][0]['status'] == 4 ){
+                $leg = $resultado['ruta']['routes'][0]['legs'][0];
+            }
+        }else{
+            foreach( $resultado['ruta']['routes'][0]['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
+                if( $resultado['pedidos'][$indice_pedido]['status'] == 4 ){
+                    $leg = $resultado['ruta']['routes'][0]['legs'][0];
+                    break;
+                }
+            }
         }
+
+        if(!isset($leg)){
+            $leg = $resultado['ruta']['routes'][0]['legs'][count($resultado['ruta']['routes'][0]['legs'])-1];
+        }
+
+        echo $leg;
 
         echo json_encode($resultado);
         
