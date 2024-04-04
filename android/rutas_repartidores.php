@@ -177,7 +177,7 @@
 
         //echo json_encode($resultado);
 
-        echo str_replace('\\', '\\\\', $leg['polyline']['encodedPolyline']);
+        echo $leg['polyline']['encodedPolyline'];
         /*foreach( decodePolyline(normalizarEncodedPolyline($leg['polyline']['encodedPolyline'])) as $point ){
             echo '[' . $point[1] . ',' . $point[0] . '],';
         }*/
