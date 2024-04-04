@@ -114,7 +114,7 @@
         }
         $ruta_repartidor = $rutas_repartidores[0];
 
-        $resultado['ruta'] = json_decode($ruta_repartidor['ruta'],true);
+        $resultado['ruta'] = json_decode( str_replace('\\', '\\\\', $ruta_repartidor['ruta']), true);
 
         $preparada = $conexion->prepare("
             SELECT
