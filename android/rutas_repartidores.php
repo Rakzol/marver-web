@@ -177,24 +177,12 @@
 
         //echo json_encode($resultado);
 
-        echo $leg['polyline']['encodedPolyline'];
-        /*foreach( decodePolyline(normalizarEncodedPolyline($leg['polyline']['encodedPolyline'])) as $point ){
-            echo '[' . $point[1] . ',' . $point[0] . '],';
-        }*/
+        echo decodePolyline($leg['polyline']['encodedPolyline']);
         
     }catch( Exception $exception ) {
         $resultado["status"] = 6;
         $resultado["mensaje"] = "Error al calcular las rutas";
         echo json_encode($resultado);
-    }
-
-    function normalizarEncodedPolyline($encodedPolyline){
-        $retorno = '';
-        foreach( str_split($encodedPolyline) as $caracter){
-            $retorno .= $caracter;
-            echo $caracter;
-        }
-        return $retorno;
     }
 
     function distancia($lat1, $lon1, $lat2, $lon2) {
