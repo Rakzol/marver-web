@@ -271,7 +271,7 @@
             $dlng = (($sum & 1) ? ~($sum >> 1) : ($sum >> 1));
             $lng += $dlng;
     
-            $points[] = array($lat * 1e-5, $lng * 1e-5);
+            $points[] = array($lat * 0.00001, $lng * 0.00001);
         }
     
         return $points;
