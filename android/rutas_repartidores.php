@@ -178,7 +178,7 @@
         //echo json_encode($resultado);
 
         foreach( decodePolyline($leg['polyline']['encodedPolyline']) as $point ){
-            echo '[' . $point[1] . ',' . $point[0] . '],';
+            echo '[' . $point[0] . ',' . $point[1] . '],';
         }
         
     }catch( Exception $exception ) {
@@ -271,7 +271,7 @@
             $dlng = (($sum & 1) ? ~($sum >> 1) : ($sum >> 1));
             $lng += $dlng;
     
-            $points[] = array($lat * 1e-5, $lng * 1e-5);
+            $points[] = array($lng * 1e-5, $lat * 1e-5);
         }
     
         return $points;
