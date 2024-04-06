@@ -201,7 +201,7 @@
         $resultado['dentro'] = \GeometryLibrary\PolyUtil::isLocationOnPath(
             ['lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon']],
             $leg['polyline']['decodedPolyline'],
-            0.0002
+            0.00002
         );
 
         /*$menor_distancia = INF;
