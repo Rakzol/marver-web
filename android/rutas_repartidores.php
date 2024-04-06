@@ -189,7 +189,7 @@
             ['lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lng']],
             $leg['polyline']['decodedPolyline'],
             0.03
-        )
+        );
         /*$menor_distancia = INF;
         
         for( $c = count($leg['polyline']['decodedPolyline']) - 1; $c >= 0; $c-- ){
