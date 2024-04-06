@@ -55,7 +55,6 @@
                 if( $distancia > 30 ){
 
                     $resultado['repartidores'][] = array(
-                        "distancia" => $distancia,
                         "repartidor" => $repartidor['usuario'],
                         "tipo" => "polilinea",
                         "polilinea" => polilinea_ors($repartidor_pasado['lon'], $repartidor_pasado['lat'], $repartidor['longitud'], $repartidor['latitud'])['features'][0]['geometry']['coordinates']
@@ -126,9 +125,6 @@
         }
 
         $resultado['ruta'] = $rutas['routes'][0];
-        echo json_encode($resultado);
-
-        exit();
 
         $preparada = $conexion->prepare("
             SELECT
@@ -188,7 +184,13 @@
         }
 
         $resultado['leg'] = $leg;
-        $menor_distancia = INF;
+
+        $resultado['fuera'] = \GeometryLibrary\PolyUtil::isLocationOnPath(
+            ['lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lng']],
+            $leg['polyline']['decodedPolyline'],
+            0.03
+        )
+        /*$menor_distancia = INF;
         
         for( $c = count($leg['polyline']['decodedPolyline']) - 1; $c >= 0; $c-- ){
             $decodedPoint = $leg['polyline']['decodedPolyline'][$c];
@@ -212,7 +214,7 @@
             }
         }
 
-        $resultado['distancias'] = $distancias;
+        $resultado['distancias'] = $distancias;*/
 
         echo json_encode($resultado);
         
@@ -221,23 +223,6 @@
         $resultado["mensaje"] = "Error al calcular las rutas";
         echo json_encode($resultado);
     }
-
-    /*function distancia($lat1, $lon1, $lat2, $lon2) {
-        $lat1 = deg2rad($lat1);
-        $lon1 = deg2rad($lon1);
-        $lat2 = deg2rad($lat2);
-        $lon2 = deg2rad($lon2);
-
-        $earthRadius = 6371000;
-    
-        $deltaLat = $lat2 - $lat1;
-        $deltaLon = $lon2 - $lon1;
-        $a = sin($deltaLat / 2) * sin($deltaLat / 2) + cos($lat1) * cos($lat2) * sin($deltaLon / 2) * sin($deltaLon / 2);
-        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-        $distance = $earthRadius * $c;
-    
-        return $distance;
-    }*/
 
     function polilinea_ors($lon1, $lat1, $lon2, $lat2){
         $url = 'http://10.10.10.130:8082/ors/v2/directions/driving-car';
@@ -274,42 +259,5 @@
 
         return json_decode($respuesta,true);
     }
-
-    /*function decodePolyline($encoded)
-    {
-        $length = strlen($encoded);
-        $index = 0;
-        $points = array();
-        $lat = 0;
-        $lng = 0;
-    
-        while ($index < $length) {
-            // Decode latitude
-            $sum = 0;
-            $shift = 0;
-            do {
-                $char = ord(substr($encoded, $index++)) - 63;
-                $sum |= ($char & 0x1f) << $shift;
-                $shift += 5;
-            } while ($char >= 0x20);
-            $dlat = (($sum & 1) ? ~($sum >> 1) : ($sum >> 1));
-            $lat += $dlat;
-    
-            // Decode longitude
-            $sum = 0;
-            $shift = 0;
-            do {
-                $char = ord(substr($encoded, $index++)) - 63;
-                $sum |= ($char & 0x1f) << $shift;
-                $shift += 5;
-            } while ($char >= 0x20);
-            $dlng = (($sum & 1) ? ~($sum >> 1) : ($sum >> 1));
-            $lng += $dlng;
-    
-            $points[] = array($lng * 1e-5, $lat * 1e-5);
-        }
-    
-        return $points;
-    }*/
 
 ?>
