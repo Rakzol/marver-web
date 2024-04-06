@@ -180,7 +180,8 @@
         }
 
         $resultado['leg'] = $leg;
-
+        $menor_distancia = INF;
+        
         for( $c = count($leg['polyline']['decodedPolyline']) - 1; $c >= 0; $c-- ){
             $decodedPoint = $leg['polyline']['decodedPolyline'][$c];
 
@@ -196,9 +197,14 @@
                 $metrosRecorrer + $ors_calculada['features'][0]['properties']['segments'][0]['distance'],
                 $ors_calculada['features'][0]['geometry']['coordinates']
             );
+
+            if($distancias[$c][3] < $menor_distancia){
+                $distancia = $distancias[$c];
+                $menor_distancia = $distancias[$c][3];
+            }
         }
 
-        $resultado['distancias'] = $distancias;
+        $resultado['distancia'] = $distancia;
 
         echo json_encode($resultado);
         
