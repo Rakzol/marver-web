@@ -181,6 +181,8 @@
 
         $resultado['leg'] = $leg;
 
+        $resultado['distancia'] = distancia( 25.71507406728213, -109.02895266482886, 25.80808182905821, -108.96460940077384 );
+
         echo json_encode($resultado);
         
     }catch( Exception $exception ) {
