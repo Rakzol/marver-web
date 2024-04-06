@@ -122,7 +122,7 @@
 
         for( $c = 0; $c < count($rutas['routes'][0]['legs']); $c++ ){
             //$rutas['routes'][0]['legs'][$c]['polyline']['decodedPolyline'] = decodePolyline($rutas['routes'][0]['legs'][$c]['polyline']['encodedPolyline']);
-            $rutas['routes'][0]['legs'][$c]['polyline']['decodedPolyline'] = \GeometryLibrary\PolyUtil::decode2($rutas['routes'][0]['legs'][$c]['polyline']['encodedPolyline']);
+            $rutas['routes'][0]['legs'][$c]['polyline']['decodedPolyline'] = \GeometryLibrary\PolyUtil::decode($rutas['routes'][0]['legs'][$c]['polyline']['encodedPolyline']);
         }
 
         $resultado['ruta'] = $rutas['routes'][0];
