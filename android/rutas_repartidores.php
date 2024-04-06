@@ -126,7 +126,7 @@
         }
 
         $resultado['ruta'] = $rutas['routes'][0];
-        echo $resultado;
+        echo json_encode($resultado);
 
         exit();
 
