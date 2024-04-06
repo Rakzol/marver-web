@@ -55,6 +55,7 @@
                 if( $distancia > 30 ){
 
                     $resultado['repartidores'][] = array(
+                        "distancia" => $distancia,
                         "repartidor" => $repartidor['usuario'],
                         "tipo" => "polilinea",
                         "polilinea" => polilinea_ors($repartidor_pasado['lon'], $repartidor_pasado['lat'], $repartidor['longitud'], $repartidor['latitud'])['features'][0]['geometry']['coordinates']
@@ -121,7 +122,6 @@
         $rutas = json_decode( str_replace('\\', '\\\\', $ruta_repartidor['ruta']), true);
 
         for( $c = 0; $c < count($rutas['routes'][0]['legs']); $c++ ){
-            //$rutas['routes'][0]['legs'][$c]['polyline']['decodedPolyline'] = decodePolyline($rutas['routes'][0]['legs'][$c]['polyline']['encodedPolyline']);
             $rutas['routes'][0]['legs'][$c]['polyline']['decodedPolyline'] = \GeometryLibrary\PolyUtil::decode($rutas['routes'][0]['legs'][$c]['polyline']['encodedPolyline']);
         }
 
