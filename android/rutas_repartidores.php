@@ -181,7 +181,18 @@
 
         $resultado['leg'] = $leg;
 
-        $resultado['distancia'] = distancia( 25.7150740, -109.0289526, 25.8080818, -108.9646094 );
+        for( $c = count($leg['polyline']['decodedPolyline']) - 1; $c >= 0; $c-- ){
+            $decodedPoint = $leg['polyline']['decodedPolyline'][$c];
+
+            $distancias[$c] = array(
+                $decodedPoint[0],
+                $decodedPoint[1],
+                $c == count($leg['polyline']['decodedPolyline']) - 1 ? 0 :
+                distancia( $decodedPoint[1], $decodedPoint[0], $leg['polyline']['decodedPolyline'][$c+1][1], $leg['polyline']['decodedPolyline'][$c+1][0] ) + $distancias[$c+1][2]
+            );
+        }
+
+        $resultado['distancias'] = $distancias;
 
         echo json_encode($resultado);
         
