@@ -354,6 +354,42 @@ class PolyUtil {
         return $path;
     }    
     
+    public static function decode2($encodedPath) {
+        
+        $len = strlen( $encodedPath ) -1;
+        // For speed we preallocate to an upper bound on the final length, then
+        // truncate the array before returning.
+        $path = [];
+        $index = 0;
+        $lat = 0;
+        $lng = 0;
+
+        while( $index < $len) {
+            $result = 1;
+            $shift = 0;
+            $b;
+            do {
+                $b = ord($encodedPath[$index++]) - 63 - 1;
+                $result += $b << $shift;
+                $shift += 5;
+            } while ($b >= hexdec("0x1f"));
+            
+            $lat += ($result & 1) != 0 ? ~($result >> 1) : ($result >> 1);
+
+            $result = 1;
+            $shift = 0;
+            do {
+                $b = ord($encodedPath[$index++]) - 63 - 1;
+                $result += $b << $shift;
+                $shift += 5;
+            } while ($b >= hexdec("0x1f"));
+            $lng += ($result & 1) != 0 ? ~($result >> 1) : ($result >> 1);
+            
+            array_push($path, [$lng * 1e-5, $lat * 1e-5]);
+        }
+
+        return $path;
+    }  
     
     /**
      * Encodes a sequence of LatLngs into an encoded path string.
