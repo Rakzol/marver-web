@@ -185,24 +185,25 @@
 
         $resultado['leg'] = $leg;
 
-/*
-Decimal Places	Degrees	Distance
-0	1.0	111 km
-1	0.1	11.1 km
-2	0.01	1.11 km
-3	0.001	111 m
-4	0.0001	11.1 m
-5	0.00001	1.11 m
-6	0.000001	111 mm
-7	0.0000001	11.1 mm
-8	0.00000001	1.11 mm
-*/
+        /*
+        Decimal Places	Degrees	Distance
+        0	1.0	111 km
+        1	0.1	11.1 km
+        2	0.01	1.11 km
+        3	0.001	111 m
+        4	0.0001	11.1 m
+        5	0.00001	1.11 m
+        6	0.000001	111 mm
+        7	0.0000001	11.1 mm
+        8	0.00000001	1.11 mm
+        */
 
         $resultado['dentro'] = \GeometryLibrary\PolyUtil::isLocationOnPath(
             ['lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon']],
             $leg['polyline']['decodedPolyline'],
             0.0002
         );
+
         /*$menor_distancia = INF;
         
         for( $c = count($leg['polyline']['decodedPolyline']) - 1; $c >= 0; $c-- ){
