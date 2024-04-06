@@ -117,10 +117,14 @@
         $rutas = json_decode( str_replace('\\', '\\\\', $ruta_repartidor['ruta']), true);
 
         for( $c = 0; $c < count($rutas['routes'][0]['legs']); $c++ ){
-            $rutas['routes'][0]['legs'][$c]['polyline']['decodedPolyline'] = decodePolyline($rutas['routes'][0]['legs'][$c]['polyline']['encodedPolyline']);
+            //$rutas['routes'][0]['legs'][$c]['polyline']['decodedPolyline'] = decodePolyline($rutas['routes'][0]['legs'][$c]['polyline']['encodedPolyline']);
+            $rutas['routes'][0]['legs'][$c]['polyline']['decodedPolyline'] = \GeometryLibrary\PolyUtil::decode($rutas['routes'][0]['legs'][$c]['polyline']['encodedPolyline']);
         }
 
         $resultado['ruta'] = $rutas['routes'][0];
+        echo $resultado;
+
+        exit();
 
         $preparada = $conexion->prepare("
             SELECT
@@ -214,7 +218,7 @@
         echo json_encode($resultado);
     }
 
-    function distancia($lat1, $lon1, $lat2, $lon2) {
+    /*function distancia($lat1, $lon1, $lat2, $lon2) {
         $lat1 = deg2rad($lat1);
         $lon1 = deg2rad($lon1);
         $lat2 = deg2rad($lat2);
@@ -229,7 +233,7 @@
         $distance = $earthRadius * $c;
     
         return $distance;
-    }
+    }*/
 
     function polilinea_ors($lon1, $lat1, $lon2, $lat2){
         $url = 'http://10.10.10.130:8082/ors/v2/directions/driving-car';
@@ -267,7 +271,7 @@
         return json_decode($respuesta,true);
     }
 
-    function decodePolyline($encoded)
+    /*function decodePolyline($encoded)
     {
         $length = strlen($encoded);
         $index = 0;
@@ -302,6 +306,6 @@
         }
     
         return $points;
-    }
+    }*/
 
 ?>
