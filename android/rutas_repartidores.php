@@ -1,6 +1,6 @@
 <?php
     try{
-        require_once 'SphericalUtil.php';
+        require_once 'geometria/SphericalUtil.php';
 
         header('Content-Type: application/json');
 
