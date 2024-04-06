@@ -47,7 +47,7 @@
             if(isset($repartidores_pasados[$repartidor['usuario']])){
                 $repartidor_pasado = $repartidores_pasados[$repartidor['usuario']];
 
-                $distancia = distancia($repartidor_pasado['lat'], $repartidor_pasado['lon'], $repartidor['latitud'], $repartidor['longitud']);
+                $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_pasado['lat'], 'lng' => $repartidor_pasado['lon'] ], [ 'lat' => $repartidor['latitud'], 'lng' => $repartidor['longitud'] ]);
                 if( $distancia > 30 ){
 
                     $resultado['repartidores'][] = array(
@@ -89,7 +89,7 @@
         if( count($rutas_repartidores) == 0 ){
 
             if( count($posiciones_repartidor) > 0 ){
-                $distancia = distancia($repartidor_seguido['lat'], $repartidor_seguido['lon'], $posiciones_repartidor[0]['latitud'], $posiciones_repartidor[0]['longitud']);
+                $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $posiciones_repartidor[0]['latitud'], 'lng' => $posiciones_repartidor[0]['longitud'] ] );
                 if( $distancia > 30 ){
     
                     $resultado['repartidor'] = array(
@@ -190,7 +190,7 @@
             $decodedPoint = $leg['polyline']['decodedPolyline'][$c];
 
             $metrosRecorrer = $c == count($leg['polyline']['decodedPolyline']) - 1 ? 0 :
-            distancia( $decodedPoint[1], $decodedPoint[0], $leg['polyline']['decodedPolyline'][$c+1][1], $leg['polyline']['decodedPolyline'][$c+1][0] ) + $distancias[$c+1][2];
+            \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $decodedPoint[1], 'lng' => $decodedPoint[0] ], [ 'lat' => $leg['polyline']['decodedPolyline'][$c+1][1], 'lng' => $leg['polyline']['decodedPolyline'][$c+1][0] ] ) + $distancias[$c+1][2];
 
             $ors_calculada = polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $decodedPoint[0], $decodedPoint[1]);
 
