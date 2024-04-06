@@ -53,10 +53,10 @@
                     $resultado['repartidores'][] = array(
                         "repartidor" => $repartidor['usuario'],
                         "tipo" => "polilinea",
-                        "polilinea" => polilinea_ors($repartidor_pasado['lon'], $repartidor_pasado['lat'], $repartidor['longitud'], $repartidor['latitud'])
+                        "polilinea" => polilinea_ors($repartidor_pasado['lon'], $repartidor_pasado['lat'], $repartidor['longitud'], $repartidor['latitud'])['features'][0]['geometry']['coordinates']
                     );
                 }else{
-                    $coordenadas = polilinea_ors($repartidor['longitud'], $repartidor['latitud'], $repartidor['longitud'], $repartidor['latitud'])[0];
+                    $coordenadas = polilinea_ors($repartidor['longitud'], $repartidor['latitud'], $repartidor['longitud'], $repartidor['latitud'])['features'][0]['geometry']['coordinates'][0];
 
                     $resultado['repartidores'][] = array(
                         "repartidor" => $repartidor['usuario'],
@@ -66,7 +66,7 @@
                     );
                 }
             }else{
-                $coordenadas = polilinea_ors($repartidor['longitud'], $repartidor['latitud'], $repartidor['longitud'], $repartidor['latitud'])[0];
+                $coordenadas = polilinea_ors($repartidor['longitud'], $repartidor['latitud'], $repartidor['longitud'], $repartidor['latitud'])['features'][0]['geometry']['coordinates'][0];
 
                 $resultado['repartidores'][] = array(
                     "repartidor" => $repartidor['usuario'],
@@ -95,10 +95,10 @@
                     $resultado['repartidor'] = array(
                         "repartidor" => $repartidor_seguido['id'],
                         "tipo" => "polilinea",
-                        "polilinea" => polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])
+                        "polilinea" => polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])['features'][0]['geometry']['coordinates']
                     );
                 }else{
-                    $coordenadas = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])[0];
+                    $coordenadas = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])['features'][0]['geometry']['coordinates'][0];
     
                     $resultado['repartidor'] = array(
                         "repartidor" => $repartidor_seguido['id'],
@@ -184,11 +184,17 @@
         for( $c = count($leg['polyline']['decodedPolyline']) - 1; $c >= 0; $c-- ){
             $decodedPoint = $leg['polyline']['decodedPolyline'][$c];
 
+            $metrosRecorrer = $c == count($leg['polyline']['decodedPolyline']) - 1 ? 0 :
+            distancia( $decodedPoint[1], $decodedPoint[0], $leg['polyline']['decodedPolyline'][$c+1][1], $leg['polyline']['decodedPolyline'][$c+1][0] ) + $distancias[$c+1][2];
+
+            $ors_calculada = polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $decodedPoint[0], $decodedPoint[1]);
+
             $distancias[$c] = array(
                 $decodedPoint[0],
                 $decodedPoint[1],
-                $c == count($leg['polyline']['decodedPolyline']) - 1 ? 0 :
-                distancia( $decodedPoint[1], $decodedPoint[0], $leg['polyline']['decodedPolyline'][$c+1][1], $leg['polyline']['decodedPolyline'][$c+1][0] ) + $distancias[$c+1][2]
+                $metrosRecorrer,
+                $metrosRecorrer + $ors_calculada['features'][0]['properties']['segments'][0]['distance'],
+                $ors_calculada['features'][0]['geometry']['coordinates']
             );
         }
 
@@ -252,7 +258,7 @@
 
         curl_close($curl);
 
-        return json_decode($respuesta,true)['features'][0]['geometry']['coordinates'];
+        return json_decode($respuesta,true);
     }
 
     function decodePolyline($encoded)
