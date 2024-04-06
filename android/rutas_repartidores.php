@@ -186,7 +186,7 @@
         $resultado['leg'] = $leg;
 
         $resultado['fuera'] = \GeometryLibrary\PolyUtil::isLocationOnPath(
-            ['lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lng']],
+            ['lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon']],
             $leg['polyline']['decodedPolyline'],
             0.03
         );
