@@ -1,7 +1,5 @@
 <?php
     try{
-        require_once 'geometria/SphericalUtil.php';
-
         header('Content-Type: application/json');
 
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
@@ -49,7 +47,7 @@
             if(isset($repartidores_pasados[$repartidor['usuario']])){
                 $repartidor_pasado = $repartidores_pasados[$repartidor['usuario']];
 
-                $distancia = SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_pasado['lat'], 'lng' => $repartidor_pasado['lon'] ], [ 'lat' => $repartidor['latitud'], 'lng' => $repartidor['longitud'] ]);
+                $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_pasado['lat'], 'lng' => $repartidor_pasado['lon'] ], [ 'lat' => $repartidor['latitud'], 'lng' => $repartidor['longitud'] ]);
                 if( $distancia > 30 ){
 
                     $resultado['repartidores'][] = array(
