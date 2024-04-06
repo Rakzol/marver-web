@@ -114,7 +114,13 @@
         }
         $ruta_repartidor = $rutas_repartidores[0];
 
-        $resultado['ruta'] = json_decode( str_replace('\\', '\\\\', $ruta_repartidor['ruta']), true);
+        $rutas = json_decode( str_replace('\\', '\\\\', $ruta_repartidor['ruta']), true);
+
+        foreach( $rutas['routes'][0]['legs'] as $caminos ){
+            $caminos['polyline']['decodedPolyline'] = decodePolyline($caminos['polyline']['encodedPolyline']);
+        }
+
+        $resultado['ruta'] = $rutas['routes'][0];
 
         $preparada = $conexion->prepare("
             SELECT
@@ -154,15 +160,15 @@
 
         $resultado['pedidos'] = $pedidos_repartidor;
 
-        if( $resultado['ruta']['routes'][0]['optimizedIntermediateWaypointIndex'][0] == -1 ){
+        if( $resultado['ruta']['optimizedIntermediateWaypointIndex'][0] == -1 ){
             if( $resultado['pedidos'][0]['status'] == 4 ){
-                $leg = $resultado['ruta']['routes'][0]['legs'][0];
+                $leg = $resultado['ruta']['legs'][0];
             }
         }else{
             $indice_leg = 0;
-            foreach( $resultado['ruta']['routes'][0]['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
+            foreach( $resultado['ruta']['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
                 if( $resultado['pedidos'][$indice_pedido]['status'] == 4 ){
-                    $leg = $resultado['ruta']['routes'][0]['legs'][$indice_leg];
+                    $leg = $resultado['ruta']['legs'][$indice_leg];
                     break;
                 }
                 $indice_leg += 1;
@@ -170,11 +176,10 @@
         }
 
         if(!isset($leg)){
-            $leg = $resultado['ruta']['routes'][0]['legs'][count($resultado['ruta']['routes'][0]['legs'])-1];
+            $leg = $resultado['ruta']['legs'][count($resultado['ruta']['legs'])-1];
         }
 
         $resultado['leg'] = $leg;
-        $resultado['leg']['polyline']['decodedPolyline'] = decodePolyline($leg['polyline']['encodedPolyline']);
 
         echo json_encode($resultado);
         
