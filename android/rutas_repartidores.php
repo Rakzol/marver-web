@@ -204,7 +204,7 @@
             }
         }
 
-        $resultado['distancia'] = $distancia;
+        $resultado['distancias'] = $distancias;
 
         echo json_encode($resultado);
         
