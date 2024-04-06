@@ -1,5 +1,9 @@
 <?php
     try{
+        require_once 'geometria/SphericalUtil.php';
+        require_once 'geometria/PolyUtil.php';
+        require_once 'geometria/MathUtil.php';
+
         header('Content-Type: application/json');
 
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
