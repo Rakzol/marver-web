@@ -174,12 +174,9 @@
         }
 
         $resultado['leg'] = $leg;
+        $resultado['leg']['polyline']['decodedPolyline'] = decodePolyline($leg['polyline']['encodedPolyline']);
 
         echo json_encode($resultado);
-
-        /*foreach( decodePolyline($leg['polyline']['encodedPolyline']) as $point ){
-            echo '[' . $point[0] . ',' . $point[1] . '],';
-        }*/
         
     }catch( Exception $exception ) {
         $resultado["status"] = 6;
