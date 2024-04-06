@@ -116,8 +116,8 @@
 
         $rutas = json_decode( str_replace('\\', '\\\\', $ruta_repartidor['ruta']), true);
 
-        foreach( $rutas['routes'][0]['legs'] as $caminos ){
-            $caminos['polyline']['decodedPolyline'] = decodePolyline($caminos['polyline']['encodedPolyline']);
+        for( $c = 0; $c < count($rutas['routes'][0]['legs']); $c++ ){
+            $rutas['routes'][0]['legs'][$c]['polyline']['decodedPolyline'] = decodePolyline($rutas['routes'][0]['legs'][$c]['polyline']['encodedPolyline']);
         }
 
         $resultado['ruta'] = $rutas['routes'][0];
