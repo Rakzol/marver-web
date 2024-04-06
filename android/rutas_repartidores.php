@@ -198,38 +198,22 @@
         8	0.00000001	1.11 mm
         */
 
-        $resultado['dentro'] = \GeometryLibrary\PolyUtil::isLocationOnPath(
+        $menor_distancia = INF;
+        if ( ! \GeometryLibrary\PolyUtil::isLocationOnPath(
             ['lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon']],
             $leg['polyline']['decodedPolyline'],
             20
-        );
+        )){
+            foreach( $leg['polyline']['decodedPolyline'] as $decodedPoint ){
+                $ors_calculada = polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $decodedPoint['lng'], $decodedPoint['lat']);
 
-        /*$menor_distancia = INF;
-        
-        for( $c = count($leg['polyline']['decodedPolyline']) - 1; $c >= 0; $c-- ){
-            $decodedPoint = $leg['polyline']['decodedPolyline'][$c];
-
-            $metrosRecorrer = $c == count($leg['polyline']['decodedPolyline']) - 1 ? 0 :
-            \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $decodedPoint[1], 'lng' => $decodedPoint[0] ], [ 'lat' => $leg['polyline']['decodedPolyline'][$c+1][1], 'lng' => $leg['polyline']['decodedPolyline'][$c+1][0] ] ) + $distancias[$c+1][2];
-
-            $ors_calculada = polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $decodedPoint[0], $decodedPoint[1]);
-
-            $distancias[$c] = array(
-                $decodedPoint[0],
-                $decodedPoint[1],
-                $metrosRecorrer,
-                $metrosRecorrer + $ors_calculada['features'][0]['properties']['segments'][0]['distance'],
-                $ors_calculada['features'][0]['geometry']['coordinates']
-            );
-
-            if($distancias[$c][3] < $menor_distancia){
-                $distancia = $distancias[$c];
-                $menor_distancia = $distancias[$c][3];
+                if( $ors_calculada['features'][0]['properties']['segments'][0]['distance'] < $menor_distancia ){
+                    $menor_distancia = $ors_calculada['features'][0]['properties']['segments'][0]['distance'];
+                    $resultado['incorporacion'] = $ors_calculada['features'][0]['geometry']['coordinates'];
+                }
             }
         }
-
-        $resultado['distancias'] = $distancias;*/
-
+        
         echo json_encode($resultado);
         
     }catch( Exception $exception ) {
