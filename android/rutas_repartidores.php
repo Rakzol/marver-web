@@ -82,8 +82,6 @@
             }
         }
 
-        //echo json_encode($resultado);
-
         $preparada = $conexion->prepare('SELECT TOP 1 id, ruta FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
         $preparada->bindValue(':repartidor', $repartidor_seguido['id']);
         $preparada->execute();
@@ -185,24 +183,30 @@
 
         $resultado['leg'] = $leg;
 
-        /*
-        Decimal Places	Degrees	Distance
-        0	1.0	111 km
-        1	0.1	11.1 km
-        2	0.01	1.11 km
-        3	0.001	111 m
-        4	0.0001	11.1 m
-        5	0.00001	1.11 m
-        6	0.000001	111 mm
-        7	0.0000001	11.1 mm
-        8	0.00000001	1.11 mm
-        */
+        $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $leg['endLocation']['latLng']['latitude'], 'lng' => $leg['endLocation']['latLng']['longitude'] ] );
+        if( $distancia > 30 ){
+
+            $resultado['repartidor'] = array(
+                "repartidor" => $repartidor_seguido['id'],
+                "tipo" => "polilinea",
+                "polilinea" => polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'] )['features'][0]['geometry']['coordinates']
+            );
+        }else{
+            $coordenadas = polilinea_ors($leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'], $leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'])['features'][0]['geometry']['coordinates'][0];
+
+            $resultado['repartidor'] = array(
+                "repartidor" => $repartidor_seguido['id'],
+                "tipo" => "cercano",
+                "latitud" => $coordenadas[1],
+                "longitud" => $coordenadas[0]
+            );
+        }
 
         $menor_distancia = INF;
         if ( ! \GeometryLibrary\PolyUtil::isLocationOnPath(
             ['lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon']],
             $leg['polyline']['decodedPolyline'],
-            20
+            30
         )){
             foreach( $leg['polyline']['decodedPolyline'] as $decodedPoint ){
                 $ors_calculada = polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $decodedPoint['lng'], $decodedPoint['lat']);
