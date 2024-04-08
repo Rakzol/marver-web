@@ -186,6 +186,25 @@
         $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $leg['endLocation']['latLng']['latitude'], 'lng' => $leg['endLocation']['latLng']['longitude'] ] );
         if( $distancia > 30 ){
 
+            $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $posiciones_repartidor[0]['latitud'], 'lng' => $posiciones_repartidor[0]['longitud'] ] );
+            if( $distancia > 30 ){
+    
+                $resultado['repartidor'] = array(
+                    "repartidor" => $repartidor_seguido['id'],
+                    "tipo" => "polilinea",
+                    "polilinea" => polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'] )['features'][0]['geometry']['coordinates']
+                );
+            }else{
+                $coordenadas = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])['features'][0]['geometry']['coordinates'][0];
+    
+                $resultado['repartidor'] = array(
+                    "repartidor" => $repartidor_seguido['id'],
+                    "tipo" => "cercano",
+                    "latitud" => $coordenadas[1],
+                    "longitud" => $coordenadas[0]
+                );
+            }
+            
             $resultado['repartidor'] = array(
                 "repartidor" => $repartidor_seguido['id'],
                 "tipo" => "polilinea",
@@ -196,7 +215,7 @@
 
             $resultado['repartidor'] = array(
                 "repartidor" => $repartidor_seguido['id'],
-                "tipo" => "cercano",
+                "tipo" => "llego",
                 "latitud" => $coordenadas[1],
                 "longitud" => $coordenadas[0]
             );
