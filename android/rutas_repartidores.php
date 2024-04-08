@@ -204,12 +204,7 @@
                     "longitud" => $coordenadas[0]
                 );
             }
-            
-            $resultado['repartidor'] = array(
-                "repartidor" => $repartidor_seguido['id'],
-                "tipo" => "polilinea",
-                "polilinea" => polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'] )['features'][0]['geometry']['coordinates']
-            );
+
         }else{
             $coordenadas = polilinea_ors($leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'], $leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'])['features'][0]['geometry']['coordinates'][0];
 
