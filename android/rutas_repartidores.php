@@ -25,7 +25,7 @@
 
         $repartidor_seguido = json_decode($_GET['repartidor'],true);
 
-        $preparada = $conexion->prepare('SELECT latitud, longitud FROM posiciones WHERE usuario = :repartidor ORDER BY fecha DESC;');
+        $preparada = $conexion->prepare('SELECT latitud, longitud, velocidad FROM posiciones WHERE usuario = :repartidor ORDER BY fecha DESC;');
         $preparada->bindValue(':repartidor', $repartidor_seguido['id']);
         $preparada->execute();
 
@@ -52,32 +52,38 @@
                 $repartidor_pasado = $repartidores_pasados[$repartidor['usuario']];
 
                 $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_pasado['lat'], 'lng' => $repartidor_pasado['lon'] ], [ 'lat' => $repartidor['latitud'], 'lng' => $repartidor['longitud'] ]);
-                if( $distancia > 30 ){
+                if( $distancia > 20 ){
 
                     $resultado['repartidores'][] = array(
-                        "repartidor" => $repartidor['usuario'],
-                        "tipo" => "polilinea",
+                        "id" => $repartidor['usuario'],
+                        "nombre" => $repartidor['Nombre'],
+                        "tipo" => "camino",
                         "polilinea" => polilinea_ors($repartidor_pasado['lon'], $repartidor_pasado['lat'], $repartidor['longitud'], $repartidor['latitud'])['features'][0]['geometry']['coordinates']
                     );
                 }else{
                     $coordenadas = polilinea_ors($repartidor['longitud'], $repartidor['latitud'], $repartidor['longitud'], $repartidor['latitud'])['features'][0]['geometry']['coordinates'][0];
 
                     $resultado['repartidores'][] = array(
-                        "repartidor" => $repartidor['usuario'],
+                        "id" => $repartidor['usuario'],
+                        "nombre" => $repartidor['Nombre'],
                         "tipo" => "cercano",
-                        "latitud" => $coordenadas[1],
-                        "longitud" => $coordenadas[0]
+                        "polilinea" => array(
+                            array($repartidor_pasado['lon'], $repartidor_pasado['lat']),
+                            array($coordenadas[0], $coordenadas[1])
+                        )
                     );
                 }
             }else{
                 $coordenadas = polilinea_ors($repartidor['longitud'], $repartidor['latitud'], $repartidor['longitud'], $repartidor['latitud'])['features'][0]['geometry']['coordinates'][0];
 
                 $resultado['repartidores'][] = array(
-                    "repartidor" => $repartidor['usuario'],
-                    "tipo" => "nuevo",
+                    "id" => $repartidor['usuario'],
                     "nombre" => $repartidor['Nombre'],
-                    "latitud" => $coordenadas[1],
-                    "longitud" => $coordenadas[0]
+                    "tipo" => "nuevo",
+                    "polilinea" => array(
+                        array($coordenadas[0], $coordenadas[1]),
+                        array($coordenadas[0], $coordenadas[1])
+                    )
                 );  
             }
         }
@@ -92,7 +98,7 @@
 
             if( count($posiciones_repartidor) > 0 ){
                 $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $posiciones_repartidor[0]['latitud'], 'lng' => $posiciones_repartidor[0]['longitud'] ] );
-                if( $distancia > 30 ){
+                if( $distancia > 20 ){
     
                     $resultado['repartidor'] = array(
                         "repartidor" => $repartidor_seguido['id'],
@@ -184,10 +190,10 @@
         $resultado['leg'] = $leg;
 
         $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $leg['endLocation']['latLng']['latitude'], 'lng' => $leg['endLocation']['latLng']['longitude'] ] );
-        if( $distancia > 30 ){
+        if( $distancia > 20 ){
 
             $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $posiciones_repartidor[0]['latitud'], 'lng' => $posiciones_repartidor[0]['longitud'] ] );
-            if( $distancia > 30 ){
+            if( $distancia > 20 ){
     
                 $resultado['repartidor'] = array(
                     "repartidor" => $repartidor_seguido['id'],
@@ -209,7 +215,7 @@
             if ( ! \GeometryLibrary\PolyUtil::isLocationOnPath(
                 ['lat' => $posiciones_repartidor[0]['latitud'], 'lng' => $posiciones_repartidor[0]['longitud']],
                 $leg['polyline']['decodedPolyline'],
-                30
+                20
             )){
                 foreach( $leg['polyline']['decodedPolyline'] as $decodedPoint ){
                     $ors_calculada = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $decodedPoint['lng'], $decodedPoint['lat']);
