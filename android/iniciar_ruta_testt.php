@@ -90,6 +90,7 @@
             )
         );
 
+        $json_envio['routingPreference'] = "TRAFFIC_AWARE";
         $json_envio['optimizeWaypointOrder'] = true;
 
         $curl = curl_init('https://routes.googleapis.com/directions/v2:computeRoutes');
