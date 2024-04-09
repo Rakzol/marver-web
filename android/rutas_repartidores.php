@@ -202,8 +202,6 @@
             $leg = $resultado['ruta']['legs'][count($resultado['ruta']['legs'])-1];
         }
 
-        $resultado['leg'] = $leg;
-
         $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $leg['endLocation']['latLng']['latitude'], 'lng' => $leg['endLocation']['latLng']['longitude'] ] );
         if( $distancia > 20 ){
 
