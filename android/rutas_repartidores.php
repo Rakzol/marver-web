@@ -261,6 +261,7 @@
         }
         
         for( $c = 0; $c < count($resultado['ruta']['legs']); $c++ ){
+            unset($resultado['ruta']['legs'][$c]['polyline']['encodedPolyline']);
             unset($resultado['ruta']['legs'][$c]['polyline']['decodedPolyline']);
         }
 
