@@ -136,7 +136,7 @@
         for( $c = 0; $c < count($rutas['routes'][0]['legs']); $c++ ){
             $decodesPolylines = \GeometryLibrary\PolyUtil::decode($rutas['routes'][0]['legs'][$c]['polyline']['encodedPolyline']);
             $rutas['routes'][0]['legs'][$c]['polyline']['decodedPolyline'] = $decodesPolylines[0];
-            $rutas['routes'][0]['legs'][$c]['polyline']['polilinea'] = $decodesPolylines[0];
+            $rutas['routes'][0]['legs'][$c]['polyline']['polilinea'] = $decodesPolylines[1];
         }
 
         $resultado['ruta'] = $rutas['routes'][0];
