@@ -232,7 +232,7 @@
             );
         }
         
-        //echo json_encode($resultado);
+        echo json_encode($resultado);
         
     }catch( Exception $exception ) {
         $resultado["status"] = 6;
