@@ -247,7 +247,7 @@
             }
 
         }else{
-            $coordenadas = polilinea_ors($leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'], $leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'])['features'][0]['geometry']['coordinates'][0];
+            //$coordenadas = polilinea_ors($leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'], $leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'])['features'][0]['geometry']['coordinates'][0];
 
             $resultado['repartidor'] = array(
                 "id" => $repartidor_seguido['id'],
@@ -255,7 +255,8 @@
                 "tipo" => "llego",
                 "polilinea" => array(
                     array($repartidor_seguido['lon'], $repartidor_seguido['lat']),
-                    array($coordenadas[0], $coordenadas[1])
+                    //array($coordenadas[0], $coordenadas[1])
+                    array($leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'])
                 )
             );
         }
