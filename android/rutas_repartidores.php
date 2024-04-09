@@ -260,8 +260,8 @@
             );
         }
         
-        for( $c = 0; $c < count($rutas['routes'][0]['legs']); $c++ ){
-            unset($rutas['routes'][0]['legs'][$c]['polyline']['decodedPolyline']);
+        for( $c = 0; $c < count($resultado['ruta']['legs']); $c++ ){
+            unset($resultado['ruta']['legs'][$c]['polyline']['decodedPolyline']);
         }
 
         echo json_encode($resultado);
