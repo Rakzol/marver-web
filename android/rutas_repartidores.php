@@ -101,18 +101,22 @@
                 if( $distancia > 20 ){
     
                     $resultado['repartidor'] = array(
-                        "repartidor" => $repartidor_seguido['id'],
-                        "tipo" => "polilinea",
+                        "id" => $repartidor_seguido['id'],
+                        "nombre" => $repartidor_seguido['nombre'],
+                        "tipo" => "camino",
                         "polilinea" => polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])['features'][0]['geometry']['coordinates']
                     );
                 }else{
                     $coordenadas = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])['features'][0]['geometry']['coordinates'][0];
     
                     $resultado['repartidor'] = array(
-                        "repartidor" => $repartidor_seguido['id'],
+                        "id" => $repartidor_seguido['id'],
+                        "nombre" => $repartidor_seguido['nombre'],
                         "tipo" => "cercano",
-                        "latitud" => $coordenadas[1],
-                        "longitud" => $coordenadas[0]
+                        "polilinea" => array(
+                            array($repartidor_seguido['lon'], $repartidor_seguido['lat']),
+                            array($coordenadas[0], $coordenadas[1])
+                        )
                     );
                 }
             }
@@ -196,18 +200,22 @@
             if( $distancia > 20 ){
     
                 $resultado['repartidor'] = array(
-                    "repartidor" => $repartidor_seguido['id'],
-                    "tipo" => "polilinea",
+                    "id" => $repartidor_seguido['id'],
+                    "nombre" => $repartidor_seguido['nombre'],
+                    "tipo" => "camino",
                     "polilinea" => polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'] )['features'][0]['geometry']['coordinates']
                 );
             }else{
                 $coordenadas = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])['features'][0]['geometry']['coordinates'][0];
     
                 $resultado['repartidor'] = array(
-                    "repartidor" => $repartidor_seguido['id'],
+                    "id" => $repartidor_seguido['id'],
+                    "nombre" => $repartidor_seguido['nombre'],
                     "tipo" => "cercano",
-                    "latitud" => $coordenadas[1],
-                    "longitud" => $coordenadas[0]
+                    "polilinea" => array(
+                        array($repartidor_seguido['lon'], $repartidor_seguido['lat']),
+                        array($coordenadas[0], $coordenadas[1])
+                    )
                 );
             }
 
@@ -231,10 +239,13 @@
             $coordenadas = polilinea_ors($leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'], $leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'])['features'][0]['geometry']['coordinates'][0];
 
             $resultado['repartidor'] = array(
-                "repartidor" => $repartidor_seguido['id'],
+                "id" => $repartidor_seguido['id'],
+                "nombre" => $repartidor_seguido['nombre'],
                 "tipo" => "llego",
-                "latitud" => $coordenadas[1],
-                "longitud" => $coordenadas[0]
+                "polilinea" => array(
+                    array($repartidor_seguido['lon'], $repartidor_seguido['lat']),
+                    array($coordenadas[0], $coordenadas[1])
+                )
             );
         }
         
