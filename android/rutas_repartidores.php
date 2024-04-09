@@ -134,7 +134,7 @@
         $rutas = json_decode( str_replace('\\', '\\\\', $ruta_repartidor['ruta']), true);
 
         for( $c = 0; $c < count($rutas['routes'][0]['legs']); $c++ ){
-            $decodesPolylines = \GeometryLibrary\PolyUtil::decode($rutas['routes'][0]['legs'][$c]['polyline']['encodedPolyline']);
+            $decodesPolylines = \GeometryLibrary\PolyUtil::decode2($rutas['routes'][0]['legs'][$c]['polyline']['encodedPolyline']);
             $rutas['routes'][0]['legs'][$c]['polyline']['decodedPolyline'] = $decodesPolylines[0];
             $rutas['routes'][0]['legs'][$c]['polyline']['polilinea'] = $decodesPolylines[1];
         }
