@@ -135,6 +135,7 @@
 
         for( $c = 0; $c < count($rutas['routes'][0]['legs']); $c++ ){
             $decodesPolylines = \GeometryLibrary\PolyUtil::decode2($rutas['routes'][0]['legs'][$c]['polyline']['encodedPolyline']);
+            $rutas['routes'][0]['legs'][$c]['color'] = '#000000';
             $rutas['routes'][0]['legs'][$c]['polyline']['decodedPolyline'] = $decodesPolylines[0];
             $rutas['routes'][0]['legs'][$c]['polyline']['polilinea'] = $decodesPolylines[1];
         }
@@ -181,12 +182,14 @@
 
         if( $resultado['ruta']['optimizedIntermediateWaypointIndex'][0] == -1 ){
             if( $resultado['pedidos'][0]['status'] == 4 ){
+                $resultado['ruta']['legs'][0]['color'] = "#6495ED";
                 $leg = $resultado['ruta']['legs'][0];
             }
         }else{
             $indice_leg = 0;
             foreach( $resultado['ruta']['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
                 if( $resultado['pedidos'][$indice_pedido]['status'] == 4 ){
+                    $resultado['ruta']['legs'][$indice_leg]['color'] = "#6495ED";
                     $leg = $resultado['ruta']['legs'][$indice_leg];
                     break;
                 }
@@ -195,6 +198,7 @@
         }
 
         if(!isset($leg)){
+            $resultado['ruta']['legs'][count($resultado['ruta']['legs'])-1]['color'] = "#6495ED";
             $leg = $resultado['ruta']['legs'][count($resultado['ruta']['legs'])-1];
         }
 
@@ -256,6 +260,10 @@
             );
         }
         
+        for( $c = 0; $c < count($rutas['routes'][0]['legs']); $c++ ){
+            unset($rutas['routes'][0]['legs'][$c]['polyline']['decodedPolyline']);
+        }
+
         echo json_encode($resultado);
         
     }catch( Exception $exception ) {
