@@ -221,7 +221,8 @@
         
                         if( $ors_calculada['features'][0]['properties']['segments'][0]['distance'] < $menor_distancia ){
                             $menor_distancia = $ors_calculada['features'][0]['properties']['segments'][0]['distance'];
-                            $resultado['incorporacion'] = $ors_calculada['features'][0]['geometry']['coordinates'];
+                            $resultado['incorporacion']['color'] = $color;
+                            $resultado['incorporacion']['polilinea'] = $ors_calculada['features'][0]['geometry']['coordinates'];
                         }
                     }
                 }
