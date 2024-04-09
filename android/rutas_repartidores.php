@@ -208,10 +208,29 @@
             $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $posiciones_repartidor[0]['latitud'], 'lng' => $posiciones_repartidor[0]['longitud'] ] );
             if( $distancia > 20 ){
     
+                $color = "#6495ED";
+                $menor_distancia = INF;
+                if ( ! \GeometryLibrary\PolyUtil::isLocationOnPath(
+                    ['lat' => $posiciones_repartidor[0]['latitud'], 'lng' => $posiciones_repartidor[0]['longitud']],
+                    $leg['polyline']['decodedPolyline'],
+                    20
+                )){
+                    $color = "#FFA500";
+                    foreach( $leg['polyline']['decodedPolyline'] as $decodedPoint ){
+                        $ors_calculada = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $decodedPoint['lng'], $decodedPoint['lat']);
+        
+                        if( $ors_calculada['features'][0]['properties']['segments'][0]['distance'] < $menor_distancia ){
+                            $menor_distancia = $ors_calculada['features'][0]['properties']['segments'][0]['distance'];
+                            $resultado['incorporacion'] = $ors_calculada['features'][0]['geometry']['coordinates'];
+                        }
+                    }
+                }
+
                 $resultado['repartidor'] = array(
                     "id" => $repartidor_seguido['id'],
                     "nombre" => $repartidor_seguido['nombre'],
                     "tipo" => "camino",
+                    "color" => $color,
                     "polilinea" => polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'] )['features'][0]['geometry']['coordinates']
                 );
             }else{
@@ -221,27 +240,12 @@
                     "id" => $repartidor_seguido['id'],
                     "nombre" => $repartidor_seguido['nombre'],
                     "tipo" => "cercano",
+                    "color" => "#00000000",
                     "polilinea" => array(
                         array($repartidor_seguido['lon'], $repartidor_seguido['lat']),
                         array($coordenadas[0], $coordenadas[1])
                     )
                 );
-            }
-
-            $menor_distancia = INF;
-            if ( ! \GeometryLibrary\PolyUtil::isLocationOnPath(
-                ['lat' => $posiciones_repartidor[0]['latitud'], 'lng' => $posiciones_repartidor[0]['longitud']],
-                $leg['polyline']['decodedPolyline'],
-                20
-            )){
-                foreach( $leg['polyline']['decodedPolyline'] as $decodedPoint ){
-                    $ors_calculada = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $decodedPoint['lng'], $decodedPoint['lat']);
-    
-                    if( $ors_calculada['features'][0]['properties']['segments'][0]['distance'] < $menor_distancia ){
-                        $menor_distancia = $ors_calculada['features'][0]['properties']['segments'][0]['distance'];
-                        $resultado['incorporacion'] = $ors_calculada['features'][0]['geometry']['coordinates'];
-                    }
-                }
             }
 
         }else{
@@ -251,6 +255,7 @@
                 "id" => $repartidor_seguido['id'],
                 "nombre" => $repartidor_seguido['nombre'],
                 "tipo" => "llego",
+                "color" => "#00000000",
                 "polilinea" => array(
                     array($repartidor_seguido['lon'], $repartidor_seguido['lat']),
                     //array($coordenadas[0], $coordenadas[1])
