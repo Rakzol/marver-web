@@ -58,6 +58,7 @@
                         "id" => $repartidor['usuario'],
                         "nombre" => $repartidor['Nombre'],
                         "tipo" => "camino",
+                        "color" => "#00000000",
                         "polilinea" => polilinea_ors($repartidor_pasado['lon'], $repartidor_pasado['lat'], $repartidor['longitud'], $repartidor['latitud'])['features'][0]['geometry']['coordinates']
                     );
                 }else{
@@ -67,6 +68,7 @@
                         "id" => $repartidor['usuario'],
                         "nombre" => $repartidor['Nombre'],
                         "tipo" => "cercano",
+                        "color" => "#00000000",
                         "polilinea" => array(
                             array($repartidor_pasado['lon'], $repartidor_pasado['lat']),
                             array($coordenadas[0], $coordenadas[1])
@@ -80,6 +82,7 @@
                     "id" => $repartidor['usuario'],
                     "nombre" => $repartidor['Nombre'],
                     "tipo" => "nuevo",
+                    "color" => "#00000000",
                     "polilinea" => array(
                         array($coordenadas[0], $coordenadas[1]),
                         array($coordenadas[0], $coordenadas[1])
@@ -104,6 +107,7 @@
                         "id" => $repartidor_seguido['id'],
                         "nombre" => $repartidor_seguido['nombre'],
                         "tipo" => "camino",
+                        "color" => "#00000000",
                         "polilinea" => polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])['features'][0]['geometry']['coordinates']
                     );
                 }else{
@@ -113,6 +117,7 @@
                         "id" => $repartidor_seguido['id'],
                         "nombre" => $repartidor_seguido['nombre'],
                         "tipo" => "cercano",
+                        "color" => "#00000000",
                         "polilinea" => array(
                             array($repartidor_seguido['lon'], $repartidor_seguido['lat']),
                             array($coordenadas[0], $coordenadas[1])
@@ -129,7 +134,9 @@
         $rutas = json_decode( str_replace('\\', '\\\\', $ruta_repartidor['ruta']), true);
 
         for( $c = 0; $c < count($rutas['routes'][0]['legs']); $c++ ){
-            $rutas['routes'][0]['legs'][$c]['polyline']['decodedPolyline'] = \GeometryLibrary\PolyUtil::decode($rutas['routes'][0]['legs'][$c]['polyline']['encodedPolyline']);
+            $decodesPolylines = \GeometryLibrary\PolyUtil::decode($rutas['routes'][0]['legs'][$c]['polyline']['encodedPolyline']);
+            $rutas['routes'][0]['legs'][$c]['polyline']['decodedPolyline'] = $decodesPolylines[0];
+            $rutas['routes'][0]['legs'][$c]['polyline']['polilinea'] = $decodesPolylines[0];
         }
 
         $resultado['ruta'] = $rutas['routes'][0];

@@ -360,6 +360,7 @@ class PolyUtil {
         // For speed we preallocate to an upper bound on the final length, then
         // truncate the array before returning.
         $path = [];
+        $path2 = [];
         $index = 0;
         $lat = 0;
         $lng = 0;
@@ -385,10 +386,11 @@ class PolyUtil {
             } while ($b >= hexdec("0x1f"));
             $lng += ($result & 1) != 0 ? ~($result >> 1) : ($result >> 1);
             
-            array_push($path, [$lng * 1e-5, $lat * 1e-5]);
+            array_push($path, ['lat' => $lat * 1e-5, 'lng' => $lng * 1e-5]);
+            array_push($path2, [$lng * 1e-5, $lat * 1e-5]);
         }
 
-        return $path;
+        return [$path, $path2];
     }  
     
     /**
