@@ -137,7 +137,7 @@
                 frame++;
             }
 
-            if(frame = 2501){
+            if(frame == 2501){
 
                 let datos = {
                     "repartidor": {
