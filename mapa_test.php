@@ -120,6 +120,9 @@
 
         let frame = 2501;
 
+        let velocidadRepartidor;
+        let seguirRepartidor;
+
         let ElementoMarcadorAvanzado;
         let VentanaInformacion;
         let Esferica;
