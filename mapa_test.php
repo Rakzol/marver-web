@@ -138,6 +138,7 @@
             }
 
             if(frame = 2501){
+                frame = 2502;
 
                 let datos = {
                     "repartidor": {
@@ -158,6 +159,7 @@
                 })
                 .catch(error => {
                     console.error('Error al solicitar las ruta de los repartidores: ', error);
+                    frame = 2501;
                     setTimeout(actualizar, 10);
                 })
                 .then(respuesta_json => {
