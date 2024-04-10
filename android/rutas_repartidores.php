@@ -49,13 +49,15 @@
 
                 $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_pasado['lat'], 'lng' => $repartidor_pasado['lon'] ], [ 'lat' => $repartidor['latitud'], 'lng' => $repartidor['longitud'] ]);
                 if( $distancia > 20 ){
+                    $ors_calculado = polilinea_ors($repartidor_pasado['lon'], $repartidor_pasado['lat'], $repartidor['longitud'], $repartidor['latitud']);
 
                     $resultado['repartidores'][] = array(
                         "id" => $repartidor['usuario'],
                         "nombre" => $repartidor['Nombre'],
                         "tipo" => "camino",
                         "color" => "#00000000",
-                        "polilinea" => polilinea_ors($repartidor_pasado['lon'], $repartidor_pasado['lat'], $repartidor['longitud'], $repartidor['latitud'])['features'][0]['geometry']['coordinates']
+                        "distancia" => $ors_calculado['features'][0]['properties']['segments'][0]['distance'],
+                        "polilinea" => $ors_calculado['features'][0]['geometry']['coordinates']
                     );
                 }else{
                     $coordenadas = polilinea_ors($repartidor['longitud'], $repartidor['latitud'], $repartidor['longitud'], $repartidor['latitud'])['features'][0]['geometry']['coordinates'][0];
@@ -65,6 +67,7 @@
                         "nombre" => $repartidor['Nombre'],
                         "tipo" => "cercano",
                         "color" => "#00000000",
+                        "distancia" => \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_pasado['lat'], 'lng' => $repartidor_pasado['lon'] ], [ 'lat' => $coordenadas[1], 'lng' => $coordenadas[0] ]),
                         "polilinea" => array(
                             array($repartidor_pasado['lon'], $repartidor_pasado['lat']),
                             array($coordenadas[0], $coordenadas[1])
@@ -79,6 +82,7 @@
                     "nombre" => $repartidor['Nombre'],
                     "tipo" => "nuevo",
                     "color" => "#00000000",
+                    "distancia" => 0,
                     "polilinea" => array(
                         array($coordenadas[0], $coordenadas[1]),
                         array($coordenadas[0], $coordenadas[1])
@@ -112,14 +116,16 @@
             if( count($posiciones_repartidor) > 0 ){
                 $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $posiciones_repartidor[0]['latitud'], 'lng' => $posiciones_repartidor[0]['longitud'] ] );
                 if( $distancia > 20 ){
-    
+                    $ors_calculado = polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud']);
+
                     $resultado['repartidor'] = array(
                         "id" => $repartidor_seguido['id'],
                         "nombre" => $repartidor_seguido['nombre'],
                         "velocidad" => $posiciones_repartidor[0]['velocidad'],
                         "tipo" => "camino",
                         "color" => "#00000000",
-                        "polilinea" => polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])['features'][0]['geometry']['coordinates']
+                        "distancia" => $ors_calculado['features'][0]['properties']['segments'][0]['distance'],
+                        "polilinea" => $ors_calculado['features'][0]['geometry']['coordinates']
                     );
                 }else{
                     $coordenadas = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])['features'][0]['geometry']['coordinates'][0];
@@ -130,6 +136,7 @@
                         "velocidad" => $posiciones_repartidor[0]['velocidad'],
                         "tipo" => "cercano",
                         "color" => "#00000000",
+                        "distancia" => \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $coordenadas[1], 'lng' => $coordenadas[0] ]),
                         "polilinea" => array(
                             array($repartidor_seguido['lon'], $repartidor_seguido['lat']),
                             array($coordenadas[0], $coordenadas[1])
@@ -239,13 +246,16 @@
                     }
                 }
 
+                $ors_calculado = polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'] );
+
                 $resultado['repartidor'] = array(
                     "id" => $repartidor_seguido['id'],
                     "nombre" => $repartidor_seguido['nombre'],
                     "velocidad" => $posiciones_repartidor[0]['velocidad'],
                     "tipo" => "camino",
                     "color" => $color,
-                    "polilinea" => polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'] )['features'][0]['geometry']['coordinates']
+                    "distancia" => $ors_calculado['features'][0]['properties']['segments'][0]['distance'],
+                    "polilinea" => $ors_calculado['features'][0]['geometry']['coordinates']
                 );
             }else{
                 $coordenadas = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])['features'][0]['geometry']['coordinates'][0];
@@ -256,6 +266,7 @@
                     "velocidad" => $posiciones_repartidor[0]['velocidad'],
                     "tipo" => "cercano",
                     "color" => "#00000000",
+                    "distancia" => \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $coordenadas[1], 'lng' => $coordenadas[0] ]),
                     "polilinea" => array(
                         array($repartidor_seguido['lon'], $repartidor_seguido['lat']),
                         array($coordenadas[0], $coordenadas[1])
@@ -272,6 +283,7 @@
                 "velocidad" => $posiciones_repartidor[0]['velocidad'],
                 "tipo" => "llego",
                 "color" => "#00000000",
+                "distancia" => \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $leg['endLocation']['latLng']['latitude'], 'lng' => $leg['endLocation']['latLng']['longitude'] ]),
                 "polilinea" => array(
                     array($repartidor_seguido['lon'], $repartidor_seguido['lat']),
                     //array($coordenadas[0], $coordenadas[1])

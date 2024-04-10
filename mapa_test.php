@@ -159,6 +159,28 @@
 
                 }else{
 
+                    let metros_recorridos = frame / 2500 * repartidor['metros_recorrer'];
+
+                    let metros_acumulados = 0;
+
+                    for(let c = 0; c < usuario['latitudes_longitudes'].length - 1; c++ ){
+
+                        let polilinea_inicial = {lat: usuario['latitudes_longitudes'][c]['lat'](), lng: usuario['latitudes_longitudes'][c]['lng']()};
+                        let polilinea_final = {lat: usuario['latitudes_longitudes'][c+1]['lat'](), lng: usuario['latitudes_longitudes'][c+1]['lng']()};
+
+                        let metros_polilinea = Esferica.computeDistanceBetween( polilinea_inicial, polilinea_final);
+
+                        metros_acumulados += metros_polilinea;
+                        if( metros_acumulados >= metros_recorridos){
+
+                            let metros_recorridos_tramo = metros_acumulados - metros_recorridos;
+
+                            let posicion_nueva = Esferica.interpolate( polilinea_final, polilinea_inicial, metros_recorridos_tramo / metros_polilinea );
+                            usuario['marcador'].position = { lat: posicion_nueva['lat'](), lng: posicion_nueva['lng']() };
+                            break;
+                        }
+                    }
+
                 }
 
                 frame++;
@@ -577,46 +599,6 @@
                     listaRepartidores.appendChild(li);
 
                     /* HACER TODO EL PROCESO DE BUSCAR TUS RUTAS Y SI LLEGATE ALGUN PUNTIO PONERTE EN EL */
-                }
-            });
-
-            id_procesar_vista = setTimeout(procesar_vista, 10);
-        }
-
-        function procesar_vista() {
-
-            usuarios.forEach((usuario) => {
-
-                if(usuario['latitudes_longitudes'] != undefined && usuario['metros_recorrer'] != undefined){
-
-                    if( usuario['frame'] > 1999){
-                        return;
-                    }
-
-                    usuario['frame'] += 1;
-
-                    let metros_recorridos = usuario['frame'] / 2000 * usuario['metros_recorrer'];
-
-                    let metros_acumulados = 0;
-
-                    for(let c = 0; c < usuario['latitudes_longitudes'].length - 1; c++ ){
-
-                        let polilinea_inicial = {lat: usuario['latitudes_longitudes'][c]['lat'](), lng: usuario['latitudes_longitudes'][c]['lng']()};
-                        let polilinea_final = {lat: usuario['latitudes_longitudes'][c+1]['lat'](), lng: usuario['latitudes_longitudes'][c+1]['lng']()};
-
-                        let metros_polilinea = Esferica.computeDistanceBetween( polilinea_inicial, polilinea_final);
-
-                        metros_acumulados += metros_polilinea;
-                        if( metros_acumulados >= metros_recorridos){
-
-                            let metros_recorridos_tramo = metros_acumulados - metros_recorridos;
-
-                            let posicion_nueva = Esferica.interpolate( polilinea_final, polilinea_inicial, metros_recorridos_tramo / metros_polilinea );
-                            usuario['marcador'].position = { lat: posicion_nueva['lat'](), lng: posicion_nueva['lng']() };
-                            break;
-                        }
-                    }
-
                 }
             });
 
