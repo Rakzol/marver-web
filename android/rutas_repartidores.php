@@ -30,6 +30,9 @@
         $preparada->execute();
 
         $posiciones_repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC);
+        if(count($posiciones_repartidor) > 0 ){
+            $posiciones_repartidor[0]['velocidad'] = number_format( $posiciones_repartidor[0]['velocidad'] * 3.6, 1 ) . ' Km/h';
+        }
 
         $preparada = $conexion->prepare('
             SELECT id, usuario, Nombre, latitud, longitud, velocidad, fecha
