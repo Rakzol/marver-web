@@ -265,6 +265,7 @@
             );
         }
         
+        $resultado['ruta']['duration'] = number_format( substr($resultado['ruta']['duration'], 0, -1) / 60, 1 );
         for( $c = 0; $c < count($resultado['ruta']['legs']); $c++ ){
             $resultado['ruta']['legs'][$c]['duration'] = number_format( substr($resultado['ruta']['legs'][$c]['duration'], 0, -1) / 60, 1 );
 
