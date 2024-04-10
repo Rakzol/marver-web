@@ -153,7 +153,6 @@
                             position: { lat: repartidor['polilinea'][0][1], lng: repartidor['polilinea'][0][0] }
                         });
 
-                        console.log({ lat: repartidor['polilinea'][0][1], lng: repartidor['polilinea'][0][0] });
                         repartidor['marcador'] = marcador;
                     } );
 
@@ -167,8 +166,8 @@
 
                         for(let c = 0; c < repartidor['polilinea'].length - 1; c++ ){
 
-                            let punto_inicial = {lat: repartidor['polinea'][c][1], lng: repartidor['polinea'][c][0]};
-                            let punto_final = {lat: repartidor['polinea'][c+1][1], lng: repartidor['polinea'][c+1][0]};
+                            let punto_inicial = {lat: repartidor['polilinea'][c][1], lng: repartidor['polilinea'][c][0]};
+                            let punto_final = {lat: repartidor['polilinea'][c+1][1], lng: repartidor['polilinea'][c+1][0]};
 
                             let metros_entre_puntos = Esferica.computeDistanceBetween( punto_inicial, punto_final);
 
