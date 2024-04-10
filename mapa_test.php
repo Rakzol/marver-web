@@ -130,9 +130,6 @@
         let Polilinea;
         let LimitesLatitudLongitud;
 
-        let imagen_repartidor = document.createElement('img');
-        imagen_repartidor.src = 'https://www.marverrefacciones.mx/android/marcador.png';
-
         function actualizar() {
 
             if(frame < 2501){
@@ -147,15 +144,17 @@
                     repartidores = json_api['repartidores'];
                     repartidores.forEach( (repartidor) => {
 
+                        let imagen = document.createElement('img');
+                        imagen.src = 'https://www.marverrefacciones.mx/android/marcador.png';
+
                         let marcador = new ElementoMarcadorAvanzado({
-                            content: imagen_repartidor,
+                            content: imagen,
                             map: mapa,
                             position: { lat: repartidor['polilinea'][0][1], lng: repartidor['polilinea'][0][0] }
                         });
 
                         console.log({ lat: repartidor['polilinea'][0][1], lng: repartidor['polilinea'][0][0] });
                         marcadores.push(marcador);
-                        break;
                     } );
 
                 }else{
