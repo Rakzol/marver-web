@@ -116,7 +116,7 @@
         let mapa;
 
         let json_api = undefined;
-        let marcadores = [];
+        let repartidores = [];
 
         let frame = 2501;
 
@@ -136,10 +136,10 @@
 
                 if( frame == 0 ){
 
-                    marcadores.forEach( (marcador)=>{
-                        marcador.setMap(null);
+                    repartidores.forEach( (repartidor)=>{
+                        repartidor['marcador'].setMap(null);
                     });
-                    marcadores = [];
+                    repartidores = [];
 
                     repartidores = json_api['repartidores'];
                     repartidores.forEach( (repartidor) => {
@@ -154,32 +154,36 @@
                         });
 
                         console.log({ lat: repartidor['polilinea'][0][1], lng: repartidor['polilinea'][0][0] });
-                        marcadores.push(marcador);
+                        repartidor['marcador'] = marcador;
                     } );
 
                 }else{
 
-                    let metros_recorridos = frame / 2500 * repartidor['metros_recorrer'];
+                    repartidores.forEach( (repartidor) => {
 
-                    let metros_acumulados = 0;
+                        let metro_recorrer_todo_frame = frame / 2500 * repartidor['metros'];
 
-                    for(let c = 0; c < usuario['latitudes_longitudes'].length - 1; c++ ){
+                        let metros_recorridos = 0;
 
-                        let polilinea_inicial = {lat: usuario['latitudes_longitudes'][c]['lat'](), lng: usuario['latitudes_longitudes'][c]['lng']()};
-                        let polilinea_final = {lat: usuario['latitudes_longitudes'][c+1]['lat'](), lng: usuario['latitudes_longitudes'][c+1]['lng']()};
+                        for(let c = 0; c < repartidor['polilinea'].length - 1; c++ ){
 
-                        let metros_polilinea = Esferica.computeDistanceBetween( polilinea_inicial, polilinea_final);
+                            let punto_inicial = {lat: repartidor['polinea'][c][1], lng: repartidor['polinea'][c][0]};
+                            let punto_final = {lat: repartidor['polinea'][c+1][1], lng: repartidor['polinea'][c+1][0]};
 
-                        metros_acumulados += metros_polilinea;
-                        if( metros_acumulados >= metros_recorridos){
+                            let metros_entre_puntos = Esferica.computeDistanceBetween( punto_inicial, punto_final);
 
-                            let metros_recorridos_tramo = metros_acumulados - metros_recorridos;
+                            metros_recorridos += metros_entre_puntos;
+                            if( metros_recorridos >= metro_recorrer_todo_frame){
 
-                            let posicion_nueva = Esferica.interpolate( polilinea_final, polilinea_inicial, metros_recorridos_tramo / metros_polilinea );
-                            usuario['marcador'].position = { lat: posicion_nueva['lat'](), lng: posicion_nueva['lng']() };
-                            break;
+                                let metros_recorridos_tramo = metros_recorridos - metro_recorrer_todo_frame;
+
+                                let posicion_nueva = Esferica.interpolate( punto_final, punto_inicial, metros_recorridos_tramo / metros_entre_puntos );
+                                repartidor['marcador'].position = { lat: posicion_nueva['lat'](), lng: posicion_nueva['lng']() };
+                                break;
+                            }
                         }
-                    }
+
+                    } );
 
                 }
 
