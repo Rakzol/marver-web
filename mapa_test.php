@@ -133,7 +133,7 @@
         function actualizar() {
 
             if(frame < 2501){
-
+                console.log(frame);
                 frame++;
             }
 
@@ -162,6 +162,7 @@
                 })
                 .then(respuesta_json => {
                     frame = 0;
+                    console.log(frame);
                     json_api = respuesta_json;
                     setTimeout(actualizar, 10);
                 });
