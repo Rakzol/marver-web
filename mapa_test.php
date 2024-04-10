@@ -153,11 +153,12 @@
                             position: { lat: repartidor['polilinea'][0][1], lng: repartidor['polilinea'][0][0] }
                         });
 
+                        console.log({ lat: repartidor['polilinea'][0][1], lng: repartidor['polilinea'][0][0] });
                         marcadores.push(marcador);
                     } );
 
                 }else{
-                    
+
                 }
 
                 frame++;
