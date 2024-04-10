@@ -106,7 +106,7 @@
                     $resultado['repartidor'] = array(
                         "id" => $repartidor_seguido['id'],
                         "nombre" => $repartidor_seguido['nombre'],
-                        "velocidad" => $repartidor_seguido['velocidad'],
+                        "velocidad" => $posiciones_repartidor[0]['velocidad'],
                         "tipo" => "camino",
                         "color" => "#00000000",
                         "polilinea" => polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])['features'][0]['geometry']['coordinates']
@@ -117,7 +117,7 @@
                     $resultado['repartidor'] = array(
                         "id" => $repartidor_seguido['id'],
                         "nombre" => $repartidor_seguido['nombre'],
-                        "velocidad" => $repartidor_seguido['velocidad'],
+                        "velocidad" => $posiciones_repartidor[0]['velocidad'],
                         "tipo" => "cercano",
                         "color" => "#00000000",
                         "polilinea" => array(
@@ -232,7 +232,7 @@
                 $resultado['repartidor'] = array(
                     "id" => $repartidor_seguido['id'],
                     "nombre" => $repartidor_seguido['nombre'],
-                    "velocidad" => $repartidor_seguido['velocidad'],
+                    "velocidad" => $posiciones_repartidor[0]['velocidad'],
                     "tipo" => "camino",
                     "color" => $color,
                     "polilinea" => polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'] )['features'][0]['geometry']['coordinates']
@@ -243,7 +243,7 @@
                 $resultado['repartidor'] = array(
                     "id" => $repartidor_seguido['id'],
                     "nombre" => $repartidor_seguido['nombre'],
-                    "velocidad" => $repartidor_seguido['velocidad'],
+                    "velocidad" => $posiciones_repartidor[0]['velocidad'],
                     "tipo" => "cercano",
                     "color" => "#00000000",
                     "polilinea" => array(
@@ -259,7 +259,7 @@
             $resultado['repartidor'] = array(
                 "id" => $repartidor_seguido['id'],
                 "nombre" => $repartidor_seguido['nombre'],
-                "velocidad" => $repartidor_seguido['velocidad'],
+                "velocidad" => $posiciones_repartidor[0]['velocidad'],
                 "tipo" => "llego",
                 "color" => "#00000000",
                 "polilinea" => array(
