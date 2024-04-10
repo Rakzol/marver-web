@@ -116,7 +116,7 @@
         let mapa;
 
         let json_api = undefined;
-        let repartidores = [];
+        let marcadores = [];
 
         let frame = 2501;
 
@@ -130,10 +130,34 @@
         let Polilinea;
         let LimitesLatitudLongitud;
 
+        let imagen_repartidor = document.createElement('img');
+        imagen_repartidor.src = 'https://www.marverrefacciones.mx/android/marcador.png';
+
         function actualizar() {
 
             if(frame < 2501){
-                console.log(frame);
+
+                if( frame == 0 ){
+
+                    marcadores.forEach( (marcador)=>{
+                        marcador.setMap(null);
+                    });
+                    marcadores = [];
+
+                    repartidores = json_api['repartidores'];
+                    repartidores.forEach( (repartidor) => {
+
+                        let marcador = new ElementoMarcadorAvanzado({
+                            content: imagen_repartidor,
+                            map: mapa,
+                            position: { lat: repartidor['polilinea'][0][1], lng: repartidor['polilinea'][0][0] }
+                        });
+
+                        marcadores.push(marcador);
+                    } );
+
+                }
+
                 frame++;
             }
 
@@ -162,7 +186,6 @@
                 })
                 .then(respuesta_json => {
                     frame = 0;
-                    console.log(frame);
                     json_api = respuesta_json;
                     setTimeout(actualizar, 10);
                 });
