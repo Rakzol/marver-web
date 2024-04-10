@@ -160,6 +160,7 @@
 
                     repartidores.forEach( (repartidor) => {
 
+                        console.log(frame);
                         let metro_recorrer_todo_frame = frame / 2500 * repartidor['metros'];
 
                         let metros_recorridos = 0;
