@@ -266,8 +266,10 @@
         }
         
         $resultado['ruta']['duration'] = number_format( substr($resultado['ruta']['duration'], 0, -1) / 60, 1 );
+        $resultado['ruta']['distanceMeters'] = number_format( $resultado['ruta']['distanceMeters'] / 1000, 1 );
         for( $c = 0; $c < count($resultado['ruta']['legs']); $c++ ){
             $resultado['ruta']['legs'][$c]['duration'] = number_format( substr($resultado['ruta']['legs'][$c]['duration'], 0, -1) / 60, 1 );
+            $resultado['ruta']['legs'][$c]['distanceMeters'] = number_format( $resultado['ruta']['legs'][$c]['distanceMeters'] / 1000, 1 );
 
             unset($resultado['ruta']['legs'][$c]['polyline']['encodedPolyline']);
             unset($resultado['ruta']['legs'][$c]['polyline']['decodedPolyline']);
