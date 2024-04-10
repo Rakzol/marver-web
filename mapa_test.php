@@ -5,6 +5,8 @@
         header("Location: https://www.marverrefacciones.mx/login_mapa.php");
         exit();
     }
+
+
 ?>
 <!DOCTYPE html>
 <html class="h-100" lang="es">
@@ -112,16 +114,11 @@
 <script>
 
         let mapa;
-        let usuarios = [];
-        let fijado = 0;
-        let velocidadRepartidor;
-        let seguirRepartidor;
-        let id_procesar_vista;
-        let consultar_pedidos = false;
-        let polilineas = [];
-        let marcadores = [];
-        let info_windows = [];
-        let pedidos_consultados = [];
+
+        let json_api = undefined;
+        let repartidores = [];
+
+        let frame = 2501;
 
         let ElementoMarcadorAvanzado;
         let VentanaInformacion;
@@ -130,30 +127,45 @@
         let Polilinea;
         let LimitesLatitudLongitud;
 
-        let consultas_polilineas = 0;
+        function actualizar() {
 
-        function actualizacion_logica() {
-            if(consultas_polilineas > 0){
-                setTimeout(actualizacion_logica, 1000);
-                return;
+            if(frame < 2501){
+
+                frame++;
             }
 
-            let datos = new FormData();
+            if(frame = 2501){
 
-            fetch('android/posiciones_web', {
-                method: 'POST',
-                body: datos
-            })
+                let datos = {
+                    "repartidor": {
+                        "id": 0
+                    },
+                    "repartidores":{}
+                };
+
+                fetch('android/rutas_repartidores', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(datos)
+                })
                 .then((respuesta) => {
                     return respuesta.json();
                 })
                 .catch(error => {
-                    console.error('Error al solicitar los años: ', error);
+                    console.error('Error al solicitar las ruta de los repartidores: ', error);
+                    setTimeout(actualizar, 10);
                 })
                 .then(respuesta_json => {
-                    procesar_logica(respuesta_json);
-                    setTimeout(actualizacion_logica, 1000);
+                    frame = 0;
+                    json_api = respuesta_json;
+                    setTimeout(actualizar, 10);
                 });
+            }
+            else{
+                setTimeout(actualizar, 10);
+            }
         }
 
         function dibujar_polilineas(usuario_encontrado, ruta, polilinea_primera_leg){
@@ -541,18 +553,11 @@
             id_procesar_vista = setTimeout(procesar_vista, 10);
         }
 
-        let contador_seguimiento = 0;
         function procesar_vista() {
-            contador_seguimiento += 1;
 
             usuarios.forEach((usuario) => {
 
                 if(usuario['latitudes_longitudes'] != undefined && usuario['metros_recorrer'] != undefined){
-
-                    if(contador_seguimiento >= 50 && seguirRepartidor.checked && fijado == usuario['id']){
-                        mapa.panTo(usuario['marcador'].position);
-                        contador_seguimiento = 0;
-                    }
 
                     if( usuario['frame'] > 1999){
                         return;
@@ -613,8 +618,7 @@
                 mapId: '7845e7dffe8cea37'
             });
 
-            setTimeout(actualizacion_logica, 1000);
-            id_procesar_vista = setTimeout(procesar_vista, 10);
+            setTimeout(actualizar, 10);
 
             velocidadRepartidor = document.getElementById('velocidadRepartidor');
             seguirRepartidor = document.getElementById('seguirRepartidor');

@@ -4,14 +4,16 @@
         require_once 'geometria/PolyUtil.php';
         require_once 'geometria/MathUtil.php';
 
+        $POST = json_decode(file_get_contents('php://input'), true);
+
         header('Content-Type: application/json');
 
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
-        $preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Clave = :clave AND Contraseña = :contrasena');
-        $preparada->bindValue(':clave', $_GET['clave']);
-        $preparada->bindValue(':contrasena', $_GET['contraseña']);
+        /*$preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Clave = :clave AND Contraseña = :contrasena');
+        $preparada->bindValue(':clave', $POST['clave']);
+        $preparada->bindValue(':contrasena', $POST['contraseña']);
         $preparada->execute();
 
         $usuarios = $preparada->fetchAll(PDO::FETCH_ASSOC);
@@ -21,18 +23,9 @@
             $resultado["mensaje"] = "El vendedor no existe";
             echo json_encode($resultado);
             exit();
-        }
+        }*/
 
-        $repartidor_seguido = json_decode($_GET['repartidor'],true);
-
-        $preparada = $conexion->prepare('SELECT latitud, longitud, velocidad FROM posiciones WHERE usuario = :repartidor ORDER BY fecha DESC;');
-        $preparada->bindValue(':repartidor', $repartidor_seguido['id']);
-        $preparada->execute();
-
-        $posiciones_repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC);
-        if(count($posiciones_repartidor) > 0 ){
-            $posiciones_repartidor[0]['velocidad'] = number_format( $posiciones_repartidor[0]['velocidad'] * 3.6, 1 ) . ' Km/h';
-        }
+        $repartidor_seguido = $POST['repartidor'];
 
         $preparada = $conexion->prepare('
             SELECT id, usuario, Nombre, latitud, longitud, velocidad, fecha
@@ -48,7 +41,7 @@
         $preparada->bindValue(':repartidor', $repartidor_seguido['id']);
         $preparada->execute();
 
-        $repartidores_pasados = json_decode($_GET['repartidores'],true);
+        $repartidores_pasados = $POST['repartidores'];
 
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
             if(isset($repartidores_pasados[$repartidor['usuario']])){
@@ -92,6 +85,20 @@
                     )
                 );  
             }
+        }
+
+        if( $repartidor_seguido['id'] == 0 ){
+            echo json_encode($resultado);
+            exit();
+        }
+
+        $preparada = $conexion->prepare('SELECT latitud, longitud, velocidad FROM posiciones WHERE usuario = :repartidor ORDER BY fecha DESC;');
+        $preparada->bindValue(':repartidor', $repartidor_seguido['id']);
+        $preparada->execute();
+
+        $posiciones_repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC);
+        if(count($posiciones_repartidor) > 0 ){
+            $posiciones_repartidor[0]['velocidad'] = number_format( $posiciones_repartidor[0]['velocidad'] * 3.6, 1 ) . ' Km/h';
         }
 
         $preparada = $conexion->prepare('SELECT TOP 1 id, ruta FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
