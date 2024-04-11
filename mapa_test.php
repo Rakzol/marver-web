@@ -242,11 +242,9 @@
                 };
 
                 Object.keys(repartidores).forEach( (id) => {
-                    let repartidor = repartidores[id];
-
                     datos['repartidores'][id] = {
-                        "lat": repartidor['marcador'].position['lat'],
-                        "lon": repartidor['marcador'].position['lng']
+                        "lat": repartidores[id]['marcador'].position['lat'],
+                        "lon": repartidores[id]['marcador'].position['lng']
                     };
                 } );
 
