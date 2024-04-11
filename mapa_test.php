@@ -178,6 +178,7 @@
 
                                 if(repartidor['id'] == 15) {
                                     console.log("metros_recorridos " + metros_recorridos + " metro_recorrer_todo_frame " + metro_recorrer_todo_frame + " movido " + ( metros_recorridos_tramo / metros_entre_puntos ) );
+                                    console.log(punto_final, punto_inicial, metros_recorridos_tramo / metros_entre_puntos);
                                 }
 
                                 console.log(punto_final, punto_inicial, metros_recorridos_tramo / metros_entre_puntos);
