@@ -133,10 +133,27 @@
             return [puntoIntermedioLatitud, puntoIntermedioLongitud];
         }
 
+        function calcularDistancia(lat1, lon1, lat2, lon2) {
+            const radioTierraKm = 6371; // Radio de la Tierra en kilómetros
+            const dLat = toRadians(lat2 - lat1);
+            const dLon = toRadians(lon2 - lon1);
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const distanciaKm = radioTierraKm * c;
+            const distanciaMetros = distanciaKm * 1000;
+            return distanciaMetros;
+        }
+
+        function toRadians(grados) {
+            return grados * Math.PI / 180;
+        }
+
         let mapa;
 
         let json_api;
-        let repartidores = [];
+        let repartidores = {};
 
         //2500
         let max_frame = 2500;
@@ -158,24 +175,26 @@
 
                 if( frame == 0 ){
 
-                    repartidores.forEach( (repartidor)=>{
-                        repartidor['marcador'].setMap(null);
-                    });
-                    repartidores = [];
+                    json_api['repartidores'].forEach( (repartidor) => {
 
-                    repartidores = json_api['repartidores'];
-                    repartidores.forEach( (repartidor) => {
+                        if(repartidores.hasOwnProperty(repartidor['id'])){
 
-                        let imagen = document.createElement('img');
-                        imagen.src = 'https://www.marverrefacciones.mx/android/marcador.png';
+                            repartidores(repartidor['id'])['polilinea'] = repartidor['polilinea'];
 
-                        let marcador = new ElementoMarcadorAvanzado({
-                            content: imagen,
-                            map: mapa,
-                            position: { lat: repartidor['polilinea'][0][1], lng: repartidor['polilinea'][0][0] }
-                        });
+                        }else{
 
-                        repartidor['marcador'] = marcador;
+                            let imagen = document.createElement('img');
+                            imagen.src = 'https://www.marverrefacciones.mx/android/marcador.png';
+
+                            let marcador = new ElementoMarcadorAvanzado({
+                                content: imagen,
+                                map: mapa,
+                                position: { lat: repartidor['polilinea'][0][1], lng: repartidor['polilinea'][0][0] }
+                            });
+
+                            repartidores[repartidor['id']]['marcador'] = marcador;
+                            repartidores[repartidor['id']]['polilinea'] = repartidor['polilinea'];
+                        }
                     } );
 
                 }else{
@@ -189,7 +208,7 @@
 
                             let punto_inicial = {lat: repartidor['polilinea'][c][1], lng: repartidor['polilinea'][c][0]};
                             let punto_final = {lat: repartidor['polilinea'][c+1][1], lng: repartidor['polilinea'][c+1][0]};
-                            let metros_entre_puntos = Esferica.computeDistanceBetween( punto_inicial, punto_final);
+                            let metros_entre_puntos = calcularDistancia( punto_inicial, punto_final);
 
                             metros_recorridos += metros_entre_puntos;
                             if( metros_recorridos >= metro_recorrer_todo_frame){
@@ -197,9 +216,6 @@
                                 let metros_recorridos_tramo = metros_recorridos - metro_recorrer_todo_frame;
 
                                 if( !isNaN(metros_recorridos_tramo / metros_entre_puntos) ){
-                                    //let posicion_nueva = Esferica.interpolate( punto_final, punto_inicial, metros_recorridos_tramo / metros_entre_puntos );
-                                    //repartidor['marcador'].position = { lat: posicion_nueva['lat'](), lng: posicion_nueva['lng']() };
-                                    /* Usar metodo propio porque el de google te lo pone directo en distancais cortas */
                                     let posicion_nueva = calcularPuntoIntermedio( punto_final['lat'], punto_final['lng'], punto_inicial['lat'], punto_inicial['lng'], metros_recorridos_tramo / metros_entre_puntos );
                                     repartidor['marcador'].position = { lat: posicion_nueva[0], lng: posicion_nueva[1] };
                                 }
@@ -243,12 +259,12 @@
                 })
                 .catch(error => {
                     console.error('Error al solicitar las ruta de los repartidores: ', error);
-                    setTimeout(actualizar, 10);
+                    actualizar();
                 })
                 .then(respuesta_json => {
                     frame = 0;
                     json_api = respuesta_json;
-                    setTimeout(actualizar, 10);
+                    actualizar();
                 });
             }
             else{
