@@ -267,6 +267,7 @@
                 .then(respuesta_json => {
                     frame = 0;
                     json_api = respuesta_json;
+                    console.log(respuesta_json);
                     actualizar();
                 });
             }
