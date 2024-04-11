@@ -181,7 +181,6 @@
                                     console.log(punto_final, punto_inicial, metros_recorridos_tramo / metros_entre_puntos);
                                 }
 
-                                console.log(punto_final, punto_inicial, metros_recorridos_tramo / metros_entre_puntos);
                                 let posicion_nueva = Esferica.interpolate( punto_final, punto_inicial, metros_recorridos_tramo / metros_entre_puntos );
                                 repartidor['marcador'].position = { lat: posicion_nueva['lat'](), lng: posicion_nueva['lng']() };
                                 break;
