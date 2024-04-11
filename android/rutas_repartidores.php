@@ -54,7 +54,7 @@
                     $resultado['repartidores'][] = array(
                         "id" => $repartidor['usuario'],
                         "nombre" => $repartidor['Nombre'],
-                        "tipo" => "camino",
+                        "tipo" => "caminoOO",
                         "color" => "#00000000",
                         "distancia" => $ors_calculado['features'][0]['properties']['segments'][0]['distance'],
                         "polilinea" => $ors_calculado['features'][0]['geometry']['coordinates']
