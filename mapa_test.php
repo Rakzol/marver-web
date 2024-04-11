@@ -160,8 +160,10 @@
 
                     repartidores.forEach( (repartidor) => {
 
-                        console.log(frame);
                         let metro_recorrer_todo_frame = frame / 2500 * repartidor['metros'];
+                        if(repartidor['id'] == 15) {
+                            console.log("metro_recorrer_todo_frame " + metro_recorrer_todo_frame);
+                        }
 
                         let metros_recorridos = 0;
 
@@ -173,6 +175,9 @@
                             let metros_entre_puntos = Esferica.computeDistanceBetween( punto_inicial, punto_final);
 
                             metros_recorridos += metros_entre_puntos;
+                            if(repartidor['id'] == 15) {
+                                console.log("metros_recorridos " + metros_recorridos);
+                            }
                             if( metros_recorridos >= metro_recorrer_todo_frame){
 
                                 let metros_recorridos_tramo = metros_recorridos - metro_recorrer_todo_frame;
@@ -200,7 +205,6 @@
                 };
 
                 repartidores.forEach( (repartidor) => {
-
                     datos['repartidores'][repartidor['id']] = {
                         "lat": repartidor['marcador'].position['lat'],
                         "lon": repartidor['marcador'].position['lng']
