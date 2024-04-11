@@ -214,7 +214,7 @@
                             metros_recorridos += metros_entre_puntos;
 
                             if(id == 15){
-                                console.log(metros_recorridos);
+                                console.log(metros_recorridos, ">=", metro_recorrer_todo_frame );
                             }
 
                             if( metros_recorridos >= metro_recorrer_todo_frame){
