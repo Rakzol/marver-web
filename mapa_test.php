@@ -172,12 +172,13 @@
                             let metros_entre_puntos = Esferica.computeDistanceBetween( punto_inicial, punto_final);
 
                             metros_recorridos += metros_entre_puntos;
-                            if(repartidor['id'] == 15) {
-                                console.log("metros_recorridos " + metros_recorridos + " metro_recorrer_todo_frame " + metro_recorrer_todo_frame);
-                            }
                             if( metros_recorridos >= metro_recorrer_todo_frame){
 
                                 let metros_recorridos_tramo = metros_recorridos - metro_recorrer_todo_frame;
+
+                                if(repartidor['id'] == 15) {
+                                    console.log("metros_recorridos " + metros_recorridos + " metro_recorrer_todo_frame " + metro_recorrer_todo_frame + " movido " + ( metros_recorridos_tramo / metros_entre_puntos ) );
+                                }
 
                                 let posicion_nueva = Esferica.interpolate( punto_final, punto_inicial, metros_recorridos_tramo / metros_entre_puntos );
                                 repartidor['marcador'].position = { lat: posicion_nueva['lat'](), lng: posicion_nueva['lng']() };
