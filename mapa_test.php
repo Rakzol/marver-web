@@ -118,7 +118,8 @@
         let json_api;
         let repartidores = [];
 
-        let frame = 2501;
+        let max_frame = 2500;
+        let frame = max_frame + 1;
 
         let velocidadRepartidor;
         let seguirRepartidor;
@@ -132,7 +133,7 @@
 
         function actualizar() {
 
-            if(frame < 2501){
+            if(frame <= max_frame){
 
                 if( frame == 0 ){
 
@@ -160,27 +161,19 @@
 
                     repartidores.forEach( (repartidor) => {
 
-                        let metro_recorrer_todo_frame = frame / 2500 * repartidor['distancia'];
-
+                        let metro_recorrer_todo_frame = frame / max_frame * repartidor['distancia'];
                         let metros_recorridos = 0;
 
                         for(let c = 0; c < repartidor['polilinea'].length - 1; c++ ){
 
                             let punto_inicial = {lat: repartidor['polilinea'][c][1], lng: repartidor['polilinea'][c][0]};
                             let punto_final = {lat: repartidor['polilinea'][c+1][1], lng: repartidor['polilinea'][c+1][0]};
-
                             let metros_entre_puntos = Esferica.computeDistanceBetween( punto_inicial, punto_final);
 
                             metros_recorridos += metros_entre_puntos;
                             if( metros_recorridos >= metro_recorrer_todo_frame){
 
                                 let metros_recorridos_tramo = metros_recorridos - metro_recorrer_todo_frame;
-
-                                if(repartidor['id'] == 15) {
-                                    console.log("metros_recorridos " + metros_recorridos + " metro_recorrer_todo_frame " + metro_recorrer_todo_frame + " movido " + ( metros_recorridos_tramo / metros_entre_puntos ) );
-                                    console.log(punto_final, punto_inicial, (metros_recorridos_tramo / metros_entre_puntos) );
-                                }
-
                                 let posicion_nueva = Esferica.interpolate( punto_final, punto_inicial, metros_recorridos_tramo / metros_entre_puntos );
                                 repartidor['marcador'].position = { lat: posicion_nueva['lat'](), lng: posicion_nueva['lng']() };
                                 break;
@@ -194,7 +187,7 @@
                 frame++;
             }
 
-            if(frame == 2501){
+            if(frame > max_frame){
 
                 let datos = {
                     "repartidor": {
