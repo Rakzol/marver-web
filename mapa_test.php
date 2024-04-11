@@ -241,8 +241,6 @@
                     "repartidores":{}
                 };
 
-                console.log(datos);
-
                 Object.keys(repartidores).forEach( (id) => {
                     datos['repartidores'][id] = {
                         "lat": repartidores[id]['marcador'].position['lat'],
@@ -267,7 +265,6 @@
                 .then(respuesta_json => {
                     frame = 0;
                     json_api = respuesta_json;
-                    console.log(respuesta_json);
                     actualizar();
                 });
             }
