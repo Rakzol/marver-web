@@ -56,6 +56,7 @@
                         "nombre" => $repartidor['Nombre'],
                         "tipo" => "caminoOO",
                         "color" => "#00000000",
+                        "distancia2" => $distancia,
                         "distancia" => $ors_calculado['features'][0]['properties']['segments'][0]['distance'],
                         "polilinea" => $ors_calculado['features'][0]['geometry']['coordinates']
                     );
