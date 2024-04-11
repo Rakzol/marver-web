@@ -195,10 +195,14 @@
                             if( metros_recorridos >= metro_recorrer_todo_frame){
 
                                 let metros_recorridos_tramo = metros_recorridos - metro_recorrer_todo_frame;
-                                //let posicion_nueva = Esferica.interpolate( punto_final, punto_inicial, metros_recorridos_tramo / metros_entre_puntos );
-                                //repartidor['marcador'].position = { lat: posicion_nueva['lat'](), lng: posicion_nueva['lng']() };
-                                let posicion_nueva = calcularPuntoIntermedio( punto_final['lat'], punto_final['lng'], punto_inicial['lat'], punto_inicial['lng'], metros_recorridos_tramo / metros_entre_puntos );
-                                repartidor['marcador'].position = { lat: posicion_nueva[0], lng: posicion_nueva[1] };
+
+                                if( !isNaN(metros_recorridos_tramo / metros_entre_puntos) ){
+                                    //let posicion_nueva = Esferica.interpolate( punto_final, punto_inicial, metros_recorridos_tramo / metros_entre_puntos );
+                                    //repartidor['marcador'].position = { lat: posicion_nueva['lat'](), lng: posicion_nueva['lng']() };
+                                    let posicion_nueva = calcularPuntoIntermedio( punto_final['lat'], punto_final['lng'], punto_inicial['lat'], punto_inicial['lng'], metros_recorridos_tramo / metros_entre_puntos );
+                                    repartidor['marcador'].position = { lat: posicion_nueva[0], lng: posicion_nueva[1] };
+                                }
+
                                 break;
                             }
                         }
