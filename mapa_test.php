@@ -202,15 +202,13 @@
 
                     Object.keys(repartidores).forEach( (id) => {
 
-                        let repartidor = repartidores[id];
-
-                        let metro_recorrer_todo_frame = frame / max_frame * repartidor['distancia'];
+                        let metro_recorrer_todo_frame = frame / max_frame * repartidores[id]['distancia'];
                         let metros_recorridos = 0;
 
-                        for(let c = 0; c < repartidor['polilinea'].length - 1; c++ ){
+                        for(let c = 0; c < repartidores[id]['polilinea'].length - 1; c++ ){
 
-                            let punto_inicial = {lat: repartidor['polilinea'][c][1], lng: repartidor['polilinea'][c][0]};
-                            let punto_final = {lat: repartidor['polilinea'][c+1][1], lng: repartidor['polilinea'][c+1][0]};
+                            let punto_inicial = {lat: repartidores[id]['polilinea'][c][1], lng: repartidores[id]['polilinea'][c][0]};
+                            let punto_final = {lat: repartidores[id]['polilinea'][c+1][1], lng: repartidores[id]['polilinea'][c+1][0]};
                             let metros_entre_puntos = calcularDistancia( punto_inicial, punto_final);
 
                             metros_recorridos += metros_entre_puntos;
@@ -220,7 +218,7 @@
 
                                 if( !isNaN(metros_recorridos_tramo / metros_entre_puntos) ){
                                     let posicion_nueva = calcularPuntoIntermedio( punto_final['lat'], punto_final['lng'], punto_inicial['lat'], punto_inicial['lng'], metros_recorridos_tramo / metros_entre_puntos );
-                                    repartidor['marcador'].position = { lat: posicion_nueva[0], lng: posicion_nueva[1] };
+                                    repartidores[id]['marcador'].position = { lat: posicion_nueva[0], lng: posicion_nueva[1] };
                                 }
 
                                 break;
