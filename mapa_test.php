@@ -161,9 +161,6 @@
                     repartidores.forEach( (repartidor) => {
 
                         let metro_recorrer_todo_frame = frame / 2500 * repartidor['distancia'];
-                        if(repartidor['id'] == 15) {
-                            console.log("metro_recorrer_todo_frame " + metro_recorrer_todo_frame);
-                        }
 
                         let metros_recorridos = 0;
 
@@ -176,7 +173,7 @@
 
                             metros_recorridos += metros_entre_puntos;
                             if(repartidor['id'] == 15) {
-                                console.log("metros_recorridos " + metros_recorridos);
+                                console.log("metros_recorridos " + metros_recorridos + " metro_recorrer_todo_frame " + metro_recorrer_todo_frame);
                             }
                             if( metros_recorridos >= metro_recorrer_todo_frame){
 
