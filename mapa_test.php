@@ -192,6 +192,7 @@
                                 position: { lat: repartidor['polilinea'][0][1], lng: repartidor['polilinea'][0][0] }
                             });
 
+                            repartidores[repartidor['id']] = {};
                             repartidores[repartidor['id']]['marcador'] = marcador;
                             repartidores[repartidor['id']]['polilinea'] = repartidor['polilinea'];
                         }
