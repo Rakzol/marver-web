@@ -180,6 +180,7 @@
                         if(repartidores.hasOwnProperty(repartidor['id'])){
 
                             repartidores[repartidor['id']]['polilinea'] = repartidor['polilinea'];
+                            repartidores[repartidor['id']]['distancia'] = repartidor['distancia'];
 
                         }else{
 
