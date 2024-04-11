@@ -195,6 +195,7 @@
                             repartidores[repartidor['id']] = {};
                             repartidores[repartidor['id']]['marcador'] = marcador;
                             repartidores[repartidor['id']]['polilinea'] = repartidor['polilinea'];
+                            repartidores[repartidor['id']]['distancia'] = repartidor['distancia'];
                         }
                     } );
 
@@ -213,17 +214,11 @@
 
                             metros_recorridos += metros_entre_puntos;
 
-                            if(id == 15){
-                                console.log(metros_recorridos, ">=", metro_recorrer_todo_frame );
-                            }
-
                             if( metros_recorridos >= metro_recorrer_todo_frame){
 
                                 let metros_recorridos_tramo = metros_recorridos - metro_recorrer_todo_frame;
 
-                                console.log("casi");
                                 if( !isNaN(metros_recorridos_tramo / metros_entre_puntos) ){
-                                    console.log("si");
                                     let posicion_nueva = calcularPuntoIntermedio( punto_final['lat'], punto_final['lng'], punto_inicial['lat'], punto_inicial['lng'], metros_recorridos_tramo / metros_entre_puntos );
                                     repartidores[id]['marcador'].position = { lat: posicion_nueva[0], lng: posicion_nueva[1] };
                                 }
