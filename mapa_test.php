@@ -210,6 +210,7 @@
                             let punto_inicial = {lat: repartidores[id]['polilinea'][c][1], lng: repartidores[id]['polilinea'][c][0]};
                             let punto_final = {lat: repartidores[id]['polilinea'][c+1][1], lng: repartidores[id]['polilinea'][c+1][0]};
                             let metros_entre_puntos = calcularDistancia( punto_inicial, punto_final);
+                            console.log(metros_entre_puntos);
 
                             metros_recorridos += metros_entre_puntos;
                             if( metros_recorridos >= metro_recorrer_todo_frame){
