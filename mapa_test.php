@@ -113,6 +113,26 @@
 
 <script>
 
+        function calcularPuntoIntermedio(latitud1, longitud1, latitud2, longitud2, porcentaje) {
+            // Convertir grados a radianes
+            const lat1Rad = latitud1 * Math.PI / 180;
+            const lon1Rad = longitud1 * Math.PI / 180;
+            const lat2Rad = latitud2 * Math.PI / 180;
+            const lon2Rad = longitud2 * Math.PI / 180;
+
+            // Radio de la Tierra en metros (aproximado)
+            const radioTierra = 6371 * 1000; // en metros
+
+            // Calcular la distancia entre los dos puntos
+            const distancia = Math.acos(Math.sin(lat1Rad) * Math.sin(lat2Rad) + Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.cos(lon2Rad - lon1Rad)) * radioTierra;
+
+            // Calcular el punto intermedio
+            const puntoIntermedioLatitud = latitud1 + (latitud2 - latitud1) * porcentaje;
+            const puntoIntermedioLongitud = longitud1 + (longitud2 - longitud1) * porcentaje;
+
+            return [puntoIntermedioLatitud, puntoIntermedioLongitud];
+        }
+
         let mapa;
 
         let json_api;
@@ -175,8 +195,10 @@
                             if( metros_recorridos >= metro_recorrer_todo_frame){
 
                                 let metros_recorridos_tramo = metros_recorridos - metro_recorrer_todo_frame;
-                                let posicion_nueva = Esferica.interpolate( punto_final, punto_inicial, metros_recorridos_tramo / metros_entre_puntos );
-                                repartidor['marcador'].position = { lat: posicion_nueva['lat'](), lng: posicion_nueva['lng']() };
+                                //let posicion_nueva = Esferica.interpolate( punto_final, punto_inicial, metros_recorridos_tramo / metros_entre_puntos );
+                                //repartidor['marcador'].position = { lat: posicion_nueva['lat'](), lng: posicion_nueva['lng']() };
+                                let posicion_nueva = calcularPuntoIntermedio( punto_final['lat'], punto_final['lng'], punto_inicial['lat'], punto_inicial['lng'], metros_recorridos_tramo / metros_entre_puntos );
+                                repartidor['marcador'].position = { lat: posicion_nueva[0], lng: posicion_nueva[1] };
                                 break;
                             }
                         }
