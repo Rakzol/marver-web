@@ -115,7 +115,7 @@
 
         let mapa;
 
-        let json_api = undefined;
+        let json_api;
         let repartidores = [];
 
         let frame = 2501;
@@ -198,6 +198,14 @@
                     },
                     "repartidores":{}
                 };
+
+                repartidores.forEach( (repartidor) => {
+
+                    datos['repartidores'][repartidor['id']] = {
+                        "lat": repartidor['marcador'].position['lat'],
+                        "lon": repartidor['marcador'].position['lng']
+                    };
+                } );
 
                 fetch('android/rutas_repartidores', {
                     method: 'POST',
