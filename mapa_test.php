@@ -210,14 +210,15 @@
                             let punto_inicial = {lat: repartidores[id]['polilinea'][c][1], lng: repartidores[id]['polilinea'][c][0]};
                             let punto_final = {lat: repartidores[id]['polilinea'][c+1][1], lng: repartidores[id]['polilinea'][c+1][0]};
                             let metros_entre_puntos = calcularDistancia( punto_inicial['lat'], punto_inicial['lng'], punto_final['lat'], punto_final['lng']);
-                            console.log(metros_entre_puntos);
 
                             metros_recorridos += metros_entre_puntos;
                             if( metros_recorridos >= metro_recorrer_todo_frame){
 
                                 let metros_recorridos_tramo = metros_recorridos - metro_recorrer_todo_frame;
 
+                                console.log("casi");
                                 if( !isNaN(metros_recorridos_tramo / metros_entre_puntos) ){
+                                    console.log("si");
                                     let posicion_nueva = calcularPuntoIntermedio( punto_final['lat'], punto_final['lng'], punto_inicial['lat'], punto_inicial['lng'], metros_recorridos_tramo / metros_entre_puntos );
                                     repartidores[id]['marcador'].position = { lat: posicion_nueva[0], lng: posicion_nueva[1] };
                                 }
