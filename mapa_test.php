@@ -199,7 +199,9 @@
 
                 }else{
 
-                    repartidores.forEach( (repartidor) => {
+                    Object.keys(repartidores).forEach( (id) => {
+
+                        let repartidor = repartidores[id];
 
                         let metro_recorrer_todo_frame = frame / max_frame * repartidor['distancia'];
                         let metros_recorridos = 0;
@@ -240,8 +242,10 @@
                     "repartidores":{}
                 };
 
-                repartidores.forEach( (repartidor) => {
-                    datos['repartidores'][repartidor['id']] = {
+                Object.keys(repartidores).forEach( (id) => {
+                    let repartidor = repartidores[id];
+
+                    datos['repartidores'][id] = {
                         "lat": repartidor['marcador'].position['lat'],
                         "lon": repartidor['marcador'].position['lng']
                     };
