@@ -212,6 +212,11 @@
                             let metros_entre_puntos = calcularDistancia( punto_inicial['lat'], punto_inicial['lng'], punto_final['lat'], punto_final['lng']);
 
                             metros_recorridos += metros_entre_puntos;
+
+                            if(id == 15){
+                                console.log(metros_recorridos);
+                            }
+
                             if( metros_recorridos >= metro_recorrer_todo_frame){
 
                                 let metros_recorridos_tramo = metros_recorridos - metro_recorrer_todo_frame;
