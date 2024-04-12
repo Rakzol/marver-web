@@ -202,18 +202,18 @@
 
             if( $indice_pedido == -1 ){
 
-                $resultado['ruta']['legs'][0]['pedido'] = $resultado['pedidos'][0];
+                $resultado['ruta']['legs'][0]['pedido'] = $pedidos_repartidor[0];
 
-                if( $resultado['pedidos'][0]['status'] == 4 ){
+                if( $pedidos_repartidor[0]['status'] == 4 ){
                     $resultado['ruta']['legs'][0]['color'] = "#6495ED";
                     $leg = $resultado['ruta']['legs'][0];
                 }
 
             }else{
 
-                $resultado['ruta']['legs'][$indice_leg]['pedido'] = $resultado['pedidos'][$indice_pedido];
+                $resultado['ruta']['legs'][$indice_leg]['pedido'] = $pedidos_repartidor[$indice_pedido];
 
-                if( $resultado['pedidos'][$indice_pedido]['status'] == 4 && !$pendien_encontrado){
+                if( $pedidos_repartidor[$indice_pedido]['status'] == 4 && !$pendien_encontrado){
                     $resultado['ruta']['legs'][$indice_leg]['color'] = "#6495ED";
                     $leg = $resultado['ruta']['legs'][$indice_leg];
                     $pendien_encontrado = true;
