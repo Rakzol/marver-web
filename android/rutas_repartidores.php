@@ -233,13 +233,13 @@
                     $leg['polyline']['decodedPolyline'],
                     20
                 )){
-                    $color = "#FFA500";
+                    $color = "#FF0000";
                     foreach( $leg['polyline']['decodedPolyline'] as $decodedPoint ){
                         $ors_calculada = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $decodedPoint['lng'], $decodedPoint['lat']);
         
                         if( $ors_calculada['features'][0]['properties']['segments'][0]['distance'] < $menor_distancia ){
                             $menor_distancia = $ors_calculada['features'][0]['properties']['segments'][0]['distance'];
-                            $resultado['incorporacion']['color'] = $color;
+                            $resultado['incorporacion']['color'] = "#FFA500";
                             $resultado['incorporacion']['polilinea'] = $ors_calculada['features'][0]['geometry']['coordinates'];
                         }
                     }
