@@ -240,9 +240,9 @@
                         if(repartidor['color'] != '#00000000'){
 
                             let polilinea = new Polilinea({
-                                path: latitudes_longitudes,
+                                path: repartidor['polilinea'],
                                 geodesic: true,
-                                strokeColor: repartidor['polilinea'],
+                                strokeColor: repartidor['color'],
                                 strokeOpacity: 1.0,
                                 strokeWeight: 3
                             });
