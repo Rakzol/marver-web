@@ -192,7 +192,20 @@
                                 position: { lat: repartidor['polilinea'][0][1], lng: repartidor['polilinea'][0][0] }
                             });
 
+                            let infowindow = new VentanaInformacion({
+                                content: '<p style="margin: 0;" ><strong>' + repartidor['id'] + ' </strong> ' + repartidor['nombre'] + '</p>'
+                            });
+
+                            marcador.addListener("click", () => {
+                                infowindow.open({
+                                    anchor: marcador,
+                                    map: mapa,
+                                });
+                            });
+
                             repartidores[repartidor['id']] = {};
+                            repartidores[repartidor['id']]['id'] = repartidor['id'];
+                            repartidores[repartidor['id']]['nombre'] = repartidor['nombre'];
                             repartidores[repartidor['id']]['marcador'] = marcador;
                             repartidores[repartidor['id']]['polilinea'] = repartidor['polilinea'];
                             repartidores[repartidor['id']]['distancia'] = repartidor['distancia'];
