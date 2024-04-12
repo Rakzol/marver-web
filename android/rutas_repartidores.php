@@ -197,7 +197,6 @@
         $pedidos_repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC);
 
         $indice_leg = 0;
-        $pendien_encontrado = false;
         foreach( $resultado['ruta']['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
 
             if( $indice_pedido == -1 ){
@@ -213,10 +212,9 @@
 
                 $resultado['ruta']['legs'][$indice_leg]['pedido'] = $pedidos_repartidor[$indice_pedido];
 
-                if( $pedidos_repartidor[$indice_pedido]['status'] == 4 && !$pendien_encontrado){
+                if( $pedidos_repartidor[$indice_pedido]['status'] == 4 && !isset($leg)){
                     $resultado['ruta']['legs'][$indice_leg]['color'] = "#6495ED";
                     $leg = $resultado['ruta']['legs'][$indice_leg];
-                    $pendien_encontrado = true;
                 }
 
                 $indice_leg++;
