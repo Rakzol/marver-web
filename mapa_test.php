@@ -201,6 +201,10 @@
                     });
                     polilineas = [];
 
+                    if( json_api.hasOwnProperty('incorporacion') ){
+
+                    }
+
                     json_api['repartidores'].forEach( (repartidor) => {
 
                         if(repartidores.hasOwnProperty(repartidor['id'])){
