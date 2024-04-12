@@ -201,18 +201,6 @@
                     });
                     polilineas = [];
 
-                    if( json_api.hasOwnProperty('incorporacion') ){
-                        let polilinea = new Polilinea({
-                            path: GeoPolylineToGooglePolyline(json_api['incorporacion']['polilinea']),
-                            geodesic: true,
-                            strokeColor: json_api['incorporacion']['color'],
-                            strokeOpacity: 1.0,
-                            strokeWeight: 3
-                        });
-                        polilinea.setMap(mapa);
-                        polilineas.push(polilinea);
-                    }
-
                     json_api['repartidores'].forEach( (repartidor) => {
 
                         if(repartidores.hasOwnProperty(repartidor['id'])){
@@ -270,6 +258,18 @@
                             polilineas.push(polilinea);
                         }
                     } );
+
+                    if( json_api.hasOwnProperty('incorporacion') ){
+                        let polilinea = new Polilinea({
+                            path: GeoPolylineToGooglePolyline(json_api['incorporacion']['polilinea']),
+                            geodesic: true,
+                            strokeColor: json_api['incorporacion']['color'],
+                            strokeOpacity: 1.0,
+                            strokeWeight: 3
+                        });
+                        polilinea.setMap(mapa);
+                        polilineas.push(polilinea);
+                    }
 
                 }else{
 
