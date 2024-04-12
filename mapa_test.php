@@ -203,9 +203,9 @@
 
                     if( json_api.hasOwnProperty('incorporacion') ){
                         let polilinea = new Polilinea({
-                            path: GeoPolylineToGooglePolyline(incorporacion['polilinea']),
+                            path: GeoPolylineToGooglePolyline(json_api['incorporacion']['polilinea']),
                             geodesic: true,
-                            strokeColor: incorporacion['color'],
+                            strokeColor: json_api['incorporacion']['color'],
                             strokeOpacity: 1.0,
                             strokeWeight: 3
                         });
