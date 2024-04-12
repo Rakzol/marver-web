@@ -150,6 +150,13 @@
             return grados * Math.PI / 180;
         }
 
+        function GeoPolylineToGooglePolyline(geoPolylines){
+            let googlePolylines = [];
+            geoPolylines.forEach( (geoPolyline)=> {
+                googlePolylines.push( { lat: geoPolyline[1], lng: geoPolyline[0] } );
+            } );
+        }
+
         let mapa;
 
         let json_api;
@@ -239,15 +246,15 @@
 
                         if(repartidor['color'] != '#00000000'){
 
-                            /*let polilinea = new Polilinea({
-                                path: repartidor['polilinea'],
+                            let polilinea = new Polilinea({
+                                path: GeoPolylineToGooglePolyline(repartidor['polilinea']),
                                 geodesic: true,
                                 strokeColor: repartidor['color'],
                                 strokeOpacity: 1.0,
                                 strokeWeight: 3
                             });
                             polilinea.setMap(mapa);
-                            polilineas.push(polilinea);*/
+                            polilineas.push(polilinea);
                         }
                     } );
 
