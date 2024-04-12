@@ -170,6 +170,8 @@
         let max_frame = 2500;
         let frame = max_frame + 1;
 
+        let polilineas = [];
+
         let velocidadRepartidor;
         let seguirRepartidor;
 
@@ -185,6 +187,11 @@
             if(frame <= max_frame){
 
                 if( frame == 0 ){
+
+                    polilineas.forEach( (polilinea)=>{
+                        polilinea.setMap(null);
+                    });
+                    polilineas = [];
 
                     json_api['repartidores'].forEach( (repartidor) => {
 
@@ -227,6 +234,20 @@
                             repartidores[repartidor['id']]['marcador'] = marcador;
                             repartidores[repartidor['id']]['polilinea'] = repartidor['polilinea'];
                             repartidores[repartidor['id']]['distancia'] = repartidor['distancia'];
+                            repartidores[repartidor['id']]['color'] = repartidor['color'];
+                        }
+
+                        if(repartidor['color'] != '#00000000'){
+
+                            let polilinea = new Polilinea({
+                                path: latitudes_longitudes,
+                                geodesic: true,
+                                strokeColor: repartidor['polilinea'],
+                                strokeOpacity: 1.0,
+                                strokeWeight: 3
+                            });
+                            polilinea.setMap(mapa);
+                            polilineas.push(polilinea);
                         }
                     } );
 
@@ -312,10 +333,7 @@
 
             if( fijado == usuario_encontrado['id'] ){
 
-                polilineas.forEach( (polilinea)=>{
-                    polilinea.setMap(null);
-                });
-                polilineas = [];
+
 
                 marcadores.forEach( (marcador)=>{
                     marcador.setMap(null);
