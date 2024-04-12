@@ -330,6 +330,11 @@
                             polilineas.push(polilinea);
 
                         } );
+                    }else{
+                        marcadores_pedido.forEach( (marcador_pedido)=>{
+                            marcador_pedido.setMap(null);
+                        });
+                        marcadores_pedido = []; 
                     }
 
                 }else{
