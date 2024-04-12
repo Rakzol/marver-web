@@ -105,7 +105,7 @@
             $posiciones_repartidor[0]['velocidad'] = number_format( $posiciones_repartidor[0]['velocidad'] * 3.6, 1 ) . ' Km/h';
         }
 
-        $preparada = $conexion->prepare('SELECT TOP 1 id, ruta FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
+        $preparada = $conexion->prepare('SELECT TOP 1 id, ruta, fecha_inicio FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
         $preparada->bindValue(':repartidor', $repartidor_seguido['id']);
         $preparada->execute();
 
@@ -196,23 +196,32 @@
 
         $pedidos_repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC);
 
-        $resultado['pedidos'] = $pedidos_repartidor;
+        $indice_leg = 0;
+        $pendien_encontrado = false;
+        foreach( $resultado['ruta']['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
 
-        if( $resultado['ruta']['optimizedIntermediateWaypointIndex'][0] == -1 ){
-            if( $resultado['pedidos'][0]['status'] == 4 ){
-                $resultado['ruta']['legs'][0]['color'] = "#6495ED";
-                $leg = $resultado['ruta']['legs'][0];
-            }
-        }else{
-            $indice_leg = 0;
-            foreach( $resultado['ruta']['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
-                if( $resultado['pedidos'][$indice_pedido]['status'] == 4 ){
+            if( $indice_pedido == -1 ){
+
+                $resultado['ruta']['legs'][0]['pedido'] = $resultado['pedidos'][0];
+
+                if( $resultado['pedidos'][0]['status'] == 4 ){
+                    $resultado['ruta']['legs'][0]['color'] = "#6495ED";
+                    $leg = $resultado['ruta']['legs'][0];
+                }
+
+            }else{
+
+                $resultado['ruta']['legs'][$indice_leg]['pedido'] = $resultado['pedidos'][$indice_pedido];
+
+                if( $resultado['pedidos'][$indice_pedido]['status'] == 4 && !$pendien_encontrado){
                     $resultado['ruta']['legs'][$indice_leg]['color'] = "#6495ED";
                     $leg = $resultado['ruta']['legs'][$indice_leg];
-                    break;
+                    $pendien_encontrado = true;
                 }
-                $indice_leg += 1;
+
+                $indice_leg++;
             }
+
         }
 
         if(!isset($leg)){
