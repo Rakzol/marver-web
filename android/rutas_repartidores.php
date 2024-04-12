@@ -223,27 +223,27 @@
         $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $leg['endLocation']['latLng']['latitude'], 'lng' => $leg['endLocation']['latLng']['longitude'] ] );
         if( $distancia > 20 ){
 
-            $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $posiciones_repartidor[0]['latitud'], 'lng' => $posiciones_repartidor[0]['longitud'] ] );
-            if( $distancia > 20 ){
+            $color = "#6495ED";
+            $menor_distancia = INF;
+            if ( ! \GeometryLibrary\PolyUtil::isLocationOnPath(
+                ['lat' => $posiciones_repartidor[0]['latitud'], 'lng' => $posiciones_repartidor[0]['longitud']],
+                $leg['polyline']['decodedPolyline'],
+                20
+            )){
+                $color = "#FF0000";
+                foreach( $leg['polyline']['decodedPolyline'] as $decodedPoint ){
+                    $ors_calculada = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $decodedPoint['lng'], $decodedPoint['lat']);
     
-                $color = "#6495ED";
-                $menor_distancia = INF;
-                if ( ! \GeometryLibrary\PolyUtil::isLocationOnPath(
-                    ['lat' => $posiciones_repartidor[0]['latitud'], 'lng' => $posiciones_repartidor[0]['longitud']],
-                    $leg['polyline']['decodedPolyline'],
-                    20
-                )){
-                    $color = "#FF0000";
-                    foreach( $leg['polyline']['decodedPolyline'] as $decodedPoint ){
-                        $ors_calculada = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $decodedPoint['lng'], $decodedPoint['lat']);
-        
-                        if( $ors_calculada['features'][0]['properties']['segments'][0]['distance'] < $menor_distancia ){
-                            $menor_distancia = $ors_calculada['features'][0]['properties']['segments'][0]['distance'];
-                            $resultado['incorporacion']['color'] = "#FFA500";
-                            $resultado['incorporacion']['polilinea'] = $ors_calculada['features'][0]['geometry']['coordinates'];
-                        }
+                    if( $ors_calculada['features'][0]['properties']['segments'][0]['distance'] < $menor_distancia ){
+                        $menor_distancia = $ors_calculada['features'][0]['properties']['segments'][0]['distance'];
+                        $resultado['incorporacion']['color'] = "#FFA500";
+                        $resultado['incorporacion']['polilinea'] = $ors_calculada['features'][0]['geometry']['coordinates'];
                     }
                 }
+            }
+
+            $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $posiciones_repartidor[0]['latitud'], 'lng' => $posiciones_repartidor[0]['longitud'] ] );
+            if( $distancia > 20 ){
 
                 $ors_calculado = polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'] );
 
@@ -256,6 +256,7 @@
                     "polilinea" => $ors_calculado['features'][0]['geometry']['coordinates']
                 );
             }else{
+
                 $coordenadas = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])['features'][0]['geometry']['coordinates'][0];
     
                 $resultado['repartidores'][] = array(
@@ -270,7 +271,6 @@
                     )
                 );
             }
-
         }else{
             //$coordenadas = polilinea_ors($leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'], $leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'])['features'][0]['geometry']['coordinates'][0];
 
