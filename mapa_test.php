@@ -270,8 +270,8 @@
                 let datos = {
                     "repartidor": {
                         "id": repartidor_seguido['id'],
-                        "lat": repartidor_seguido['marcador']['lat'],
-                        "lon": repartidor_seguido['marcador']['lng']
+                        "lat": repartidor_seguido['marcador']['position']['lat'],
+                        "lon": repartidor_seguido['marcador']['position']['lng']
                     },
                     "repartidores":{}
                 };
