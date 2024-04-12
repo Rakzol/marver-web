@@ -150,6 +150,7 @@
         }
         $ruta_repartidor = $rutas_repartidores[0];
 
+        $resultado['id'] = $ruta_repartidor['id'];
         $rutas = json_decode( str_replace('\\', '\\\\', $ruta_repartidor['ruta']), true);
 
         for( $c = 0; $c < count($rutas['routes'][0]['legs']); $c++ ){
