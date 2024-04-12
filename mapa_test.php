@@ -173,8 +173,8 @@
             }
         }
 
-        let id_pedido = 0;
-        let marcadores_pedido = [];
+        let id_ruta = 0;
+        let pedidos = [];
 
         let id_actualizar;
 
@@ -276,14 +276,14 @@
 
                     if( json_api.hasOwnProperty('id') ){
 
-                        if( json_api['id'] != id_pedido ){
+                        if( json_api['id'] != id_ruta ){
 
-                            id_pedido = json_api['id'];
+                            id_ruta = json_api['id'];
 
-                            marcadores_pedido.forEach( (marcador_pedido)=>{
-                                marcador_pedido.setMap(null);
+                            pedidos.forEach( (pedido)=>{
+                                pedido['marcador'].setMap(null);
                             });
-                            marcadores_pedido = [];
+                            pedidos = [];
 
                             for(let c = 0; c < json_api['ruta']['legs'].length - 1; c++){
 
@@ -310,10 +310,28 @@
                                     });
                                 });
 
-                                marcadores_pedido.push(marcador);
+                                pedido = {};
+                                pedido['marcador'] = marcador;
+                                pedido['status'] = leg['pedido']['status'];
+                                pedidos.push(pedido);
                             }
 
                         }else{
+
+                            for(let c = 0; c < json_api['ruta']['legs'].length - 1; c++){
+
+                                let leg = json_api['ruta']['legs'][c];
+
+                                if( leg['pedido']['status'] != pedidos[c]['status'] ){
+                                    pedidos[c]['status'] = leg['pedido']['status'];
+
+                                    let imagen = document.createElement('img');
+                                    imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_cliente_' + (c+1) + ( leg['pedido']['status'] != 4 ? '_verde' : '' ) + '.png';
+                                
+                                    pedidos[c]['marcador']['content'] = imagen;
+                                }
+
+                            }
 
                         }
 
@@ -331,12 +349,12 @@
 
                         } );
                     }else{
-                        id_pedido = 0;
-                        
-                        marcadores_pedido.forEach( (marcador_pedido)=>{
-                            marcador_pedido.setMap(null);
+                        id_ruta = 0;
+
+                        pedidos.forEach( (pedido)=>{
+                            pedido['marcador'].setMap(null);
                         });
-                        marcadores_pedido = []; 
+                        pedidos = [];
                     }
 
                 }else{
@@ -417,386 +435,6 @@
             }
         }
 
-        function dibujar_polilineas(usuario_encontrado, ruta, polilinea_primera_leg){
-
-            if( fijado == usuario_encontrado['id'] ){
-
-                marcadores.forEach( (marcador)=>{
-                    marcador.setMap(null);
-                });
-                marcadores = [];
-
-                let latitud_longitud_limite = new LimitesLatitudLongitud();
-
-                for( c = 0 ; c < ruta['legs'].length; c++ ){
-                    let leg = ruta['legs'][c];
-                    
-                    if( c > 0 ){
-                        let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
-                        let polilinea = new Polilinea({
-                            path: latitudes_longitudes,
-                            geodesic: true,
-                            strokeColor: '#000000',
-                            strokeOpacity: 1.0,
-                            strokeWeight: 3
-                        });
-                        polilinea.setMap(mapa);
-                        polilineas.push(polilinea);
-
-                        latitudes_longitudes.forEach((latitud_longitud)=>{
-                            latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
-                        });
-                    }
-
-                    let imagen = document.createElement('img');
-                    if( c == ruta['legs'].length - 1 ){
-                        imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_marver.png';
-                    }else{
-                        imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_cliente_' + (c + 1) +'.png';
-                    }
-
-                    let marcador = new ElementoMarcadorAvanzado({
-                        content: imagen,
-                        map: mapa,
-                        position: { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] }
-                    });
-
-                    let contenido = '';
-                    if( c == ruta['legs'].length - 1 ){
-                        contenido = '<p style="margin: 0;" ><strong>' + ruta['duration']  + ' </strong>' + ruta['duration'] + '</p>';
-                    }else{
-                        let indice = pedidos_consultados.length > 1 ? orden_pedidos[c] : 0;
-                        contenido = '<p style="margin: 0;" ><strong>' + pedidos_consultados[indice]['folio']  + ' </strong>' + leg['duration'] + '</p>';
-                    }
-                    let infowindow = new VentanaInformacion({
-                        content: contenido
-                    });
-
-                    marcador.addListener("click", () => {
-                        infowindow.open({
-                            anchor: marcador,
-                            map: mapa,
-                        });
-                    });
-
-                    infowindow.open({
-                        anchor: marcador,
-                        map: mapa,
-                    });
-
-                    marcadores.push(marcador);
-                }
-
-                if(polilinea_primera_leg){
-                    usuario_encontrado['polilinea'] = new Polilinea({
-                        path: usuario_encontrado['latitudes_longitudes'],
-                        geodesic: true,
-                        strokeColor: '#6495ED',
-                        strokeOpacity: 1.0,
-                        strokeWeight: 3
-                    });
-                    usuario_encontrado['polilinea'].setMap(mapa);
-                    polilineas.push(usuario_encontrado['polilinea']);
-
-                    usuario_encontrado['latitudes_longitudes'].forEach((latitud_longitud)=>{
-                        latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
-                    });
-
-                    let latitudes_longitudes = Codificador.decodePath(ruta['legs'][0]['polyline']['encodedPolyline']);
-
-                    let polilinea = new Polilinea({
-                        path: latitudes_longitudes,
-                        geodesic: true,
-                        strokeColor: '#6495ED',
-                        strokeOpacity: 1.0,
-                        strokeWeight: 3
-                    });
-                    polilinea.setMap(mapa);
-                    polilineas.push(polilinea);
-
-                    latitudes_longitudes.forEach((latitud_longitud)=>{
-                        latitud_longitud_limite.extend({lat: latitud_longitud['lat'](), lng: latitud_longitud['lng']()});
-                    });
-                }
-
-                if(consultar_pedidos){
-                    if(!latitud_longitud_limite['isEmpty']()){
-                        mapa.fitBounds(latitud_longitud_limite,150);
-                    }else{
-                        mapa.setZoom(18.5);
-                        //mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
-                        mapa.panTo({lat: usuario_encontrado['latitudes_longitudes'][0]['lat'](), lng: usuario_encontrado['latitudes_longitudes'][0]['lng']()});
-                    }
-                    consultar_pedidos = false;
-                }
-            }
-        }
-
-        function procesar_logica(respuesta_json) {
-            clearTimeout(id_procesar_vista);
-
-            respuesta_json.forEach((usuario) => {
-
-                let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == usuario['usuario']; });
-
-                if (usuario_encontrado != undefined) {
-
-                    usuario_encontrado['velocidad'] = usuario['velocidad'];
-
-                    if( consultar_pedidos || usuario_encontrado['posicion_final']['lat'] != usuario['latitud'] || usuario_encontrado['posicion_final']['lng'] != usuario['longitud'] ){
-                        consultas_polilineas += 1;
-
-                        if( fijado == usuario_encontrado['id'] ){
-                            velocidadRepartidor.innerText = (usuario_encontrado['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-                        }
-                        
-                        let datos_envio = new FormData();
-                        datos_envio.append('clave',usuario_encontrado['id']);
-
-                        fetch('android/pedidos_en_ruta_test', {
-                            method: "POST",
-                            body: datos_envio
-                        })
-                        .then(respuesta => respuesta.json())
-                        .then(pedidos => {
-
-                            json_intermedios = [];
-
-                            if( fijado == usuario_encontrado['id'] ){
-                                pedidos_consultados = [];
-                            }
-
-                            pedidos.forEach( (pedido) =>{
-                                if( pedido['latitud'] != null && pedido['longitud'] != null ){
-                                    if( fijado == usuario_encontrado['id'] ){
-                                        pedidos_consultados.push(pedido);
-                                    }
-                                    json_intermedios.push({
-                                        location:{
-                                            latLng:{
-                                                latitude: pedido['latitud'],
-                                                longitude: pedido['longitud']
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-
-                            json_envio = {
-                                origin: {
-                                    location: {
-                                        latLng: {
-                                            latitude: usuario['latitud'],
-                                            longitude: usuario['longitud']
-                                        }
-                                    }
-                                },
-                                destination: {
-                                    location: {
-                                        latLng: {
-                                            latitude: 25.7942362,
-                                            longitude: -108.9858341
-                                        }
-                                    }
-                                },
-                                travelMode: "TWO_WHEELER",
-                                routingPreference: "TRAFFIC_AWARE"
-                                };
-
-                            if(json_intermedios.length > 0){
-                                json_envio['intermediates'] = json_intermedios;
-                                json_envio['optimizeWaypointOrder'] = 'true';
-                            }
-
-                            fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "X-Goog-Api-Key": "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo",
-                                    "X-Goog-FieldMask": "routes.duration,routes.distanceMeters,routes.legs.distanceMeters,routes.optimizedIntermediateWaypointIndex,routes.legs.duration,routes.legs.polyline.encodedPolyline,routes.legs.startLocation,routes.legs.endLocation"
-                                },
-                                body: JSON.stringify(json_envio)
-                            })
-                            .then(response => response.json())
-                            .then(rutas => {
-
-                                if(pedidos_consultados.length > 0 && fijado == usuario_encontrado['id']){
-                                    orden_pedidos = rutas['routes'][0]['optimizedIntermediateWaypointIndex'];
-                                }
-
-                                let leg = rutas['routes'][0]['legs'][0];
-                                let latitudes_longitudes = Codificador.decodePath(leg['polyline']['encodedPolyline']);
-
-                                if( Esferica.computeDistanceBetween( { lat: usuario['latitud'], lng: usuario['longitud'] }, { lat: leg['endLocation']['latLng']['latitude'], lng: leg['endLocation']['latLng']['longitude'] } ) <= 60 ){
-                                    clearTimeout(id_procesar_vista);
-
-                                    usuario_encontrado['metros_recorrer'] = 0;
-                                    usuario_encontrado['frame'] = 0;
-                                    usuario_encontrado['latitudes_longitudes'] = [];
-                                    usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
-                                    usuario_encontrado['latitudes_longitudes'].push(latitudes_longitudes[latitudes_longitudes.length - 1]);
-                                    usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
-
-                                    dibujar_polilineas(usuario_encontrado, rutas['routes'][0], false);
-
-                                    consultas_polilineas -= 1;
-                                    id_procesar_vista = setTimeout(procesar_vista, 10);
-                                }else{
-
-                                    fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
-                                        method: "POST",
-                                        headers: {
-                                            "Content-Type": "application/json",
-                                            "X-Goog-Api-Key": "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo",
-                                            "X-Goog-FieldMask": "routes.distanceMeters,routes.polyline"
-                                        },
-                                        body: JSON.stringify({
-                                            origin: {
-                                                location: {
-                                                    latLng: {
-                                                        latitude: usuario_encontrado['marcador'].position['lat'],
-                                                        longitude: usuario_encontrado['marcador'].position['lng']
-                                                    }
-                                                }
-                                            },
-                                            destination: {
-                                                location: {
-                                                    latLng: {
-                                                        latitude: usuario['latitud'],
-                                                        longitude: usuario['longitud']
-                                                    }
-                                                }
-                                            },
-                                            travelMode: "TWO_WHEELER",
-                                            routingPreference: "TRAFFIC_AWARE"
-                                        })
-                                    })
-                                    .then(response => response.json())
-                                    .then(ruta => {
-                                        clearTimeout(id_procesar_vista);
-
-                                        if(!ruta['routes'][0].hasOwnProperty('distanceMeters')){
-                                            ruta['routes'][0]['distanceMeters'] = 0;
-                                        }
-                                        usuario_encontrado['metros_recorrer'] = ruta['routes'][0]['distanceMeters'];
-                                        usuario_encontrado['frame'] = 0;
-                                        usuario_encontrado['posicion_final'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
-                                        usuario_encontrado['latitudes_longitudes'] = Codificador.decodePath(ruta['routes'][0]['polyline']['encodedPolyline']);
-
-                                        dibujar_polilineas(usuario_encontrado, rutas['routes'][0], true);
-
-                                        consultas_polilineas -= 1;
-                                        id_procesar_vista = setTimeout(procesar_vista, 10);
-                                    })
-                                    .catch(error => {
-                                        consultas_polilineas -= 1;
-                                        console.error('Error:', error);
-                                    });
-                                }
-
-                            })
-                            .catch(error => {
-                                consultas_polilineas -= 1;
-                                console.error('Error:', error);
-                            });
-
-                        })
-                        .catch(error => {
-                            consultas_polilineas -= 1;
-                            console.error('Error:', error);
-                        });
-
-                    }
-                } else {
-
-                    let imagen = document.createElement('img');
-                    imagen.src = 'https://www.marverrefacciones.mx/android/marcador.png';
-
-                    let marcador = new ElementoMarcadorAvanzado({
-                        content: imagen,
-                        map: mapa,
-                        position: { lat: usuario['latitud'], lng: usuario['longitud'] }
-                    });
-
-                    let usuarioLista = {
-                        id: usuario['usuario'],
-                        nombre: usuario['Nombre'],
-                        marcador: marcador,
-                        velocidad: usuario['velocidad'],
-                        frame: 0,
-                        metros_recorrer: undefined,
-                        latitudes_longitudes: undefined,
-                        posicion_final: { lat: usuario['latitud'], lng: usuario['longitud'] }
-                    };
-
-                    let infowindow = new VentanaInformacion({
-                        content: '<p style="margin: 0;" ><strong>' + usuarioLista['id'] + ' </strong>' + usuarioLista['nombre'] + '</p>'
-                    });
-
-                    info_windows.push(infowindow);
-
-                    marcador.addListener("click", () => {
-
-                        if(usuarioLista['id'] != fijado){
-                            consultar_pedidos = true;
-                            fijado = usuarioLista['id'];
-
-                            document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
-                            document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
-                        }
-
-                        info_windows.forEach((info)=>{
-                            info.close();
-                        });
-
-                        infowindow.open({
-                            anchor: usuarioLista['marcador'],
-                            map: mapa,
-                        });
-                    });
-
-                    usuarios.push(usuarioLista);
-
-                    let li = document.createElement('li');
-
-                    li.addEventListener('click', () => {
-                        document.getElementById('btnCerrarModal').click();
-
-                        if(usuarioLista['id'] != fijado){
-                            consultar_pedidos = true;
-                            fijado = usuarioLista['id'];
-
-                            document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
-                            document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
-                        }
-
-                        info_windows.forEach((info)=>{
-                            info.close();
-                        });
-
-                        infowindow.open({
-                            anchor: usuarioLista['marcador'],
-                            map: mapa,
-                        });
-                    });
-
-                    li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
-                    li.innerText = usuarioLista['nombre'];
-
-                    let span = document.createElement('span');
-                    span.classList.add('badge', 'bg-primary', 'rounded-pill');
-                    span.innerText = usuarioLista['id'];
-
-                    li.appendChild(span);
-                    listaRepartidores.appendChild(li);
-
-                    /* HACER TODO EL PROCESO DE BUSCAR TUS RUTAS Y SI LLEGATE ALGUN PUNTIO PONERTE EN EL */
-                }
-            });
-
-            id_procesar_vista = setTimeout(procesar_vista, 10);
-        }
-
         document.getElementById('modalSelector').addEventListener('hidden.bs.modal', function () {
             setTimeout(() => {
                 document.getElementById('btnBuscarRepartidor').blur();
@@ -818,13 +456,10 @@
         async function initMap() {
             const { Map, InfoWindow, Polyline } = await google.maps.importLibrary("maps");
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-            const { spherical, encoding } = await google.maps.importLibrary("geometry");
             const { LatLngBounds } = await google.maps.importLibrary("core");
 
             ElementoMarcadorAvanzado = AdvancedMarkerElement;
             VentanaInformacion = InfoWindow;
-            Esferica = spherical;
-            Codificador = encoding;
             Polilinea = Polyline;
             LimitesLatitudLongitud = LatLngBounds;
 
