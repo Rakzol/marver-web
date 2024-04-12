@@ -118,7 +118,7 @@
                 if( $distancia > 20 ){
                     $ors_calculado = polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud']);
 
-                    $resultado['repartidor'] = array(
+                    $resultado['repartidores'][] = array(
                         "id" => $repartidor_seguido['id'],
                         "velocidad" => $posiciones_repartidor[0]['velocidad'],
                         "tipo" => "camino",
@@ -129,7 +129,7 @@
                 }else{
                     $coordenadas = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])['features'][0]['geometry']['coordinates'][0];
     
-                    $resultado['repartidor'] = array(
+                    $resultado['repartidores'][] = array(
                         "id" => $repartidor_seguido['id'],
                         "velocidad" => $posiciones_repartidor[0]['velocidad'],
                         "tipo" => "cercano",
@@ -247,7 +247,7 @@
 
                 $ors_calculado = polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'] );
 
-                $resultado['repartidor'] = array(
+                $resultado['repartidores'][] = array(
                     "id" => $repartidor_seguido['id'],
                     "velocidad" => $posiciones_repartidor[0]['velocidad'],
                     "tipo" => "camino",
@@ -258,7 +258,7 @@
             }else{
                 $coordenadas = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])['features'][0]['geometry']['coordinates'][0];
     
-                $resultado['repartidor'] = array(
+                $resultado['repartidores'][] = array(
                     "id" => $repartidor_seguido['id'],
                     "velocidad" => $posiciones_repartidor[0]['velocidad'],
                     "tipo" => "cercano",
@@ -274,7 +274,7 @@
         }else{
             //$coordenadas = polilinea_ors($leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'], $leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'])['features'][0]['geometry']['coordinates'][0];
 
-            $resultado['repartidor'] = array(
+            $resultado['repartidores'][] = array(
                 "id" => $repartidor_seguido['id'],
                 "velocidad" => $posiciones_repartidor[0]['velocidad'],
                 "tipo" => "llego",
