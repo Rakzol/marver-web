@@ -290,7 +290,7 @@
                                 let leg = json_api['ruta']['legs'][c];
 
                                 let imagen = document.createElement('img');
-                                imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_cliente_' + c + ( leg['pedido']['status'] != 4 ? '_verde' : '' ) + '.png';
+                                imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_cliente_' + (c+1) + ( leg['pedido']['status'] != 4 ? '_verde' : '' ) + '.png';
 
                                 let marcador = new ElementoMarcadorAvanzado({
                                     content: imagen,
