@@ -202,7 +202,15 @@
                     polilineas = [];
 
                     if( json_api.hasOwnProperty('incorporacion') ){
-
+                        let polilinea = new Polilinea({
+                            path: GeoPolylineToGooglePolyline(incorporacion['polilinea']),
+                            geodesic: true,
+                            strokeColor: incorporacion['color'],
+                            strokeOpacity: 1.0,
+                            strokeWeight: 3
+                        });
+                        polilinea.setMap(mapa);
+                        polilineas.push(polilinea);
                     }
 
                     json_api['repartidores'].forEach( (repartidor) => {
