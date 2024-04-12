@@ -278,6 +278,41 @@
 
                         if( json_api['id'] != id_pedido ){
 
+                            id_pedido = json_api['id'];
+
+                            marcadores_pedido.forEach( (marcador_pedido)=>{
+                                marcador_pedido.setMap(null);
+                            });
+                            marcadores_pedido = [];
+
+                            for(let c = 0; c < json_api['ruta']['legs'].length - 1; c++){
+
+                                let leg = json_api['ruta']['legs'][c];
+
+                                let imagen = document.createElement('img');
+                                imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_cliente_' + c + ( leg['pedido']['status'] != 4 ? '_verde' : '' ) + '.png';
+
+                                let marcador = new ElementoMarcadorAvanzado({
+                                    content: imagen,
+                                    map: mapa,
+                                    position: { lat: leg['polyline']['polilinea'][leg['polyline']['polilinea'].length-1][1], lng: leg['polyline']['polilinea'][leg['polyline']['polilinea'].length-1][0] }
+                                });
+
+                                let infowindow = new VentanaInformacion({
+                                    disableAutoPan: true,
+                                    content: '<p style="margin: 0;" ><strong>' + leg['pedido']['folio'] + ' </strong> ' + leg['pedido']['cliente_nombre'] + '</p>'
+                                });
+
+                                marcador.addListener("click", () => {
+                                    infowindow.open({
+                                        anchor: marcador,
+                                        map: mapa,
+                                    });
+                                });
+
+                                marcadores_pedido.push(marcador);
+                            }
+
                         }else{
 
                         }
@@ -378,8 +413,6 @@
         function dibujar_polilineas(usuario_encontrado, ruta, polilinea_primera_leg){
 
             if( fijado == usuario_encontrado['id'] ){
-
-
 
                 marcadores.forEach( (marcador)=>{
                     marcador.setMap(null);
