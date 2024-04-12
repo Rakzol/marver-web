@@ -155,7 +155,6 @@
         let json_api;
         let repartidores = {};
 
-        //2500
         let max_frame = 2500;
         let frame = max_frame + 1;
 
