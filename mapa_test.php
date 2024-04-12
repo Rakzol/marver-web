@@ -173,6 +173,9 @@
             }
         }
 
+        let id_pedido = 0;
+        let marcadores_pedido = [];
+
         let id_actualizar;
 
         let max_frame = 2500;
@@ -269,6 +272,29 @@
                         });
                         polilinea.setMap(mapa);
                         polilineas.push(polilinea);
+                    }
+
+                    if( json_api.hasOwnProperty('id') ){
+
+                        if( json_api['id'] != id_pedido ){
+
+                        }else{
+
+                        }
+
+                        json_api['ruta']['legs'].forEach( (leg) => {
+
+                            let polilinea = new Polilinea({
+                                path: GeoPolylineToGooglePolyline(leg['polyline']['polilinea']),
+                                geodesic: true,
+                                strokeColor: leg['color'],
+                                strokeOpacity: 1.0,
+                                strokeWeight: 3
+                            });
+                            polilinea.setMap(mapa);
+                            polilineas.push(polilinea);
+
+                        } );
                     }
 
                 }else{
