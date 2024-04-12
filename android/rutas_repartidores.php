@@ -230,7 +230,7 @@
         $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $leg['polyline']['polilinea'][count($leg['polyline']['polilinea'])-1][1], 'lng' => $leg['polyline']['polilinea'][count($leg['polyline']['polilinea'])-1][0] ] );
         if( $distancia > 20 ){
 
-            $color = "#6495ED";
+            $color = "#00000000";
             $menor_distancia = INF;
             if ( ! \GeometryLibrary\PolyUtil::isLocationOnPath(
                 ['lat' => $posiciones_repartidor[0]['latitud'], 'lng' => $posiciones_repartidor[0]['longitud']],
