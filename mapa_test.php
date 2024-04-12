@@ -193,6 +193,7 @@
                             });
 
                             let infowindow = new VentanaInformacion({
+                                disableAutoPan: true,
                                 content: '<p style="margin: 0;" ><strong>' + repartidor['id'] + ' </strong> ' + repartidor['nombre'] + '</p>'
                             });
 
