@@ -331,6 +331,8 @@
 
                         } );
                     }else{
+                        id_pedido = 0;
+                        
                         marcadores_pedido.forEach( (marcador_pedido)=>{
                             marcador_pedido.setMap(null);
                         });
