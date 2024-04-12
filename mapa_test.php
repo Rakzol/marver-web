@@ -155,6 +155,18 @@
         let json_api;
         let repartidores = {};
 
+        let repartidor_seguido = {
+            id: 0,
+            marcador: {
+                position: {
+                    lat: 0,
+                    lng: 0
+                }
+            }
+        }
+
+        let id_actualizar;
+
         let max_frame = 2500;
         let frame = max_frame + 1;
 
@@ -202,6 +214,11 @@
                                     anchor: marcador,
                                     map: mapa,
                                 });
+
+                                clearTimeout(id_actualizar);
+                                frame = max_frame + 1;
+                                repartidor_seguido = repartidores[repartidor['id']];
+                                actualizar();
                             });
 
                             repartidores[repartidor['id']] = {};
@@ -252,7 +269,9 @@
 
                 let datos = {
                     "repartidor": {
-                        "id": 0
+                        "id": repartidor_seguido['id'],
+                        "lat": repartidor_seguido['marcador']['lat'],
+                        "lon": repartidor_seguido['marcador']['lng']
                     },
                     "repartidores":{}
                 };
@@ -285,7 +304,7 @@
                 });
             }
             else{
-                setTimeout(actualizar, 10);
+                id_actualizar = setTimeout(actualizar, 10);
             }
         }
 
@@ -673,6 +692,18 @@
 
             id_procesar_vista = setTimeout(procesar_vista, 10);
         }
+
+        document.getElementById('modalSelector').addEventListener('hidden.bs.modal', function () {
+            setTimeout(() => {
+                document.getElementById('btnBuscarRepartidor').blur();
+            }, 1000);
+        });
+
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState == 'visible') {
+                directo = true;
+            }
+        });
 </script>
 
     <script>(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
@@ -699,29 +730,13 @@
                 mapId: '7845e7dffe8cea37'
             });
 
-            setTimeout(actualizar, 10);
-
             velocidadRepartidor = document.getElementById('velocidadRepartidor');
             seguirRepartidor = document.getElementById('seguirRepartidor');
+
+            actualizar();
         }
 
         initMap();
-    </script>
-
-    <script>
-
-        document.getElementById('modalSelector').addEventListener('hidden.bs.modal', function () {
-            setTimeout(() => {
-                document.getElementById('btnBuscarRepartidor').blur();
-            }, 1000);
-        });
-
-        document.addEventListener('visibilitychange', function() {
-            if (document.visibilityState == 'visible') {
-                directo = true;
-            }
-        });
-
     </script>
 </body>
 

@@ -120,7 +120,6 @@
 
                     $resultado['repartidor'] = array(
                         "id" => $repartidor_seguido['id'],
-                        "nombre" => $repartidor_seguido['nombre'],
                         "velocidad" => $posiciones_repartidor[0]['velocidad'],
                         "tipo" => "camino",
                         "color" => "#00000000",
@@ -132,7 +131,6 @@
     
                     $resultado['repartidor'] = array(
                         "id" => $repartidor_seguido['id'],
-                        "nombre" => $repartidor_seguido['nombre'],
                         "velocidad" => $posiciones_repartidor[0]['velocidad'],
                         "tipo" => "cercano",
                         "color" => "#00000000",
@@ -251,7 +249,6 @@
 
                 $resultado['repartidor'] = array(
                     "id" => $repartidor_seguido['id'],
-                    "nombre" => $repartidor_seguido['nombre'],
                     "velocidad" => $posiciones_repartidor[0]['velocidad'],
                     "tipo" => "camino",
                     "color" => $color,
@@ -263,7 +260,6 @@
     
                 $resultado['repartidor'] = array(
                     "id" => $repartidor_seguido['id'],
-                    "nombre" => $repartidor_seguido['nombre'],
                     "velocidad" => $posiciones_repartidor[0]['velocidad'],
                     "tipo" => "cercano",
                     "color" => "#00000000",
@@ -280,7 +276,6 @@
 
             $resultado['repartidor'] = array(
                 "id" => $repartidor_seguido['id'],
-                "nombre" => $repartidor_seguido['nombre'],
                 "velocidad" => $posiciones_repartidor[0]['velocidad'],
                 "tipo" => "llego",
                 "color" => "#00000000",
