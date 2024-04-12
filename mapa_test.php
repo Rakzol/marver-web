@@ -239,7 +239,7 @@
 
                         if(repartidor['color'] != '#00000000'){
 
-                            let polilinea = new Polilinea({
+                            /*let polilinea = new Polilinea({
                                 path: repartidor['polilinea'],
                                 geodesic: true,
                                 strokeColor: repartidor['color'],
@@ -247,7 +247,7 @@
                                 strokeWeight: 3
                             });
                             polilinea.setMap(mapa);
-                            polilineas.push(polilinea);
+                            polilineas.push(polilinea);*/
                         }
                     } );
 
