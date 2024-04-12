@@ -155,6 +155,7 @@
             geoPolylines.forEach( (geoPolyline)=> {
                 googlePolylines.push( { lat: geoPolyline[1], lng: geoPolyline[0] } );
             } );
+            return googlePolylines;
         }
 
         let mapa;
