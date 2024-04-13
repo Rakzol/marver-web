@@ -332,6 +332,7 @@
                                 '<strong>Duración: </strong> ' + json_api['ruta']['duration'] + '<br>' +
                                 '<strong>Distancia: </strong> ' + json_api['ruta']['distance']
                             + '</p>');
+                            infowindowMarver.click();
 
                         }else{
 
