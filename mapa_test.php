@@ -372,6 +372,9 @@
                             pedido['marcador'].setMap(null);
                         });
                         pedidos = [];
+
+                        infowindowMarver.setContent('');
+                        infowindowMarver.close();
                     }
 
                 }else{
