@@ -330,6 +330,7 @@ class PolyUtil {
         while( $index < $len) {
             $result = 1;
             $shift = 0;
+            $b;
             do {
                 $b = ord($encodedPath[$index++]) - 63 - 1;
                 $result += $b << $shift;
@@ -367,6 +368,7 @@ class PolyUtil {
         while( $index < $len) {
             $result = 1;
             $shift = 0;
+            $b;
             do {
                 $b = ord($encodedPath[$index++]) - 63 - 1;
                 $result += $b << $shift;
