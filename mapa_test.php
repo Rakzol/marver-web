@@ -83,10 +83,6 @@
                 <p class="card-text mb-1" id="velocidadRepartidor">0.0 Km/h</p>
                 <div>
                     <button id="btnBuscarRepartidor" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelector">Buscar Repartidor</button>
-                    <div class="form-check form-switch d-inline-block ms-2 mt-2" >
-                        <input class="form-check-input" id="seguirRepartidor" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-                        <label class="form-check-label ms-1" for="flexSwitchCheckChecked">Seguir repartidor</label>
-                    </div>
                 </div>
                 <a class="btn btn-primary mt-2" style="min-width: 142px;" href="https://www.marverrefacciones.mx/excesos" target="_blank" >Excesos</a>
                 <a class="btn btn-primary mt-2" style="min-width: 142px;" href="https://www.marverrefacciones.mx/repartidores" target="_blank">Repartidores</a>
@@ -181,7 +177,6 @@
         let polilineas = [];
 
         let velocidadRepartidor;
-        let seguirRepartidor;
 
         let ElementoMarcadorAvanzado;
         let VentanaInformacion;
@@ -761,7 +756,6 @@
             });
 
             velocidadRepartidor = document.getElementById('velocidadRepartidor');
-            seguirRepartidor = document.getElementById('seguirRepartidor');
 
             actualizar();
         }
