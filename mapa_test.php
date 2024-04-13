@@ -188,6 +188,8 @@
 
         let polilineas = [];
 
+        let infowindowMarver;
+        
         let velocidadRepartidor;
 
         let ElementoMarcadorAvanzado;
@@ -474,6 +476,24 @@
                 center: { lat: 25.7951169, lng: -108.99698492 },
                 zoom: 13.36,
                 mapId: '7845e7dffe8cea37'
+            });
+
+            let marcador = new ElementoMarcadorAvanzado({
+                content: imagen,
+                map: mapa,
+                position: { lat: 25.7943047, lng: -108.9859510 }
+            });
+
+            infowindowMarver = new VentanaInformacion({
+                disableAutoPan: true,
+                content: '<p class="infoWindow" >Hola!!</p>'
+            });
+
+            marcador.addListener("click", () => {
+                infowindow.open({
+                    anchor: marcador,
+                    map: mapa,
+                });
             });
 
             velocidadRepartidor = document.getElementById('velocidadRepartidor');
