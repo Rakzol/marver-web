@@ -237,13 +237,14 @@
                             let marcador = new ElementoMarcadorAvanzado({
                                 content: imagen,
                                 map: mapa,
-                                position: { lat: repartidor['polilinea'][0][1], lng: repartidor['polilinea'][0][0] }
+                                position: { lat: repartidor['polilinea'][0][1], lng: repartidor['polilinea'][0][0] },
+                                zIndex: 1
                             });
 
                             let infowindow = new VentanaInformacion({
                                 disableAutoPan: true,
                                 content: '<p class="infoWindow" ><strong>' + repartidor['id'] + ' </strong> ' + repartidor['nombre'] + '</p>',
-                                zIndex: -10
+                                zIndex: 1
                             });
 
                             marcador.addListener("click", () => {
@@ -315,7 +316,8 @@
                                 let marcador = new ElementoMarcadorAvanzado({
                                     content: imagen,
                                     map: mapa,
-                                    position: { lat: leg['polyline']['polilinea'][leg['polyline']['polilinea'].length-1][1], lng: leg['polyline']['polilinea'][leg['polyline']['polilinea'].length-1][0] }
+                                    position: { lat: leg['polyline']['polilinea'][leg['polyline']['polilinea'].length-1][1], lng: leg['polyline']['polilinea'][leg['polyline']['polilinea'].length-1][0] },
+                                    zIndex: 2
                                 });
 
                                 let infowindow = new VentanaInformacion({
@@ -333,7 +335,7 @@
                                         '<strong>Duración: </strong> ' + leg['Totalduration'] + ' Minutos<br>' +
                                         '<strong>Distancia: </strong> ' + leg['Totaldistance'] + ' Km.'
                                     + '</p>',
-                                    zIndex: 10
+                                    zIndex: 3
                                 });
 
                                 marcador.addListener("click", () => {
@@ -526,13 +528,14 @@
             marcadorMarver = new ElementoMarcadorAvanzado({
                 content: imagen,
                 map: mapa,
-                position: { lat: 25.7943047, lng: -108.9859510 }
+                position: { lat: 25.7943047, lng: -108.9859510 },
+                zIndex: 3
             });
 
             infowindowMarver = new VentanaInformacion({
                 disableAutoPan: true,
                 content: '<p class="infoWindow" ></p>',
-                zIndex: -3
+                zIndex: 2
             });
 
             marcadorMarver.addListener("click", () => {
