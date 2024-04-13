@@ -380,11 +380,6 @@
 
                             }
 
-                            infowindowMarver.open({
-                                anchor: marcadorMarver,
-                                map: mapa,
-                            });
-
                         }
 
                         json_api['ruta']['legs'].forEach( (leg) => {
