@@ -307,14 +307,14 @@
 
         for( $c = 0; $c < count($resultado['ruta']['legs']); $c++ ){
             
-            $resultado['ruta']['legs'][$c]['duration'] = number_format( substr($resultado['ruta']['legs'][$c]['duration'], 0, -1) / 60, 1 );
-            $resultado['ruta']['legs'][$c]['distance'] = number_format( $resultado['ruta']['legs'][$c]['distanceMeters'] / 1000, 1 );
-
             print_r($fecha);
-            echo '+' . $resultado['ruta']['legs'][$c]['duration'] . ' minutes';
-            $fecha->modify('+' . $resultado['ruta']['legs'][$c]['duration'] . ' minutes');
+            echo '+' . substr($resultado['ruta']['legs'][$c]['duration'], 0, -1) . ' seconds';
+            $fecha->modify('+' . substr($resultado['ruta']['legs'][$c]['duration'], 0, -1) . ' seconds');
             print_r($fecha);
             $resultado['ruta']['legs'][$c]['llegada'] = $fecha->format('h:i A');
+
+            $resultado['ruta']['legs'][$c]['duration'] = number_format( substr($resultado['ruta']['legs'][$c]['duration'], 0, -1) / 60, 1 );
+            $resultado['ruta']['legs'][$c]['distance'] = number_format( $resultado['ruta']['legs'][$c]['distanceMeters'] / 1000, 1 );
 
             $duracion_total += floatval( $resultado['ruta']['legs'][$c]['duration'] );
             $distancia_total += floatval( $resultado['ruta']['legs'][$c]['distance'] );
