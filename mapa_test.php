@@ -311,7 +311,15 @@
                                     disableAutoPan: true,
                                     content: '<p class="infoWindow" >' + 
                                         '<strong>Folio: </strong> ' + leg['pedido']['folio'] + '<br>' +
-                                        '<strong>Cliente: </strong> ' + leg['pedido']['cliente_nombre']
+                                        '<strong>Cliente: </strong> ' + leg['pedido']['cliente_clave'] + ' ' + leg['pedido']['cliente_nombre'] + '<br>' +
+                                        '<strong>Pedido: </strong> ' + leg['pedido']['pedido'] + '<br>' +
+                                        '<strong>Total: </strong> ' + leg['pedido']['total'] + '<br>' +
+                                        '<strong>Feria: </strong> ' + leg['pedido']['feria'] + '<br>' +
+                                        '<strong>Calle: </strong> ' + leg['pedido']['calle'] + '<br>' +
+                                        '<strong>Número: </strong> ' + leg['pedido']['numero_exterior'] + ' ' + leg['pedido']['numero_interior'] + '<br>' +
+                                        '<strong>Llegada: </strong> ' + leg['llegada'] + '<br>' +
+                                        '<strong>Duración: </strong> ' + leg['duration'] + ' Minutos<br>' +
+                                        '<strong>Distancia: </strong> ' + leg['distance'] + ' Km.'
                                     + '</p>'
                                 });
 
