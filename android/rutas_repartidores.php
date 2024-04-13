@@ -306,13 +306,18 @@
         $fecha = DateTime::createFromFormat('Y-m-d H:i:s.u', $fecha_inicio);
 
         for( $c = 0; $c < count($resultado['ruta']['legs']); $c++ ){
+            
             $resultado['ruta']['legs'][$c]['duration'] = floatval( number_format( substr($resultado['ruta']['legs'][$c]['duration'], 0, -1) / 60, 1 ) );
-            $duracion_total += $resultado['ruta']['legs'][$c]['duration'];
             $resultado['ruta']['legs'][$c]['distance'] = floatval( number_format( $resultado['ruta']['legs'][$c]['distanceMeters'] / 1000, 1 ) );
-            $distancia_total += $resultado['ruta']['legs'][$c]['distance'];
 
             $fecha->modify('+' . $resultado['ruta']['legs'][$c]['duration'] . ' minutes');
             $resultado['ruta']['legs'][$c]['llegada'] = $fecha->format('h:i A');
+
+            $duracion_total += $resultado['ruta']['legs'][$c]['duration'];
+            $distancia_total += $resultado['ruta']['legs'][$c]['distance'];
+
+            $resultado['ruta']['legs'][$c]['Totalduration'] = $duracion_total;
+            $resultado['ruta']['legs'][$c]['Totaldistance'] = $distancia_total;
 
             unset($resultado['ruta']['legs'][$c]['distanceMeters']);
             unset($resultado['ruta']['legs'][$c]['polyline']['encodedPolyline']);

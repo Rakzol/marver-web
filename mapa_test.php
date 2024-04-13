@@ -329,8 +329,8 @@
                                         ( leg['pedido']['numero_exterior'] != null ? '<strong>Número exterior: </strong> ' + leg['pedido']['numero_exterior'] + '<br>' : '' ) +
                                         ( leg['pedido']['numero_interior'] != null ? '<strong>Número Interior: </strong> ' + leg['pedido']['numero_interior'] + '<br>' : '' ) +
                                         '<strong>Llegada: </strong> ' + leg['llegada'] + '<br>' +
-                                        '<strong>Duración: </strong> ' + leg['duration'] + ' Minutos<br>' +
-                                        '<strong>Distancia: </strong> ' + leg['distance'] + ' Km.'
+                                        '<strong>Duración: </strong> ' + leg['Totalduration'] + ' Minutos<br>' +
+                                        '<strong>Distancia: </strong> ' + leg['Totaldistance'] + ' Km.'
                                     + '</p>'
                                 });
 
