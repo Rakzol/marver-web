@@ -493,7 +493,7 @@
             });
 
             marcador.addListener("click", () => {
-                infowindow.open({
+                infowindowMarver.open({
                     anchor: marcador,
                     map: mapa,
                 });
