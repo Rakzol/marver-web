@@ -478,6 +478,9 @@
                 mapId: '7845e7dffe8cea37'
             });
 
+            let imagen = document.createElement('img');
+            imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_marver.png';
+
             let marcador = new ElementoMarcadorAvanzado({
                 content: imagen,
                 map: mapa,
