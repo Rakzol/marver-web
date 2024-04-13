@@ -312,7 +312,7 @@
 
             print_r($fecha);
             echo '+' . $resultado['ruta']['legs'][$c]['duration'] . ' minutes';
-            $fecha->modify('+' . $resultado['ruta']['legs'][$c]['duration'] . ' minutes');
+            $fecha->modify('+' . $resultado['ruta']['legs'][$c]['duration'] . ' minute');
             print_r($fecha);
             $resultado['ruta']['legs'][$c]['llegada'] = $fecha->format('h:i A');
 
