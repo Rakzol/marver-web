@@ -255,6 +255,7 @@
                                 });
 
                                 clearTimeout(id_actualizar);
+                                console.log('clear');
                                 frame = max_frame + 1;
                                 repartidor_seguido = repartidores[repartidor['id']];
                                 actualizar();
@@ -444,6 +445,7 @@
             }
 
             if(frame > max_frame){
+                console.log('consultar');
 
                 let datos = {
                     "repartidor": {
