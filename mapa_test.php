@@ -61,7 +61,7 @@
         }
 
         .dinero::before{
-            content: '$';
+            content: '$ ';
         }
     </style>
 </head>
