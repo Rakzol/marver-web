@@ -308,10 +308,7 @@
         for( $c = 0; $c < count($resultado['ruta']['legs']); $c++ ){
             
             $segundos = substr($resultado['ruta']['legs'][$c]['duration'], 0, -1);
-            print_r($fecha);
-            echo '+' . $segundos . ' seconds';
             $fecha->modify('+' . $segundos . ' seconds');
-            print_r($fecha);
             $resultado['ruta']['legs'][$c]['llegada'] = $fecha->format('h:i A');
 
             $resultado['ruta']['legs'][$c]['duration'] = number_format( $segundos / 60, 1 );
