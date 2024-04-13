@@ -242,7 +242,8 @@
 
                             let infowindow = new VentanaInformacion({
                                 disableAutoPan: true,
-                                content: '<p class="infoWindow" ><strong>' + repartidor['id'] + ' </strong> ' + repartidor['nombre'] + '</p>'
+                                content: '<p class="infoWindow" ><strong>' + repartidor['id'] + ' </strong> ' + repartidor['nombre'] + '</p>',
+                                zIndex: -10
                             });
 
                             marcador.addListener("click", () => {
@@ -331,7 +332,8 @@
                                         '<strong>Llegada: </strong> ' + leg['llegada'] + '<br>' +
                                         '<strong>Duración: </strong> ' + leg['Totalduration'] + ' Minutos<br>' +
                                         '<strong>Distancia: </strong> ' + leg['Totaldistance'] + ' Km.'
-                                    + '</p>'
+                                    + '</p>',
+                                    zIndex: 10
                                 });
 
                                 marcador.addListener("click", () => {
