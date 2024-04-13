@@ -322,8 +322,8 @@
                                         '<strong>Folio: </strong> ' + leg['pedido']['folio'] + '<br>' +
                                         '<strong>Cliente: </strong> ' + leg['pedido']['cliente_clave'] + ' ' + leg['pedido']['cliente_nombre'] + '<br>' +
                                         '<strong>Pedido: </strong> ' + leg['pedido']['pedido'] + '<br>' +
-                                        '<strong>Total: </strong> <p class="dinero" >' + leg['pedido']['total'] + '</p><br>' +
-                                        ( leg['pedido']['feria'] != null ? '<strong>Feria: </strong> <p class="dinero" >' + leg['pedido']['feria'] + '</p><br>' : '' ) +
+                                        '<strong>Total: </strong> <span class="dinero" >' + leg['pedido']['total'] + '</span><br>' +
+                                        ( leg['pedido']['feria'] != null ? '<strong>Feria: </strong> <span class="dinero" >' + leg['pedido']['feria'] + '</span><br>' : '' ) +
                                         ( leg['pedido']['calle'] != null ? '<strong>Calle: </strong> ' + leg['pedido']['calle'] + '<br>' : '' ) +
                                         ( leg['pedido']['numero_exterior'] != null ? '<strong>Número exterior: </strong> ' + leg['pedido']['numero_exterior'] + '<br>' : '' ) +
                                         ( leg['pedido']['numero_interior'] != null ? '<strong>Número Interior: </strong> ' + leg['pedido']['numero_interior'] + '<br>' : '' ) +
