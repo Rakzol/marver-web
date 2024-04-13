@@ -241,10 +241,7 @@
                                     anchor: marcador,
                                     map: mapa,
                                 });
-                                infowindowMarver.open({
-                                    anchor: marcadorMarver,
-                                    map: mapa,
-                                });
+
                                 clearTimeout(id_actualizar);
                                 frame = max_frame + 1;
                                 repartidor_seguido = repartidores[repartidor['id']];
@@ -496,7 +493,7 @@
             let imagen = document.createElement('img');
             imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_marver.png';
 
-            let marcadorMarver = new ElementoMarcadorAvanzado({
+            marcadorMarver = new ElementoMarcadorAvanzado({
                 content: imagen,
                 map: mapa,
                 position: { lat: 25.7943047, lng: -108.9859510 }
