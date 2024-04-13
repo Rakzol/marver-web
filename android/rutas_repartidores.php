@@ -304,15 +304,13 @@
         $resultado['ruta']['distance'] = number_format( $resultado['ruta']['distanceMeters'] / 1000, 1 );
 
         $fecha = DateTime::createFromFormat('Y-m-d H:i:s.u', $fecha_inicio);
-        $duracion_total = 0;
 
         unset($resultado['ruta']['distanceMeters']);
         for( $c = 0; $c < count($resultado['ruta']['legs']); $c++ ){
             $resultado['ruta']['legs'][$c]['duration'] = number_format( substr($resultado['ruta']['legs'][$c]['duration'], 0, -1) / 60, 1 );
-            $duracion_total += floatval($resultado['ruta']['legs'][$c]['duration']);
             $resultado['ruta']['legs'][$c]['distance'] = number_format( $resultado['ruta']['legs'][$c]['distanceMeters'] / 1000, 1 );
 
-            $fecha->modify('+' . $duracion_total . ' seconds');
+            $fecha->modify('+' . $resultado['ruta']['legs'][$c]['duration'] . ' seconds');
             $resultado['ruta']['legs'][$c]['llegada'] = $fecha->format('h:i A');
 
             unset($resultado['ruta']['legs'][$c]['distanceMeters']);
