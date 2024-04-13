@@ -340,11 +340,6 @@
 
                         }else{
 
-                            infowindowMarver.open({
-                                anchor: marcadorMarver,
-                                map: mapa,
-                            });
-
                             for(let c = 0; c < json_api['ruta']['legs'].length - 1; c++){
 
                                 let leg = json_api['ruta']['legs'][c];
@@ -359,6 +354,11 @@
                                 }
 
                             }
+
+                            infowindowMarver.open({
+                                anchor: marcadorMarver,
+                                map: mapa,
+                            });
 
                         }
 
