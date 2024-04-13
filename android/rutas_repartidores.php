@@ -310,7 +310,8 @@
             $resultado['ruta']['legs'][$c]['duration'] = number_format( substr($resultado['ruta']['legs'][$c]['duration'], 0, -1) / 60, 1 );
             $resultado['ruta']['legs'][$c]['distance'] = number_format( $resultado['ruta']['legs'][$c]['distanceMeters'] / 1000, 1 );
 
-            $fecha->add($resultado['ruta']['legs'][$c]['duration']);
+            $fecha->modify('+' . $resultado['ruta']['legs'][$c]['duration'] . ' seconds');
+            echo '+' . $resultado['ruta']['legs'][$c]['duration'] . ' seconds';
             $resultado['ruta']['legs'][$c]['llegada'] = $fecha->format('h:i A');
 
             unset($resultado['ruta']['legs'][$c]['distanceMeters']);
