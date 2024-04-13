@@ -311,6 +311,7 @@
             $resultado['ruta']['legs'][$c]['distance'] = number_format( $resultado['ruta']['legs'][$c]['distanceMeters'] / 1000, 1 );
 
             print_r($fecha);
+            echo '+' . $resultado['ruta']['legs'][$c]['duration'] . ' minutes';
             $fecha->modify('+' . $resultado['ruta']['legs'][$c]['duration'] . ' minutes');
             print_r($fecha);
             $resultado['ruta']['legs'][$c]['llegada'] = $fecha->format('h:i A');
