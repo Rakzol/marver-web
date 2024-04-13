@@ -276,7 +276,8 @@
                                 geodesic: true,
                                 strokeColor: repartidor['color'],
                                 strokeOpacity: 1.0,
-                                strokeWeight: 3
+                                strokeWeight: 3,
+                                zIndex: 3
                             });
                             polilinea.setMap(mapa);
                             polilineas.push(polilinea);
@@ -392,7 +393,8 @@
                                 geodesic: true,
                                 strokeColor: leg['color'],
                                 strokeOpacity: 1.0,
-                                strokeWeight: 3
+                                strokeWeight: 3,
+                                zIndex: ( leg['color'] != "#000000" ? 2 : 1 )
                             });
                             polilinea.setMap(mapa);
                             polilineas.push(polilinea);
