@@ -485,6 +485,7 @@
             }
             else{
                 id_actualizar = setTimeout(actualizar, 10);
+                console.log('otro');
             }
         }
 
