@@ -55,6 +55,7 @@
                         "id" => $repartidor['usuario'],
                         "nombre" => $repartidor['Nombre'],
                         "tipo" => "camino",
+                        "velocidad" => $repartidor['velocidad'],
                         "color" => "#00000000",
                         "distancia" => $ors_calculado['features'][0]['properties']['segments'][0]['distance'],
                         "polilinea" => $ors_calculado['features'][0]['geometry']['coordinates']
@@ -66,6 +67,7 @@
                         "id" => $repartidor['usuario'],
                         "nombre" => $repartidor['Nombre'],
                         "tipo" => "cercano",
+                        "velocidad" => $repartidor['velocidad'],
                         "color" => "#00000000",
                         "distancia" => \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_pasado['lat'], 'lng' => $repartidor_pasado['lon'] ], [ 'lat' => $coordenadas[1], 'lng' => $coordenadas[0] ]),
                         "polilinea" => array(
@@ -81,6 +83,7 @@
                     "id" => $repartidor['usuario'],
                     "nombre" => $repartidor['Nombre'],
                     "tipo" => "nuevo",
+                    "velocidad" => $repartidor['velocidad'],
                     "color" => "#00000000",
                     "distancia" => 0,
                     "polilinea" => array(

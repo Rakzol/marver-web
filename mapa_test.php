@@ -217,6 +217,8 @@
 
                             repartidores[repartidor['id']]['polilinea'] = repartidor['polilinea'];
                             repartidores[repartidor['id']]['distancia'] = repartidor['distancia'];
+                            repartidores[repartidor['id']]['color'] = repartidor['color'];
+                            repartidores[repartidor['id']]['velocidad'] = repartidor['velocidad'];
 
                         }else{
 
