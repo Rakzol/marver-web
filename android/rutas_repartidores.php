@@ -311,7 +311,7 @@
             $resultado['ruta']['legs'][$c]['distance'] = floatval( number_format( $resultado['ruta']['legs'][$c]['distanceMeters'] / 1000, 1 ) );
             $distancia_total += $resultado['ruta']['legs'][$c]['distance'];
 
-            $fecha->modify('+' . $duracion_total . ' minutes');
+            $fecha->modify('+' . $resultado['ruta']['legs'][$c]['duration'] . ' minutes');
             $resultado['ruta']['legs'][$c]['llegada'] = $fecha->format('h:i A');
 
             unset($resultado['ruta']['legs'][$c]['distanceMeters']);
