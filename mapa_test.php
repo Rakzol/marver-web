@@ -529,7 +529,8 @@
 
             infowindowMarver = new VentanaInformacion({
                 disableAutoPan: true,
-                content: '<p class="infoWindow" >Hola!!</p>'
+                content: '<p class="infoWindow" ></p>',
+                zIndex: -3
             });
 
             marcadorMarver.addListener("click", () => {
