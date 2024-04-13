@@ -241,7 +241,10 @@
                                     anchor: marcador,
                                     map: mapa,
                                 });
-
+                                infowindowMarver.open({
+                                    anchor: marcadorMarver,
+                                    map: mapa,
+                                });
                                 clearTimeout(id_actualizar);
                                 frame = max_frame + 1;
                                 repartidor_seguido = repartidores[repartidor['id']];
@@ -333,10 +336,6 @@
                                 '<strong>Duración: </strong> ' + json_api['ruta']['duration'] + '<br>' +
                                 '<strong>Distancia: </strong> ' + json_api['ruta']['distance']
                             + '</p>');
-                            infowindowMarver.open({
-                                anchor: marcadorMarver,
-                                map: mapa,
-                            });
 
                         }else{
 
