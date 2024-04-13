@@ -46,6 +46,15 @@
     <link href="css/style.css" rel="stylesheet">
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <style>
+        .infoWindow{
+            margin: 0;
+            font-size: 15px;
+            color: black;
+            font-weight: 400;
+        }
+    </style>
 </head>
 
 <body class="h-100">
@@ -295,7 +304,10 @@
 
                                 let infowindow = new VentanaInformacion({
                                     disableAutoPan: true,
-                                    content: '<p class="infoWindow" ><strong>' + leg['pedido']['folio'] + ' </strong> ' + leg['pedido']['cliente_nombre'] + '</p>'
+                                    content: '<p class="infoWindow" >' + 
+                                        '<strong>Folio: </strong> ' + leg['pedido']['folio'] + '<br>' +
+                                        '<strong>Cliente: </strong> ' + leg['pedido']['cliente_nombre']
+                                    + '</p>'
                                 });
 
                                 marcador.addListener("click", () => {
