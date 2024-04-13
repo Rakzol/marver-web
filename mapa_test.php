@@ -54,6 +54,15 @@
             color: black;
             font-weight: 400;
         }
+
+        .dinero{
+            margin: 0;
+            color: green;
+        }
+
+        .dinero::before{
+            content: '$';
+        }
     </style>
 </head>
 
@@ -313,8 +322,8 @@
                                         '<strong>Folio: </strong> ' + leg['pedido']['folio'] + '<br>' +
                                         '<strong>Cliente: </strong> ' + leg['pedido']['cliente_clave'] + ' ' + leg['pedido']['cliente_nombre'] + '<br>' +
                                         '<strong>Pedido: </strong> ' + leg['pedido']['pedido'] + '<br>' +
-                                        '<strong>Total: </strong> ' + leg['pedido']['total'] + '<br>' +
-                                        ( leg['pedido']['feria'] != null ? '<strong>Feria: </strong> ' + leg['pedido']['feria'] + '<br>' : '' ) +
+                                        '<strong>Total: </strong> <p class="dinero" >' + leg['pedido']['total'] + '</p><br>' +
+                                        ( leg['pedido']['feria'] != null ? '<strong>Feria: </strong> <p class="dinero" >' + leg['pedido']['feria'] + '</p><br>' : '' ) +
                                         ( leg['pedido']['calle'] != null ? '<strong>Calle: </strong> ' + leg['pedido']['calle'] + '<br>' : '' ) +
                                         ( leg['pedido']['numero_exterior'] != null ? '<strong>Número exterior: </strong> ' + leg['pedido']['numero_exterior'] + '<br>' : '' ) +
                                         ( leg['pedido']['numero_interior'] != null ? '<strong>Número Interior: </strong> ' + leg['pedido']['numero_interior'] + '<br>' : '' ) +
