@@ -105,7 +105,7 @@
             $posiciones_repartidor[0]['velocidad'] = number_format( $posiciones_repartidor[0]['velocidad'] * 3.6, 1 ) . ' Km/h';
         }
 
-        $preparada = $conexion->prepare('SELECT TOP 1 id, ruta FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
+        $preparada = $conexion->prepare('SELECT TOP 1 id, ruta, fecha_inicio FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
         $preparada->bindValue(':repartidor', $repartidor_seguido['id']);
         $preparada->execute();
 
@@ -196,23 +196,30 @@
 
         $pedidos_repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC);
 
-        $resultado['pedidos'] = $pedidos_repartidor;
+        $indice_leg = 0;
+        foreach( $resultado['ruta']['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
 
-        if( $resultado['ruta']['optimizedIntermediateWaypointIndex'][0] == -1 ){
-            if( $resultado['pedidos'][0]['status'] == 4 ){
-                $resultado['ruta']['legs'][0]['color'] = "#6495ED";
-                $leg = $resultado['ruta']['legs'][0];
-            }
-        }else{
-            $indice_leg = 0;
-            foreach( $resultado['ruta']['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
-                if( $resultado['pedidos'][$indice_pedido]['status'] == 4 ){
+            if( $indice_pedido == -1 ){
+
+                $resultado['ruta']['legs'][0]['pedido'] = $pedidos_repartidor[0];
+
+                if( $pedidos_repartidor[0]['status'] == 4 ){
+                    $resultado['ruta']['legs'][0]['color'] = "#6495ED";
+                    $leg = $resultado['ruta']['legs'][0];
+                }
+
+            }else{
+
+                $resultado['ruta']['legs'][$indice_leg]['pedido'] = $pedidos_repartidor[$indice_pedido];
+
+                if( $pedidos_repartidor[$indice_pedido]['status'] == 4 && !isset($leg)){
                     $resultado['ruta']['legs'][$indice_leg]['color'] = "#6495ED";
                     $leg = $resultado['ruta']['legs'][$indice_leg];
-                    break;
                 }
-                $indice_leg += 1;
+
+                $indice_leg++;
             }
+
         }
 
         if(!isset($leg)){
@@ -220,30 +227,30 @@
             $leg = $resultado['ruta']['legs'][count($resultado['ruta']['legs'])-1];
         }
 
-        $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $leg['endLocation']['latLng']['latitude'], 'lng' => $leg['endLocation']['latLng']['longitude'] ] );
+        $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $leg['polyline']['polilinea'][count($leg['polyline']['polilinea'])-1][1], 'lng' => $leg['polyline']['polilinea'][count($leg['polyline']['polilinea'])-1][0] ] );
         if( $distancia > 20 ){
+
+            $color = "#00000000";
+            $menor_distancia = INF;
+            if ( ! \GeometryLibrary\PolyUtil::isLocationOnPath(
+                ['lat' => $posiciones_repartidor[0]['latitud'], 'lng' => $posiciones_repartidor[0]['longitud']],
+                $leg['polyline']['decodedPolyline'],
+                20
+            )){
+                $color = "#FF0000";
+                foreach( $leg['polyline']['decodedPolyline'] as $decodedPoint ){
+                    $ors_calculada = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $decodedPoint['lng'], $decodedPoint['lat']);
+    
+                    if( $ors_calculada['features'][0]['properties']['segments'][0]['distance'] < $menor_distancia ){
+                        $menor_distancia = $ors_calculada['features'][0]['properties']['segments'][0]['distance'];
+                        $resultado['incorporacion']['color'] = "#FFA500";
+                        $resultado['incorporacion']['polilinea'] = $ors_calculada['features'][0]['geometry']['coordinates'];
+                    }
+                }
+            }
 
             $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $posiciones_repartidor[0]['latitud'], 'lng' => $posiciones_repartidor[0]['longitud'] ] );
             if( $distancia > 20 ){
-    
-                $color = "#6495ED";
-                $menor_distancia = INF;
-                if ( ! \GeometryLibrary\PolyUtil::isLocationOnPath(
-                    ['lat' => $posiciones_repartidor[0]['latitud'], 'lng' => $posiciones_repartidor[0]['longitud']],
-                    $leg['polyline']['decodedPolyline'],
-                    20
-                )){
-                    $color = "#FF0000";
-                    foreach( $leg['polyline']['decodedPolyline'] as $decodedPoint ){
-                        $ors_calculada = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $decodedPoint['lng'], $decodedPoint['lat']);
-        
-                        if( $ors_calculada['features'][0]['properties']['segments'][0]['distance'] < $menor_distancia ){
-                            $menor_distancia = $ors_calculada['features'][0]['properties']['segments'][0]['distance'];
-                            $resultado['incorporacion']['color'] = "#FFA500";
-                            $resultado['incorporacion']['polilinea'] = $ors_calculada['features'][0]['geometry']['coordinates'];
-                        }
-                    }
-                }
 
                 $ors_calculado = polilinea_ors($repartidor_seguido['lon'], $repartidor_seguido['lat'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'] );
 
@@ -256,6 +263,7 @@
                     "polilinea" => $ors_calculado['features'][0]['geometry']['coordinates']
                 );
             }else{
+
                 $coordenadas = polilinea_ors($posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'], $posiciones_repartidor[0]['longitud'], $posiciones_repartidor[0]['latitud'])['features'][0]['geometry']['coordinates'][0];
     
                 $resultado['repartidores'][] = array(
@@ -270,20 +278,17 @@
                     )
                 );
             }
-
         }else{
-            //$coordenadas = polilinea_ors($leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'], $leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'])['features'][0]['geometry']['coordinates'][0];
 
             $resultado['repartidores'][] = array(
                 "id" => $repartidor_seguido['id'],
                 "velocidad" => $posiciones_repartidor[0]['velocidad'],
                 "tipo" => "llego",
                 "color" => "#00000000",
-                "distancia" => \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $leg['endLocation']['latLng']['latitude'], 'lng' => $leg['endLocation']['latLng']['longitude'] ]),
+                "distancia" => \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_seguido['lat'], 'lng' => $repartidor_seguido['lon'] ], [ 'lat' => $leg['polyline']['polilinea'][count($leg['polyline']['polilinea'])-1][1], 'lng' => $leg['polyline']['polilinea'][count($leg['polyline']['polilinea'])-1][0] ]),
                 "polilinea" => array(
                     array($repartidor_seguido['lon'], $repartidor_seguido['lat']),
-                    //array($coordenadas[0], $coordenadas[1])
-                    array($leg['endLocation']['latLng']['longitude'], $leg['endLocation']['latLng']['latitude'])
+                    array($leg['polyline']['polilinea'][count($leg['polyline']['polilinea'])-1][0], $leg['polyline']['polilinea'][count($leg['polyline']['polilinea'])-1][1])
                 )
             );
         }
@@ -298,8 +303,6 @@
 
             unset($resultado['ruta']['legs'][$c]['polyline']['encodedPolyline']);
             unset($resultado['ruta']['legs'][$c]['polyline']['decodedPolyline']);
-            unset($resultado['ruta']['legs'][$c]['startLocation']);
-            unset($resultado['ruta']['legs'][$c]['endLocation']);
         }
 
         echo json_encode($resultado);
