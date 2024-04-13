@@ -334,8 +334,7 @@
                                 '<strong>Duración: </strong> ' + json_api['ruta']['duration'] + '<br>' +
                                 '<strong>Distancia: </strong> ' + json_api['ruta']['distance']
                             + '</p>');
-                            marcadorMarver.click();
-                            //Eventos.trigger(, 'click');
+                            Eventos.trigger(marcadorMarver, 'click');
 
                         }else{
 
