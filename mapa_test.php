@@ -290,7 +290,8 @@
                             geodesic: true,
                             strokeColor: json_api['incorporacion']['color'],
                             strokeOpacity: 1.0,
-                            strokeWeight: 3
+                            strokeWeight: 3,
+                            zIndex: 4
                         });
                         polilinea.setMap(mapa);
                         polilineas.push(polilinea);
