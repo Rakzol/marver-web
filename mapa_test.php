@@ -249,6 +249,7 @@
                                 infowindow.open({
                                     anchor: marcador,
                                     map: mapa,
+                                    zIndex: -2
                                 });
 
                                 clearTimeout(id_actualizar);
