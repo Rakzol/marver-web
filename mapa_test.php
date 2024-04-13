@@ -295,7 +295,7 @@
 
                                 let infowindow = new VentanaInformacion({
                                     disableAutoPan: true,
-                                    content: '<p style="margin: 0;" ><strong>' + leg['pedido']['folio'] + ' </strong> ' + leg['pedido']['cliente_nombre'] + '</p>'
+                                    content: '<p class="infoWindow" ><strong>' + leg['pedido']['folio'] + ' </strong> ' + leg['pedido']['cliente_nombre'] + '</p>'
                                 });
 
                                 marcador.addListener("click", () => {
