@@ -199,7 +199,6 @@
         let Codificador;
         let Polilinea;
         let LimitesLatitudLongitud;
-        let Eventos;
 
         function actualizar() {
 
@@ -334,8 +333,10 @@
                                 '<strong>Duración: </strong> ' + json_api['ruta']['duration'] + '<br>' +
                                 '<strong>Distancia: </strong> ' + json_api['ruta']['distance']
                             + '</p>');
-                            infowindowMarver.open();
-                            Eventos.trigger(marcadorMarver, 'click');
+                            infowindowMarver.open({
+                                anchor: marcadorMarver,
+                                map: mapa,
+                            });
 
                         }else{
 
@@ -481,13 +482,11 @@
             const { Map, InfoWindow, Polyline } = await google.maps.importLibrary("maps");
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
             const { LatLngBounds } = await google.maps.importLibrary("core");
-            const { event } = await google.maps.importLibrary("core")
 
             ElementoMarcadorAvanzado = AdvancedMarkerElement;
             VentanaInformacion = InfoWindow;
             Polilinea = Polyline;
             LimitesLatitudLongitud = LatLngBounds;
-            Eventos = event;
 
             mapa = new Map(document.getElementById("mapa"), {
                 center: { lat: 25.7951169, lng: -108.99698492 },
