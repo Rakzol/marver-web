@@ -314,9 +314,10 @@
                                         '<strong>Cliente: </strong> ' + leg['pedido']['cliente_clave'] + ' ' + leg['pedido']['cliente_nombre'] + '<br>' +
                                         '<strong>Pedido: </strong> ' + leg['pedido']['pedido'] + '<br>' +
                                         '<strong>Total: </strong> ' + leg['pedido']['total'] + '<br>' +
-                                        '<strong>Feria: </strong> ' + leg['pedido']['feria'] + '<br>' +
-                                        '<strong>Calle: </strong> ' + leg['pedido']['calle'] + '<br>' +
-                                        '<strong>Número: </strong> ' + leg['pedido']['numero_exterior'] + ' ' + leg['pedido']['numero_interior'] + '<br>' +
+                                        ( leg['pedido']['feria'] != null ? '<strong>Feria: </strong> ' + leg['pedido']['feria'] + '<br>' : '' ) +
+                                        ( leg['pedido']['calle'] != null ? '<strong>Calle: </strong> ' + leg['pedido']['calle'] + '<br>' : '' ) +
+                                        ( leg['pedido']['numero_exterior'] != null ? '<strong>Número exterior: </strong> ' + leg['pedido']['numero_exterior'] + '<br>' : '' ) +
+                                        ( leg['pedido']['numero_interior'] != null ? '<strong>Número Interior: </strong> ' + leg['pedido']['numero_interior'] + '<br>' : '' ) +
                                         '<strong>Llegada: </strong> ' + leg['llegada'] + '<br>' +
                                         '<strong>Duración: </strong> ' + leg['duration'] + ' Minutos<br>' +
                                         '<strong>Distancia: </strong> ' + leg['distance'] + ' Km.'
