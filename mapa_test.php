@@ -189,6 +189,7 @@
         let polilineas = [];
 
         let infowindowMarver;
+        let marcadorMarver;
         
         let velocidadRepartidor;
 
@@ -333,7 +334,8 @@
                                 '<strong>Duración: </strong> ' + json_api['ruta']['duration'] + '<br>' +
                                 '<strong>Distancia: </strong> ' + json_api['ruta']['distance']
                             + '</p>');
-                            Eventos.trigger(infowindowMarver, 'click');
+                            marcadorMarver.click();
+                            //Eventos.trigger(, 'click');
 
                         }else{
 
@@ -496,7 +498,7 @@
             let imagen = document.createElement('img');
             imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_marver.png';
 
-            let marcador = new ElementoMarcadorAvanzado({
+            let marcadorMarver = new ElementoMarcadorAvanzado({
                 content: imagen,
                 map: mapa,
                 position: { lat: 25.7943047, lng: -108.9859510 }
@@ -507,9 +509,9 @@
                 content: '<p class="infoWindow" >Hola!!</p>'
             });
 
-            marcador.addListener("click", () => {
+            marcadorMarver.addListener("click", () => {
                 infowindowMarver.open({
-                    anchor: marcador,
+                    anchor: marcadorMarver,
                     map: mapa,
                 });
             });
