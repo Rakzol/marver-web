@@ -330,8 +330,8 @@
 
                             infowindowMarver.setContent('<p class="infoWindow" >' + 
                                 '<strong>Llegada: </strong> ' + json_api['ruta']['duration'] + '<br>' +
-                                '<strong>Duración: </strong> ' + json_api['ruta']['duration'] + '<br>' +
-                                '<strong>Distancia: </strong> ' + json_api['ruta']['distance']
+                                '<strong>Duración: </strong> ' + json_api['ruta']['duration'] + ' Minutos<br>' +
+                                '<strong>Distancia: </strong> ' + json_api['ruta']['distance'] + ' Km.'
                             + '</p>');
                             infowindowMarver.open({
                                 anchor: marcadorMarver,
