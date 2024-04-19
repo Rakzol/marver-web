@@ -27,71 +27,75 @@
 
         $repartidor_seguido = $POST['repartidor'];
 
-        $preparada = $conexion->prepare('
-            SELECT id, usuario, Nombre, latitud, longitud, velocidad, fecha
-            FROM (
-                SELECT id, usuario, Nombre, latitud, longitud, velocidad, fecha,
-                    ROW_NUMBER() OVER (PARTITION BY usuario ORDER BY fecha DESC) AS indice
-                FROM posiciones
-                INNER JOIN Vendedores ON Vendedores.Clave = usuario
-                WHERE usuario != :repartidor
-            ) AS posiciones
-            WHERE indice = 1;
-        ');
-        $preparada->bindValue(':repartidor', $repartidor_seguido['id']);
-        $preparada->execute();
+        if(isset($POST['repartidores'])){
 
-        $repartidores_pasados = $POST['repartidores'];
+            $preparada = $conexion->prepare('
+                SELECT id, usuario, Nombre, latitud, longitud, velocidad, fecha
+                FROM (
+                    SELECT id, usuario, Nombre, latitud, longitud, velocidad, fecha,
+                        ROW_NUMBER() OVER (PARTITION BY usuario ORDER BY fecha DESC) AS indice
+                    FROM posiciones
+                    INNER JOIN Vendedores ON Vendedores.Clave = usuario
+                    WHERE usuario != :repartidor
+                ) AS posiciones
+                WHERE indice = 1;
+            ');
+            $preparada->bindValue(':repartidor', $repartidor_seguido['id']);
+            $preparada->execute();
 
-        foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
-            if(isset($repartidores_pasados[$repartidor['usuario']])){
-                $repartidor_pasado = $repartidores_pasados[$repartidor['usuario']];
+            $repartidores_pasados = $POST['repartidores'];
 
-                $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_pasado['lat'], 'lng' => $repartidor_pasado['lon'] ], [ 'lat' => $repartidor['latitud'], 'lng' => $repartidor['longitud'] ]);
-                if( $distancia > 20 ){
-                    $ors_calculado = polilinea_ors($repartidor_pasado['lon'], $repartidor_pasado['lat'], $repartidor['longitud'], $repartidor['latitud']);
+            foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
+                if(isset($repartidores_pasados[$repartidor['usuario']])){
+                    $repartidor_pasado = $repartidores_pasados[$repartidor['usuario']];
 
-                    $resultado['repartidores'][] = array(
-                        "id" => $repartidor['usuario'],
-                        "nombre" => $repartidor['Nombre'],
-                        "tipo" => "camino",
-                        "velocidad" => $repartidor['velocidad'],
-                        "color" => "#00000000",
-                        "distancia" => $ors_calculado['features'][0]['properties']['segments'][0]['distance'],
-                        "polilinea" => $ors_calculado['features'][0]['geometry']['coordinates']
-                    );
+                    $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_pasado['lat'], 'lng' => $repartidor_pasado['lon'] ], [ 'lat' => $repartidor['latitud'], 'lng' => $repartidor['longitud'] ]);
+                    if( $distancia > 20 ){
+                        $ors_calculado = polilinea_ors($repartidor_pasado['lon'], $repartidor_pasado['lat'], $repartidor['longitud'], $repartidor['latitud']);
+
+                        $resultado['repartidores'][] = array(
+                            "id" => $repartidor['usuario'],
+                            "nombre" => $repartidor['Nombre'],
+                            "tipo" => "camino",
+                            "velocidad" => $repartidor['velocidad'],
+                            "color" => "#00000000",
+                            "distancia" => $ors_calculado['features'][0]['properties']['segments'][0]['distance'],
+                            "polilinea" => $ors_calculado['features'][0]['geometry']['coordinates']
+                        );
+                    }else{
+                        $coordenadas = polilinea_ors($repartidor['longitud'], $repartidor['latitud'], $repartidor['longitud'], $repartidor['latitud'])['features'][0]['geometry']['coordinates'][0];
+
+                        $resultado['repartidores'][] = array(
+                            "id" => $repartidor['usuario'],
+                            "nombre" => $repartidor['Nombre'],
+                            "tipo" => "cercano",
+                            "velocidad" => $repartidor['velocidad'],
+                            "color" => "#00000000",
+                            "distancia" => \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_pasado['lat'], 'lng' => $repartidor_pasado['lon'] ], [ 'lat' => $coordenadas[1], 'lng' => $coordenadas[0] ]),
+                            "polilinea" => array(
+                                array($repartidor_pasado['lon'], $repartidor_pasado['lat']),
+                                array($coordenadas[0], $coordenadas[1])
+                            )
+                        );
+                    }
                 }else{
                     $coordenadas = polilinea_ors($repartidor['longitud'], $repartidor['latitud'], $repartidor['longitud'], $repartidor['latitud'])['features'][0]['geometry']['coordinates'][0];
 
                     $resultado['repartidores'][] = array(
                         "id" => $repartidor['usuario'],
                         "nombre" => $repartidor['Nombre'],
-                        "tipo" => "cercano",
+                        "tipo" => "nuevo",
                         "velocidad" => $repartidor['velocidad'],
                         "color" => "#00000000",
-                        "distancia" => \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $repartidor_pasado['lat'], 'lng' => $repartidor_pasado['lon'] ], [ 'lat' => $coordenadas[1], 'lng' => $coordenadas[0] ]),
+                        "distancia" => 0,
                         "polilinea" => array(
-                            array($repartidor_pasado['lon'], $repartidor_pasado['lat']),
+                            array($coordenadas[0], $coordenadas[1]),
                             array($coordenadas[0], $coordenadas[1])
                         )
-                    );
+                    );  
                 }
-            }else{
-                $coordenadas = polilinea_ors($repartidor['longitud'], $repartidor['latitud'], $repartidor['longitud'], $repartidor['latitud'])['features'][0]['geometry']['coordinates'][0];
-
-                $resultado['repartidores'][] = array(
-                    "id" => $repartidor['usuario'],
-                    "nombre" => $repartidor['Nombre'],
-                    "tipo" => "nuevo",
-                    "velocidad" => $repartidor['velocidad'],
-                    "color" => "#00000000",
-                    "distancia" => 0,
-                    "polilinea" => array(
-                        array($coordenadas[0], $coordenadas[1]),
-                        array($coordenadas[0], $coordenadas[1])
-                    )
-                );  
             }
+
         }
 
         if( $repartidor_seguido['id'] == 0 ){
