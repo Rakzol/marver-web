@@ -1,0 +1,139 @@
+private void trazar_ruta(){
+    try{
+
+        System.out.println("Intentando trazar");
+        if( marcador_repartidor != null && !pedidos.isEmpty() ){
+
+            Executors.newSingleThreadExecutor().execute(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        URL url = new URL("https://routes.googleapis.com/directions/v2:computeRoutes");
+                        HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
+
+                        conexion.setRequestMethod("POST");
+                        conexion.setRequestProperty("Content-Type", "application/json");
+                        conexion.setRequestProperty("X-Goog-Api-Key", "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo");
+                        conexion.setRequestProperty("X-Goog-FieldMask", "routes.duration,routes.distanceMeters,routes.legs.distanceMeters,routes.optimizedIntermediateWaypointIndex,routes.legs.duration,routes.legs.polyline.encodedPolyline,routes.legs.startLocation,routes.legs.endLocation");
+                        conexion.setDoOutput(true);
+
+                        OutputStream output_sream = conexion.getOutputStream();
+                        //output_sream.write(solicitud.toString().getBytes());
+                        output_sream.flush();
+                        output_sream.close();
+
+                        System.out.println("reciviendo");
+                        BufferedReader bufer_lectura = new BufferedReader( new InputStreamReader( conexion.getInputStream() ) );
+
+                        String linea;
+                        StringBuilder constructor_cadena = new StringBuilder();
+                        while( (linea = bufer_lectura.readLine()) != null ){
+                            constructor_cadena.append(linea).append("\n");
+                        }
+
+                        JSONObject json = new JSONObject( constructor_cadena.toString() );
+
+                        System.out.println("a mostrar");
+                        System.out.println(json);
+                        ((Aplicacion)requireActivity().getApplication()).controlador_hilo_princpal.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+
+                                    String tiempo_string = json.getJSONArray("routes").getJSONObject(0).getString("duration");
+                                    tiempo_string = tiempo_string.substring(0, tiempo_string.length() - 1 );
+
+                                    ((TextView)getView().findViewById(R.id.txtDistancia)).setText(
+                                            String.format("%.1f", json.getJSONArray("routes").getJSONObject(0).getInt("distanceMeters") / 1000f )
+                                                    + " Km"
+                                    );
+
+                                    ((TextView)getView().findViewById(R.id.txtTiempo)).setText(
+                                            String.format("%.1f", Float.parseFloat(tiempo_string) / 60f )
+                                                    + " min"
+                                    );
+
+
+
+                                    JSONArray legs = json.getJSONArray("routes").getJSONObject(0).getJSONArray("legs");
+
+                                    if( legs.length() > 1 ){
+                                        for(int c = 0; c < legs.length() - 1; c++ ){
+                                            JSONObject leg = legs.getJSONObject(c);
+
+                                            /* polilineas */
+
+
+                                            /* marcadores */
+
+                                            Pedido pedido;
+
+                                            try{
+                                                pedido = pedidos.get( json.getJSONArray("routes").getJSONObject(0).getJSONArray("optimizedIntermediateWaypointIndex").getInt(c) );
+                                            }catch (Exception ex){
+                                                pedido = pedidos.get( 0 );
+                                            }
+
+                                            marcadores_clientes.add(
+                                                    gMap.addMarker( new MarkerOptions()
+                                                            .position( new LatLng(
+                                                                    leg.getJSONObject("endLocation").getJSONObject("latLng").getDouble("latitude"),
+                                                                    leg.getJSONObject("endLocation").getJSONObject("latLng").getDouble("longitude")
+                                                            ) )
+                                                            .title( pedido.cliente_nombre )
+                                                            .snippet( "Folio: " + pedido.folio )
+                                                            .icon(
+                                                                    c < legs.length() - 1
+                                                                            ? BitmapDescriptorFactory.fromResource( getResources().getIdentifier("marcador_cliente_"+(c+1), "drawable", requireActivity().getPackageName()) )
+                                                                            : BitmapDescriptorFactory.fromResource( R.drawable.marcador_marver )
+                                                            )
+                                                    )
+                                            );
+                                        }
+                                    }else{
+                                        JSONObject leg = legs.getJSONObject(0);
+
+                                        /* polilineas */
+                                        List<LatLng> poli_linea_decodificada = PolyUtil.decode( leg.getJSONObject("polyline").getString("encodedPolyline") );
+
+                                        PolylineOptions configuracion_polilinea = new PolylineOptions()
+                                                .addAll(poli_linea_decodificada)
+                                                .color( Color.argb(255, 100, 149, 237))
+                                                .width(10);
+
+                                        if(primera_carga){
+                                            gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(getLatLngBounds(poli_linea_decodificada), 250));
+                                            primera_carga = false;
+                                        }
+
+                                        poli_lineaes.add( gMap.addPolyline(configuracion_polilinea) );
+
+                                        /* marcadores */
+
+                                        marcadores_clientes.add(
+                                                gMap.addMarker( new MarkerOptions()
+                                                        .position( new LatLng(
+                                                                leg.getJSONObject("endLocation").getJSONObject("latLng").getDouble("latitude"),
+                                                                leg.getJSONObject("endLocation").getJSONObject("latLng").getDouble("longitude")
+                                                        ) )
+                                                        .title( "Marver Refacciones" )
+                                                        .snippet( "Sucursal Mochis" )
+                                                        .icon(BitmapDescriptorFactory.fromResource( R.drawable.marcador_marver ))
+                                                )
+                                        );
+                                    }
+
+
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }catch (Exception ex){}
+}
