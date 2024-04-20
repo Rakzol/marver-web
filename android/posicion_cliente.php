@@ -23,13 +23,13 @@
             if( $distancia > 20 ){
                 $ors_calculada = polilinea_ors($_POST['lon'], $_POST['lat'], $clientes[0]['longitud'], $clientes[0]['latitud']);
                 
-                $resultado["distancia"] = $ors_calculada['features'][0]['properties']['segments'][0]['distance'];
-                $resultado["tiempo"] = $ors_calculada['features'][0]['properties']['segments'][0]['duration'];
+                $resultado["distancia"] = number_format( $ors_calculada['features'][0]['properties']['segments'][0]['distance'] / 1000, 1 ) . " Km";
+                $resultado["tiempo"] = number_format( $ors_calculada['features'][0]['properties']['segments'][0]['duration'] / 60, 1 ) . " min";
                 $resultado["polilineas"] = $ors_calculada['features'][0]['geometry']['coordinates'];
                 $resultado["color"] = "#6495ED";
             }else{
-                $resultado["distancia"] = 0;
-                $resultado["tiempo"] = 0;
+                $resultado["distancia"] = "0 Km";
+                $resultado["tiempo"] = "0 min";
                 $resultado["polilineas"] = [ [$clientes[0]['longitud'], $clientes[0]['latitud']] , [$clientes[0]['longitud'], $clientes[0]['latitud']] ];
                 $resultado["color"] = "#6495ED";
             }
