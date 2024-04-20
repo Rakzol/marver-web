@@ -14,15 +14,64 @@
         $clientes = $preparada->fetchAll(PDO::FETCH_ASSOC);
 
         if( count($clientes) > 0 ){
-            $cliente["latitud"] = $clientes[0]["latitud"];
-            $cliente["longitud"] = $clientes[0]["longitud"];
+
+            $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $_POST['lat'], 'lng' => $_POST['lon'] ], [ 'lat' => $clientes[0]['latitud'], 'lng' => $clientes[0]['longitud'] ] );
+            if( $distancia > 20 ){
+                $ors_calculada = polilinea_ors($_POST['lon'], $_POST['lat'], $decodedPoint['lng'], $decodedPoint['lat']);
+                
+                $resultado["distancia"] = $ors_calculada['features'][0]['properties']['segments'][0]['distance'];
+                $resultado["tiempo"] = $ors_calculada['features'][0]['properties']['segments'][0]['duration'];
+                $resultado["polilineas"] = $ors_calculada['features'][0]['geometry']['coordinates'];
+                $resultado["color"] = "#6495ED";
+            }else{
+                $resultado["distancia"] = 0;
+                $resultado["tiempo"] = 0;
+                $resultado["polilineas"] = [ [$clientes[0]['longitud'], $clientes[0]['latitud']] , [$clientes[0]['longitud'], $clientes[0]['latitud']] ];
+                $resultado["color"] = "#6495ED";
+            }
         }else{
-            $cliente["latitud"] = "no";
-            $cliente["longitud"] = "no";
+            $resultado["polilineas"][] = [$_POST['lon'],$_POST['lat']];
         }
 
-        echo json_encode( $cliente, JSON_UNESCAPED_UNICODE);
+        echo json_encode( $resultado, JSON_UNESCAPED_UNICODE);
     }catch( Exception $exception ) {
         header('HTTP/1.1 500 ' . $exception->getMessage());
     }
+
+    function polilinea_ors($lon1, $lat1, $lon2, $lat2){
+        $url = 'http://10.10.10.130:8082/ors/v2/directions/driving-car';
+
+        $curl = curl_init();
+
+        $parametros = array(
+            'api_key' => '5b3ce3597851110001cf6248199545457ba045d184173db169aebd0c',
+            'start' => $lon1 . ',' . $lat1,
+            'end' => $lon2 . ',' . $lat2
+        );
+
+        $cabecera = array(
+            'Content-Type: application/json; charset=utf-8',
+            'Accept: application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8'
+        );
+
+        curl_setopt($curl, CURLOPT_URL, $url . '?' . http_build_query($parametros));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $cabecera);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+
+        $respuesta = curl_exec($curl);
+
+        if ($respuesta == false) {
+            $resultado["status"] = 5;
+            $resultado["mensaje"] = "Error con ors " . curl_error($curl);
+            echo json_encode($resultado);
+            exit();
+        }
+
+        curl_close($curl);
+
+        return json_decode($respuesta,true);
+    }
+
 ?>
