@@ -8,7 +8,7 @@
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
         $preparada = $conexion->prepare("SELECT latitud, longitud FROM clientes_posiciones WHERE clave = :clave");
-        $preparada->bindValue(':clave', $_POST['c']);
+        $preparada->bindValue(':clave', $_POST['clave']);
         $preparada->execute();
 
         $clientes = $preparada->fetchAll(PDO::FETCH_ASSOC);
