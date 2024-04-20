@@ -2,8 +2,6 @@
     try{
         session_start();
 
-        echo var_dump($_POST);
-
         require_once 'geometria/SphericalUtil.php';
         require_once 'geometria/PolyUtil.php';
         require_once 'geometria/MathUtil.php';
