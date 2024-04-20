@@ -6,8 +6,8 @@
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
         $preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Clave = :clave AND Contraseña = :contrasena');
-        $preparada->bindValue(':clave', $_GET['clave']);
-        $preparada->bindValue(':contrasena', $_GET['contraseña']);
+        $preparada->bindValue(':clave', $_POST['clave']);
+        $preparada->bindValue(':contrasena', $_POST['contraseña']);
         $preparada->execute();
 
         $usuarios = $preparada->fetchAll(PDO::FETCH_ASSOC);
@@ -20,7 +20,7 @@
         }
 
         $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
-        $preparada->bindValue(':repartidor', $_GET['clave']);
+        $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
 
         if( count($preparada->fetchAll(PDO::FETCH_ASSOC)) > 0 ){
@@ -31,7 +31,7 @@
         }
 
         $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NULL AND fecha_fin IS NULL');
-        $preparada->bindValue(':repartidor', $_GET['clave']);
+        $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
 
         $rutas_repartidores = $preparada->fetchAll(PDO::FETCH_ASSOC);
