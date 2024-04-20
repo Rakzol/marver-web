@@ -21,7 +21,7 @@
 
             $distancia = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => $_POST['lat'], 'lng' => $_POST['lon'] ], [ 'lat' => $clientes[0]['latitud'], 'lng' => $clientes[0]['longitud'] ] );
             if( $distancia > 20 ){
-                $ors_calculada = polilinea_ors($_POST['lon'], $_POST['lat'], $decodedPoint['lng'], $decodedPoint['lat']);
+                $ors_calculada = polilinea_ors($_POST['lon'], $_POST['lat'], $clientes[0]['longitud'], $clientes[0]['latitud']);
                 
                 $resultado["distancia"] = $ors_calculada['features'][0]['properties']['segments'][0]['distance'];
                 $resultado["tiempo"] = $ors_calculada['features'][0]['properties']['segments'][0]['duration'];
