@@ -38,7 +38,7 @@
 
         $resultado["status"] = 0;
         $resultado["mensaje"] = "Ruta finalizada correctamente";
-        echo $respuesta;
+        echo $resultado;
 
         // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
     }catch( Exception $exception ) {
