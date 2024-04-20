@@ -45,7 +45,8 @@
             LEFT JOIN MoviemientosVenta ON MoviemientosVenta.Folio = PedidosCliente.FolioComprobante AND MoviemientosVenta.TipoComprobante = 11 AND MoviemientosVenta.Importe < 0
             WHERE
             Responsable = :vendedor
-
+            AND EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
+            AND Ventas.Status = 4
             ORDER BY CONVERT(DATETIME, REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) , ' ', EnvioPedidoCliente.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) ) DESC
         ");
         //AND EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
