@@ -98,7 +98,7 @@
             </h5>
             <div class="card-body">
                 <h5 class="card-title" id="txtNombreRepartidor">Seleccione un Repartidor</h5>
-                <p class="card-text mb-1" id="velocidadRepartidor">0.0 Km/h</p>
+                <!-- <p class="card-text mb-1" id="velocidadRepartidor">0.0 Km/h</p> -->
                 <div>
                     <button id="btnBuscarRepartidor" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelector">Buscar Repartidor</button>
                 </div>
