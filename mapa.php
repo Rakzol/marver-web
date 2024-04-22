@@ -192,7 +192,7 @@
 
         let id_actualizar;
 
-        let max_frame = 2500;
+        let max_frame = 2100;
         let frame = max_frame + 1;
 
         let polilineas = [];
