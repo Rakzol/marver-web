@@ -200,6 +200,7 @@
         let infowindowMarver;
         let marcadorMarver;
         
+        let listaRepartidores;
         let velocidadRepartidor;
 
         let ElementoMarcadorAvanzado;
@@ -267,6 +268,37 @@
                             repartidores[repartidor['id']]['polilinea'] = repartidor['polilinea'];
                             repartidores[repartidor['id']]['distancia'] = repartidor['distancia'];
                             repartidores[repartidor['id']]['color'] = repartidor['color'];
+
+                            let li = document.createElement('li');
+
+                            li.addEventListener('click', () => {
+                                document.getElementById('btnCerrarModal').click();
+
+                                document.getElementById('txtIdRepartidor').innerText = repartidores[repartidor['id']]['id'];
+                                document.getElementById('txtNombreRepartidor').innerText = repartidores[repartidor['id']]['nombre'];
+                                //velocidadRepartidor.innerText = (usuarioLista['velocidad'] * 3.6).toFixed(1) + ' Km/h';
+
+                                infowindow.open({
+                                    anchor: marcador,
+                                    map: mapa,
+                                    zIndex: -2
+                                });
+
+                                clearTimeout(id_actualizar);
+                                frame = max_frame + 1;
+                                repartidor_seguido = repartidores[repartidor['id']];
+                                actualizar();
+                            });
+
+                            li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+                            li.innerText = repartidores[repartidor['id']]['nombre'];
+
+                            let span = document.createElement('span');
+                            span.classList.add('badge', 'bg-primary', 'rounded-pill');
+                            span.innerText = repartidores[repartidor['id']]['id'];
+
+                            li.appendChild(span);
+                            listaRepartidores.appendChild(li);
                         }
 
                         if(repartidor['color'] != '#00000000'){
@@ -544,6 +576,7 @@
             });
 
             velocidadRepartidor = document.getElementById('velocidadRepartidor');
+            listaRepartidores = document.getElementById('listaRepartidores');
 
             actualizar();
         }
