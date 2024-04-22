@@ -5,6 +5,8 @@
         header("Location: https://www.marverrefacciones.mx/login_mapa.php");
         exit();
     }
+
+
 ?>
 <!DOCTYPE html>
 <html class="h-100" lang="es">
@@ -44,6 +46,24 @@
     <link href="css/style.css" rel="stylesheet">
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <style>
+        .infoWindow{
+            margin: 0;
+            font-size: 15px;
+            color: black;
+            font-weight: 400;
+        }
+
+        .dinero{
+            margin: 0;
+            color: green;
+        }
+
+        .dinero::before{
+            content: '$ ';
+        }
+    </style>
 </head>
 
 <body class="h-100">
@@ -78,13 +98,9 @@
             </h5>
             <div class="card-body">
                 <h5 class="card-title" id="txtNombreRepartidor">Seleccione un Repartidor</h5>
-                <p class="card-text mb-1" id="velocidadRepartidor">0.0 Km/h</p>
+                <!-- <p class="card-text mb-1" id="velocidadRepartidor">0.0 Km/h</p> -->
                 <div>
                     <button id="btnBuscarRepartidor" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelector">Buscar Repartidor</button>
-                    <div class="form-check form-switch d-inline-block ms-2 mt-2" >
-                        <input class="form-check-input" id="seguirRepartidor" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
-                        <label class="form-check-label ms-1" for="flexSwitchCheckChecked">Seguir repartidor</label>
-                    </div>
                 </div>
                 <a class="btn btn-primary mt-2" style="min-width: 142px;" href="https://www.marverrefacciones.mx/excesos" target="_blank" >Excesos</a>
                 <a class="btn btn-primary mt-2" style="min-width: 142px;" href="https://www.marverrefacciones.mx/repartidores" target="_blank">Repartidores</a>
@@ -109,242 +125,398 @@
     <!-- Template Javascript -->
     <!-- <script src="js/main.js"></script> -->
 
-    <script>(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
-            ({ key: "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo", v: "weekly" });</script>
+<script>
 
-    <script type="module">
+        function calcularPuntoIntermedio(latitud1, longitud1, latitud2, longitud2, porcentaje) {
+            // Convertir grados a radianes
+            const lat1Rad = latitud1 * Math.PI / 180;
+            const lon1Rad = longitud1 * Math.PI / 180;
+            const lat2Rad = latitud2 * Math.PI / 180;
+            const lon2Rad = longitud2 * Math.PI / 180;
+
+            // Radio de la Tierra en metros (aproximado)
+            const radioTierra = 6371 * 1000; // en metros
+
+            // Calcular la distancia entre los dos puntos
+            const distancia = Math.acos(Math.sin(lat1Rad) * Math.sin(lat2Rad) + Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.cos(lon2Rad - lon1Rad)) * radioTierra;
+
+            // Calcular el punto intermedio
+            const puntoIntermedioLatitud = latitud1 + (latitud2 - latitud1) * porcentaje;
+            const puntoIntermedioLongitud = longitud1 + (longitud2 - longitud1) * porcentaje;
+
+            return [puntoIntermedioLatitud, puntoIntermedioLongitud];
+        }
+
+        function calcularDistancia(lat1, lon1, lat2, lon2) {
+            const radioTierraKm = 6371; // Radio de la Tierra en kilómetros
+            const dLat = toRadians(lat2 - lat1);
+            const dLon = toRadians(lon2 - lon1);
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const distanciaKm = radioTierraKm * c;
+            const distanciaMetros = distanciaKm * 1000;
+            return distanciaMetros;
+        }
+
+        function toRadians(grados) {
+            return grados * Math.PI / 180;
+        }
+
+        function GeoPolylineToGooglePolyline(geoPolylines){
+            let googlePolylines = [];
+            geoPolylines.forEach( (geoPolyline)=> {
+                googlePolylines.push( { lat: geoPolyline[1], lng: geoPolyline[0] } );
+            } );
+            return googlePolylines;
+        }
 
         let mapa;
-        let usuarios = [];
-        let frame = 1;
-        let fijado = 0;
+
+        let json_api;
+        let repartidores = {};
+
+        let repartidor_seguido = {
+            id: 0,
+            marcador: {
+                position: {
+                    lat: 0,
+                    lng: 0
+                }
+            }
+        }
+
+        let id_ruta = 0;
+        let pedidos = [];
+
+        let id_actualizar;
+
+        let max_frame = 2500;
+        let frame = max_frame + 1;
+
+        let polilineas = [];
+
+        let infowindowMarver;
+        let marcadorMarver;
+        
+        let listaRepartidores;
         let velocidadRepartidor;
-        let seguirRepartidor;
-        let directo = true;
 
-        function actualizacion_logica() {
-            let datos = new FormData();
+        let ElementoMarcadorAvanzado;
+        let VentanaInformacion;
+        let Esferica;
+        let Codificador;
+        let Polilinea;
+        let LimitesLatitudLongitud;
 
-            fetch('android/posiciones_web', {
-                method: 'POST',
-                body: datos
-            })
+        function actualizar() {
+
+            if(frame <= max_frame){
+
+                if( frame == 0 ){
+
+                    polilineas.forEach( (polilinea)=>{
+                        polilinea.setMap(null);
+                    });
+                    polilineas = [];
+
+                    json_api['repartidores'].forEach( (repartidor) => {
+
+                        if(repartidores.hasOwnProperty(repartidor['id'])){
+
+                            repartidores[repartidor['id']]['polilinea'] = repartidor['polilinea'];
+                            repartidores[repartidor['id']]['distancia'] = repartidor['distancia'];
+                            repartidores[repartidor['id']]['color'] = repartidor['color'];
+                            repartidores[repartidor['id']]['velocidad'] = repartidor['velocidad'];
+
+                        }else{
+
+                            let imagen = document.createElement('img');
+                            imagen.src = 'https://www.marverrefacciones.mx/android/marcador.png';
+
+                            let marcador = new ElementoMarcadorAvanzado({
+                                content: imagen,
+                                map: mapa,
+                                position: { lat: repartidor['polilinea'][0][1], lng: repartidor['polilinea'][0][0] },
+                                zIndex: 1
+                            });
+
+                            let infowindow = new VentanaInformacion({
+                                disableAutoPan: true,
+                                content: '<p class="infoWindow" ><strong>' + repartidor['id'] + ' </strong> ' + repartidor['nombre'] + '</p>',
+                                zIndex: 1
+                            });
+
+                            marcador.addListener("click", () => {
+                                infowindow.open({
+                                    anchor: marcador,
+                                    map: mapa,
+                                    zIndex: -2
+                                });
+
+                                clearTimeout(id_actualizar);
+                                frame = max_frame + 1;
+                                repartidor_seguido = repartidores[repartidor['id']];
+                                actualizar();
+                            });
+
+                            repartidores[repartidor['id']] = {};
+                            repartidores[repartidor['id']]['id'] = repartidor['id'];
+                            repartidores[repartidor['id']]['nombre'] = repartidor['nombre'];
+                            repartidores[repartidor['id']]['marcador'] = marcador;
+                            repartidores[repartidor['id']]['polilinea'] = repartidor['polilinea'];
+                            repartidores[repartidor['id']]['distancia'] = repartidor['distancia'];
+                            repartidores[repartidor['id']]['color'] = repartidor['color'];
+
+                            let li = document.createElement('li');
+
+                            li.addEventListener('click', () => {
+                                document.getElementById('btnCerrarModal').click();
+
+                                document.getElementById('txtIdRepartidor').innerText = repartidores[repartidor['id']]['id'];
+                                document.getElementById('txtNombreRepartidor').innerText = repartidores[repartidor['id']]['nombre'];
+                                //velocidadRepartidor.innerText = (usuarioLista['velocidad'] * 3.6).toFixed(1) + ' Km/h';
+
+                                infowindow.open({
+                                    anchor: marcador,
+                                    map: mapa,
+                                    zIndex: -2
+                                });
+
+                                clearTimeout(id_actualizar);
+                                frame = max_frame + 1;
+                                repartidor_seguido = repartidores[repartidor['id']];
+                                actualizar();
+                            });
+
+                            li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+                            li.innerText = repartidores[repartidor['id']]['nombre'];
+
+                            let span = document.createElement('span');
+                            span.classList.add('badge', 'bg-primary', 'rounded-pill');
+                            span.innerText = repartidores[repartidor['id']]['id'];
+
+                            li.appendChild(span);
+                            listaRepartidores.appendChild(li);
+                        }
+
+                        if(repartidor['color'] != '#00000000'){
+
+                            let polilinea = new Polilinea({
+                                path: GeoPolylineToGooglePolyline(repartidor['polilinea']),
+                                geodesic: true,
+                                strokeColor: repartidor['color'],
+                                strokeOpacity: 1.0,
+                                strokeWeight: 3,
+                                zIndex: 3
+                            });
+                            polilinea.setMap(mapa);
+                            polilineas.push(polilinea);
+                        }
+                    } );
+
+                    if( json_api.hasOwnProperty('incorporacion') ){
+                        let polilinea = new Polilinea({
+                            path: GeoPolylineToGooglePolyline(json_api['incorporacion']['polilinea']),
+                            geodesic: true,
+                            strokeColor: json_api['incorporacion']['color'],
+                            strokeOpacity: 1.0,
+                            strokeWeight: 3,
+                            zIndex: 4
+                        });
+                        polilinea.setMap(mapa);
+                        polilineas.push(polilinea);
+                    }
+
+                    if( json_api.hasOwnProperty('id') ){
+
+                        if( json_api['id'] != id_ruta ){
+
+                            id_ruta = json_api['id'];
+
+                            pedidos.forEach( (pedido)=>{
+                                pedido['marcador'].setMap(null);
+                            });
+                            pedidos = [];
+
+                            for(let c = 0; c < json_api['ruta']['legs'].length - 1; c++){
+
+                                let leg = json_api['ruta']['legs'][c];
+
+                                let imagen = document.createElement('img');
+                                imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_cliente_' + (c+1) + ( leg['pedido']['status'] != 4 ? '_verde' : '' ) + '.png';
+
+                                let marcador = new ElementoMarcadorAvanzado({
+                                    content: imagen,
+                                    map: mapa,
+                                    position: { lat: leg['polyline']['polilinea'][leg['polyline']['polilinea'].length-1][1], lng: leg['polyline']['polilinea'][leg['polyline']['polilinea'].length-1][0] },
+                                    zIndex: 2
+                                });
+
+                                let infowindow = new VentanaInformacion({
+                                    disableAutoPan: true,
+                                    content: '<p class="infoWindow" >' + 
+                                        '<strong>Folio: </strong> ' + leg['pedido']['folio'] + '<br>' +
+                                        '<strong>Cliente: </strong> ' + leg['pedido']['cliente_clave'] + ' ' + leg['pedido']['cliente_nombre'] + '<br>' +
+                                        '<strong>Pedido: </strong> ' + leg['pedido']['pedido'] + '<br>' +
+                                        '<strong>Total: </strong> <span class="dinero" >' + leg['pedido']['total'] + '</span><br>' +
+                                        ( leg['pedido']['feria'] != null ? '<strong>Feria: </strong> <span class="dinero" >' + leg['pedido']['feria'] + '</span><br>' : '' ) +
+                                        ( leg['pedido']['calle'] != null ? '<strong>Calle: </strong> ' + leg['pedido']['calle'] + '<br>' : '' ) +
+                                        ( leg['pedido']['numero_exterior'] != null ? '<strong>Número exterior: </strong> ' + leg['pedido']['numero_exterior'] + '<br>' : '' ) +
+                                        ( leg['pedido']['numero_interior'] != null ? '<strong>Número Interior: </strong> ' + leg['pedido']['numero_interior'] + '<br>' : '' ) +
+                                        '<strong>Llegada: </strong> ' + leg['llegada'] + '<br>' +
+                                        '<strong>Duración: </strong> ' + leg['Totalduration'] + ' Minutos<br>' +
+                                        '<strong>Distancia: </strong> ' + leg['Totaldistance'] + ' Km.'
+                                    + '</p>',
+                                    zIndex: 3
+                                });
+
+                                marcador.addListener("click", () => {
+                                    infowindow.open({
+                                        anchor: marcador,
+                                        map: mapa,
+                                    });
+                                });
+
+                                pedido = {};
+                                pedido['marcador'] = marcador;
+                                pedido['status'] = leg['pedido']['status'];
+                                pedidos.push(pedido);
+                            }
+
+                            infowindowMarver.setContent('<p class="infoWindow" >' + 
+                                '<strong>Llegada: </strong> ' + json_api['ruta']['llegada'] + '<br>' +
+                                '<strong>Duración: </strong> ' + json_api['ruta']['duration'] + ' Minutos<br>' +
+                                '<strong>Distancia: </strong> ' + json_api['ruta']['distance'] + ' Km.'
+                            + '</p>');
+                            infowindowMarver.open({
+                                anchor: marcadorMarver,
+                                map: mapa,
+                            });
+
+                        }else{
+
+                            for(let c = 0; c < json_api['ruta']['legs'].length - 1; c++){
+
+                                let leg = json_api['ruta']['legs'][c];
+
+                                if( leg['pedido']['status'] != pedidos[c]['status'] ){
+                                    pedidos[c]['status'] = leg['pedido']['status'];
+
+                                    let imagen = document.createElement('img');
+                                    imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_cliente_' + (c+1) + ( leg['pedido']['status'] != 4 ? '_verde' : '' ) + '.png';
+                                
+                                    pedidos[c]['marcador']['content'] = imagen;
+                                }
+
+                            }
+
+                        }
+
+                        json_api['ruta']['legs'].forEach( (leg) => {
+
+                            let polilinea = new Polilinea({
+                                path: GeoPolylineToGooglePolyline(leg['polyline']['polilinea']),
+                                geodesic: true,
+                                strokeColor: leg['color'],
+                                strokeOpacity: 1.0,
+                                strokeWeight: 3,
+                                zIndex: ( leg['color'] != "#000000" ? 2 : 1 )
+                            });
+                            polilinea.setMap(mapa);
+                            polilineas.push(polilinea);
+
+                        } );
+                    }else{
+                        id_ruta = 0;
+
+                        pedidos.forEach( (pedido)=>{
+                            pedido['marcador'].setMap(null);
+                        });
+                        pedidos = [];
+
+                        infowindowMarver.setContent('');
+                        infowindowMarver.close();
+                    }
+
+                }else{
+
+                    Object.keys(repartidores).forEach( (id) => {
+
+                        let metro_recorrer_todo_frame = frame / max_frame * repartidores[id]['distancia'];
+                        let metros_recorridos = 0;
+
+                        for(let c = 0; c < repartidores[id]['polilinea'].length - 1; c++ ){
+
+                            let punto_inicial = {lat: repartidores[id]['polilinea'][c][1], lng: repartidores[id]['polilinea'][c][0]};
+                            let punto_final = {lat: repartidores[id]['polilinea'][c+1][1], lng: repartidores[id]['polilinea'][c+1][0]};
+                            let metros_entre_puntos = calcularDistancia( punto_inicial['lat'], punto_inicial['lng'], punto_final['lat'], punto_final['lng']);
+
+                            metros_recorridos += metros_entre_puntos;
+
+                            if( metros_recorridos >= metro_recorrer_todo_frame){
+
+                                let metros_recorridos_tramo = metros_recorridos - metro_recorrer_todo_frame;
+
+                                if( !isNaN(metros_recorridos_tramo / metros_entre_puntos) ){
+                                    let posicion_nueva = calcularPuntoIntermedio( punto_final['lat'], punto_final['lng'], punto_inicial['lat'], punto_inicial['lng'], metros_recorridos_tramo / metros_entre_puntos );
+                                    repartidores[id]['marcador'].position = { lat: posicion_nueva[0], lng: posicion_nueva[1] };
+                                }
+
+                                break;
+                            }
+                        }
+
+                    } );
+
+                }
+
+                frame++;
+            }
+
+            if(frame > max_frame){
+
+                let datos = {
+                    "repartidor": {
+                        "id": repartidor_seguido['id'],
+                        "lat": repartidor_seguido['marcador']['position']['lat'],
+                        "lon": repartidor_seguido['marcador']['position']['lng']
+                    },
+                    "repartidores":{}
+                };
+
+                Object.keys(repartidores).forEach( (id) => {
+                    datos['repartidores'][id] = {
+                        "lat": repartidores[id]['marcador'].position['lat'],
+                        "lon": repartidores[id]['marcador'].position['lng']
+                    };
+                } );
+
+                fetch('android/rutas_repartidores', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(datos)
+                })
                 .then((respuesta) => {
                     return respuesta.json();
                 })
                 .catch(error => {
-                    console.error('Error al solicitar los años: ', error);
+                    console.error('Error al solicitar las ruta de los repartidores: ', error);
+                    actualizar();
                 })
                 .then(respuesta_json => {
-                    procesar_logica(respuesta_json);
+                    frame = 0;
+                    json_api = respuesta_json;
+                    actualizar();
                 });
-        }
-
-        async function procesar_logica(respuesta_json) {
-
-            const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-
-            respuesta_json.forEach((usuario) => {
-
-                let usuario_encontrado = usuarios.find((usuario_buscar) => { return usuario_buscar['id'] == usuario['usuario']; });
-
-                if (usuario_encontrado) {
-                    usuario_encontrado['posicion_nueva'] = { lat: usuario['latitud'], lng: usuario['longitud'] };
-                    usuario_encontrado['velocidad'] = usuario['velocidad'];
-                } else {
-
-                    let imagen = document.createElement('img');
-                    imagen.src = 'https://www.marverrefacciones.mx/android/marcador.png';
-
-                    let marcador = new AdvancedMarkerElement({
-                        content: imagen,
-                        map: mapa,
-                        position: { lat: usuario['latitud'], lng: usuario['longitud'] }
-                    });
-
-                    let usuarioLista = {
-                        id: usuario['usuario'],
-                        nombre: usuario['Nombre'],
-                        marcador: marcador,
-                        velocidad: usuario['velocidad'],
-                        posicion_inicial: { lat: usuario['latitud'], lng: usuario['longitud'] },
-                        posicion_final: { lat: usuario['latitud'], lng: usuario['longitud'] },
-                        posicion_nueva: { lat: usuario['latitud'], lng: usuario['longitud'] }
-                    };
-
-                    let infowindow = new google.maps.InfoWindow({
-                        content: '<p style="margin: 0;" ><strong>' + usuarioLista['id'] + ' </strong>' + usuarioLista['nombre'] + '</p>'
-                    });
-
-                    marcador.addListener("click", () => {
-                        fijado = usuarioLista['id'];
-
-                        mapa.setZoom(18.5);
-                        mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
-                        mapa.panTo(usuarioLista['marcador'].position);
-
-                        document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
-                        document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
-                        //velocidadRepartidor.innerText = (usuarioLista['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-
-                        infowindow.open({
-                            anchor: usuarioLista['marcador'],
-                            map: mapa,
-                        });
-                    });
-
-                    usuarios.push(usuarioLista);
-
-                    let li = document.createElement('li');
-
-                    li.addEventListener('click', () => {
-                        document.getElementById('btnCerrarModal').click();
-                        fijado = usuarioLista['id'];
-
-                        mapa.setZoom(18.5);
-                        mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
-                        mapa.panTo(usuarioLista['marcador'].position);
-
-                        document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
-                        document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
-                        //velocidadRepartidor.innerText = (usuarioLista['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-
-                        infowindow.open({
-                            anchor: usuarioLista['marcador'],
-                            map: mapa,
-                        });
-                    });
-
-                    li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
-                    li.innerText = usuarioLista['nombre'];
-
-                    let span = document.createElement('span');
-                    span.classList.add('badge', 'bg-primary', 'rounded-pill');
-                    span.innerText = usuarioLista['id'];
-
-                    li.appendChild(span);
-                    listaRepartidores.appendChild(li);
-
-                    /*let listaRepartidores = document.getElementById('listaRepartidores');
-                    listaRepartidores.replaceChildren();
-
-                    usuarios.forEach((usuarioLista) => {
-                        let li = document.createElement('li');
-
-                        li.addEventListener('click', () => {
-                            document.getElementById('btnCerrarModal').click();
-                            fijado = usuarioLista['id'];
-
-                            mapa.setZoom(17.5);
-                            mapa.panTo(usuarioLista['marcador'].position);
-
-                            document.getElementById('txtIdRepartidor').innerText = usuarioLista['id'];
-                            document.getElementById('txtNombreRepartidor').innerText = usuarioLista['nombre'];
-
-                            infowindow.open({
-                                anchor: usuarioLista['marcador'],
-                                map: mapa,
-                            });
-                        });
-
-                        li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
-                        li.innerText = usuarioLista['nombre'];
-
-                        let span = document.createElement('span');
-                        span.classList.add('badge', 'bg-primary', 'rounded-pill');
-                        span.innerText = usuarioLista['id'];
-
-                        li.appendChild(span);
-                        listaRepartidores.appendChild(li);
-                    });*/
-                }
-            });
-        }
-
-        async function procesar_vista() {
-            const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-
-            usuarios.forEach((usuario) => {
-
-                if(directo){
-                    frame = 1;
-                }
-
-                if (fijado == usuario['id'] ) {
-                    velocidadRepartidor.innerText = (usuario['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-                    if (frame % 50 == 0 && seguirRepartidor.checked) {
-                        mapa.panTo(usuario['marcador'].position);
-                    }
-                }
-
-                if (frame == 1) {
-                    usuario['posicion_final'] = { lat: usuario['posicion_nueva']['lat'], lng: usuario['posicion_nueva']['lng'] };
-                    //Comenzar Seguimiento
-                    //Parar El Seguimiento
-                    // if (fijado == usuario['id']) {
-                    //     velocidadRepartidor.innerText = (usuario['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-                    // }
-                }
-
-                if(directo){
-                    frame = 1550;
-                }
-
-                if (usuario['posicion_inicial']['lat'] != usuario['posicion_final']['lat'] || usuario['posicion_inicial']['lng'] != usuario['posicion_final']['lng']) {
-
-                    let latitud_dif_abs = Math.abs(usuario['posicion_inicial']['lat'] - usuario['posicion_final']['lat']) * frame / 1550;
-                    let longitud_dif_abs = Math.abs(Math.abs(usuario['posicion_inicial']['lng']) + usuario['posicion_final']['lng']) * frame / 1550;
-
-                    let latitud = usuario['posicion_inicial']['lat'] >= usuario['posicion_final']['lat'] ? usuario['posicion_inicial']['lat'] - latitud_dif_abs : usuario['posicion_inicial']['lat'] + latitud_dif_abs;
-                    let longitud = usuario['posicion_inicial']['lng'] >= usuario['posicion_final']['lng'] ? usuario['posicion_inicial']['lng'] - longitud_dif_abs : usuario['posicion_inicial']['lng'] + longitud_dif_abs;
-
-                    usuario['marcador'].position = { lat: latitud, lng: longitud };
-                }
-
-                if( directo && seguirRepartidor.checked ){
-                    mapa.setCenter(usuario['marcador'].position);
-                }
-
-                if (frame == 1550) {
-                    usuario['posicion_inicial'] = { lat: usuario['posicion_final']['lat'], lng: usuario['posicion_final']['lng'] };
-                }
-
-            });
-
-            if (frame == 1550) {
-                frame = 1;
-            } else {
-                frame++;
             }
-
-            if(directo){
-                directo = false;
+            else{
+                id_actualizar = setTimeout(actualizar, 10);
             }
-
-            setTimeout(procesar_vista, 10);
         }
-
-        async function initMap() {
-            const { Map, InfoWindow } = await google.maps.importLibrary("maps");
-            const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-
-            mapa = new Map(document.getElementById("mapa"), {
-                center: { lat: 25.7951169, lng: -108.99698492 },
-                zoom: 13.36,
-                mapId: '7845e7dffe8cea37'
-            });
-
-            setInterval(actualizacion_logica, 500);
-            setTimeout(procesar_vista, 10);
-
-            velocidadRepartidor = document.getElementById('velocidadRepartidor');
-            seguirRepartidor = document.getElementById('seguirRepartidor');
-        }
-
-        initMap();
-    </script>
-
-    <script>
 
         document.getElementById('modalSelector').addEventListener('hidden.bs.modal', function () {
             setTimeout(() => {
@@ -357,7 +529,59 @@
                 directo = true;
             }
         });
+</script>
 
+    <script>(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
+            ({ key: "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo", v: "weekly" });</script>
+
+    <script type="module">
+
+        async function initMap() {
+            const { Map, InfoWindow, Polyline } = await google.maps.importLibrary("maps");
+            const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+            const { LatLngBounds } = await google.maps.importLibrary("core");
+
+            ElementoMarcadorAvanzado = AdvancedMarkerElement;
+            VentanaInformacion = InfoWindow;
+            Polilinea = Polyline;
+            LimitesLatitudLongitud = LatLngBounds;
+
+            mapa = new Map(document.getElementById("mapa"), {
+                center: { lat: 25.7951169, lng: -108.99698492 },
+                zoom: 13.36,
+                mapId: '7845e7dffe8cea37'
+            });
+
+            let imagen = document.createElement('img');
+            imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_marver.png';
+
+            marcadorMarver = new ElementoMarcadorAvanzado({
+                content: imagen,
+                map: mapa,
+                position: { lat: 25.7943047, lng: -108.9859510 },
+                zIndex: 3
+            });
+
+            infowindowMarver = new VentanaInformacion({
+                disableAutoPan: true,
+                content: '<p class="infoWindow" ></p>',
+                zIndex: 2
+            });
+
+            marcadorMarver.addListener("click", () => {
+                infowindowMarver.open({
+                    anchor: marcadorMarver,
+                    map: mapa,
+                });
+            });
+
+            velocidadRepartidor = document.getElementById('velocidadRepartidor');
+            listaRepartidores = document.getElementById('listaRepartidores');
+
+            actualizar();
+        }
+
+        initMap();
     </script>
 </body>
 
