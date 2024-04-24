@@ -27,7 +27,7 @@
 
         $preparada = $conexion->prepare('INSERT INTO posiciones_test VALUES( :usuario, :presicion, :latitud, :longitud, GETDATE() )');
         $preparada->bindValue(':usuario', $_POST['u']);
-        $preparada->bindValue(':presicion', $_POST['presicion']);
+        $preparada->bindValue(':presicion', 0);
         $preparada->bindValue(':latitud', $_POST['la']);
         $preparada->bindValue(':longitud', $_POST['ln']);
         $preparada->execute();
