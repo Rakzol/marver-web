@@ -27,6 +27,7 @@
 
         $repartidor_seguido = $POST['repartidor'];
 
+        $resultado['repartidores'] = [];
         if(isset($POST['repartidores'])){
 
             $preparada = $conexion->prepare('
@@ -96,8 +97,6 @@
                 }
             }
 
-        }else{
-            $resultado['repartidores'] = [];
         }
 
         if( $repartidor_seguido['id'] == 0 ){
