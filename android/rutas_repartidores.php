@@ -96,6 +96,8 @@
                 }
             }
 
+        }else{
+            $resultado['repartidores'] = [];
         }
 
         if( $repartidor_seguido['id'] == 0 ){
