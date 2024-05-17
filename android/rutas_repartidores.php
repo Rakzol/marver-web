@@ -317,6 +317,11 @@
             $resultado['ruta']['legs'][$c]['llegada'] = $fecha->format('h:i A');
 
             $resultado['ruta']['legs'][$c]['duration'] = number_format( $segundos / 60, 1 );
+            /* Cuando hay puntos muy cercanos no hay distancia en metros, pero si duracion, agregamos 0 de distancia en metros para que funcione el codigo */
+            if(!isset($resultado['ruta']['legs'][$c]['distanceMeters'])){
+                $resultado['ruta']['legs'][$c]['distanceMeters'] = 0;
+            }
+
             $resultado['ruta']['legs'][$c]['distance'] = number_format( $resultado['ruta']['legs'][$c]['distanceMeters'] / 1000, 1 );
 
             $duracion_total += floatval( $resultado['ruta']['legs'][$c]['duration'] );
