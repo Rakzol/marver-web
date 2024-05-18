@@ -18,8 +18,8 @@
             echo json_encode($resultado);
             exit();
         }
-
-        $preparada = $conexion->prepare("SELECT Responsable FROM EnvioPedidoCliente INNER JOIN PedidosCliente ON PedidosCliente.Folio = EnvioPedidoCliente.Pedido WHERE PedidosCliente.FolioComprobante = :folio AND PedidosCliente.Tipocomprobante = :comprobante;");
+        
+        $preparada = $conexion->prepare("SELECT Responsable, Pedido FROM EnvioPedidoCliente INNER JOIN PedidosCliente ON PedidosCliente.Folio = EnvioPedidoCliente.Pedido WHERE PedidosCliente.FolioComprobante = :folio AND PedidosCliente.Tipocomprobante = :comprobante;");
         $preparada->bindValue(':folio', $_POST['folio']);
         $preparada->bindValue(':comprobante', $_POST['comprobante']);
         $preparada->execute();
@@ -38,6 +38,10 @@
             echo json_encode($resultado);
             exit();
         }
+
+        $preparada = $conexion->prepare("UPDATE EnvioPedidoCliente SET Extra1 = GETDATE() WHERE Pedido = :pedido");
+        $preparada->bindValue(':pedido', $pedido[0]['Pedido']);
+        $preparada->execute();
 
         $preparada = $conexion->prepare("UPDATE Ventas SET Status = 18 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
         $preparada->bindValue(':folio', $_POST['folio']);
