@@ -213,6 +213,21 @@
 
             if( $indice_pedido == -1 ){
 
+                if(!isset($pedidos_repartidor[0])){
+                    $pedidos_repartidor[0] = array(
+                        "status" => 0,
+                        "folio" => 0,
+                        "cliente_clave" => 0,
+                        "cliente_nombre" => "0",
+                        "pedido" => 0,
+                        "total" => 0,
+                        "feria" => NULL,
+                        "calle" => NULL,
+                        "numero_exterior" => NULL,
+                        "numero_interior" => NULL,
+                    );
+                }
+
                 $resultado['ruta']['legs'][0]['pedido'] = $pedidos_repartidor[0];
 
                 if( $pedidos_repartidor[0]['status'] == 4 ){
@@ -221,6 +236,21 @@
                 }
 
             }else{
+
+                if(!isset($pedidos_repartidor[$indice_pedido])){
+                    $pedidos_repartidor[$indice_pedido] = array(
+                        "status" => 0,
+                        "folio" => 0,
+                        "cliente_clave" => 0,
+                        "cliente_nombre" => "0",
+                        "pedido" => 0,
+                        "total" => 0,
+                        "feria" => NULL,
+                        "calle" => NULL,
+                        "numero_exterior" => NULL,
+                        "numero_interior" => NULL,
+                    );
+                }
 
                 $resultado['ruta']['legs'][$indice_leg]['pedido'] = $pedidos_repartidor[$indice_pedido];
 
