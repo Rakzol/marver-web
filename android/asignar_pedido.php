@@ -42,12 +42,12 @@
             exit();
         }
 
-        /*if( $pedido[0]['Responsable'] != NULL ){
+        if( $pedido[0]['Responsable'] != NULL ){
             $resultado["status"] = 4;
             $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " ya esta asignado al repartidor: " . $pedido[0]['Responsable'];
             echo json_encode($resultado);
             exit();
-        }*/
+        }
 
         $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NULL');
         $preparada->bindValue(':repartidor', $_POST['clave']);
