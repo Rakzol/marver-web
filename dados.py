@@ -13,7 +13,7 @@ while True:
         lows += 1
         if lows == 2:
 
-            balance += (tiros-lows) * 50000 - 162500
+            balance += (tiros-lows) * 41000 - 162500
 
             print('wins: ', wins, ' lows: ', lows, 'tiros:', tiros, 'balance: ', balance)
 
