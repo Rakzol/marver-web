@@ -11,9 +11,9 @@ while True:
 
     if random.randint(1,6) > 3:
         lows += 1
-        if lows == 8:
+        if lows == 14:
 
-            balance += tiros * 50000 - 26233633
+            balance += tiros * 50000 - 3408867720
 
             print('wins: ', wins, ' lows: ', lows, 'tiros:', tiros, 'balance: ', balance)
 
