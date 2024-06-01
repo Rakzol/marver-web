@@ -132,6 +132,11 @@
             exit();
         }
 
+        $resultado["status"] = 6;
+        $resultado["mensaje"] = $respuesta;
+        echo json_encode($resultado);
+        exit();
+
         if ($respuesta == '{}') {
             $resultado["status"] = 6;
             $resultado["mensaje"] = "Ubicacion de clientes incorrecta";
