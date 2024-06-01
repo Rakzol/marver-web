@@ -47,7 +47,7 @@
             SELECT pr.folio, cp.latitud, cp.longitud FROM pedidos_repartidores pr
             INNER JOIN PedidosCliente pc ON pc.Folio = pr.folio 
             LEFT JOIN clientes_posiciones cp ON cp.clave = pc.Cliente
-            WHERE pr.ruta_repartidor = :ruta_repartidor AND cp.latitud IS NULL OR cp.longitud IS NULL ORDER BY pr.folio;
+            WHERE pr.ruta_repartidor = :ruta_repartidor AND ( cp.latitud IS NULL OR cp.longitud IS NULL ) ORDER BY pr.folio;
         ");
         $preparada->bindValue(':ruta_repartidor', $ruta_repartidor['id']);
         $preparada->execute();
