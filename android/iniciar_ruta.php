@@ -133,7 +133,7 @@
         }
 
         $resultado["status"] = 6;
-        $resultado["mensaje"] = $respuesta;
+        $resultado["mensaje"] = count($respuesta);
         echo json_encode($resultado);
         exit();
 
