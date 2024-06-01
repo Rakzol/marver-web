@@ -132,12 +132,7 @@
             exit();
         }
 
-        $resultado["status"] = 6;
-        $resultado["mensaje"] = strlen($respuesta);
-        echo json_encode($resultado);
-        exit();
-
-        if ($respuesta == '{}') {
+        if (strlen($respuesta) <= 10) {
             $resultado["status"] = 6;
             $resultado["mensaje"] = "Ubicacion de clientes incorrecta";
             echo json_encode($resultado);
