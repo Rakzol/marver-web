@@ -6,9 +6,11 @@ balance_n = 0
 lows = 0
 wins = 0
 tiros = 0
+tiros_totales = 0
 
 while True:
 
+    tiros_totales += 1
     tiros += 1
 
     if random.randint(1,6) < 4:
@@ -19,9 +21,12 @@ while True:
 
             if balance < balance_n:
                 balance_n = balance
-                print(balance_n)
+                print(tiros_totales, ' = ', balance_n)
+            else:
+                print(tiros_totales, ' = ', 'wins: ', wins, ' lows: ', lows, 'tiros:', tiros-lows, 'balance: ', balance)
 
-            #print('wins: ', wins, ' lows: ', lows, 'tiros:', tiros, 'balance: ', balance)
+            if balance >= 10000000:
+                exit()
 
             lows = 0
             wins = 0
