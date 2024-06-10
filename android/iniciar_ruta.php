@@ -46,6 +46,23 @@
         $preparada = $conexion->prepare("
             SELECT pr.folio, cp.latitud, cp.longitud FROM pedidos_repartidores pr
             INNER JOIN PedidosCliente pc ON pc.Folio = pr.folio 
+            LEFT JOIN clientes_posiciones cp ON cp.clave = pc.Cliente
+            WHERE pr.ruta_repartidor = :ruta_repartidor AND ( cp.latitud IS NULL OR cp.longitud IS NULL ) ORDER BY pr.folio;
+        ");
+        $preparada->bindValue(':ruta_repartidor', $ruta_repartidor['id']);
+        $preparada->execute();
+
+        $pedidos_repartidores_nulas = $preparada->fetchAll(PDO::FETCH_ASSOC);
+        if( count($pedidos_repartidores_nulas) > 0 ){
+            $resultado["status"] = 4;
+            $resultado["mensaje"] = "Faltan clientes con ubicacion en en el mapa";
+            echo json_encode($resultado);
+            exit();
+        }
+
+        $preparada = $conexion->prepare("
+            SELECT pr.folio, cp.latitud, cp.longitud FROM pedidos_repartidores pr
+            INNER JOIN PedidosCliente pc ON pc.Folio = pr.folio 
             INNER JOIN clientes_posiciones cp ON cp.clave = pc.Cliente
             WHERE pr.ruta_repartidor = :ruta_repartidor ORDER BY pr.folio;
         ");
@@ -55,7 +72,7 @@
         $pedidos_repartidores = $preparada->fetchAll(PDO::FETCH_ASSOC);
         if( count($pedidos_repartidores) == 0 ){
             $resultado["status"] = 4;
-            $resultado["mensaje"] = "Ningun cliente tiene su ubicacion en el mapa";
+            $resultado["mensaje"] = "Faltan clientes con ubicacion en en el mapa";
             echo json_encode($resultado);
             exit();
         }
@@ -111,6 +128,13 @@
         if ($respuesta == false) {
             $resultado["status"] = 5;
             $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
+            echo json_encode($resultado);
+            exit();
+        }
+
+        if (strlen($respuesta) <= 10) {
+            $resultado["status"] = 6;
+            $resultado["mensaje"] = "Ubicacion de clientes incorrecta";
             echo json_encode($resultado);
             exit();
         }

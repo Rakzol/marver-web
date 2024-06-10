@@ -17,7 +17,11 @@ while True:
         lows += 1
         if lows == 3:
 
+<<<<<<< HEAD
+            balance += (tiros-lows) * 50000 - 628125
+=======
             balance += (tiros-lows) * 40000 - 415625
+>>>>>>> 2784eea4da2f48135f95e154bafc9df6969287ad
 
             if balance < balance_n:
                 balance_n = balance
