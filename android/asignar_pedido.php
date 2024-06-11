@@ -125,15 +125,16 @@
                 SELECT pr.folio FROM pedidos_repartidores pr
                 INNER JOIN PedidosCliente pc ON pc.Folio = pr.folio
                 INNER JOIN Ventas ve ON ve.Folio = pc.FolioComprobante AND ve.TipoComprobante = pc.Tipocomprobante
-                WHERE pr.ruta_repartidor = :ruta_repartidor AND ve.Status NOT IN (2, 5, 18)
+                WHERE pr.ruta_repartidor = :ruta_repartidor_1 AND ve.Status NOT IN (2, 5, 18)
                 UNION ALL
                 SELECT pr.folio FROM pedidos_repartidores pr
                 INNER JOIN PedidosCliente pc ON pc.Folio = pr.folio
                 INNER JOIN Preventa ve ON ve.Folio = pc.FolioComprobante AND ve.TipoComprobante = pc.Tipocomprobante
-                WHERE pr.ruta_repartidor = :ruta_repartidor AND ve.Status NOT IN (2, 5, 18)
+                WHERE pr.ruta_repartidor = :ruta_repartidor_2 AND ve.Status NOT IN (2, 5, 18)
                 ORDER BY pr.folio;
             ");
-            $preparada->bindValue(':ruta_repartidor', $ruta_iniciada);
+            $preparada->bindValue(':ruta_repartidor_1', $ruta_iniciada);
+            $preparada->bindValue(':ruta_repartidor_2', $ruta_iniciada);
             $preparada->execute();
             $pedidos_pendientes = $preparada->fetchAll(PDO::FETCH_ASSOC);
 
