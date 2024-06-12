@@ -5,6 +5,7 @@
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
+        /* Verificamos que el venddor exista */
         $preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Clave = :clave AND Contraseña = :contrasena');
         $preparada->bindValue(':clave', $_POST['clave']);
         $preparada->bindValue(':contrasena', $_POST['contraseña']);
@@ -19,27 +20,29 @@
             exit();
         }
 
-        $preparada = $conexion->prepare("SELECT Pedido FROM EnvioPedidoCliente INNER JOIN PedidosCliente ON PedidosCliente.Folio = EnvioPedidoCliente.Pedido WHERE PedidosCliente.FolioComprobante = :folio AND PedidosCliente.Tipocomprobante = :comprobante;");
+        /* Obtenemos el folio del pedido basandonos en el folio de comprobante y tipo de comprobante, tanto deventa como de preventa */
+        $preparada = $conexion->prepare("SELECT Folio FROM PedidosCliente WHERE FolioComprobante = :folio AND Tipocomprobante = :comprobante;");
         $preparada->bindValue(':folio', $_POST['folio']);
         $preparada->bindValue(':comprobante', $_POST['comprobante']);
         $preparada->execute();
-        $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['Pedido'];
+        $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['Folio'];
 
         $preparada = $conexion->prepare("DELETE EnvioPedidoCliente WHERE Pedido = :pedido");
         $preparada->bindValue(':pedido', $pedido);
         $preparada->execute();
 
-        $preparada = $conexion->prepare("SELECT ruta_repartidor FROM pedidos_repartidores WHERE folio = :pedido");
+        $preparada = $conexion->prepare("SELECT pr.id, pr.ruta_repartidor FROM pedidos_repartidores pr INNER JOIN rutas_repartidores rr ON rr.id = pr.ruta_repartidor WHERE pr.folio = :pedido AND rr.repartidor = :repartidor");
         $preparada->bindValue(':pedido', $pedido);
+        $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
-        $ruta_repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['ruta_repartidor'];
+        $pedido_repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-        $preparada = $conexion->prepare("DELETE pedidos_repartidores WHERE folio = :pedido");
-        $preparada->bindValue(':pedido', $pedido);
+        $preparada = $conexion->prepare("DELETE pedidos_repartidores WHERE id = :id");
+        $preparada->bindValue(':id', $pedido_repartidor['id']);
         $preparada->execute();
 
         $preparada = $conexion->prepare("UPDATE rutas_repartidores SET fecha_inicio = NULL, fecha_fin = NULL, ruta = NULL WHERE id = :ruta_repartidor");
-        $preparada->bindValue(':ruta_repartidor', $ruta_repartidor);
+        $preparada->bindValue(':ruta_repartidor', $pedido_repartidor['ruta_repartidor']);
         $preparada->execute();
 
         $resultado["status"] = 0;
