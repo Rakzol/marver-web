@@ -26,21 +26,21 @@
 
         $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC);
         if( count($pedido) == 0 ){
-            $resultado["status"] = 3;
+            $resultado["status"] = 2;
             $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " no existe";
             echo json_encode($resultado);
             exit();
         }
 
         if( $pedido[0]['Responsable'] != NULL ){
-            $resultado["status"] = 4;
+            $resultado["status"] = 3;
             $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " ya esta asignado al repartidor: " . $pedido[0]['Responsable'];
             echo json_encode($resultado);
             exit();
         }
 
         /*
-            Si tiene una ruta iniciada, se recalcula y actualiza la ruta pata todos los pedidos y se finaliza, despues se crea uan ruta nueva donde se asigna
+            Si tiene una ruta iniciada, se recalcula y actualiza la ruta pata todos los pedidos y se finaliza, despues se crea una ruta nueva donde se asigna
             el pedido escaneado y todos los anteriroes donde el status de venta y preventa sea diferente de 2, 5 y 18
         */
         $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
@@ -112,6 +112,13 @@
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
 
             $respuesta = curl_exec($curl);
+
+            if ($respuesta == false) {
+                $resultado["status"] = 4;
+                $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
+                echo json_encode($resultado);
+                exit();
+            }
 
             curl_close($curl);
 
