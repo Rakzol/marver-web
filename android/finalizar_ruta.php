@@ -79,7 +79,7 @@
                     );
                 }
             }
-            if( count($intermediarios) > 0 ){
+            if( isset($intermediarios) ){
                 $json_envio['intermediates'] = $intermediarios;
             }
 
