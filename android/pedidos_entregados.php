@@ -71,12 +71,12 @@
             EnvioPedidoCliente
             INNER JOIN PedidosCliente ON PedidosCliente.Folio = EnvioPedidoCliente.Pedido
             INNER JOIN Clientes ON Clientes.Clave = PedidosCliente.Cliente
-            INNER JOIN Ventas ON Ventas.Folio = PedidosCliente.FolioComprobante AND Ventas.TipoComprobante = PedidosCliente.Tipocomprobante
+            INNER JOIN Preventa ON Preventa.Folio = PedidosCliente.FolioComprobante AND Preventa.TipoComprobante = PedidosCliente.Tipocomprobante
             LEFT JOIN clientes_posiciones ON clientes_posiciones.clave = PedidosCliente.Cliente
             LEFT JOIN MoviemientosVenta ON MoviemientosVenta.Folio = PedidosCliente.FolioComprobante AND MoviemientosVenta.TipoComprobante = 11 AND MoviemientosVenta.Importe < 0
             WHERE
             EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
-            AND Ventas.Status = 18
+            AND Preventa.Status = 18
             AND Responsable = :vendedor_2
 
             ORDER BY folio DESC
