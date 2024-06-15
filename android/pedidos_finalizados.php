@@ -46,7 +46,7 @@
             WHERE
             EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
             AND Ventas.Status = 2
-            AND Responsable = :vendedor
+            AND Responsable = :vendedor_1
 
 			UNION ALL
 
@@ -77,12 +77,13 @@
             WHERE
             EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
             AND Preventa.Status = 2
-            AND Responsable = :vendedor
+            AND Responsable = :vendedor_2
 
             ORDER BY folio DESC
         ");
         //Fecha = CONVERT(DATE, DATEADD( DAY, -1, GETDATE() ) )
-        $preparada->bindValue(':vendedor', $_POST['clave']);
+        $preparada->bindValue(':vendedor_1', $_POST['clave']);
+        $preparada->bindValue(':vendedor_2', $_POST['clave']);
         $preparada->execute();
 
         echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
