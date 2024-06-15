@@ -1,5 +1,9 @@
 <?php
     try{
+        require_once 'geometria/SphericalUtil.php';
+        require_once 'geometria/PolyUtil.php';
+        require_once 'geometria/MathUtil.php';
+
         header('Content-Type: application/json');
 
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
@@ -25,49 +29,211 @@
         $preparada->bindValue(':velocidad', $_POST['v']);
         $preparada->execute();
 
-        /*$preparada = $conexion->prepare('INSERT INTO posiciones_test VALUES( :usuario, :presicion, :latitud, :longitud, GETDATE() )');
-        $preparada->bindValue(':usuario', $_POST['u']);
-        $preparada->bindValue(':presicion', $_POST['presicion']);
-        $preparada->bindValue(':latitud', $_POST['la']);
-        $preparada->bindValue(':longitud', $_POST['ln']);
-        $preparada->execute();*/
+        $distancia_marver = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => 25.794285, 'lng' => -108.985924 ], [ 'lat' => $_POST['la'], 'lng' => $_POST['ln'] ] );
+        /* Verificamos si esta en el perimetro de marver para finalizar la ruta, siempre que tenga todo en status valido para la entrega */
+        if( $distancia_marver <= 15 ){
+            /* Verificamos que tenga alguna ruta sin finalizar */
+            $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
+            $preparada->bindValue(':repartidor', $_POST['u']);
+            $preparada->execute();
 
-        /**********************************/
+            $rutas_iniciadas = $preparada->fetchAll(PDO::FETCH_ASSOC);
+            if( count($rutas_iniciadas) > 0 ){
+                $ruta_iniciada = $rutas_iniciadas[0]['id'];
+    
+                /* Consultamos todos los pedios que no se han terminado de alguna manera en la ruta actual */
+                $preparada = $conexion->prepare("
+                    SELECT pr.folio FROM pedidos_repartidores pr
+                    INNER JOIN PedidosCliente pc ON pc.Folio = pr.folio
+                    INNER JOIN Ventas ve ON ve.Folio = pc.FolioComprobante AND ve.TipoComprobante = pc.Tipocomprobante
+                    WHERE pr.ruta_repartidor = :ruta_repartidor_1 AND ve.Status NOT IN (2, 5, 18)
+                    UNION ALL
+                    SELECT pr.folio FROM pedidos_repartidores pr
+                    INNER JOIN PedidosCliente pc ON pc.Folio = pr.folio
+                    INNER JOIN Preventa ve ON ve.Folio = pc.FolioComprobante AND ve.TipoComprobante = pc.Tipocomprobante
+                    WHERE pr.ruta_repartidor = :ruta_repartidor_2 AND ve.Status NOT IN (2, 5, 18)
+                    ORDER BY pr.folio;
+                ");
+                $preparada->bindValue(':ruta_repartidor_1', $ruta_iniciada);
+                $preparada->bindValue(':ruta_repartidor_2', $ruta_iniciada);
+                $preparada->execute();
+                $pedidos_pendientes = $preparada->fetchAll(PDO::FETCH_ASSOC);
+    
+                /* Si ya todo se entrego de alguna manera se procedera a finalizar la ruta actual */
+                if( count($pedidos_pendientes) == 0 ){
+    
+                    $preparada = $conexion->prepare("
+                        SELECT pr.folio, cp.latitud, cp.longitud FROM pedidos_repartidores pr
+                        INNER JOIN PedidosCliente pc ON pc.Folio = pr.folio 
+                        INNER JOIN clientes_posiciones cp ON cp.clave = pc.Cliente
+                        WHERE pr.ruta_repartidor = :ruta_repartidor ORDER BY pr.folio;
+                    ");
+                    $preparada->bindValue(':ruta_repartidor', $ruta_iniciada);
+                    $preparada->execute();
+                    $pedidos_repartidores = $preparada->fetchAll(PDO::FETCH_ASSOC);
         
-        /*$cabeceras = getallheaders();
-
-        // Captura los datos recibidos
-        // Para datos GET
-        $datosGET = $_GET;
-
-        // Para datos POST (Nota: esto puede ser un array vacío si el cuerpo de la petición no es form-data o x-www-form-urlencoded)
-        $datosPOST = $_POST;
-
-        // Para datos brutos enviados (ejemplo: JSON, XML, etc.)
-        $datosBrutos = file_get_contents('php://input');
-
-        // Combinar toda la información en una sola estructura
-        $informacionCompleta = [
-            'Cabeceras' => $cabeceras,
-            'GET' => $datosGET,
-            'POST' => $datosPOST,
-            'DatosBrutos' => $datosBrutos
-        ];
-
-        // Convertir la información a formato JSON para almacenamiento
-        $informacionJSON = json_encode($informacionCompleta, JSON_PRETTY_PRINT);
-
-        // Especificar la ruta del archivo donde se almacenarán los datos
-        $rutaArchivo = 'datos_recibidos.json';
-
-        // Guardar la información en el archivo
-        file_put_contents($rutaArchivo, $informacionJSON);*/
+                    $json_envio['origin'] = array(
+                        'location' => array(
+                            'latLng' => array(
+                                'latitude' => 25.7941814,
+                                'longitude' => -108.9858957
+                            )
+                        )
+                    );
         
-        /**********************************/
+                    foreach($pedidos_repartidores as $pedido_repartidor){
+                        if( $pedido_repartidor['latitud'] != 0 && $pedido_repartidor['longitud'] != 0 ){
+                            $intermediarios[] = array(
+                                'location' => array(
+                                    'latLng' => array(
+                                        'latitude' => $pedido_repartidor['latitud'],
+                                        'longitude' => $pedido_repartidor['longitud']
+                                    )
+                                )
+                            );
+                        }
+                    }
+                    if( count($intermediarios) > 0 ){
+                        $json_envio['intermediates'] = $intermediarios;
+                    }
         
+                    $json_envio['destination'] = array(
+                        'location' => array(
+                            'latLng' => array(
+                                'latitude' => 25.7941814,
+                                'longitude' => -108.9858957
+                            )
+                        )
+                    );
+        
+                    $json_envio['routingPreference'] = "TRAFFIC_AWARE";
+                    $json_envio['optimizeWaypointOrder'] = true;
+        
+                    $curl = curl_init('https://routes.googleapis.com/directions/v2:computeRoutes');
+                    $cabecera = array(
+                        'Content-Type: application/json',
+                        'X-Goog-Api-Key: AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo',
+                        'X-Goog-FieldMask: routes.legs.duration,routes.legs.distanceMeters,routes.optimizedIntermediateWaypointIndex,routes.legs.polyline.encodedPolyline'
+                    );
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($curl, CURLOPT_POST, true);
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($json_envio));
+                    curl_setopt($curl, CURLOPT_HTTPHEADER, $cabecera);
+                    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        
+                    $respuesta = curl_exec($curl);
+        
+                    if ($respuesta == false) {
+                        $resultado["status"] = 2;
+                        $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
+                        echo json_encode($resultado);
+                        exit();
+                    }
+        
+                    curl_close($curl);
+        
+                    $preparada = $conexion->prepare('UPDATE rutas_repartidores SET ruta = :ruta, fecha_fin = GETDATE() WHERE id = :id');
+                    $preparada->bindValue(':ruta', $respuesta);
+                    $preparada->bindValue(':id', $ruta_iniciada);
+                    $preparada->execute();
 
-        /*$resultado["status"] = 0;
-        echo json_encode($resultado);*/
+                }
+
+            }
+
+        }
+        /* Verificamos si esta fuera de marver el repartidor para iniciarle la ruta si no la tiene iniciada */
+        else if( $distancia_marver >= 150 ){
+
+            $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NULL AND fecha_fin IS NULL');
+            $preparada->bindValue(':repartidor', $_POST['u']);
+            $preparada->execute();
+    
+            $rutas_iniciadas = $preparada->fetchAll(PDO::FETCH_ASSOC);
+            if( count($rutas_iniciadas) > 0 ){
+                $ruta_reparto = $rutas_iniciadas[0]['id'];
+    
+                $preparada = $conexion->prepare("
+                    SELECT pr.folio, cp.latitud, cp.longitud FROM pedidos_repartidores pr
+                    INNER JOIN PedidosCliente pc ON pc.Folio = pr.folio 
+                    INNER JOIN clientes_posiciones cp ON cp.clave = pc.Cliente
+                    WHERE pr.ruta_repartidor = :ruta_repartidor ORDER BY pr.folio;
+                ");
+                $preparada->bindValue(':ruta_repartidor', $ruta_reparto);
+                $preparada->execute();
+                $pedidos_repartidores = $preparada->fetchAll(PDO::FETCH_ASSOC);
+    
+                $json_envio['origin'] = array(
+                    'location' => array(
+                        'latLng' => array(
+                            'latitude' => 25.7941814,
+                            'longitude' => -108.9858957
+                        )
+                    )
+                );
+    
+                foreach($pedidos_repartidores as $pedido_repartidor){
+                    if( $pedido_repartidor['latitud'] != 0 && $pedido_repartidor['longitud'] != 0 ){
+                        $intermediarios[] = array(
+                            'location' => array(
+                                'latLng' => array(
+                                    'latitude' => $pedido_repartidor['latitud'],
+                                    'longitude' => $pedido_repartidor['longitud']
+                                )
+                            )
+                        );
+                    }
+                }
+                if( count($intermediarios) > 0 ){
+                    $json_envio['intermediates'] = $intermediarios;
+                }
+    
+                $json_envio['destination'] = array(
+                    'location' => array(
+                        'latLng' => array(
+                            'latitude' => 25.7941814,
+                            'longitude' => -108.9858957
+                        )
+                    )
+                );
+    
+                $json_envio['routingPreference'] = "TRAFFIC_AWARE";
+                $json_envio['optimizeWaypointOrder'] = true;
+    
+                $curl = curl_init('https://routes.googleapis.com/directions/v2:computeRoutes');
+                $cabecera = array(
+                    'Content-Type: application/json',
+                    'X-Goog-Api-Key: AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo',
+                    'X-Goog-FieldMask: routes.legs.duration,routes.legs.distanceMeters,routes.optimizedIntermediateWaypointIndex,routes.legs.polyline.encodedPolyline'
+                );
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($curl, CURLOPT_POST, true);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($json_envio));
+                curl_setopt($curl, CURLOPT_HTTPHEADER, $cabecera);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    
+                $respuesta = curl_exec($curl);
+    
+                if ($respuesta == false) {
+                    $resultado["status"] = 2;
+                    $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
+                    echo json_encode($resultado);
+                    exit();
+                }
+    
+                curl_close($curl);
+    
+                $preparada = $conexion->prepare('UPDATE rutas_repartidores SET ruta = :ruta, fecha_inicio = GETDATE() WHERE id = :id');
+                $preparada->bindValue(':ruta', $respuesta);
+                $preparada->bindValue(':id', $ruta_reparto);
+                $preparada->execute();
+    
+            }
+
+        }
+
     }catch( Exception $exception ) {
         header('HTTP/1.1 500 ' . $exception->getMessage());
     }

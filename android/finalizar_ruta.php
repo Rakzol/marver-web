@@ -1,5 +1,9 @@
 <?php
     try{
+        require_once 'geometria/SphericalUtil.php';
+        require_once 'geometria/PolyUtil.php';
+        require_once 'geometria/MathUtil.php';
+
         header('Content-Type: application/json');
 
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
@@ -15,6 +19,19 @@
         if( count($usuarios) == 0 ){
             $resultado["status"] = 1;
             $resultado["mensaje"] = "El vendedor no existe";
+            echo json_encode($resultado);
+            exit();
+        }
+
+        $preparada = $conexion->prepare("SELECT TOP 1 latitud, longitud FROM posiciones WHERE usuario = :vendedor ORDER BY fecha DESC;");
+        $preparada->bindValue(':vendedor', $_POST['clave']);
+        $preparada->execute();
+        $posicion = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
+
+        $distancia_marver = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => 25.794285, 'lng' => -108.985924 ], [ 'lat' => $posicion['latitud'], 'lng' => $posicion['longitud'] ] );
+        if( $distancia_marver > 15 ){
+            $resultado["status"] = 2;
+            $resultado["mensaje"] = "No esta dentro de la sucursal";
             echo json_encode($resultado);
             exit();
         }
@@ -94,7 +111,7 @@
             $respuesta = curl_exec($curl);
 
             if ($respuesta == false) {
-                $resultado["status"] = 2;
+                $resultado["status"] = 3;
                 $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
                 echo json_encode($resultado);
                 exit();
