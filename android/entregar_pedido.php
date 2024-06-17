@@ -55,11 +55,15 @@
         $preparada->execute();
         $posicion = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-        $preparada = $conexion->prepare("UPDATE clientes_posiciones SET latitud = :latitud, longitud = :longitud WHERE clave = :cliente;");
-        $preparada->bindValue(':latitud', $posicion['latitud']);
-        $preparada->bindValue(':longitud', $posicion['longitud']);
-        $preparada->bindValue(':cliente', $pedido[0]['Cliente']);
-        $preparada->execute();
+        $distancia_marver = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => 25.794285, 'lng' => -108.985924 ], [ 'lat' => $posicion['latitud'], 'lng' => $posicion['longitud'] ] );
+        /* Verificamos si esta fuera de marver para poder actualizar la posicion del cliente */
+        if( $distancia_marver >= 150 ){
+            $preparada = $conexion->prepare("UPDATE clientes_posiciones SET latitud = :latitud, longitud = :longitud WHERE clave = :cliente;");
+            $preparada->bindValue(':latitud', $posicion['latitud']);
+            $preparada->bindValue(':longitud', $posicion['longitud']);
+            $preparada->bindValue(':cliente', $pedido[0]['Cliente']);
+            $preparada->execute();
+        }
 
         $resultado["status"] = 0;
         $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " se entrego correctamente";
