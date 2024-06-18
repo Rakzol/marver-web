@@ -202,36 +202,7 @@
             WHERE
             pedidos_repartidores.ruta_repartidor = :ruta_repartidor
 
-            UNION ALL
 
-			SELECT
-            pedidos_repartidores.folio AS pedido,
-            REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) , ' ', EnvioPedidoCliente.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) AS fecha,
-            PedidosCliente.Tipocomprobante AS comprobante,
-            PedidosCliente.FolioComprobante AS folio,
-            Preventa.Status AS status,
-            Clientes.Clave AS cliente_clave,
-            Clientes.Razon_Social AS cliente_nombre,
-            PedidosCliente.CodigosFacturado AS codigos,
-            PedidosCliente.UnidadesFacturado AS piezas,
-            PedidosCliente.TotalFacturado AS total,
-            clientes_posiciones.latitud AS latitud,
-            clientes_posiciones.longitud AS longitud,
-            clientes_posiciones.numero_exterior AS numero_exterior,
-            clientes_posiciones.numero_interior AS numero_interior,
-            clientes_posiciones.observaciones AS observaciones,
-            clientes_posiciones.calle AS calle,
-            MoviemientosVenta.Importe * -1 AS feria
-            FROM
-            pedidos_repartidores
-            INNER JOIN EnvioPedidoCliente ON EnvioPedidoCliente.Pedido = pedidos_repartidores.folio
-            INNER JOIN PedidosCliente ON PedidosCliente.Folio = pedidos_repartidores.folio
-            INNER JOIN Clientes ON Clientes.Clave = PedidosCliente.Cliente
-            INNER JOIN Preventa ON Preventa.Folio = PedidosCliente.FolioComprobante AND Preventa.TipoComprobante = PedidosCliente.Tipocomprobante
-            INNER JOIN clientes_posiciones ON clientes_posiciones.clave = PedidosCliente.Cliente
-            LEFT JOIN MoviemientosVenta ON MoviemientosVenta.Folio = PedidosCliente.FolioComprobante AND MoviemientosVenta.TipoComprobante = 11 AND MoviemientosVenta.Importe < 0
-            WHERE
-            pedidos_repartidores.ruta_repartidor = :ruta_repartidor
 
             ORDER BY pedidos_repartidores.folio
         ");
