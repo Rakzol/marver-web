@@ -1,5 +1,12 @@
 <?php
     try{
+
+        /*
+        
+        
+        
+        */
+
         require_once 'geometria/SphericalUtil.php';
         require_once 'geometria/PolyUtil.php';
         require_once 'geometria/MathUtil.php';
