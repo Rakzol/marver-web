@@ -130,7 +130,7 @@
         $preparada->bindValue(':TotalPedido', $pedido_cliente['total']);
         $preparada->bindValue(':NombreCliente', $datos['cliente']['Razon_Social']);
         $preparada->bindValue(':Status', 'C');
-        $preparada->bindValue(':Extra1', 'WEB');*/
+        $preparada->bindValue(':Extra1', 'WEB');*/ 
 
         foreach( $pedido_cliente['detalles'] as $detalle ){
             var_dump($detalle);
