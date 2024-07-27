@@ -1,5 +1,4 @@
 <?php
-    try{
         require_once('inicializar_datos.php');
 
         $refacciones = [
@@ -21,11 +20,7 @@
             ],
         ];
 
-        if( count($refacciones) == 0 ){
-            $retorno['codigo'] = -1;
-            echo json_encode($retorno, JSON_UNESCAPED_UNICODE);
-            exit();
-        }
+        var_dump($refacciones);
 
         // Recorremos cada refaccion del carrito del usuario y verificamos que se tengan existencias suficientes
         // Si no regresamos un json con el error y finalizamos el codigo
@@ -161,7 +156,5 @@
         $retorno['codigo'] = 0;
         $retorno['folio'] = $ultimo_folio + 1;
         echo json_encode($retorno, JSON_UNESCAPED_UNICODE);
-    }catch( Exception $exception ) {
-        header('HTTP/1.1 500 ' . $exception->getMessage());
-    }
+
 ?>
