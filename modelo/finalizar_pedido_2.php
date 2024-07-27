@@ -50,12 +50,6 @@
             $refacciones_producto[] = $refaccion_producto;
         }
 
-        if( count($retorno['productos_insuficientes']) ){
-            $retorno['codigo'] = 1;
-            echo json_encode($retorno, JSON_UNESCAPED_UNICODE);
-            exit();
-        }
-
         $pedido_cliente['descuento'] = 0;
         $pedido_cliente['subtotal'] = 0;
         $pedido_cliente['codigos_pedidos'] = 0;
@@ -144,13 +138,14 @@
         $preparada->bindValue(':NombreCliente', $datos['cliente']['Razon_Social']);
         $preparada->bindValue(':Status', 'C');
         $preparada->bindValue(':Extra1', 'WEB');
-        $preparada->bindValue(':Extra2', $_POST['tipo_de_compra']);
-        $preparada->bindValue(':FormaPago', $_POST['forma_de_pago']);
-        $preparada->bindValue(':Tipocomprobante', $_POST['tipo_de_comprobante']);
-        $preparada->bindValue(':MEntrega', $_POST['MEntrega']);
-        $preparada->bindValue(':Observacion', $_POST['observaciones']);
+        // $preparada->bindValue(':Extra2', $_POST['tipo_de_compra']);
+        // $preparada->bindValue(':FormaPago', $_POST['forma_de_pago']);
+        // $preparada->bindValue(':Tipocomprobante', $_POST['tipo_de_comprobante']);
+        // $preparada->bindValue(':MEntrega', $_POST['MEntrega']);
+        // $preparada->bindValue(':Observacion', $_POST['observaciones']);
 
         foreach( $pedido_cliente['detalles'] as $detalle ){
+            var_dump($detalle);
             //$preparada = $datos['conexion_base_sucursal']->prepare('INSERT INTO PedidoClientesDetalle (Folio, CodigoArticulo, CantidadPedida, CantidadSurtida, CantidadFacturada, PrecioPedido, PrecioSurtida, PrecioFacturada, ImportePedida, ImporteSurtida, ImporteFacturada, DescuentoPedida, CostoPedida, Extra2, Extra3) VALUES (:Folio, :CodigoArticulo, :CantidadPedida, 0, 0, CAST(:PrecioPedido AS NUMERIC(18,2)), 0, 0, CAST(:ImportePedida AS NUMERIC(18,2)), 0, 0, CAST(:DescuentoPedida AS NUMERIC(18,2)), CAST(:CostoPedida AS NUMERIC(18,2)), :Extra2, :Extra3)');
             $preparada->bindValue(':Folio', 1);
             $preparada->bindValue(':CodigoArticulo', $detalle['codigo']);
@@ -159,8 +154,8 @@
             $preparada->bindValue(':ImportePedida', $detalle['importe']);
             $preparada->bindValue(':DescuentoPedida', $detalle['descuento']);
             $preparada->bindValue(':CostoPedida', $detalle['costo']);
-            $preparada->bindValue(':Extra2', $_POST['tipo_de_compra']);
-            $preparada->bindValue(':Extra3', $_POST['tipo_de_comprobante']);
+            // $preparada->bindValue(':Extra2', $_POST['tipo_de_compra']);
+            // $preparada->bindValue(':Extra3', $_POST['tipo_de_comprobante']);
         }
 
         $retorno['codigo'] = 0;
