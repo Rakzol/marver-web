@@ -118,10 +118,8 @@
 
 
         //$preparada = $datos['conexion_base_sucursal']->prepare("INSERT INTO PedidosCliente (Folio, FechaPedido, Numerodecontrol, HoraPedido, Cliente, Vendedor, CodigosPedido, UnidadesPedido, DescuentosPedido, SubtotalPedido, IvaPedido, TotalPedido, NombreCliente, Status, Extra1, Extra2, FormaPago, Tipocomprobante, MEntrega, Observacion) VALUES (:Folio, CAST(GETDATE() AS Date), :Numerodecontrol, REPLACE(REPLACE(FORMAT(GETDATE(), 'hh:mm:ss tt'), 'AM', 'a. m.'), 'PM', 'p. m.'), :Cliente, :Vendedor, :CodigosPedido, :UnidadesPedido, CAST(:DescuentosPedido AS NUMERIC(18,2)), CAST(:SubtotalPedido AS NUMERIC(18,2)), CAST(:IvaPedido AS NUMERIC(18,2)), CAST(:TotalPedido AS NUMERIC(18,2)), :NombreCliente, :Status, :Extra1, :Extra2, :FormaPago, :Tipocomprobante, :MEntrega, :Observacion)");
-        $preparada->bindValue(':Folio',  1);
-        //$preparada->bindValue(':FechaPedido', '');
+        /*$preparada->bindValue(':Folio',  1);
         $preparada->bindValue(':Numerodecontrol', '1');
-        //$preparada->bindValue(':HoraPedido', '');
         $preparada->bindValue(':Cliente', $datos['cliente']['Clave']);
         $preparada->bindValue(':Vendedor', $datos['usuario']['vendedor']);
         $preparada->bindValue(':CodigosPedido', $pedido_cliente['codigos_pedidos']);
@@ -132,25 +130,19 @@
         $preparada->bindValue(':TotalPedido', $pedido_cliente['total']);
         $preparada->bindValue(':NombreCliente', $datos['cliente']['Razon_Social']);
         $preparada->bindValue(':Status', 'C');
-        $preparada->bindValue(':Extra1', 'WEB');
-        // $preparada->bindValue(':Extra2', $_POST['tipo_de_compra']);
-        // $preparada->bindValue(':FormaPago', $_POST['forma_de_pago']);
-        // $preparada->bindValue(':Tipocomprobante', $_POST['tipo_de_comprobante']);
-        // $preparada->bindValue(':MEntrega', $_POST['MEntrega']);
-        // $preparada->bindValue(':Observacion', $_POST['observaciones']);
+        $preparada->bindValue(':Extra1', 'WEB');*/
 
         foreach( $pedido_cliente['detalles'] as $detalle ){
             var_dump($detalle);
             //$preparada = $datos['conexion_base_sucursal']->prepare('INSERT INTO PedidoClientesDetalle (Folio, CodigoArticulo, CantidadPedida, CantidadSurtida, CantidadFacturada, PrecioPedido, PrecioSurtida, PrecioFacturada, ImportePedida, ImporteSurtida, ImporteFacturada, DescuentoPedida, CostoPedida, Extra2, Extra3) VALUES (:Folio, :CodigoArticulo, :CantidadPedida, 0, 0, CAST(:PrecioPedido AS NUMERIC(18,2)), 0, 0, CAST(:ImportePedida AS NUMERIC(18,2)), 0, 0, CAST(:DescuentoPedida AS NUMERIC(18,2)), CAST(:CostoPedida AS NUMERIC(18,2)), :Extra2, :Extra3)');
-            $preparada->bindValue(':Folio', 1);
+            /*$preparada->bindValue(':Folio', 1);
             $preparada->bindValue(':CodigoArticulo', $detalle['codigo']);
             $preparada->bindValue(':CantidadPedida', $detalle['cantidad']);
             $preparada->bindValue(':PrecioPedido', $detalle['precio']);
             $preparada->bindValue(':ImportePedida', $detalle['importe']);
             $preparada->bindValue(':DescuentoPedida', $detalle['descuento']);
-            $preparada->bindValue(':CostoPedida', $detalle['costo']);
-            // $preparada->bindValue(':Extra2', $_POST['tipo_de_compra']);
-            // $preparada->bindValue(':Extra3', $_POST['tipo_de_comprobante']);
+            $preparada->bindValue(':CostoPedida', $detalle['costo']);*/
+
         }
 
         $retorno['codigo'] = 0;
