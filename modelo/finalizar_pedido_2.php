@@ -145,8 +145,5 @@
 
         }
 
-        $retorno['codigo'] = 0;
-        $retorno['folio'] = $ultimo_folio + 1;
-        echo json_encode($retorno, JSON_UNESCAPED_UNICODE);
 
 ?>
