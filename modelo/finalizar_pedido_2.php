@@ -2,7 +2,7 @@
     try{
         require_once('inicializar_datos.php');
 
-        $refaccion = [
+        $refacciones = [
             [
                 'producto' => '3009012-GROB',
                 'cantidad' => 2
