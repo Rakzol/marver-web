@@ -127,6 +127,7 @@
             echo ':Extra1 -> ' . 'WEB' . '</br>';
     
             foreach( $pedido_cliente['detalles'] as $detalle ){
+                echo '::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::</br>';
                 echo ':CodigoArticulo -> ' . $detalle['codigo'] . '</br>';
                 echo ':CantidadPedida -> ' . $detalle['cantidad'] . '</br>';
                 echo ':PrecioPedido -> ' . $detalle['precio'] . '</br>';
