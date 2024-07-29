@@ -113,26 +113,26 @@
             $pedido_cliente['iva'] = number_format( $pedido_cliente['subtotal'] * 0.16, 2, '.' , '' );
             $pedido_cliente['total'] = $pedido_cliente['subtotal'] + $pedido_cliente['iva'];
     
-            echo ':Numerodecontrol ' . '1' . '</br>';
-            echo ':Cliente ' . $datos['cliente']['Clave'] . '</br>';
-            echo ':Vendedor ' . $datos['usuario']['vendedor'] . '</br>';
-            echo ':CodigosPedido ' . $pedido_cliente['codigos_pedidos'] . '</br>';
-            echo ':UnidadesPedido ' . $pedido_cliente['unidades_pedidas'] . '</br>';
-            echo ':DescuentosPedido ' . $pedido_cliente['descuento'] . '</br>';
-            echo ':SubtotalPedido ' . $pedido_cliente['subtotal'] . '</br>';
-            echo ':IvaPedido ' . $pedido_cliente['iva'] . '</br>';
-            echo ':TotalPedido ' . $pedido_cliente['total'] . '</br>';
-            echo ':NombreCliente ' . $datos['cliente']['Razon_Social'] . '</br>';
-            echo ':Status ' . 'C' . '</br>';
-            echo ':Extra1 ' . 'WEB' . '</br>';
+            echo ':Numerodecontrol -> ' . '1' . '</br>';
+            echo ':Cliente -> ' . $datos['cliente']['Clave'] . '</br>';
+            echo ':Vendedor -> ' . $datos['usuario']['vendedor'] . '</br>';
+            echo ':CodigosPedido -> ' . $pedido_cliente['codigos_pedidos'] . '</br>';
+            echo ':UnidadesPedido -> ' . $pedido_cliente['unidades_pedidas'] . '</br>';
+            echo ':DescuentosPedido -> ' . $pedido_cliente['descuento'] . '</br>';
+            echo ':SubtotalPedido -> ' . $pedido_cliente['subtotal'] . '</br>';
+            echo ':IvaPedido -> ' . $pedido_cliente['iva'] . '</br>';
+            echo ':TotalPedido -> ' . $pedido_cliente['total'] . '</br>';
+            echo ':NombreCliente -> ' . $datos['cliente']['Razon_Social'] . '</br>';
+            echo ':Status -> ' . 'C' . '</br>';
+            echo ':Extra1 -> ' . 'WEB' . '</br>';
     
             foreach( $pedido_cliente['detalles'] as $detalle ){
-                echo ':CodigoArticulo ' . $detalle['codigo'] . '</br>';
-                echo ':CantidadPedida ' . $detalle['cantidad'] . '</br>';
-                echo ':PrecioPedido ' . $detalle['precio'] . '</br>';
-                echo ':ImportePedida ' . $detalle['importe'] . '</br>';
-                echo ':DescuentoPedida ' . $detalle['descuento'] . '</br>';
-                echo ':CostoPedida ' . $detalle['costo'] . '</br>';
+                echo ':CodigoArticulo -> ' . $detalle['codigo'] . '</br>';
+                echo ':CantidadPedida -> ' . $detalle['cantidad'] . '</br>';
+                echo ':PrecioPedido -> ' . $detalle['precio'] . '</br>';
+                echo ':ImportePedida -> ' . $detalle['importe'] . '</br>';
+                echo ':DescuentoPedida -> ' . $detalle['descuento'] . '</br>';
+                echo ':CostoPedida -> ' . $detalle['costo'] . '</br>';
             }
 
 ?>
