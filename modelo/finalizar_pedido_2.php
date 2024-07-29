@@ -1,6 +1,8 @@
 <?php
         require_once('inicializar_datos.php');
 
+        header('Content-Type: text/plain');
+
         $refacciones = [
             [
                 'producto' => '3009012-GROB',
