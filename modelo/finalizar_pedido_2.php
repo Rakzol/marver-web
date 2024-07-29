@@ -1,7 +1,7 @@
 <?php
         require_once('inicializar_datos.php');
 
-        header('Content-Type: text/plain');
+        header('Content-Type: text/html');
 
         $refacciones = [
             [
