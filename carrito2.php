@@ -1113,7 +1113,12 @@
                                     miModal_2.show();
                                     break;
                                 default:
-                                    alert('Agregue refacciones al carrito');
+                                    let el_modal_3 = document.querySelector('.modal');
+                                    el_modal_3.querySelector('.modal-body').innerHTML = 'Agregue refacciones al carrito.';
+                                    let miModal_3 = new bootstrap.Modal(el_modal_3, {
+                                        keyboard: false
+                                    });
+                                    miModal_3.show();
                                     break;
                             }
                         });
@@ -1123,36 +1128,36 @@
                     function (error) {
                         switch (error.code) {
                             case error.PERMISSION_DENIED:
-                                let el_modal = document.querySelector('.modal');
-                                el_modal.querySelector('.modal-body').innerHTML = 'Conceda los permisos de ubicació para relizar el pedido.';
-                                let miModal = new bootstrap.Modal(el_modal, {
+                                let el_modal_denegado = document.querySelector('.modal');
+                                el_modal_denegado.querySelector('.modal-body').innerHTML = 'Conceda los permisos de ubicació para relizar el pedido.';
+                                let miModal_denegado = new bootstrap.Modal(el_modal_denegado, {
                                     keyboard: false
                                 });
-                                miModal.show();
+                                miModal_denegado.show();
                                 break;
                             case error.POSITION_UNAVAILABLE:
-                                let el_modal = document.querySelector('.modal');
-                                el_modal.querySelector('.modal-body').innerHTML = 'La información de la posición no está disponible.';
-                                let miModal = new bootstrap.Modal(el_modal, {
+                                let el_modal_nodis = document.querySelector('.modal');
+                                el_modal_nodis.querySelector('.modal-body').innerHTML = 'La información de la posición no está disponible.';
+                                let miModal_nodis = new bootstrap.Modal(el_modal_nodis, {
                                     keyboard: false
                                 });
-                                miModal.show();
+                                miModal_nodis.show();
                                 break;
                             case error.TIMEOUT:
-                                let el_modal = document.querySelector('.modal');
-                                el_modal.querySelector('.modal-body').innerHTML = 'La solicitud para obtener la ubicación ha caducado.';
-                                let miModal = new bootstrap.Modal(el_modal, {
+                                let el_modal_caduca = document.querySelector('.modal');
+                                el_modal_caduca.querySelector('.modal-body').innerHTML = 'La solicitud para obtener la ubicación ha caducado.';
+                                let miModal_caduca = new bootstrap.Modal(el_modal_caduca, {
                                     keyboard: false
                                 });
-                                miModal.show();
+                                miModal_caduca.show();
                                 break;
                             case error.UNKNOWN_ERROR:
-                                let el_modal = document.querySelector('.modal');
-                                el_modal.querySelector('.modal-body').innerHTML = 'Ocurrió un error desconocido.';
-                                let miModal = new bootstrap.Modal(el_modal, {
+                                let el_modal_error = document.querySelector('.modal');
+                                el_modal_error.querySelector('.modal-body').innerHTML = 'Ocurrió un error desconocido.';
+                                let miModal_error = new bootstrap.Modal(el_modal_error, {
                                     keyboard: false
                                 });
-                                miModal.show();
+                                miModal_error.show();
                                 break;
                         }
                     },
