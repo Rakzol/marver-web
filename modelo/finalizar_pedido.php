@@ -272,8 +272,20 @@
         $preparada->bindValue(':usuario', $datos['usuario']['id']);
         $preparada->execute();
 
-        $preparada = $datos['conexion_catalogo_principal']->prepare('INSERT INTO ubicaciones_usuarios VALUES (:usuario, :lat, :lon, :precision, GETDATE(), :pedido)');
+        if( isset($_SERVER['HTTP_X_FORWARDED_FOR']) ){
+            $ip_list = explode(',',$_SERVER['HTTP_X_FORWARDED_FOR']);
+            $ip = trim($ip_list[0]);
+        }else{
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+
+        if( !filter_var($ip, FILTER_VALIDATE_IP) ){
+            $ip = '0.0.0.0';
+        }
+
+        $preparada = $datos['conexion_catalogo_principal']->prepare('INSERT INTO ubicaciones_usuarios VALUES (:usuario, :ip, :lat, :lon, :precision, GETDATE(), :pedido)');
         $preparada->bindValue(':usuario', $datos['usuario']['id'] );
+        $preparada->bindValue(':ip', $ip);
         $preparada->bindValue(':lat', $_POST['lat']);
         $preparada->bindValue(':lon', $_POST['lon']);
         $preparada->bindValue(':precision', $_POST['precision']);
