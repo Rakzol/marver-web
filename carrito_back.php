@@ -707,7 +707,7 @@
     <div class="modal-dialog modal-dialog-centered modal-md">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="producto-modal-label">Inconveniente encontrado</h5>
+          <h5 class="modal-title" id="producto-modal-label">Limite de credito</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
@@ -1047,134 +1047,65 @@
         }
 
         function finalizar_pedido(){
+            document.querySelectorAll('.cantidad').forEach( (cantidad) => {
+                cantidad.classList.remove('is-invalid');
+            } );
 
-            // Verificamos si el navegador soporta la Geolocation API
-            if (navigator.geolocation) {
-                // Solicitar la ubicación del usuario
-                navigator.geolocation.getCurrentPosition(
-                    // Éxito: se obtuvo la ubicación
-                    function (position) {
-                        document.querySelectorAll('.cantidad').forEach( (cantidad) => {
-                            cantidad.classList.remove('is-invalid');
-                        } );
+            let datos = new FormData();
+            datos.append('tipo_de_compra', document.querySelector('#tipo_de_compra').value);
+            datos.append('forma_de_pago', document.querySelector('#forma_de_pago').value);
+            datos.append('tipo_de_comprobante', document.querySelector('#tipo_de_comprobante').value);
+            datos.append('MEntrega', document.querySelector('#MEntrega').value);
+            datos.append('observaciones', document.querySelector('#observaciones').value);
 
-                        let datos = new FormData();
-                        datos.append('tipo_de_compra', document.querySelector('#tipo_de_compra').value);
-                        datos.append('forma_de_pago', document.querySelector('#forma_de_pago').value);
-                        datos.append('tipo_de_comprobante', document.querySelector('#tipo_de_comprobante').value);
-                        datos.append('MEntrega', document.querySelector('#MEntrega').value);
-                        datos.append('observaciones', document.querySelector('#observaciones').value);
-                        datos.append('lat', position.coords.latitude);
-                        datos.append('lon', position.coords.longitude);
-                        datos.append('precision', position.coords.accuracy);
-
-                        fetch('modelo/finalizar_pedido2', {
-                            method: 'POST',
-                            body: datos
-                        })
-                        .then((respuesta) => {
-                            return respuesta.json();
-                        })
-                        .catch(error => {
-                            console.error('Error al finalizar el pedido: ', error);
-                        })
-                        .then(respuesta_json => {
-                            switch (respuesta_json['codigo']){
-                                case 0:
-                                    document.location.href = 'https://www.marverrefacciones.mx/pedido?folio=' + respuesta_json['folio'];
-                                    break;
-                                case 1:
-                                    respuesta_json['productos_insuficientes'].forEach( (producto_insuficiente) => {
-                                        let cantidad = document.querySelector('#cantidad-' + producto_insuficiente['producto']);
-                                        cantidad.classList.add('is-invalid');
-                                        cantidad.parentNode.querySelector('div').innerText = producto_insuficiente['existencias'] + ' Existencias';
-                                        } );
-                                    window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
-                                    break;
-                                case 2:
-                                    let el_modal = document.querySelector('.modal');
-                                    el_modal.querySelector('.modal-body').innerHTML = 
-                                        'Su limite de credito se ha exedido<br>'+
-                                        'favor de llamar a credito y cobranza.';
-                                    let miModal = new bootstrap.Modal(el_modal, {
-                                        keyboard: false
-                                    });
-                                    miModal.show();
-                                    break;
-                                case 3:
-                                    let el_modal_2 = document.querySelector('.modal');
-                                    el_modal_2.querySelector('.modal-body').innerHTML = 
-                                        'Tiene pagos pendientes vencidos<br>'+
-                                        'favor de llamar a credito y cobranza.';
-                                    let miModal_2 = new bootstrap.Modal(el_modal_2, {
-                                        keyboard: false
-                                    });
-                                    miModal_2.show();
-                                    break;
-                                default:
-                                    let el_modal_3 = document.querySelector('.modal');
-                                    el_modal_3.querySelector('.modal-body').innerHTML = 'Agregue refacciones al carrito.';
-                                    let miModal_3 = new bootstrap.Modal(el_modal_3, {
-                                        keyboard: false
-                                    });
-                                    miModal_3.show();
-                                    break;
-                            }
+            fetch('modelo/finalizar_pedido', {
+                method: 'POST',
+                body: datos
+            })
+            .then((respuesta) => {
+                return respuesta.json();
+            })
+            .catch(error => {
+                console.error('Error al finalizar el pedido: ', error);
+            })
+            .then(respuesta_json => {
+                switch (respuesta_json['codigo']){
+                    case 0:
+                        document.location.href = 'https://www.marverrefacciones.mx/pedido?folio=' + respuesta_json['folio'];
+                        break;
+                    case 1:
+                        respuesta_json['productos_insuficientes'].forEach( (producto_insuficiente) => {
+                            let cantidad = document.querySelector('#cantidad-' + producto_insuficiente['producto']);
+                            cantidad.classList.add('is-invalid');
+                            cantidad.parentNode.querySelector('div').innerText = producto_insuficiente['existencias'] + ' Existencias';
+                            } );
+                        window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+                        break;
+                    case 2:
+                        let el_modal = document.querySelector('.modal');
+                        el_modal.querySelector('.modal-body').innerHTML = 
+                            'Su limite de credito se ha exedido<br>'+
+                            'favor de llamar a credito y cobranza.';
+                        let miModal = new bootstrap.Modal(el_modal, {
+                            keyboard: false
                         });
-
-                    },
-                    // Error: manejo de errores
-                    function (error) {
-                        switch (error.code) {
-                            case error.PERMISSION_DENIED:
-                                let el_modal_denegado = document.querySelector('.modal');
-                                el_modal_denegado.querySelector('.modal-body').innerHTML = 'Conceda los permisos de ubicació para relizar el pedido.';
-                                let miModal_denegado = new bootstrap.Modal(el_modal_denegado, {
-                                    keyboard: false
-                                });
-                                miModal_denegado.show();
-                                break;
-                            case error.POSITION_UNAVAILABLE:
-                                let el_modal_nodis = document.querySelector('.modal');
-                                el_modal_nodis.querySelector('.modal-body').innerHTML = 'La información de la posición no está disponible.';
-                                let miModal_nodis = new bootstrap.Modal(el_modal_nodis, {
-                                    keyboard: false
-                                });
-                                miModal_nodis.show();
-                                break;
-                            case error.TIMEOUT:
-                                let el_modal_caduca = document.querySelector('.modal');
-                                el_modal_caduca.querySelector('.modal-body').innerHTML = 'La solicitud para obtener la ubicación ha caducado.';
-                                let miModal_caduca = new bootstrap.Modal(el_modal_caduca, {
-                                    keyboard: false
-                                });
-                                miModal_caduca.show();
-                                break;
-                            case error.UNKNOWN_ERROR:
-                                let el_modal_error = document.querySelector('.modal');
-                                el_modal_error.querySelector('.modal-body').innerHTML = 'Ocurrió un error desconocido.';
-                                let miModal_error = new bootstrap.Modal(el_modal_error, {
-                                    keyboard: false
-                                });
-                                miModal_error.show();
-                                break;
-                        }
-                    },
-                    // Opciones para obtener una posición más precisa
-                    {
-                        enableHighAccuracy: true, // Prioriza la precisión sobre la velocidad o el consumo de energía
-                        timeout: 10000,           // Espera hasta 10 segundos para obtener la posición
-                        maximumAge: 0             // No usa posiciones en caché, siempre solicita una nueva
-                    }
-                );
-            } else {
-                let el_modal = document.querySelector('.modal');
-                el_modal.querySelector('.modal-body').innerHTML = 'Geolocalización no es soportada por este navegador.';
-                let miModal = new bootstrap.Modal(el_modal, {
-                    keyboard: false
-                });
-                miModal.show();
-            }
+                        miModal.show();
+                        break;
+                    case 3:
+                        let el_modal_2 = document.querySelector('.modal');
+                        el_modal_2.querySelector('.modal-body').innerHTML = 
+                            'Tiene pagos pendientes vencidos<br>'+
+                            'favor de llamar a credito y cobranza.';
+                        let miModal_2 = new bootstrap.Modal(el_modal_2, {
+                            keyboard: false
+                        });
+                        miModal_2.show();
+                        break;
+                    default:
+                        alert('Agregue refacciones al carrito');
+                        break;
+                }
+            });
         }
 
         consultar_carrito();

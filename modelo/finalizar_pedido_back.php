@@ -231,7 +231,7 @@
             $ultimo_folio = $ultimos_pedidos[0]['Folio'];
         }
 
-        /*$preparada = $datos['conexion_base_sucursal']->prepare("INSERT INTO PedidosCliente (Folio, FechaPedido, Numerodecontrol, HoraPedido, Cliente, Vendedor, CodigosPedido, UnidadesPedido, DescuentosPedido, SubtotalPedido, IvaPedido, TotalPedido, NombreCliente, Status, Extra1, Extra2, FormaPago, Tipocomprobante, MEntrega, Observacion) VALUES (:Folio, CAST(GETDATE() AS Date), :Numerodecontrol, REPLACE(REPLACE(FORMAT(GETDATE(), 'hh:mm:ss tt'), 'AM', 'a. m.'), 'PM', 'p. m.'), :Cliente, :Vendedor, :CodigosPedido, :UnidadesPedido, CAST(:DescuentosPedido AS NUMERIC(18,2)), CAST(:SubtotalPedido AS NUMERIC(18,2)), CAST(:IvaPedido AS NUMERIC(18,2)), CAST(:TotalPedido AS NUMERIC(18,2)), :NombreCliente, :Status, :Extra1, :Extra2, :FormaPago, :Tipocomprobante, :MEntrega, :Observacion)");
+        $preparada = $datos['conexion_base_sucursal']->prepare("INSERT INTO PedidosCliente (Folio, FechaPedido, Numerodecontrol, HoraPedido, Cliente, Vendedor, CodigosPedido, UnidadesPedido, DescuentosPedido, SubtotalPedido, IvaPedido, TotalPedido, NombreCliente, Status, Extra1, Extra2, FormaPago, Tipocomprobante, MEntrega, Observacion) VALUES (:Folio, CAST(GETDATE() AS Date), :Numerodecontrol, REPLACE(REPLACE(FORMAT(GETDATE(), 'hh:mm:ss tt'), 'AM', 'a. m.'), 'PM', 'p. m.'), :Cliente, :Vendedor, :CodigosPedido, :UnidadesPedido, CAST(:DescuentosPedido AS NUMERIC(18,2)), CAST(:SubtotalPedido AS NUMERIC(18,2)), CAST(:IvaPedido AS NUMERIC(18,2)), CAST(:TotalPedido AS NUMERIC(18,2)), :NombreCliente, :Status, :Extra1, :Extra2, :FormaPago, :Tipocomprobante, :MEntrega, :Observacion)");
         $preparada->bindValue(':Folio', $ultimo_folio + 1);
         //$preparada->bindValue(':FechaPedido', '');
         $preparada->bindValue(':Numerodecontrol', '1');
@@ -270,14 +270,6 @@
 
         $preparada = $datos['conexion_catalogo_sucursal']->prepare('DELETE FROM carrito WHERE usuario = :usuario');
         $preparada->bindValue(':usuario', $datos['usuario']['id']);
-        $preparada->execute();*/
-
-        $preparada = $datos['conexion_catalogo_principal']->prepare('INSERT INTO ubicaciones_clientes VALUES (:cliente, :lat, :lon, :precision, GETDATE(), :pedido)');
-        $preparada->bindValue(':cliente', $datos['cliente']['Clave'] );
-        $preparada->bindValue(':lat', $_POST['lat']);
-        $preparada->bindValue(':lon', $_POST['lon']);
-        $preparada->bindValue(':precision', $_POST['precision']);
-        $preparada->bindValue(':pedido', $ultimo_folio + 1);
         $preparada->execute();
 
         $retorno['codigo'] = 0;
