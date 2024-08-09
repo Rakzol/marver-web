@@ -1054,10 +1054,6 @@
                 navigator.geolocation.getCurrentPosition(
                     // Éxito: se obtuvo la ubicación
                     function (position) {
-                        console.log('Latitud: ' + position.coords.latitude);
-                        console.log('Longitud: ' + position.coords.longitude);
-                        console.log('Precisión: ' + position.coords.accuracy + ' metros');
-
                         document.querySelectorAll('.cantidad').forEach( (cantidad) => {
                             cantidad.classList.remove('is-invalid');
                         } );
@@ -1068,8 +1064,11 @@
                         datos.append('tipo_de_comprobante', document.querySelector('#tipo_de_comprobante').value);
                         datos.append('MEntrega', document.querySelector('#MEntrega').value);
                         datos.append('observaciones', document.querySelector('#observaciones').value);
+                        datos.append('lat', position.coords.latitude);
+                        datos.append('lon', position.coords.longitude);
+                        datos.append('precision', position.coords.accuracy);
 
-                        fetch('modelo/finalizar_pedidoo', {
+                        fetch('modelo/finalizar_pedido2', {
                             method: 'POST',
                             body: datos
                         })
