@@ -1068,7 +1068,7 @@
                         datos.append('lon', position.coords.longitude);
                         datos.append('precision', position.coords.accuracy);
 
-                        fetch('modelo/finalizar_pedido2', {
+                        fetch('modelo/finalizar_pedido', {
                             method: 'POST',
                             body: datos
                         })
