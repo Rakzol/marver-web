@@ -274,9 +274,9 @@
 
         $preparada = $datos['conexion_catalogo_principal']->prepare('INSERT INTO ubicaciones_clientes VALUES (:cliente, :lat, :lon, :precision, GETDATE(), :pedido)');
         $preparada->bindValue(':cliente', $datos['cliente']['Clave'] );
-        $preparada->bindValue(':lat', $POST['lat']);
-        $preparada->bindValue(':lon', $POST['lon']);
-        $preparada->bindValue(':precision', $POST['precision']);
+        $preparada->bindValue(':lat', $_POST['lat']);
+        $preparada->bindValue(':lon', $_POST['lon']);
+        $preparada->bindValue(':precision', $_POST['precision']);
         $preparada->bindValue(':pedido', $ultimo_folio + 1);
         $preparada->execute();
 
