@@ -284,7 +284,6 @@
         }
 
         try{
-            /*
             $url = "https://ipinfo.io/{$ip}?token=a39ff8f192d166";
 
             $curl = curl_init();
@@ -309,7 +308,6 @@
             }
 
             curl_close($curl);
-            */
 
         }catch(Exception $ex){
             $lat_api = null;
