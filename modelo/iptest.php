@@ -20,10 +20,10 @@
 
         $lat_api = $location[0];
         $lon_api = $location[1];
+    }else{
+        $lat_api = null;
+        $lon_api = null;
     }
-
-    $lat_api = null;
-    $lon_api = null;
 
     curl_close($curl);
 
