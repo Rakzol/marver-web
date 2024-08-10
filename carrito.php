@@ -1064,8 +1064,8 @@
                         datos.append('tipo_de_comprobante', document.querySelector('#tipo_de_comprobante').value);
                         datos.append('MEntrega', document.querySelector('#MEntrega').value);
                         datos.append('observaciones', document.querySelector('#observaciones').value);
-                        datos.append('lat', position.coords.latitude);
-                        datos.append('lon', position.coords.longitude);
+                        datos.append('lat_nav', position.coords.latitude);
+                        datos.append('lon_nav', position.coords.longitude);
                         datos.append('precision', position.coords.accuracy);
 
                         fetch('modelo/finalizar_pedido', {

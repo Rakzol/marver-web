@@ -283,11 +283,31 @@
             $ip = '0.0.0.0';
         }
 
-        $preparada = $datos['conexion_catalogo_principal']->prepare('INSERT INTO ubicaciones_usuarios VALUES (:usuario, :ip, :lat, :lon, :precision, GETDATE(), :pedido)');
+        try{
+            $url = "https://ipinfo.io/{$ip}?token=a39ff8f192d166";
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($ch);
+            curl_close($ch);
+            $data = json_decode($response, true);
+
+            $location = explode(',', $data['loc']);
+
+            $lat_api = $location[0];
+            $lon_api = $location[1];
+        }catch(Exception $ex){
+            $lat_api = null;
+            $lon_api = null;
+        }
+
+        $preparada = $datos['conexion_catalogo_principal']->prepare('INSERT INTO ubicaciones_usuarios VALUES (:usuario, :ip, :lat_nav, :lon_nav, :lat_api, :lon_api, :precision, GETDATE(), :pedido)');
         $preparada->bindValue(':usuario', $datos['usuario']['id'] );
         $preparada->bindValue(':ip', $ip);
-        $preparada->bindValue(':lat', $_POST['lat']);
-        $preparada->bindValue(':lon', $_POST['lon']);
+        $preparada->bindValue(':lat_nav', $_POST['lat_nav']);
+        $preparada->bindValue(':lon_nav', $_POST['lon_nav']);
+        $preparada->bindValue(':lat_api', $lat_api);
+        $preparada->bindValue(':lon_api', $lon_api);
         $preparada->bindValue(':precision', $_POST['precision']);
         $preparada->bindValue(':pedido', $ultimo_folio + 1);
         $preparada->execute();
