@@ -14,6 +14,8 @@
     $response = curl_exec($curl);
 
     if ($response != false) {
+
+        echo $response;
         $data = json_decode($response, true);
 
         $location = explode(',', $data['loc']);
