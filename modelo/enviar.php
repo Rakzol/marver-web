@@ -1,6 +1,6 @@
 <?php
 
-    $Bearer = "EAAVE5rJaMKwBOwLIs594cVSihea0hQC2sgo3hx6vgjmZBQwERZBC7FiI2vMr7h7KfZB9My3lHrGT3bwZA8dOq6ZAbjUjJugkp7GYNZABIaQJxNmLiBnGqX8K99I7OJxc0rBervA7vZCpZAbA9iRMeG8FmqTZAZCmFExJIo3bBYCYXQpNn4wmFUixcyYxcqNui6bQNR";
+    $Bearer = "EAAVE5rJaMKwBO980nYpnZCI4PiJVcssTkhplxFLNvvyUVdFvwqd5m5JMPbLZCA6XxWpNANrd9QoRNPsk6WhQZBhfvcFsps5a1Bp7PHWSkhycZCwb31GH2BkupUPySiyi0ZA1gE9mdL0SZBPWEJonpZAVkoZCjPg2XZCgU6dLZAzgP1UcGKaiUelN8s9jCDoZBi0FtKq";
     //NUESTRO TELEFONO
     $telefono = $_GET['cel'];
     //URL A DONDE SE MANDARA EL MENSAJE
@@ -26,6 +26,8 @@
     curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
     curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
     //OBTENEMOS LA RESPUESTA DEL ENVIO DE INFORMACION
     $response = json_decode(curl_exec($curl), true);
     //IMPRIMIMOS LA RESPUESTA 
