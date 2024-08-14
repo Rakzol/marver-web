@@ -4,7 +4,7 @@
     //NUESTRO TELEFONO
     $telefono = $_GET['cel'];
     //URL A DONDE SE MANDARA EL MENSAJE
-    $url = 'https://graph.facebook.com/v15.0/105233795800723/messages';
+    $url = 'https://graph.facebook.com/v20.0/426242453898687/messages';
 
     //CONFIGURACION DEL MENSAJE
     $mensaje = ''
