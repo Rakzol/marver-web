@@ -5,16 +5,16 @@
     $url = 'https://graph.facebook.com/v20.0/426242453898687/messages';
 
     //CONFIGURACION DEL MENSAJE
-    $mensaje = ''
-            . '{'
-            . '"messaging_product": "whatsapp", '
-            . '"to": "'. $_GET['cel'] .'", '
-            . '"type": "template", '
-            . '"template": '
-            . '{'
-            . '     "name": "envio_por_camion",'
-            . '     "language":{ "code": "es_MX" } ,'
-            .       '"components": [
+    $mensaje =
+             '{
+            "messaging_product": "whatsapp", 
+            "to": "'. $_GET['cel'] .'", 
+            "type": "template", 
+            "template": 
+            {
+                 "name": "envio_por_camion",
+                 "language":{ "code": "es_MX" } ,
+                "components": [
                         {
                             "type": "body",
                             "parameters": [
@@ -24,15 +24,15 @@
                             },
                             {
                                 "type": "text",
-                                "text": "' . $_GET['pac'] . '"
+                                "text": "' . $_GET['fol'] . '"
                             },
                             {
                                 "type": "text",
                                 "text": "' . $_GET['cam'] . '"
                             }]
-                        }]'
-            . '} '
-            . '}';
+                        }]
+                } 
+            }';
     echo $mensaje;
     //DECLARAMOS LAS CABECERAS
     $header = array("Authorization: Bearer " . $Bearer, "Content-Type: application/json");
