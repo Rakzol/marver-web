@@ -14,8 +14,27 @@
             . '"type": "template", '
             . '"template": '
             . '{'
-            . '     "name": "hello_world",'
-            . '     "language":{ "code": "en_US" } '
+            . '     "name": "envio_por_camion",'
+            . '     "language":{ "code": "es_MX" } ,'
+            .    '"components": [
+                    {
+                        "type": "body",
+                        "parameters": [
+                            {
+                                "type": "text",
+                                "text": "Nombre del cliente"
+                            },
+                            {
+                                "type": "text",
+                                "text": "Folio del paquete"
+                            },
+                            {
+                                "type": "text",
+                                "text": "Nombre del camión"
+                            }
+                        ]
+                    }
+                ]'
             . '} '
             . '}';
     //DECLARAMOS LAS CABECERAS
