@@ -37,6 +37,7 @@
                 ]'
             . '} '
             . '}';
+    echo $mensaje;
     //DECLARAMOS LAS CABECERAS
     $header = array("Authorization: Bearer " . $Bearer, "Content-Type: application/json");
     //INICIAMOS EL CURL
