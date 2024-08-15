@@ -100,7 +100,7 @@
         }
 
         $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        if( $status_code == 200 ){
+        if( $status_code != 200 ){
             $resultado["status"] = 5;
             $resultado["mensaje"] = "Error al notificar al cliente";
             echo json_encode($resultado);
