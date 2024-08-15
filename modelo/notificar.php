@@ -54,7 +54,7 @@
         $mensaje =
                 '{
                 "messaging_product": "whatsapp", 
-                "to": "'. $cliente['Celular'] .'", 
+                "to": "52'. $cliente['Celular'] .'", 
                 "type": "template", 
                 "template": 
                 {
