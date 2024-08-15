@@ -16,23 +16,7 @@
             . '{'
             . '     "name": "hello_world",'
             . '     "language":{ "code": "en_US" } ,'
-            .       '"components": [
-                        {
-                            "type": "body",
-                            "parameters": [
-                            {
-                                "type": "text",
-                                "text": "Nombre del cliente"
-                            },
-                            {
-                                "type": "text",
-                                "text": "Folio del paquete"
-                            },
-                            {
-                                "type": "text",
-                                "text": "Nombre del camión"
-                            }]
-                        }]'
+
             . '} '
             . '}';
     echo $mensaje;
