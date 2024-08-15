@@ -14,12 +14,12 @@
             . '"type": "template", '
             . '"template": '
             . '{'
-            . '     "name": "envio_por_camion",'
+            . '     "name": "hello_world",'
             . '     "language":{ "code": "es_MX" } ,'
-            .    '"components": [
-                    {
-                        "type": "body",
-                        "parameters": [
+            .       '"components": [
+                        {
+                            "type": "body",
+                            "parameters": [
                             {
                                 "type": "text",
                                 "text": "Nombre del cliente"
@@ -31,10 +31,8 @@
                             {
                                 "type": "text",
                                 "text": "Nombre del camión"
-                            }
-                        ]
-                    }
-                ]'
+                            }]
+                        }]'
             . '} '
             . '}';
     echo $mensaje;
