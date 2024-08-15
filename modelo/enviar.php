@@ -1,8 +1,6 @@
 <?php
 
     $Bearer = "EAAVE5rJaMKwBO980nYpnZCI4PiJVcssTkhplxFLNvvyUVdFvwqd5m5JMPbLZCA6XxWpNANrd9QoRNPsk6WhQZBhfvcFsps5a1Bp7PHWSkhycZCwb31GH2BkupUPySiyi0ZA1gE9mdL0SZBPWEJonpZAVkoZCjPg2XZCgU6dLZAzgP1UcGKaiUelN8s9jCDoZBi0FtKq";
-    //NUESTRO TELEFONO
-    $telefono = $_GET['cel'];
     //URL A DONDE SE MANDARA EL MENSAJE
     $url = 'https://graph.facebook.com/v20.0/426242453898687/messages';
 
@@ -10,7 +8,7 @@
     $mensaje = ''
             . '{'
             . '"messaging_product": "whatsapp", '
-            . '"to": "'.$telefono.'", '
+            . '"to": "'. $_GET['cel'] .'", '
             . '"type": "template", '
             . '"template": '
             . '{'
@@ -22,15 +20,15 @@
                             "parameters": [
                             {
                                 "type": "text",
-                                "text": "Nombre del cliente"
+                                "text": "' . $_GET['nom'] . '"
                             },
                             {
                                 "type": "text",
-                                "text": "Folio del paquete"
+                                "text": "' . $_GET['pac'] . '"
                             },
                             {
                                 "type": "text",
-                                "text": "Nombre del camión"
+                                "text": "' . $_GET['cam'] . '"
                             }]
                         }]'
             . '} '
