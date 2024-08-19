@@ -609,17 +609,6 @@
         function iniciar_sesion() {
 
 
-
-
-
-
-
-
-
-
-
-
-
             if (navigator.geolocation) {
                 // Solicitar la ubicación del usuario
                 navigator.geolocation.getCurrentPosition(
