@@ -39,12 +39,6 @@
         $_SESSION['usuario'] = $usuarios[0]['id'];
 
         /********/
-        require_once('inicializar_datos.php');
-
-        $preparada = $datos['conexion_catalogo_sucursal']->prepare('DELETE FROM carrito WHERE usuario = :usuario');
-        $preparada->bindValue(':usuario', $datos['usuario']['id']);
-        $preparada->execute();
-
         if( isset($_SERVER['HTTP_X_FORWARDED_FOR']) ){
             $ip_list = explode(',',$_SERVER['HTTP_X_FORWARDED_FOR']);
             $ip = trim($ip_list[0]);
@@ -87,8 +81,8 @@
             $lon_api = null;
         }
 
-        $preparada = $datos['conexion_catalogo_principal']->prepare('INSERT INTO ubicaciones_usuarios VALUES (:usuario, :ip, :lat_nav, :lon_nav, :lat_api, :lon_api, :precision, GETDATE(), :pedido)');
-        $preparada->bindValue(':usuario', $datos['usuario']['id'] );
+        $preparada = $conexion->prepare('INSERT INTO ubicaciones_usuarios VALUES (:usuario, :ip, :lat_nav, :lon_nav, :lat_api, :lon_api, :precision, GETDATE(), :pedido)');
+        $preparada->bindValue(':usuario', $_SESSION['usuario'] );
         $preparada->bindValue(':ip', $ip);
         $preparada->bindValue(':lat_nav', $_POST['lat_nav']);
         $preparada->bindValue(':lon_nav', $_POST['lon_nav']);
