@@ -407,6 +407,20 @@
 
 <body>
 
+    <!-- Modal -->
+    <div class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="producto-modal-label">Inconveniente encontrado</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+        </div>
+      </div>
+    </div>
+
+  </div>
 
     <!-- Spinner Start -->
     <div id="spinner"
@@ -593,30 +607,110 @@
         let contraseña = document.getElementById('contraseña');
 
         function iniciar_sesion() {
-            let datos = new FormData();
-            datos.append('correo', correo.value);
-            datos.append('contraseña', contraseña.value);
 
-            fetch('modelo/iniciar_sesion', {
-                method: 'POST',
-                body: datos
-            })
-                .then((respuesta) => {
-                    return respuesta.json();
-                })
-                .catch(error => {
-                    alert('Error al iniciar sesion: ' + error);
-                })
-                .then(respuesta_json => {
-                    correo.classList.add( respuesta_json.correo ? 'is-valid' : 'is-invalid' );
-                    correo.classList.remove( !respuesta_json.correo ? 'is-valid' : 'is-invalid' );
-                    contraseña.classList.add( respuesta_json.contraseña ? 'is-valid' : 'is-invalid' );
-                    contraseña.classList.remove( !respuesta_json.contraseña ? 'is-valid' : 'is-invalid' );
 
-                    if(respuesta_json.correo && respuesta_json.contraseña){
-                        document.location.href = 'https://www.marverrefacciones.mx/catalogo.php';
+
+
+
+
+
+
+
+
+
+
+
+            if (navigator.geolocation) {
+                // Solicitar la ubicación del usuario
+                navigator.geolocation.getCurrentPosition(
+                    // Éxito: se obtuvo la ubicación
+                    function (position) {
+                        document.querySelectorAll('.cantidad').forEach( (cantidad) => {
+                            cantidad.classList.remove('is-invalid');
+                        } );
+
+                        let datos = new FormData();
+                        datos.append('correo', correo.value);
+                        datos.append('contraseña', contraseña.value);
+                        datos.append('lat_nav', position.coords.latitude);
+                        datos.append('lon_nav', position.coords.longitude);
+                        datos.append('precision', position.coords.accuracy);
+
+                        fetch('modelo/iniciar_sesion', {
+                            method: 'POST',
+                            body: datos
+                        })
+                            .then((respuesta) => {
+                                return respuesta.json();
+                            })
+                            .catch(error => {
+                                alert('Error al iniciar sesion: ' + error);
+                            })
+                            .then(respuesta_json => {
+                                correo.classList.add( respuesta_json.correo ? 'is-valid' : 'is-invalid' );
+                                correo.classList.remove( !respuesta_json.correo ? 'is-valid' : 'is-invalid' );
+                                contraseña.classList.add( respuesta_json.contraseña ? 'is-valid' : 'is-invalid' );
+                                contraseña.classList.remove( !respuesta_json.contraseña ? 'is-valid' : 'is-invalid' );
+
+                                if(respuesta_json.correo && respuesta_json.contraseña){
+                                    document.location.href = 'https://www.marverrefacciones.mx/catalogo.php';
+                                }
+                            });
+
+                    },
+                    // Error: manejo de errores
+                    function (error) {
+                        switch (error.code) {
+                            case error.PERMISSION_DENIED:
+                                let el_modal_denegado = document.querySelector('.modal');
+                                el_modal_denegado.querySelector('.modal-body').innerHTML = 'Conceda los permisos de ubicació para relizar el pedido.';
+                                let miModal_denegado = new bootstrap.Modal(el_modal_denegado, {
+                                    keyboard: false
+                                });
+                                miModal_denegado.show();
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                let el_modal_nodis = document.querySelector('.modal');
+                                el_modal_nodis.querySelector('.modal-body').innerHTML = 'La información de la posición no está disponible.';
+                                let miModal_nodis = new bootstrap.Modal(el_modal_nodis, {
+                                    keyboard: false
+                                });
+                                miModal_nodis.show();
+                                break;
+                            case error.TIMEOUT:
+                                let el_modal_caduca = document.querySelector('.modal');
+                                el_modal_caduca.querySelector('.modal-body').innerHTML = 'La solicitud para obtener la ubicación ha caducado.';
+                                let miModal_caduca = new bootstrap.Modal(el_modal_caduca, {
+                                    keyboard: false
+                                });
+                                miModal_caduca.show();
+                                break;
+                            case error.UNKNOWN_ERROR:
+                                let el_modal_error = document.querySelector('.modal');
+                                el_modal_error.querySelector('.modal-body').innerHTML = 'Ocurrió un error desconocido.';
+                                let miModal_error = new bootstrap.Modal(el_modal_error, {
+                                    keyboard: false
+                                });
+                                miModal_error.show();
+                                break;
+                        }
+                    },
+                    // Opciones para obtener una posición más precisa
+                    {
+                        enableHighAccuracy: true, // Prioriza la precisión sobre la velocidad o el consumo de energía
+                        timeout: 10000,           // Espera hasta 10 segundos para obtener la posición
+                        maximumAge: 0             // No usa posiciones en caché, siempre solicita una nueva
                     }
+                );
+            } else {
+                let el_modal = document.querySelector('.modal');
+                el_modal.querySelector('.modal-body').innerHTML = 'Geolocalización no es soportada por este navegador.';
+                let miModal = new bootstrap.Modal(el_modal, {
+                    keyboard: false
                 });
+                miModal.show();
+            }
+
         }
     </script>
 
