@@ -20,7 +20,7 @@
     <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.css" rel="stylesheet" /> -->
 
     <!-- Favicon -->
-    <link href="img/logo_solo.png" rel="icon">
+    <link href="https://www.marverrefacciones.mx/img/logo.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
