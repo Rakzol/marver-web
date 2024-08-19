@@ -597,7 +597,7 @@
             datos.append('correo', correo.value);
             datos.append('contraseña', contraseña.value);
 
-            fetch('modelo/iniciar_sesion.php', {
+            fetch('modelo/iniciar_sesion', {
                 method: 'POST',
                 body: datos
             })
