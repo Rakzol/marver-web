@@ -20,7 +20,7 @@
     <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.css" rel="stylesheet" /> -->
 
     <!-- Favicon -->
-    <link href="https://www.marverrefacciones.mx/img/logo.png" rel="icon">
+    <link href="https://www.marverrefacciones.mx/img/logo_solo.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -167,7 +167,7 @@
         }
 
         #contenedor_correo {
-            background: url("img/mail.jpg");
+            background: url("https://www.marverrefacciones.mx/img/mail.jpg");
             background-repeat: no-repeat;
             background-size: cover;
             width: 100% !important;
@@ -202,7 +202,7 @@
         }
 
         #refacciones {
-            background: url("img/fondo-estatico.jpg");
+            background: url("https://www.marverrefacciones.mx/img/fondo-estatico.jpg");
             background-repeat: no-repeat;
             background-size: cover;
             width: 100% !important;
@@ -351,7 +351,7 @@
         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status">
         </div>
-        <img class="text-primary position-absolute top-50 start-50 translate-middle" src="img/logo.png" style="width: 5rem;">
+        <img class="text-primary position-absolute top-50 start-50 translate-middle" src="https://www.marverrefacciones.mx/img/logo.png" style="width: 5rem;">
     </div>
     <!-- Spinner End -->
 
@@ -361,7 +361,7 @@
             <div class="col-lg-8 col-md-12 text-center text-lg-start">
                 <a href="#" class="navbar-brand m-0 p-0" style="display: block;">
                     <!-- <h1 class="fw-bold text-primary m-0"><i class="fa fa-laptop-code me-3"></i>Marver</h1> -->
-                    <img class="logo_principal" style="width: 90px;" src="img/logo.png" alt="Logo">
+                    <img class="logo_principal" style="width: 90px;" src="https://www.marverrefacciones.mx/img/logo.png" alt="Logo">
                 </a>
             </div>
             <div id="contenedor_redes" class="col-lg-4 col-md-6 d-lg-block">
@@ -457,36 +457,36 @@
     <div id="carousel-inicio" class="carousel slide wow fadeInUp" data-wow-delay="0.1s" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="img/carousel-1.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
-                <img src="img/carousel-11.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
+                <img src="https://www.marverrefacciones.mx/img/carousel-1.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
+                <img src="https://www.marverrefacciones.mx/img/carousel-11.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
                 <!-- <div class="carousel-caption d-md-block">
                     <p style="color: white;">Mereces viajar con</p>
                     <h5 style="color: gold;">La mejor seguridad</h5>
                 </div> -->
             </div>
             <div class="carousel-item">
-                <img src="img/carousel-2.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
-                <img src="img/carousel-22.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
+                <img src="https://www.marverrefacciones.mx/img/carousel-2.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
+                <img src="https://www.marverrefacciones.mx/img/carousel-22.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
                 <!-- <div class="carousel-caption d-md-block">
                     <p style="color: white;">Con marver viaja a</p>
                     <h5 style="color: gold;">La máxima potencia</h5>
                 </div> -->
             </div>
             <div class="carousel-item">
-                <img src="img/carousel-3.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
-                <img src="img/carousel-33.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
+                <img src="https://www.marverrefacciones.mx/img/carousel-3.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
+                <img src="https://www.marverrefacciones.mx/img/carousel-33.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
             </div>
             <div class="carousel-item">
-                <img src="img/carousel-4.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
-                <img src="img/carousel-44.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
+                <img src="https://www.marverrefacciones.mx/img/carousel-4.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
+                <img src="https://www.marverrefacciones.mx/img/carousel-44.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
             </div>
             <div class="carousel-item">
-                <img src="img/carousel-5.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
-                <img src="img/carousel-55.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
+                <img src="https://www.marverrefacciones.mx/img/carousel-5.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
+                <img src="https://www.marverrefacciones.mx/img/carousel-55.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
             </div>
             <div class="carousel-item">
-                <img src="img/carousel-6.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
-                <img src="img/carousel-66.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
+                <img src="https://www.marverrefacciones.mx/img/carousel-6.png" class="d-block w-100 carrusel_grande" alt="tips para auto">
+                <img src="https://www.marverrefacciones.mx/img/carousel-66.png" class="d-block w-100 carrusel_chico" alt="tips para auto">
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carousel-inicio" data-bs-slide="prev">
@@ -546,7 +546,7 @@
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="contenedor-imagen-alta">
-                        <img class="imagen-alta" src="img/about.jpg" alt="">
+                        <img class="imagen-alta" src="https://www.marverrefacciones.mx/img/about.jpg" alt="">
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
@@ -559,7 +559,7 @@
                             marcas para tu automóvil, brindando el mejor servicio y garantizando calidad y precio en
                             nuestros productos.</p>
                         <div class="d-flex align-items-center mb-4 pb-2">
-                            <img class="flex-shrink-0 rounded-circle" src="img/team-8.jpg" alt=""
+                            <img class="flex-shrink-0 rounded-circle" src="https://www.marverrefacciones.mx/img/team-8.jpg" alt=""
                                 style="width: 50px; height: 50px;">
                             <div class="ps-4">
                                 <h6>El mejor servicio</h6>
@@ -587,7 +587,7 @@
                             de servicio, así como la mejor opción de refacciones para cada necesidad, eso hace que su
                             confianza en nosotros crezca.</p>
                         <div class="d-flex align-items-center mb-4 pb-2">
-                            <img class="flex-shrink-0 rounded-circle" src="img/tips/1.jpg" alt=""
+                            <img class="flex-shrink-0 rounded-circle" src="https://www.marverrefacciones.mx/img/tips/1.jpg" alt=""
                                 style="width: 50px; height: 50px;">
                             <div class="ps-4">
                                 <h6>Cuidamos de tu auto</h6>
@@ -599,7 +599,7 @@
                 </div>
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="contenedor-imagen-alta">
-                        <img class="imagen-alta" src="img/feature.jpg" alt="">
+                        <img class="imagen-alta" src="https://www.marverrefacciones.mx/img/feature.jpg" alt="">
                     </div>
                 </div>
             </div>
@@ -618,97 +618,97 @@
             <div class="row g-4">
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 wow fadeInUp" data-wow-delay="0.1s">
                     <a class="service-item d-block rounded text-center h-100 p-4" href="#refacciones">
-                        <img class="img-fluid rounded mb-4" src="img/refacciones/ACCESORIOS.jpg" alt="">
+                        <img class="img-fluid rounded mb-4" src="https://www.marverrefacciones.mx/img/refacciones/ACCESORIOS.jpg" alt="">
                         <h4 class="mb-0">Accesorios</h4>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 wow fadeInUp" data-wow-delay="0.1s">
                     <a class="service-item d-block rounded text-center h-100 p-4" href="#refacciones">
-                        <img class="img-fluid rounded mb-4" src="img/refacciones/BALEROS Y RETENES.jpg" alt="">
+                        <img class="img-fluid rounded mb-4" src="https://www.marverrefacciones.mx/img/refacciones/BALEROS Y RETENES.jpg" alt="">
                         <h4 class="mb-0">Baleros</h4>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 wow fadeInUp" data-wow-delay="0.1s">
                     <a class="service-item d-block rounded text-center h-100 p-4" href="#refacciones">
-                        <img class="img-fluid rounded mb-4" src="img/refacciones/COLISION Y CHASIS.jpg" alt="">
+                        <img class="img-fluid rounded mb-4" src="https://www.marverrefacciones.mx/img/refacciones/COLISION Y CHASIS.jpg" alt="">
                         <h4 class="mb-0">Chasis</h4>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 wow fadeInUp" data-wow-delay="0.1s">
                     <a class="service-item d-block rounded text-center h-100 p-4" href="#refacciones">
-                        <img class="img-fluid rounded mb-4" src="img/refacciones/COMBUSTION.jpg" alt="">
+                        <img class="img-fluid rounded mb-4" src="https://www.marverrefacciones.mx/img/refacciones/COMBUSTION.jpg" alt="">
                         <h4 class="mb-0">Combustión</h4>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 wow fadeInUp" data-wow-delay="0.1s">
                     <a class="service-item d-block rounded text-center h-100 p-4" href="#refacciones">
-                        <img class="img-fluid rounded mb-4" src="img/refacciones/DIRECCION.jpg" alt="">
+                        <img class="img-fluid rounded mb-4" src="https://www.marverrefacciones.mx/img/refacciones/DIRECCION.jpg" alt="">
                         <h4 class="mb-0">Dirección</h4>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 wow fadeInUp" data-wow-delay="0.1s">
                     <a class="service-item d-block rounded text-center h-100 p-4" href="#refacciones">
-                        <img class="img-fluid rounded mb-4" src="img/refacciones/ELECTRICO.jpg" alt="">
+                        <img class="img-fluid rounded mb-4" src="https://www.marverrefacciones.mx/img/refacciones/ELECTRICO.jpg" alt="">
                         <h4 class="mb-0">Eléctrico</h4>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 wow fadeInUp" data-wow-delay="0.1s">
                     <a class="service-item d-block rounded text-center h-100 p-4" href="#refacciones">
-                        <img class="img-fluid rounded mb-4" src="img/refacciones/EMBRAGUES.jpg" alt="">
+                        <img class="img-fluid rounded mb-4" src="https://www.marverrefacciones.mx/img/refacciones/EMBRAGUES.jpg" alt="">
                         <h4 class="mb-0">Embragues</h4>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 wow fadeInUp" data-wow-delay="0.1s">
                     <a class="service-item d-block rounded text-center h-100 p-4" href="#refacciones">
-                        <img class="img-fluid rounded mb-4" src="img/refacciones/ENCENDIDO (ARRANQUE).jpg" alt="">
+                        <img class="img-fluid rounded mb-4" src="https://www.marverrefacciones.mx/img/refacciones/ENCENDIDO (ARRANQUE).jpg" alt="">
                         <h4 class="mb-0">Arranque</h4>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 wow fadeInUp" data-wow-delay="0.1s">
                     <a class="service-item d-block rounded text-center h-100 p-4" href="#refacciones">
-                        <img class="img-fluid rounded mb-4" src="img/refacciones/ENFRIAMIENTO.jpg" alt="">
+                        <img class="img-fluid rounded mb-4" src="https://www.marverrefacciones.mx/img/refacciones/ENFRIAMIENTO.jpg" alt="">
                         <h4 class="mb-0">Enfriamiento</h4>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 wow fadeInUp" data-wow-delay="0.1s">
                     <a class="service-item d-block rounded text-center h-100 p-4" href="#refacciones">
-                        <img class="img-fluid rounded mb-4" src="img/refacciones/FERRETERIA.jpg" alt="">
+                        <img class="img-fluid rounded mb-4" src="https://www.marverrefacciones.mx/img/refacciones/FERRETERIA.jpg" alt="">
                         <h4 class="mb-0">Ferreteria</h4>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 wow fadeInUp" data-wow-delay="0.1s">
                     <a class="service-item d-block rounded text-center h-100 p-4" href="#refacciones">
-                        <img class="img-fluid rounded mb-4" src="img/refacciones/FRENO Y MAZA.jpg" alt="">
+                        <img class="img-fluid rounded mb-4" src="https://www.marverrefacciones.mx/img/refacciones/FRENO Y MAZA.jpg" alt="">
                         <h4 class="mb-0">Frenos</h4>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 wow fadeInUp" data-wow-delay="0.1s">
                     <a class="service-item d-block rounded text-center h-100 p-4" href="#refacciones">
-                        <img class="img-fluid rounded mb-4" src="img/refacciones/ILUMINACION.jpg" alt="">
+                        <img class="img-fluid rounded mb-4" src="https://www.marverrefacciones.mx/img/refacciones/ILUMINACION.jpg" alt="">
                         <h4 class="mb-0">Iluminación</h4>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 wow fadeInUp" data-wow-delay="0.1s">
                     <a class="service-item d-block rounded text-center h-100 p-4" href="#refacciones">
-                        <img class="img-fluid rounded mb-4" src="img/refacciones/LUBRICANTES.jpg" alt="">
+                        <img class="img-fluid rounded mb-4" src="https://www.marverrefacciones.mx/img/refacciones/LUBRICANTES.jpg" alt="">
                         <h4 class="mb-0">Lubricantes</h4>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 wow fadeInUp" data-wow-delay="0.1s">
                     <a class="service-item d-block rounded text-center h-100 p-4" href="#refacciones">
-                        <img class="img-fluid rounded mb-4" src="img/refacciones/MOTOR.jpg" alt="">
+                        <img class="img-fluid rounded mb-4" src="https://www.marverrefacciones.mx/img/refacciones/MOTOR.jpg" alt="">
                         <h4 class="mb-0">Motor</h4>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 wow fadeInUp" data-wow-delay="0.1s">
                     <a class="service-item d-block rounded text-center h-100 p-4" href="#refacciones">
-                        <img class="img-fluid rounded mb-4" src="img/refacciones/SUSPENSION.jpg" alt="">
+                        <img class="img-fluid rounded mb-4" src="https://www.marverrefacciones.mx/img/refacciones/SUSPENSION.jpg" alt="">
                         <h4 class="mb-0">Suspensión</h4>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 wow fadeInUp" data-wow-delay="0.1s">
                     <a class="service-item d-block rounded text-center h-100 p-4" href="#refacciones">
-                        <img class="img-fluid rounded mb-4" src="img/refacciones/TRANSMISION.jpg" alt="">
+                        <img class="img-fluid rounded mb-4" src="https://www.marverrefacciones.mx/img/refacciones/TRANSMISION.jpg" alt="">
                         <h4 class="mb-0">Transmisión</h4>
                     </a>
                 </div>
@@ -728,8 +728,8 @@
             <div class="owl-carousel project-carousel wow fadeInUp" data-wow-delay="0.1s">
                 <div class="project-item border rounded h-100 p-4" data-dot="01">
                     <div class="position-relative mb-4">
-                        <img class="img-fluid rounded" src="img/logo_gonher.png" alt="">
-                        <a href="img/logo_gonher.png" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/logo_gonher.png" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/logo_gonher.png" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
                     </div>
                     <h6>Grupo Gonher</h6>
                     <span>Más de 60 años de protección para tu motor. Filtros, Aceites, Baterías, Aditivos, Bujías,
@@ -737,8 +737,8 @@
                 </div>
                 <div class="project-item border rounded h-100 p-4" data-dot="02">
                     <div class="position-relative mb-4">
-                        <img class="img-fluid rounded" src="img/logo_injetech_components.png" alt="">
-                        <a href="img/logo_injetech_components.png" data-lightbox="project"><i
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/logo_injetech_components.png" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/logo_injetech_components.png" data-lightbox="project"><i
                                 class="fa fa-eye fa-2x"></i></a>
                     </div>
                     <h6>Injetech Components</h6>
@@ -747,8 +747,8 @@
                 </div>
                 <div class="project-item border rounded h-100 p-4" data-dot="03">
                     <div class="position-relative mb-4">
-                        <img class="img-fluid rounded" src="img/logo_dynamik_carboceramic.png" alt="">
-                        <a href="img/logo_dynamik_carboceramic.png" data-lightbox="project"><i
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/logo_dynamik_carboceramic.png" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/logo_dynamik_carboceramic.png" data-lightbox="project"><i
                                 class="fa fa-eye fa-2x"></i></a>
                     </div>
                     <h6>Dynamik Carboceramic</h6>
@@ -757,8 +757,8 @@
                 </div>
                 <div class="project-item border rounded h-100 p-4" data-dot="04">
                     <div class="position-relative mb-4">
-                        <img class="img-fluid rounded" src="img/logo_eagle_bhp.png" alt="">
-                        <a href="img/logo_eagle_bhp.png" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/logo_eagle_bhp.png" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/logo_eagle_bhp.png" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
                     </div>
                     <h6>Eagle BHP</h6>
                     <span>Empresa líder, en la fabricación y comercialización de autopartes, siendo pioneros en el
@@ -766,8 +766,8 @@
                 </div>
                 <div class="project-item border rounded h-100 p-4" data-dot="05">
                     <div class="position-relative mb-4">
-                        <img class="img-fluid rounded" src="img/logo_trackone.png" alt="">
-                        <a href="img/logo_trackone.png" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/logo_trackone.png" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/logo_trackone.png" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
                     </div>
                     <h6>Trackone</h6>
                     <span>Es una empresa 100% Mexicana dedicada a la fabricación de autopartes con altos niveles de
@@ -775,16 +775,16 @@
                 </div>
                 <div class="project-item border rounded h-100 p-4" data-dot="06">
                     <div class="position-relative mb-4">
-                        <img class="img-fluid rounded" src="img/logo_shark_wp.png" alt="">
-                        <a href="img/logo_shark_wp.png" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/logo_shark_wp.png" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/logo_shark_wp.png" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
                     </div>
                     <h6>Shark W.P.</h6>
                     <span>En su catálogo de productos cuenta con bombas de agua electricas.</span>
                 </div>
                 <div class="project-item border rounded h-100 p-4" data-dot="07">
                     <div class="position-relative mb-4">
-                        <img class="img-fluid rounded" src="img/logo_bruck_germany.png" alt="">
-                        <a href="img/logo_bruck_germany.png" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/logo_bruck_germany.png" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/logo_bruck_germany.png" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
                     </div>
                     <h6>Bruck Germany</h6>
                     <span>Nuestras autopartes de colisión e interiores están diseñadas con los mejores materiales y
@@ -792,8 +792,8 @@
                 </div>
                 <div class="project-item border rounded h-100 p-4" data-dot="08">
                     <div class="position-relative mb-4">
-                        <img class="img-fluid rounded" src="img/logo_cartek.png" alt="">
-                        <a href="img/logo_cartek.png" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/logo_cartek.png" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/logo_cartek.png" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
                     </div>
                     <h6>Cartek</h6>
                     <span>El Grupo Cartek es un fabricante y comercializador de equipos de servicio automotriz compuesto
@@ -801,8 +801,8 @@
                 </div>
                 <div class="project-item border rounded h-100 p-4" data-dot="09">
                     <div class="position-relative mb-4">
-                        <img class="img-fluid rounded" src="img/logo_ecom.png" alt="">
-                        <a href="img/logo_ecom.png" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/logo_ecom.png" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/logo_ecom.png" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
                     </div>
                     <h6>Ecom</h6>
                     <span>Fundada en 1989 por nuestro grupo, con la finalidad de fabricar y comercializar productos
@@ -824,9 +824,9 @@
             <div class="row g-4">
                 <div class="col-xxl-4 col-lg-6 col-md-12 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="team-item text-center p-2">
-                        <!-- <img class="imagen-video img-fluid border w-95 p-2 mb-4" src="img/team-6.jpg" alt=""> -->
+                        <!-- <img class="imagen-video img-fluid border w-95 p-2 mb-4" src="https://www.marverrefacciones.mx/img/team-6.jpg" alt=""> -->
                         <video class="img-fluid border w-95 p-2 mb-4" autoplay loop muted playsinline>
-                            <source src="img/team-6.mp4" type="video/mp4">
+                            <source src="https://www.marverrefacciones.mx/img/team-6.mp4" type="video/mp4">
                         </video>
                         <div class="team-text">
                             <h5>El Mejor Servicio</h5>
@@ -836,9 +836,9 @@
                 </div>
                 <div class="col-xxl-4 col-lg-6 col-md-12 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="team-item text-center p-2">
-                        <!-- <img class="imagen-video img-fluid border w-95 p-2 mb-4" src="img/team-8.jpg" alt=""> -->
+                        <!-- <img class="imagen-video img-fluid border w-95 p-2 mb-4" src="https://www.marverrefacciones.mx/img/team-8.jpg" alt=""> -->
                         <video class="img-fluid border w-95 p-2 mb-4" autoplay loop muted playsinline>
-                            <source src="img/team-8.mp4" type="video/mp4">
+                            <source src="https://www.marverrefacciones.mx/img/team-8.mp4" type="video/mp4">
                         </video>
                         <div class="team-text">
                             <h5>La Mejor Atención</h5>
@@ -848,9 +848,9 @@
                 </div>
                 <div class="col-xxl-4 col-lg-6 col-md-12 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="team-item text-center p-2">
-                        <!-- <img class="imagen-video img-fluid border w-95 p-2 mb-4" src="img/team-10.jpg" alt=""> -->
+                        <!-- <img class="imagen-video img-fluid border w-95 p-2 mb-4" src="https://www.marverrefacciones.mx/img/team-10.jpg" alt=""> -->
                         <video class="img-fluid border w-95 p-2 mb-4" autoplay loop muted playsinline>
-                            <source src="img/team-10.mp4" type="video/mp4">
+                            <source src="https://www.marverrefacciones.mx/img/team-10.mp4" type="video/mp4">
                         </video>
                         <div class="team-text">
                             <h5>Estamos Preparados</h5>
@@ -873,62 +873,62 @@
             <div class="owl-carousel project-carousel wow fadeInUp" data-wow-delay="0.1s">
                 <div class="project-item border rounded h-100 p-2" data-dot="01">
                     <div class="position-relative">
-                        <img class="img-fluid rounded" src="img/tips/1.jpg" alt="">
-                        <a href="img/tips/1.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/tips/1.jpg" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/tips/1.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
                     </div>
                 </div>
                 <div class="project-item border rounded h-100 p-2" data-dot="02">
                     <div class="position-relative">
-                        <img class="img-fluid rounded" src="img/tips/2.jpg" alt="">
-                        <a href="img/tips/2.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/tips/2.jpg" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/tips/2.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
                     </div>
                 </div>
                 <div class="project-item border rounded h-100 p-2" data-dot="03">
                     <div class="position-relative">
-                        <img class="img-fluid rounded" src="img/tips/3.jpg" alt="">
-                        <a href="img/tips/3.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/tips/3.jpg" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/tips/3.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
                     </div>
                 </div>
                 <div class="project-item border rounded h-100 p-2" data-dot="04">
                     <div class="position-relative">
-                        <img class="img-fluid rounded" src="img/tips/4.jpg" alt="">
-                        <a href="img/tips/4.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/tips/4.jpg" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/tips/4.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
                     </div>
                 </div>
                 <div class="project-item border rounded h-100 p-2" data-dot="05">
                     <div class="position-relative">
-                        <img class="img-fluid rounded" src="img/tips/5.jpg" alt="">
-                        <a href="img/tips/5.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/tips/5.jpg" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/tips/5.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
                     </div>
                 </div>
                 <div class="project-item border rounded h-100 p-2" data-dot="06">
                     <div class="position-relative">
-                        <img class="img-fluid rounded" src="img/tips/25.jpg" alt="">
-                        <a href="img/tips/25.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/tips/25.jpg" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/tips/25.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
                     </div>
                 </div>
                 <div class="project-item border rounded h-100 p-2" data-dot="07">
                     <div class="position-relative">
-                        <img class="img-fluid rounded" src="img/tips/24.jpg" alt="">
-                        <a href="img/tips/24.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/tips/24.jpg" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/tips/24.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
                     </div>
                 </div>
                 <div class="project-item border rounded h-100 p-2" data-dot="08">
                     <div class="position-relative">
-                        <img class="img-fluid rounded" src="img/tips/23.jpg" alt="">
-                        <a href="img/tips/23.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/tips/23.jpg" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/tips/23.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
                     </div>
                 </div>
                 <div class="project-item border rounded h-100 p-2" data-dot="09">
                     <div class="position-relative">
-                        <img class="img-fluid rounded" src="img/tips/22.jpg" alt="">
-                        <a href="img/tips/22.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/tips/22.jpg" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/tips/22.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
                     </div>
                 </div>
                 <div class="project-item border rounded h-100 p-2" data-dot="10">
                     <div class="position-relative">
-                        <img class="img-fluid rounded" src="img/tips/21.jpg" alt="">
-                        <a href="img/tips/21.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
+                        <img class="img-fluid rounded" src="https://www.marverrefacciones.mx/img/tips/21.jpg" alt="">
+                        <a href="https://www.marverrefacciones.mx/img/tips/21.jpg" data-lightbox="project"><i class="fa fa-eye fa-2x"></i></a>
                     </div>
                 </div>
             </div>
@@ -1002,7 +1002,7 @@
         <div class="container py-5 ps-5 pe-5">
             <div class="row">
                 <div class="col-lg-3 col-md-6 mb-2">
-                    <img src="img/logo_pie.png" alt="">
+                    <img src="https://www.marverrefacciones.mx/img/logo_pie.png" alt="">
                 </div>
                 <div class="col-lg-3 col-md-6 mb-2">
                     <h5 class="text-light mb-2">Dirección</h5>
