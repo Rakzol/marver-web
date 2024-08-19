@@ -652,7 +652,7 @@
                         switch (error.code) {
                             case error.PERMISSION_DENIED:
                                 let el_modal_denegado = document.querySelector('.modal');
-                                el_modal_denegado.querySelector('.modal-body').innerHTML = 'Conceda los permisos de ubicació para relizar el pedido.';
+                                el_modal_denegado.querySelector('.modal-body').innerHTML = 'Conceda los permisos de ubicació para iniciar sesión.';
                                 let miModal_denegado = new bootstrap.Modal(el_modal_denegado, {
                                     keyboard: false
                                 });
