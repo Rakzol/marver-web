@@ -75,6 +75,10 @@
                                 {
                                     "type": "text",
                                     "text": "' . $_POST['camion'] . '"
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "' . $_POST['llegada'] . '"
                                 }]
                             }]
                     } 
