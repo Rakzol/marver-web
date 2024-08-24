@@ -637,7 +637,7 @@
                             })
                             .then(respuesta_json => {
                                 if( !respuesta_json.posicion ){
-                                    location.reload(true);
+                                    //location.reload(true);
                                     console.log('aaaa');
                                 }
 
