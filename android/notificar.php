@@ -46,12 +46,12 @@
         $preparada->execute();
         $cliente = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-        $preparada = $conexion->prepare("SELECT Clave, Nombre, Celular FROM Clientes WHERE Clave = :vendedor");
+        $preparada = $conexion->prepare("SELECT Clave, Nombre, Celular FROM Vendedores WHERE Clave = :vendedor");
         $preparada->bindValue(':vendedor', $pedido[0]['Vendedor']);
         $preparada->execute();
         $vendedor = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-        $preparada = $conexion->prepare("SELECT Clave, Nombre, Celular FROM Clientes WHERE Clave = :repartidor");
+        $preparada = $conexion->prepare("SELECT Clave, Nombre, Celular FROM Vendedores WHERE Clave = :repartidor");
         $preparada->bindValue(':repartidor', $pedido[0]['Responsable']);
         $preparada->execute();
         $repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
