@@ -72,6 +72,19 @@
     }
 
     function notificar($celular, $cliente, $vendedor, $repartidor){
+        if( is_null($celular) ){
+            $resultado["status"] = 4;
+            $resultado["mensaje"] = "Error al notificar, no tiene numero celular";
+            echo json_encode($resultado);
+            exit();
+        }
+        if( $celular == '' ){
+            $resultado["status"] = 4;
+            $resultado["mensaje"] = "Error al notificar, no tiene numero celular";
+            echo json_encode($resultado);
+            exit();
+        }
+
         $Bearer = "EAAVE5rJaMKwBO980nYpnZCI4PiJVcssTkhplxFLNvvyUVdFvwqd5m5JMPbLZCA6XxWpNANrd9QoRNPsk6WhQZBhfvcFsps5a1Bp7PHWSkhycZCwb31GH2BkupUPySiyi0ZA1gE9mdL0SZBPWEJonpZAVkoZCjPg2XZCgU6dLZAzgP1UcGKaiUelN8s9jCDoZBi0FtKq";
         //URL A DONDE SE MANDARA EL MENSAJE
         $url = 'https://graph.facebook.com/v20.0/426242453898687/messages';
