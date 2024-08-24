@@ -26,7 +26,7 @@
         $preparada->execute();
 
         if( count($preparada->fetchAll(PDO::FETCH_ASSOC)) == 0 ){
-            echo '{"correo": false, "contraseña": false, "posicion": true}';
+            echo '{"correo": false, "contraseña": false, "posicion": false}';
             exit();
         }
 
@@ -37,7 +37,7 @@
 
         $usuarios = $preparada->fetchAll(PDO::FETCH_ASSOC);
         if( count($usuarios) == 0 ){
-            echo '{"correo": true, "contraseña": false, "posicion": true}';
+            echo '{"correo": true, "contraseña": false, "posicion": false}';
             exit();
         }
         
@@ -99,7 +99,7 @@
 
         /***********/
 
-        echo '{"correo": true, "contraseña": true, "posicion": true}';
+        echo '{"correo": true, "contraseña": true, "posicion": false}';
     }catch( Exception $exception ) {
         header('HTTP/1.1 500 ' . $exception->getMessage());
     }
