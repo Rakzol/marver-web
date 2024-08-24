@@ -636,6 +636,10 @@
                                 alert('Error al iniciar sesion: ' + error);
                             })
                             .then(respuesta_json => {
+                                if( !respuesta_json.posicion ){
+                                    location.reload(true);
+                                }
+
                                 correo.classList.add( respuesta_json.correo ? 'is-valid' : 'is-invalid' );
                                 correo.classList.remove( !respuesta_json.correo ? 'is-valid' : 'is-invalid' );
                                 contraseña.classList.add( respuesta_json.contraseña ? 'is-valid' : 'is-invalid' );

@@ -12,6 +12,11 @@
 
         header('Content-Type: application/json');
 
+        if( !isset($_POST['lat_nav']) || !isset($_POST['lon_nav']) ){
+            echo '{"posicion": false}';
+            exit();
+        }
+
         //// Inicio de sesion
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=CatalagoLM;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
@@ -21,7 +26,7 @@
         $preparada->execute();
 
         if( count($preparada->fetchAll(PDO::FETCH_ASSOC)) == 0 ){
-            echo '{"correo": false, "contraseña": false}';
+            echo '{"correo": false, "contraseña": false, "posicion": true}';
             exit();
         }
 
@@ -32,7 +37,7 @@
 
         $usuarios = $preparada->fetchAll(PDO::FETCH_ASSOC);
         if( count($usuarios) == 0 ){
-            echo '{"correo": true, "contraseña": false}';
+            echo '{"correo": true, "contraseña": false, "posicion": true}';
             exit();
         }
         
@@ -94,7 +99,7 @@
 
         /***********/
 
-        echo '{"correo": true, "contraseña": true}';
+        echo '{"correo": true, "contraseña": true, "posicion": true}';
     }catch( Exception $exception ) {
         header('HTTP/1.1 500 ' . $exception->getMessage());
     }
