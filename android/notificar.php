@@ -108,7 +108,7 @@
                                 },
                                 {
                                     "type": "text",
-                                    "text": "' . $_POST['comprobante'] . '"
+                                    "text": "' . ( $_POST['comprobante'] == 1 ? 'Factura' : ( $_POST['comprobante'] == 2 ? 'Recibo' : ( $_POST['comprobante'] == 5 ? 'Preventa' : '' ) ) ) . '"
                                 },
                                 {
                                     "type": "text",
