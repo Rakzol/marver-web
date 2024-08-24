@@ -21,7 +21,7 @@
             exit();
         }
 
-        $preparada = $conexion->prepare("SELECT EnvioPedidoCliente.Responsable, EnvioPedidoCliente.Pedido, PedidosCliente.Cliente FROM EnvioPedidoCliente INNER JOIN PedidosCliente ON PedidosCliente.Folio = EnvioPedidoCliente.Pedido WHERE PedidosCliente.FolioComprobante = :folio AND PedidosCliente.Tipocomprobante = :comprobante;");
+        $preparada = $conexion->prepare("SELECT EnvioPedidoCliente.Responsable, EnvioPedidoCliente.Pedido, PedidosCliente.Cliente, PedidosCliente.Vendedor FROM EnvioPedidoCliente INNER JOIN PedidosCliente ON PedidosCliente.Folio = EnvioPedidoCliente.Pedido WHERE PedidosCliente.FolioComprobante = :folio AND PedidosCliente.Tipocomprobante = :comprobante;");
         $preparada->bindValue(':folio', $_POST['folio']);
         $preparada->bindValue(':comprobante', $_POST['comprobante']);
         $preparada->execute();
@@ -46,6 +46,32 @@
         $preparada->execute();
         $cliente = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
+        $preparada = $conexion->prepare("SELECT Clave, Nombre, Celular FROM Clientes WHERE Clave = :vendedor");
+        $preparada->bindValue(':vendedor', $pedido[0]['Vendedor']);
+        $preparada->execute();
+        $vendedor = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
+
+        $preparada = $conexion->prepare("SELECT Clave, Nombre, Celular FROM Clientes WHERE Clave = :repartidor");
+        $preparada->bindValue(':repartidor', $pedido[0]['Responsable']);
+        $preparada->execute();
+        $repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
+
+        notificar($cliente['Celular'], $cliente, $vendedor, $repartidor);
+        notificar($vendedor['Celular'], $cliente, $vendedor, $repartidor);
+        notificar($repartidor['Celular'], $cliente, $vendedor, $repartidor);
+        notificar('6681134724', $cliente, $vendedor, $repartidor);
+
+        $resultado["status"] = 0;
+        $resultado["mensaje"] = "Cliente notificado";
+        echo json_encode($resultado);
+    }
+    catch(Exception $ex){
+        $resultado["status"] = 6;
+        $resultado["mensaje"] = "Error al notificar al cliente";
+        echo json_encode($resultado);
+    }
+
+    function notificar($celular, $cliente, $vendedor, $repartidor){
         $Bearer = "EAAVE5rJaMKwBO980nYpnZCI4PiJVcssTkhplxFLNvvyUVdFvwqd5m5JMPbLZCA6XxWpNANrd9QoRNPsk6WhQZBhfvcFsps5a1Bp7PHWSkhycZCwb31GH2BkupUPySiyi0ZA1gE9mdL0SZBPWEJonpZAVkoZCjPg2XZCgU6dLZAzgP1UcGKaiUelN8s9jCDoZBi0FtKq";
         //URL A DONDE SE MANDARA EL MENSAJE
         $url = 'https://graph.facebook.com/v20.0/426242453898687/messages';
@@ -54,11 +80,11 @@
         $mensaje =
                 '{
                 "messaging_product": "whatsapp", 
-                "to": "52'. $cliente['Celular'] .'", 
+                "to": "52'. $celular .'", 
                 "type": "template", 
                 "template": 
                 {
-                    "name": "envio_por_camion",
+                    "name": "envio_camion_administrador",
                     "language":{ "code": "es_MX" } ,
                     "components": [
                             {
@@ -70,7 +96,7 @@
                                 },
                                 {
                                     "type": "text",
-                                    "text": "' . $_POST['folio'] . '"
+                                    "text": "' . $_POST['llegada'] . '"
                                 },
                                 {
                                     "type": "text",
@@ -78,7 +104,27 @@
                                 },
                                 {
                                     "type": "text",
-                                    "text": "' . $_POST['llegada'] . '"
+                                    "text": "' . $_POST['folio'] . '"
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "' . $_POST['comprobante'] . '"
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "' . $vendedor['Clave'] . '"
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "' . $vendedor['Nombre'] . '"
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "' . $repartidor['Clave'] . '"
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "' . $repartidor['Nombre'] . '"
                                 }]
                             }]
                     } 
@@ -99,26 +145,19 @@
 
         if( $response == false ){
             $resultado["status"] = 4;
-            $resultado["mensaje"] = "Error al notificar al cliente";
+            $resultado["mensaje"] = "Error al notificar";
             echo json_encode($resultado);
+            exit();
         }
 
         $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         if( $status_code != 200 ){
             $resultado["status"] = 5;
-            $resultado["mensaje"] = "Error al notificar al cliente";
+            $resultado["mensaje"] = "Error al notificar";
             echo json_encode($resultado);
+            exit();
         }
 
         curl_close($curl);
-
-        $resultado["status"] = 0;
-        $resultado["mensaje"] = "Cliente notificado";
-        echo json_encode($resultado);
-    }
-    catch(Exception $ex){
-        $resultado["status"] = 6;
-        $resultado["mensaje"] = "Error al notificar al cliente";
-        echo json_encode($resultado);
     }
 ?>
