@@ -12,9 +12,6 @@
 
         header('Content-Type: application/json');
 
-        echo '{"posicion": false}';
-        exit();
-
         if( !isset($_POST['lat_nav']) || !isset($_POST['lon_nav']) ){
             echo '{"posicion": false}';
             exit();
@@ -29,7 +26,7 @@
         $preparada->execute();
 
         if( count($preparada->fetchAll(PDO::FETCH_ASSOC)) == 0 ){
-            echo '{"correo": false, "contraseña": false, "posicion": false}';
+            echo '{"correo": false, "contraseña": false, "posicion": true}';
             exit();
         }
 
@@ -40,7 +37,7 @@
 
         $usuarios = $preparada->fetchAll(PDO::FETCH_ASSOC);
         if( count($usuarios) == 0 ){
-            echo '{"correo": true, "contraseña": false, "posicion": false}';
+            echo '{"correo": true, "contraseña": false, "posicion": true}';
             exit();
         }
         
@@ -102,7 +99,7 @@
 
         /***********/
 
-        echo '{"correo": true, "contraseña": true, "posicion": false}';
+        echo '{"correo": true, "contraseña": true, "posicion": true}';
     }catch( Exception $exception ) {
         header('HTTP/1.1 500 ' . $exception->getMessage());
     }
