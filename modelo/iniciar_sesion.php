@@ -12,6 +12,9 @@
 
         header('Content-Type: application/json');
 
+        echo '{"posicion": false}';
+        exit();
+
         if( !isset($_POST['lat_nav']) || !isset($_POST['lon_nav']) ){
             echo '{"posicion": false}';
             exit();
