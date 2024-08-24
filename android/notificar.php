@@ -67,7 +67,7 @@
     }
     catch(Exception $ex){
         $resultado["status"] = 6;
-        $resultado["mensaje"] = "Error al notificar al cliente";
+        $resultado["mensaje"] = "Error al notificar al cliente" . $e->getMessage();
         echo json_encode($resultado);
     }
 
