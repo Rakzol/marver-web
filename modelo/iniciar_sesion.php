@@ -55,7 +55,7 @@
             $ip = '0.0.0.0';
         }
 
-        /*try{
+        try{
             $url = "https://ipinfo.io/{$ip}?token=a39ff8f192d166";
 
             $curl = curl_init();
@@ -84,9 +84,7 @@
         }catch(Exception $ex){
             $lat_api = null;
             $lon_api = null;
-        }*/
-        $lat_api = null;
-        $lon_api = null;
+        }
 
         $preparada = $conexion->prepare('INSERT INTO ubicaciones_usuarios VALUES (:usuario, :ip, :lat_nav, :lon_nav, :lat_api, :lon_api, :precision, GETDATE(), :pedido)');
         $preparada->bindValue(':usuario', $_SESSION['usuario'] );
