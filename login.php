@@ -625,7 +625,7 @@
                         datos.append('lon_nav', position.coords.longitude);
                         datos.append('precision', position.coords.accuracy);
 
-                        fetch('modelo/iniciar_sesion.php', {
+                        fetch('modelo/iniciar_sesion', {
                             method: 'POST',
                             body: datos
                         })
@@ -637,7 +637,7 @@
                             })
                             .then(respuesta_json => {
                                 if( !respuesta_json.posicion ){
-                                    //location.reload(true);
+                                    location.reload(true);
                                 }
 
                                 correo.classList.add( respuesta_json.correo ? 'is-valid' : 'is-invalid' );
@@ -646,7 +646,7 @@
                                 contraseña.classList.remove( !respuesta_json.contraseña ? 'is-valid' : 'is-invalid' );
 
                                 if(respuesta_json.correo && respuesta_json.contraseña){
-                                    //document.location.href = 'https://www.marverrefacciones.mx/catalogo.php';
+                                    document.location.href = 'https://www.marverrefacciones.mx/catalogo.php';
                                 }
                             });
 
