@@ -625,7 +625,7 @@
                         datos.append('lon_nav', position.coords.longitude);
                         datos.append('precision', position.coords.accuracy);
 
-                        fetch('modelo/iniciar_sesion', {
+                        fetch('modelo/iniciar_sesion.php', {
                             method: 'POST',
                             body: datos
                         })
