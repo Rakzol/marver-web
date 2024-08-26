@@ -55,7 +55,7 @@
             $ip = '0.0.0.0';
         }
 
-        echo $ip;
+        echo filter_var($ip, FILTER_VALIDATE_IP);
         try{
             $url = "https://ipinfo.io/{$ip}?token=a39ff8f192d166";
 
