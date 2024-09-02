@@ -55,7 +55,7 @@ try {
         $ip = '0.0.0.0';
     }
 
-    /*try{
+    try{
             $url = "https://ipinfo.io/{$ip}?token=a39ff8f192d166";
 
             $curl = curl_init();
@@ -85,15 +85,14 @@ try {
             $lat_api = null;
             $lon_api = null;
         }
-    */
 
     $preparada = $conexion->prepare('INSERT INTO ubicaciones_usuarios VALUES (:usuario, :ip, :lat_nav, :lon_nav, :lat_api, :lon_api, :precision, GETDATE(), :pedido)');
     $preparada->bindValue(':usuario', $_SESSION['usuario']);
     $preparada->bindValue(':ip', $ip);
     $preparada->bindValue(':lat_nav', $_POST['lat_nav']);
     $preparada->bindValue(':lon_nav', $_POST['lon_nav']);
-    $preparada->bindValue(':lat_api', null);
-    $preparada->bindValue(':lon_api', null);
+    $preparada->bindValue(':lat_api', $lat_api);
+    $preparada->bindValue(':lon_api', $lon_api);
     $preparada->bindValue(':precision', $_POST['precision']);
     $preparada->bindValue(':pedido', null);
     $preparada->execute();
