@@ -757,7 +757,7 @@
 
             actualizar_totales();
 
-            fetch('modelo/eliminar_refaccion', {
+            fetch('modelo/eliminar_refaccion.php', {
                 method: 'POST',
                 body: datos
             })
@@ -802,7 +802,7 @@
             datos.append('codigo', input.parentNode.parentNode.parentNode.parentNode.querySelector('.codigo').innerText);
             datos.append('cantidad', input.valueAsNumber);
 
-            fetch('modelo/colocar_cantidad', {
+            fetch('modelo/colocar_cantidad.php', {
                 method: 'POST',
                 body: datos
             })
@@ -846,7 +846,7 @@
             let datos = new FormData();
             datos.append('estado', document.querySelector('#estado').value);
 
-            fetch('modelo/consultar_carrito', {
+            fetch('modelo/consultar_carrito.php', {
                 method: 'POST',
                 body: datos
             })
@@ -991,7 +991,7 @@
                         let datos_codigo_refaccion = new FormData();
                         datos_codigo_refaccion.append('codigo', producto['Codigo']);
 
-                        fetch('modelo/codigo_refaccion', {
+                        fetch('modelo/codigo_refaccion.php', {
                             method: 'POST',
                             body: datos_codigo_refaccion
                         })
@@ -1068,7 +1068,7 @@
                         datos.append('lon_nav', position.coords.longitude);
                         datos.append('precision', position.coords.accuracy);
 
-                        fetch('modelo/finalizar_pedido', {
+                        fetch('modelo/finalizar_pedido.php', {
                             method: 'POST',
                             body: datos
                         })
@@ -1199,7 +1199,7 @@ function actualizar_posicion(){
     datos.append('latitud', marcador.position.lat);
     datos.append('longitud', marcador.position.lng);
 
-    fetch('modelo/actualizar_posicion', {
+    fetch('modelo/actualizar_posicion.php', {
         method: 'POST',
         body: datos
     })
@@ -1270,7 +1270,7 @@ function actualizar_posicion(){
             actualizar_posicion();
         });
 
-        fetch('modelo/obtener_posicion_pedido', {
+        fetch('modelo/obtener_posicion_pedido.php', {
             method: 'GET'
         })
         .then((respuesta) => {

@@ -707,7 +707,7 @@
             ultima = document.getElementById('ultima');
             pagina = document.getElementById('pagina');
 
-            fetch('modelo/consultar_marcas')
+            fetch('modelo/consultar_marcas.php')
                 .then((respuesta) => {
                     return respuesta.json();
                 })
@@ -733,7 +733,7 @@
                 let datos = new FormData();
                 datos.append('marca', marcas.value);
 
-                fetch('modelo/consultar_años', {
+                fetch('modelo/consultar_años.php', {
                     method: 'POST',
                     body: datos
                 })
@@ -767,7 +767,7 @@
                 datos.append('marca', marcas.value);
                 datos.append('año', años.value);
 
-                fetch('modelo/consultar_modelos', {
+                fetch('modelo/consultar_modelos.php', {
                     method: 'POST',
                     body: datos
                 })
@@ -803,7 +803,7 @@
                 datos.append('año', años.value);
                 datos.append('modelo', modelos.value);
 
-                fetch('modelo/consultar_motores', {
+                fetch('modelo/consultar_motores.php', {
                     method: 'POST',
                     body: datos
                 })
@@ -854,7 +854,7 @@
             datos.append('modelo', modelos.value);
             datos.append('motor', motores.value);
 
-            fetch('modelo/consultar_sistemas', {
+            fetch('modelo/consultar_sistemas.php', {
                 method: 'POST',
                 body: datos
             })
@@ -884,7 +884,7 @@
             datos.append('motor', motores.value);
             datos.append('sistema', sistemas.value);
 
-            fetch('modelo/consultar_subsistemas', {
+            fetch('modelo/consultar_subsistemas.php', {
                 method: 'POST',
                 body: datos
             })
@@ -915,7 +915,7 @@
             datos.append('sistema', sistemas.value);
             datos.append('subsistema', subsistemas.value);
 
-            fetch('modelo/consultar_productos', {
+            fetch('modelo/consultar_productos.php', {
                 method: 'POST',
                 body: datos
             })
@@ -950,7 +950,7 @@
             datos.append('subsistema', subsistemas.value);
             datos.append('producto', productos.value);
 
-            fetch('modelo/consultar_refacciones', {
+            fetch('modelo/consultar_refacciones.php', {
                 method: 'POST',
                 body: datos
             })
@@ -971,7 +971,7 @@
             let datos = new FormData();
             datos.append('palabras', typeof palabras.value === "undefined" ? '' : palabras.value );
 
-            fetch('modelo/consultar_refacciones_palabras', {
+            fetch('modelo/consultar_refacciones_palabras.php', {
                 method: 'POST',
                 body: datos
             })
@@ -1041,7 +1041,7 @@
             let datos = new FormData();
             datos.append('codigo', codigo);
 
-            fetch('modelo/agregar_refaccion', {
+            fetch('modelo/agregar_refaccion.php', {
                 method: 'POST',
                 body: datos
             })
@@ -1093,7 +1093,7 @@
                 let datos_precio = new FormData();
                 datos_precio.append('codigo', refaccion['Codigo']);
 
-                fetch('modelo/precio',{
+                fetch('modelo/precio.php',{
                         method: 'POST',
                         body: datos_precio
                 }).then( (respuesta)=>{
@@ -1195,7 +1195,7 @@
                         datos_extra.append('codigo', refaccion['Codigo']);
                         datos_extra.append('clave', refaccion['clave']);
 
-                        fetch('modelo/sustitutos_aplicaciones', {
+                        fetch('modelo/sustitutos_aplicaciones.php', {
                             method: 'POST',
                             body: datos_extra
                         })
@@ -1223,7 +1223,7 @@
                                 let datos_precio_sustituto = new FormData();
                                 datos_precio_sustituto.append('codigo', sustituto['Codigosustituto']);
 
-                                fetch('modelo/precio',{
+                                fetch('modelo/precio.php',{
                                         method: 'POST',
                                         body: datos_precio_sustituto
                                 }).then( (respuesta)=>{
