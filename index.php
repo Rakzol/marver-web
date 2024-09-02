@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Marverr Refacciones - Inicio</title>
+    <title>Marver Refacciones - Inicio</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Refacciones, autos, partes, piezas, vehiculos, automoviles" name="keywords">
     <meta name="description"
