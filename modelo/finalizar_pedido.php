@@ -97,7 +97,7 @@
 
         foreach( $refacciones_producto as $refaccion_producto ){
             $pedido_cliente_detalle['codigo'] = $refaccion_producto['producto']['Codigo'];
-            $pedido_cliente_detalle['localizacion'] = $refaccion_producto['producto']['localizacion'];
+            $pedido_cliente_detalle['localizacion'] = $refaccion_producto['producto']['Localizacion'];
             $pedido_cliente_detalle['descripcion'] = $refaccion_producto['producto']['Producto'];
             $pedido_cliente_detalle['fabricante'] = $refaccion_producto['producto']['Fabricante'];
             $pedido_cliente_detalle['cantidad'] = $refaccion_producto['refaccion']['cantidad'];
@@ -488,7 +488,7 @@
         $esc_pos .= 'Tipo de compra: ';
         $esc_pos .= $bold_off;
         $esc_pos .= $_POST['tipo_de_compra'] . ' ' . $tipos_de_compra[$_POST['tipo_de_compra']];
-        
+
         $esc_pos .= $line_feed;
 
         $esc_pos .= $esc . 'a' . chr(1); // Alineación centrada
