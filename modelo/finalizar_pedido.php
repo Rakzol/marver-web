@@ -526,6 +526,7 @@
         $socket_eticketera = fsockopen($ip_eticketera, $puerto_eticketera, $errno, $errstr, 3);
         if($socket_eticketera){
             fwrite($socket_eticketera, $esc_pos);
+            fwrite($socket_eticketera, $esc_pos);
             fclose($socket_eticketera);
             $retorno['ticker'] = true;
         }else{
