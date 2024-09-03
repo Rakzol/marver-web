@@ -2,6 +2,8 @@
     try{
         require_once('inicializar_datos.php');
 
+        date_default_timezone_set('America/Mazatlan');
+
         $preparada = $datos['conexion_catalogo_sucursal']->prepare("SELECT producto, cantidad FROM carrito WHERE usuario = :usuario");
         $preparada->bindValue(':usuario', $datos['usuario']['id']);
         $preparada->execute();
