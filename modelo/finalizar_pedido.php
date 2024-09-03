@@ -524,7 +524,9 @@
             $socket_eticketera = fsockopen($ip_eticketera, $puerto_eticketera);
             fwrite($socket_eticketera, $esc_pos);
             fclose($socket_eticketera);
+            $retorno['ticker'] = true;
         }catch(Exception $ex){
+            $retorno['ticker'] = false;
         }
 
         /* Imprimir FIN */
