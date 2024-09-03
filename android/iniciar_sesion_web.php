@@ -31,7 +31,15 @@
             exit();
         }
 
-        $preparada = $conexion->prepare("SELECT Perfil FROM PerfilesDetalle WHERE Perfil = :perfil AND Modulo = 'Mapa' AND Opcion = 'Consultar Repartidores' AND Ver = 1 ");
+        if($registros[0]['Perfil'] != 'ADMINISTRADOR' && $registros[0]['Perfil'] != 'AUDITOR'){
+            $resultado['usuario'] = false;
+            $resultado['contraseña'] = false;
+            $resultado['perfil'] = false;
+            echo json_encode($resultado);
+            exit();
+        }
+        
+        /*$preparada = $conexion->prepare("SELECT Perfil FROM PerfilesDetalle WHERE Perfil = :perfil AND Modulo = 'Mapa' AND Opcion = 'Consultar Repartidores' AND Ver = 1 ");
         $preparada->bindValue(':perfil', $registros[0]['Perfil']);
         $preparada->execute();
 
@@ -41,7 +49,7 @@
             $resultado['perfil'] = false;
             echo json_encode($resultado);
             exit();
-        }
+        }*/
 
         $_SESSION['usuario_mapa'] = $_POST['usuario'];
         $_SESSION['contraseña_mapa'] = $_POST['contraseña'];
