@@ -510,8 +510,10 @@
         $esc_pos .= $line_feed;
 
         $esc_pos .= $esc . 'a' . chr(1); // Alineación centrada
-        // Imprimir código de barras UPC-A
-        $esc_pos .= $gs . 'k' . chr(79) . chr(strlen( ($ultimo_folio + 1) )) .  ($ultimo_folio + 1);
+        // Imprimir código de barras 128
+        //$esc_pos .= $gs . 'k' . chr(79) . chr(strlen( ($ultimo_folio + 1) )) .  ($ultimo_folio + 1);
+        // Imprimir código de barras 93
+        $esc_pos .= $gs . 'k' . chr(72) . chr(strlen( ($ultimo_folio + 1) )) .  ($ultimo_folio + 1);
         // Salto de línea para separación
         $esc_pos .= $line_feed;
         $esc_pos .= $line_feed;
