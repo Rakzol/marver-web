@@ -97,6 +97,9 @@
 
         foreach( $refacciones_producto as $refaccion_producto ){
             $pedido_cliente_detalle['codigo'] = $refaccion_producto['producto']['Codigo'];
+            $pedido_cliente_detalle['localizacion'] = $refaccion_producto['producto']['localizacion'];
+            $pedido_cliente_detalle['descripcion'] = $refaccion_producto['producto']['Producto'];
+            $pedido_cliente_detalle['fabricante'] = $refaccion_producto['producto']['Fabricante'];
             $pedido_cliente_detalle['cantidad'] = $refaccion_producto['refaccion']['cantidad'];
             $pedido_cliente_detalle['costo'] = $refaccion_producto['producto']['Costo'];
             $pedido_cliente_detalle['precio'] =  number_format( $pedido_cliente_detalle['costo'] * ( 1 + number_format(( ( $datos['cliente']['Utilidad'] > 0 ? $datos['cliente']['Utilidad'] : $refaccion_producto['producto']['Utilidades'] ) * 0.01), 2, '.', '') ), 2, '.', '');
@@ -327,6 +330,193 @@
 
         $retorno['codigo'] = 0;
         $retorno['folio'] = $ultimo_folio + 1;
+
+        /* Imprimir INICIO */
+
+        // Configuración de la impresora
+        $ip_eticketera = '10.10.10.104';
+        $puerto_eticketera = 9100; // Puerto típico para impresoras de red
+
+        // Comandos ESC/POS
+        $esc = chr(27); // Código de escape ESC
+        $gs = chr(29);  // Código GS
+        $line_feed = chr(10); // Salto de línea
+        $cut_paper = $esc . 'm';
+        $bold_on = $esc . 'E' . chr(1);  // Activar negritas
+        $bold_off = $esc . 'E' . chr(0); // Desactivar negritas
+
+        // Construir el contenido en formato ESC/POS
+        $esc_pos = $esc . '@'; // Inicializa la impresora
+        $esc_pos .= $esc . 'a' . chr(1); // Alineación centrada
+        $esc_pos .= $bold_on;
+        $esc_pos .= 'Marver Refacciones';
+        $esc_pos .= $line_feed;
+        $esc_pos .= 'VECM880923NI1';
+        $esc_pos .= $line_feed;
+        $esc_pos .= 'MARIO ALBERTO VERDUZCO COTA';
+        $esc_pos .= $line_feed;
+        $esc_pos .= $esc . 'a' . chr(0); // Alineación izquierda
+        $esc_pos .= 'Fecha: ';
+        $esc_pos .= $bold_off;
+        $esc_pos .= date('Y-m-d');
+        $esc_pos .= $line_feed;
+        $esc_pos .= $bold_on;
+        $esc_pos .= 'Hora: ';
+        $esc_pos .= $bold_off;
+        $esc_pos .= date('h:i:s a');
+        $esc_pos .= $line_feed;
+        $esc_pos .= $bold_on;
+        $esc_pos .= 'Pedido: ';
+        $esc_pos .= $bold_off;
+        $esc_pos .= $ultimo_folio + 1;
+        $esc_pos .= $line_feed;
+        $esc_pos .= $bold_on;
+        $esc_pos .= 'Cliente: ';
+        $esc_pos .= $bold_off;
+        $esc_pos .= $datos['cliente']['Clave'] . ' ' .$datos['cliente']['Razon_Social'];
+        $esc_pos .= $line_feed;
+        $esc_pos .= $bold_on;
+        $esc_pos .= 'Domicilio: ';
+        $esc_pos .= $bold_off;
+        $esc_pos .= $datos['cliente']['Domicilio'] . ', ' .$datos['cliente']['Colonia'] . ', ' . $datos['cliente']['Num_Exterior'] . ', ' .$datos['cliente']['Num_interior'] . ', ' . $datos['cliente']['Codigo_Postal'] . ', ' .$datos['cliente']['Ciudad'] . ', ' .$datos['cliente']['Estado'] . ', ' .$datos['cliente']['Municipio'] . ', ' .$datos['cliente']['Pais'];
+        $esc_pos .= $line_feed;
+        for($c = 0; $c < 42; $c++){
+            $esc_pos .= chr(205);
+        }
+        $esc_pos .= $line_feed;
+
+        foreach ($pedido_cliente['detalles'] as $detalle) {
+            $esc_pos .= $bold_on;
+            $esc_pos .= 'Codigo: ';
+            $esc_pos .= $bold_off;
+            $esc_pos .= $detalle['codigo'];
+            $esc_pos .= $line_feed;
+            $esc_pos .= $bold_on;
+            $esc_pos .= 'Localizacion: ';
+            $esc_pos .= $bold_off;
+            $esc_pos .= $detalle['localizacion'];
+            $esc_pos .= $line_feed;
+            $esc_pos .= $bold_on;
+            $esc_pos .= 'Cantidad: ';
+            $esc_pos .= $bold_off;
+            $esc_pos .= $detalle['cantidad'];
+            $esc_pos .= $line_feed;
+            $esc_pos .= $bold_on;
+            $esc_pos .= 'Importe: ';
+            $esc_pos .= $bold_off;
+            $esc_pos .= $detalle['importe'];
+            $esc_pos .= $line_feed;
+            $esc_pos .= $bold_on;
+            $esc_pos .= 'Fabricante: ';
+            $esc_pos .= $bold_off;
+            $esc_pos .= $detalle['fabricante'];
+            $esc_pos .= $line_feed;
+            $esc_pos .= $bold_on;
+            $esc_pos .= 'Descripcion: ';
+            $esc_pos .= $bold_off;
+            $esc_pos .= $detalle['descripcion'];
+            $esc_pos .= $line_feed;
+            for($c = 0; $c < 42; $c++){
+                $esc_pos .= chr(205);
+            }
+            $esc_pos .= $line_feed;
+        }
+
+        $esc_pos .= $line_feed;
+        $esc_pos .= $bold_on;
+        $esc_pos .= 'Codigos: ';
+        $esc_pos .= $bold_off;
+        $esc_pos .= $pedido_cliente['codigos_pedidos'];
+        $esc_pos .= $line_feed;
+
+        $esc_pos .= $line_feed;
+        $esc_pos .= $bold_on;
+        $esc_pos .= 'Unidades: ';
+        $esc_pos .= $bold_off;
+        $esc_pos .= $pedido_cliente['unidades_pedidas'];
+        $esc_pos .= $line_feed;
+
+        $esc_pos .= $line_feed;
+        $esc_pos .= $bold_on;
+        $esc_pos .= 'Subtotal: ';
+        $esc_pos .= $bold_off;
+        $esc_pos .= $pedido_cliente['subtotal'];
+        $esc_pos .= $line_feed;
+
+        $esc_pos .= $line_feed;
+        $esc_pos .= $bold_on;
+        $esc_pos .= 'Descuento: ';
+        $esc_pos .= $bold_off;
+        $esc_pos .= $pedido_cliente['descuento'];
+        $esc_pos .= $line_feed;
+
+        $esc_pos .= $line_feed;
+        $esc_pos .= $bold_on;
+        $esc_pos .= 'Iva: ';
+        $esc_pos .= $bold_off;
+        $esc_pos .= $pedido_cliente['iva'];
+        $esc_pos .= $line_feed;
+
+        $esc_pos .= $line_feed;
+        $esc_pos .= $bold_on;
+        $esc_pos .= 'Total: ';
+        $esc_pos .= $bold_off;
+        $esc_pos .= $pedido_cliente['total'];
+        $esc_pos .= $line_feed;
+
+        $esc_pos .= $line_feed;
+        $esc_pos .= $bold_on;
+        $esc_pos .= 'Descripcion: ';
+        $esc_pos .= $bold_off;
+        $esc_pos .= $detalle['descripcion'];
+        $esc_pos .= $line_feed;
+
+        $esc_pos .= $line_feed;
+        $esc_pos .= $bold_on;
+        $esc_pos .= 'Forma de pago: ';
+        $esc_pos .= $bold_off;
+        $esc_pos .= $_POST['forma_de_pago'] . ' ' . $formas_de_pago[$_POST['forma_de_pago']];
+        $esc_pos .= $line_feed;
+
+        $esc_pos .= $line_feed;
+        $esc_pos .= $bold_on;
+        $esc_pos .= 'Metodo entrega: ';
+        $esc_pos .= $bold_off;
+        $esc_pos .= $_POST['MEntrega'] . ' ' . $MEntregas[$_POST['MEntrega']];
+        $esc_pos .= $line_feed;
+
+        $esc_pos .= $line_feed;
+        $esc_pos .= $bold_on;
+        $esc_pos .= 'Comprobante: ';
+        $esc_pos .= $bold_off;
+        $esc_pos .= $_POST['tipo_de_comprobante'] . ' ' . $tipos_de_comprobante[$_POST['tipo_de_comprobante']];
+        $esc_pos .= $line_feed;
+
+        $esc_pos .= $line_feed;
+        $esc_pos .= $bold_on;
+        $esc_pos .= 'Tipo de compra: ';
+        $esc_pos .= $bold_off;
+        $esc_pos .= $_POST['tipo_de_compra'] . ' ' . $tipos_de_compra[$_POST['tipo_de_compra']];
+        $esc_pos .= $line_feed;
+
+        $esc_pos .= $esc . 'a' . chr(1); // Alineación centrada
+        // Imprimir código de barras UPC-A
+        $esc_pos .= $gs . 'k' . chr(79) . chr(strlen( ($ultimo_folio + 1) )) .  ($ultimo_folio + 1);
+        // Salto de línea para separación
+        $esc_pos .= $line_feed;
+        $esc_pos .= $line_feed;
+        $esc_pos .= $line_feed;
+        $esc_pos .= $line_feed;
+        $esc_pos .= $line_feed;
+        // Cortar el papel (esto puede variar según el modelo de impresora)
+        $esc_pos .= $cut_paper; // Corta el papel
+
+        $socket_eticketera = fsockopen($ip_eticketera, $puerto_eticketera);
+        fwrite($socket_eticketera, $esc_pos);
+        fclose($socket_eticketera);
+        
+        /* Imprimir FIN */
+
         echo json_encode($retorno, JSON_UNESCAPED_UNICODE);
     }catch( Exception $exception ) {
         header('HTTP/1.1 500 ' . $exception->getMessage());
