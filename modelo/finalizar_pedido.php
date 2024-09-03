@@ -2,7 +2,7 @@
     try{
         require_once('inicializar_datos.php');
 
-        date_default_timezone_set('America/Mazatlan');
+        date_default_timezone_set('America/Phoenix');
 
         $preparada = $datos['conexion_catalogo_sucursal']->prepare("SELECT producto, cantidad FROM carrito WHERE usuario = :usuario");
         $preparada->bindValue(':usuario', $datos['usuario']['id']);
@@ -356,8 +356,12 @@
         $esc_pos .= 'VECM880923NI1';
         $esc_pos .= $line_feed;
         $esc_pos .= 'MARIO ALBERTO VERDUZCO COTA';
-        $esc_pos .= $line_feed;
         $esc_pos .= $esc . 'a' . chr(0); // Alineación izquierda
+        $esc_pos .= $line_feed;
+        for($c = 0; $c < 42; $c++){
+            $esc_pos .= chr(205);
+        }
+        $esc_pos .= $line_feed;
         $esc_pos .= 'Fecha: ';
         $esc_pos .= $bold_off;
         $esc_pos .= date('Y-m-d');
@@ -498,6 +502,10 @@
         $esc_pos .= $bold_off;
         $esc_pos .= $_POST['observaciones'];
 
+        $esc_pos .= $line_feed;
+        for($c = 0; $c < 42; $c++){
+            $esc_pos .= chr(205);
+        }
         $esc_pos .= $line_feed;
 
         $esc_pos .= $esc . 'a' . chr(1); // Alineación centrada
