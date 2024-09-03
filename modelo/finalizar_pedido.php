@@ -521,7 +521,7 @@
         $esc_pos .= $cut_paper; // Corta el papel
 
         try{
-            $socket_eticketera = fsockopen($ip_eticketera, $puerto_eticketera);
+            $socket_eticketera = fsockopen($ip_eticketera, $puerto_eticketera, $errno, $errstr, 3);
             fwrite($socket_eticketera, $esc_pos);
             fclose($socket_eticketera);
             $retorno['ticker'] = true;
