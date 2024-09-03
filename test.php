@@ -55,10 +55,18 @@
     // Enviar el contenido a la impresora
     try{
         $socket_eticketera = fsockopen($ip_eticketera, $puerto_eticketera, $errno, $errstr, 3);
+        if(!$socket_eticketera){
+            echo 'nope';
+        }
         fwrite($socket_eticketera, $esc_pos);
         fclose($socket_eticketera);
         $retorno['ticker'] = true;
+        echo 'aaa';
     }catch(Exception $ex){
         $retorno['ticker'] = false;
+        echo 'bbbb';
     }
+
+    echo 'aaa';
+    echo $retorno['ticker'];
 ?>
