@@ -520,12 +520,9 @@
         // Cortar el papel (esto puede variar según el modelo de impresora)
         $esc_pos .= $cut_paper; // Corta el papel
 
-        try{
-            $socket_eticketera = fsockopen($ip_eticketera, $puerto_eticketera);
-            fwrite($socket_eticketera, $esc_pos);
-            fclose($socket_eticketera);
-        }catch(Exception $ex){
-        }
+        $socket_eticketera = fsockopen($ip_eticketera, $puerto_eticketera);
+        fwrite($socket_eticketera, $esc_pos);
+        fclose($socket_eticketera);
 
         /* Imprimir FIN */
 
