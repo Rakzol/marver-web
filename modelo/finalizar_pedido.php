@@ -421,82 +421,74 @@
             }
             $esc_pos .= $line_feed;
         }
-
-        $esc_pos .= $line_feed;
         $esc_pos .= $bold_on;
         $esc_pos .= 'Codigos: ';
         $esc_pos .= $bold_off;
         $esc_pos .= $pedido_cliente['codigos_pedidos'];
-        $esc_pos .= $line_feed;
 
         $esc_pos .= $line_feed;
+
         $esc_pos .= $bold_on;
         $esc_pos .= 'Unidades: ';
         $esc_pos .= $bold_off;
         $esc_pos .= $pedido_cliente['unidades_pedidas'];
-        $esc_pos .= $line_feed;
 
         $esc_pos .= $line_feed;
+        
         $esc_pos .= $bold_on;
         $esc_pos .= 'Subtotal: ';
         $esc_pos .= $bold_off;
         $esc_pos .= $pedido_cliente['subtotal'];
-        $esc_pos .= $line_feed;
 
         $esc_pos .= $line_feed;
+        
         $esc_pos .= $bold_on;
         $esc_pos .= 'Descuento: ';
         $esc_pos .= $bold_off;
         $esc_pos .= $pedido_cliente['descuento'];
-        $esc_pos .= $line_feed;
 
         $esc_pos .= $line_feed;
+        
         $esc_pos .= $bold_on;
         $esc_pos .= 'Iva: ';
         $esc_pos .= $bold_off;
         $esc_pos .= $pedido_cliente['iva'];
-        $esc_pos .= $line_feed;
 
         $esc_pos .= $line_feed;
+        
         $esc_pos .= $bold_on;
         $esc_pos .= 'Total: ';
         $esc_pos .= $bold_off;
         $esc_pos .= $pedido_cliente['total'];
-        $esc_pos .= $line_feed;
 
         $esc_pos .= $line_feed;
-        $esc_pos .= $bold_on;
-        $esc_pos .= 'Descripcion: ';
-        $esc_pos .= $bold_off;
-        $esc_pos .= $detalle['descripcion'];
-        $esc_pos .= $line_feed;
-
-        $esc_pos .= $line_feed;
+        
         $esc_pos .= $bold_on;
         $esc_pos .= 'Forma de pago: ';
         $esc_pos .= $bold_off;
         $esc_pos .= $_POST['forma_de_pago'] . ' ' . $formas_de_pago[$_POST['forma_de_pago']];
-        $esc_pos .= $line_feed;
 
         $esc_pos .= $line_feed;
+        
         $esc_pos .= $bold_on;
         $esc_pos .= 'Metodo entrega: ';
         $esc_pos .= $bold_off;
         $esc_pos .= $_POST['MEntrega'] . ' ' . $MEntregas[$_POST['MEntrega']];
-        $esc_pos .= $line_feed;
 
         $esc_pos .= $line_feed;
+        
         $esc_pos .= $bold_on;
         $esc_pos .= 'Comprobante: ';
         $esc_pos .= $bold_off;
         $esc_pos .= $_POST['tipo_de_comprobante'] . ' ' . $tipos_de_comprobante[$_POST['tipo_de_comprobante']];
-        $esc_pos .= $line_feed;
 
         $esc_pos .= $line_feed;
+        
         $esc_pos .= $bold_on;
         $esc_pos .= 'Tipo de compra: ';
         $esc_pos .= $bold_off;
         $esc_pos .= $_POST['tipo_de_compra'] . ' ' . $tipos_de_compra[$_POST['tipo_de_compra']];
+        
         $esc_pos .= $line_feed;
 
         $esc_pos .= $esc . 'a' . chr(1); // Alineación centrada
@@ -514,7 +506,7 @@
         $socket_eticketera = fsockopen($ip_eticketera, $puerto_eticketera);
         fwrite($socket_eticketera, $esc_pos);
         fclose($socket_eticketera);
-        
+
         /* Imprimir FIN */
 
         echo json_encode($retorno, JSON_UNESCAPED_UNICODE);
