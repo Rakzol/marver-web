@@ -480,7 +480,7 @@
         $esc_pos .= $bold_on;
         $esc_pos .= 'Metodo entrega: ';
         $esc_pos .= $bold_off;
-        $esc_pos .= $_POST['MEntrega'] . ' ' . $MEntregas[$_POST['MEntrega']];
+        $esc_pos .= $MEntregas[$_POST['MEntrega']];
 
         $esc_pos .= $line_feed;
         
