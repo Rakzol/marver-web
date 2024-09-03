@@ -493,6 +493,13 @@
 
         $esc_pos .= $line_feed;
 
+        $esc_pos .= $bold_on;
+        $esc_pos .= 'Observaciones: ';
+        $esc_pos .= $bold_off;
+        $esc_pos .= $_POST['observaciones'];
+
+        $esc_pos .= $line_feed;
+
         $esc_pos .= $esc . 'a' . chr(1); // Alineación centrada
         // Imprimir código de barras UPC-A
         $esc_pos .= $gs . 'k' . chr(79) . chr(strlen( ($ultimo_folio + 1) )) .  ($ultimo_folio + 1);
