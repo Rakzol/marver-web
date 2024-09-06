@@ -1,9 +1,9 @@
 <?php
-    require_once('modelo/guardar_estadisticas.php');
-    if(!isset($_SESSION['usuario'])){
-        header("Location: https://www.marverrefacciones.mx/login.php");
-        exit();
-    }
+require_once('modelo/guardar_estadisticas.php');
+if (!isset($_SESSION['usuario'])) {
+    header("Location: https://www.marverrefacciones.mx/login.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -350,7 +350,6 @@
             margin-right: 1rem;
             margin-bottom: 1rem;
         }
-
     </style>
 
     <style>
@@ -372,14 +371,14 @@
     </style>
 
     <style>
-        #mapa{
+        #mapa {
             margin: auto;
             max-width: 400px;
             aspect-ratio: 1 / 1;
             width: 100%;
         }
 
-        .alert{
+        .alert {
             border: 0px;
             padding: 0px;
             height: 0px;
@@ -393,7 +392,7 @@
 
 
     <!-- Spinner Start -->
-    <div id="spinner" manual='si' 
+    <div id="spinner" manual='si'
         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status">
         </div>
@@ -474,14 +473,14 @@
 
             <div class="navbar-nav ms-auto p-3 p-xxl-0">
                 <?php
-                    if(isset($_SESSION['usuario'])){
-                        echo '<a href="https://www.marverrefacciones.mx/estado_de_cuenta" class="nav-item nav-link"><i class="fa-solid fa-file"></i> ESTADO DE CUENTA</a>';
-                        echo '<a href="https://www.marverrefacciones.mx/pedidos.php" class="nav-item nav-link"><i class="fa-solid fa-truck"></i> PEDIDOS</a>';
-                        echo '<a href="https://www.marverrefacciones.mx/carrito.php" class="nav-item nav-link"><i class="fa-solid fa-cart-shopping"></i> CARRITO</a>';
-                        echo '<a href="https://www.marverrefacciones.mx/modelo/cerrar_sesion.php" class="nav-item nav-link"><i class="fa-solid fa-power-off"></i> CERRAR SESIÓN</a>';
-                    }else{
-                        echo '<a href="https://www.marverrefacciones.mx/login.php" class="nav-item nav-link"><i class="fa-solid fa-right-to-bracket"></i> INICIAR SESIÓN</a>';
-                    }
+                if (isset($_SESSION['usuario'])) {
+                    echo '<a href="https://www.marverrefacciones.mx/estado_de_cuenta" class="nav-item nav-link"><i class="fa-solid fa-file"></i> ESTADO DE CUENTA</a>';
+                    echo '<a href="https://www.marverrefacciones.mx/pedidos.php" class="nav-item nav-link"><i class="fa-solid fa-truck"></i> PEDIDOS</a>';
+                    echo '<a href="https://www.marverrefacciones.mx/carrito.php" class="nav-item nav-link"><i class="fa-solid fa-cart-shopping"></i> CARRITO</a>';
+                    echo '<a href="https://www.marverrefacciones.mx/modelo/cerrar_sesion.php" class="nav-item nav-link"><i class="fa-solid fa-power-off"></i> CERRAR SESIÓN</a>';
+                } else {
+                    echo '<a href="https://www.marverrefacciones.mx/login.php" class="nav-item nav-link"><i class="fa-solid fa-right-to-bracket"></i> INICIAR SESIÓN</a>';
+                }
                 ?>
             </div>
 
@@ -495,7 +494,7 @@
             <div class="bg-image hover-overlay hover-zoom ripple rounded text-center" data-mdb-ripple-color="light">
                 <img src="img/fabricantes/LTH/12N14-3A" class="w-100 d-none" alt="LTH Acumualdor" style="max-width: 300px;" />
                 <div style="margin: 23px;" class="spinner-border text-primary spinner_refaccion" role="status"><span class="sr-only">Loading...</span></div>
-                <a >
+                <a>
                     <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
                 </a>
             </div>
@@ -588,28 +587,22 @@
                         </div>
                         <div class="card-body">
 
-                        <div class="card-header py-3">
+                            <!-- <div class="card-header py-3">
                                 <h5 class="mb-2">Ubicacón</h5>
-                                <div id="mapa" ></div>
+                                <div id="mapa"></div>
                                 <h6 class="mb-2 mt-2">Dirección</h6>
-                                <input type="text" class="form-control mb-2" id="direccion" spellcheck="false" placeholder="calle y numero de casa" >
-                                <button type="button" onclick="buscar_direccion();" class="btn btn-primary btn-lg btn-block">
-                                Buscar Dirección
-                                </button>
+                                <input type="text" class="form-control mb-2" id="direccion" spellcheck="false" placeholder="calle y numero de casa">
+                                <button type="button" onclick="buscar_direccion();" class="btn btn-primary btn-lg btn-block">Buscar Dirección</button>
+                                <div class="alert alert-success mt-3 mb-1" role="alert"></div>
+                            </div> -->
 
-                                <div class="alert alert-success mt-3 mb-1" role="alert">
-                                
-                                </div>
-
-                            </div>
-
-                        <div class="card-header py-3">
+                            <div class="card-header py-3">
                                 <h5 class="mb-2">Tipo de compra</h5>
                                 <select class="form-select" aria-label="Default select example" id="tipo_de_compra" onchange="cambiar_tipo_decompra();">
                                 </select>
                             </div>
 
-                        <div class="card-header py-3">
+                            <div class="card-header py-3">
                                 <h5 class="mb-2">Forma de pago</h5>
                                 <select class="form-select" aria-label="Default select example" id="forma_de_pago">
                                 </select>
@@ -625,8 +618,8 @@
                                 <h5 class="mb-2">Entrega</h5>
                                 <select class="form-select" aria-label="Default select example" id="MEntrega">
                                     <option value="MOTO" selected>Moto</option>
-                                    <option value="CAMIONETA" >Camioneta</option>
-                                    <option value="PERSONAL" >Personal</option>
+                                    <option value="CAMIONETA">Camioneta</option>
+                                    <option value="PERSONAL">Personal</option>
                                 </select>
                             </div>
 
@@ -634,28 +627,28 @@
                                 <h5 class="mb-3">Dirección</h5>
 
                                 <h6 class="mb-1">Estado</h6>
-                                <input type="text" class="form-control mb-2" disabled id="estado" >
+                                <input type="text" class="form-control mb-2" disabled id="estado">
 
                                 <h6 class="mb-1">Ciudad</h6>
-                                <input type="text" class="form-control mb-2" disabled id="ciudad" >
+                                <input type="text" class="form-control mb-2" disabled id="ciudad">
 
                                 <h6 class="mb-1">Municipio</h6>
-                                <input type="text" class="form-control mb-2" disabled id="municipio" >
+                                <input type="text" class="form-control mb-2" disabled id="municipio">
 
                                 <h6 class="mb-1">Colonia</h6>
-                                <input type="text" class="form-control mb-2" disabled id="colonia" >
+                                <input type="text" class="form-control mb-2" disabled id="colonia">
 
                                 <h6 class="mb-1">Código postal</h6>
-                                <input type="text" class="form-control mb-2" disabled id="codigo_postal" >
+                                <input type="text" class="form-control mb-2" disabled id="codigo_postal">
 
                                 <h6 class="mb-1">Número interior</h6>
-                                <input type="text" class="form-control mb-2" disabled id="numero_interior" >
+                                <input type="text" class="form-control mb-2" disabled id="numero_interior">
 
                                 <h6 class="mb-1">Número exterior</h6>
-                                <input type="text" class="form-control mb-2" disabled id="numero_exterior" >
+                                <input type="text" class="form-control mb-2" disabled id="numero_exterior">
 
                                 <h6 class="mb-1">Domicilio</h6>
-                                <input type="text" class="form-control mb-2" disabled id="domicilio" >
+                                <input type="text" class="form-control mb-2" disabled id="domicilio">
                             </div>
 
                             <div class="card-header py-3">
@@ -703,19 +696,19 @@
     </section>
 
     <!-- Modal -->
-  <div class="modal fade" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="producto-modal-label">Inconveniente encontrado</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <div class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="producto-modal-label">Inconveniente encontrado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-        </div>
-      </div>
-    </div>
 
-  </div>
+    </div>
 
 
     <!-- MDB -->
@@ -738,17 +731,37 @@
         let purchase_unit = {
             "description": "Refacciones compradas en Marver",
             "amount": {
-              "currency_code": "MXN",
-              "value": "946.9",
-              "breakdown": { "item_total": {"currency_code": "MXN", "value":"946.9"} }
+                "currency_code": "MXN",
+                "value": "946.9",
+                "breakdown": {
+                    "item_total": {
+                        "currency_code": "MXN",
+                        "value": "946.9"
+                    }
+                }
             },
-            "items": [
-              { "sku": "gp-10", "name": "refaccion1", "quantity": "10", "unit_amount": { "currency_code": "MXN", "value": "69.69" } },
-              { "sku": "gp-69", "name": "refaccion2", "quantity": "5", "unit_amount": { "currency_code": "MXN", "value": "50" } }
+            "items": [{
+                    "sku": "gp-10",
+                    "name": "refaccion1",
+                    "quantity": "10",
+                    "unit_amount": {
+                        "currency_code": "MXN",
+                        "value": "69.69"
+                    }
+                },
+                {
+                    "sku": "gp-69",
+                    "name": "refaccion2",
+                    "quantity": "5",
+                    "unit_amount": {
+                        "currency_code": "MXN",
+                        "value": "50"
+                    }
+                }
             ]
-          };
+        };
 
-        function eliminar_refaccion(contenedor_refaccion){
+        function eliminar_refaccion(contenedor_refaccion) {
 
             let datos = new FormData();
             datos.append('producto', contenedor_refaccion.querySelector('.codigo').innerText);
@@ -758,12 +771,12 @@
             actualizar_totales();
 
             fetch('modelo/eliminar_refaccion', {
-                method: 'POST',
-                body: datos
-            })
-            .catch(error => {
-                alert('Error al eliminar la refaccion: ' + error);
-            });
+                    method: 'POST',
+                    body: datos
+                })
+                .catch(error => {
+                    alert('Error al eliminar la refaccion: ' + error);
+                });
         }
 
         function actualizar_totales() {
@@ -803,22 +816,23 @@
             datos.append('cantidad', input.valueAsNumber);
 
             fetch('modelo/colocar_cantidad', {
-                method: 'POST',
-                body: datos
-            })
-            .catch(error => {
-                alert('Error al cambiar el valor de la refaccion: ' + error);
-            });
+                    method: 'POST',
+                    body: datos
+                })
+                .catch(error => {
+                    alert('Error al cambiar el valor de la refaccion: ' + error);
+                });
         }
 
         let preventa = 0;
-        function cambiar_tipo_decompra(){
+
+        function cambiar_tipo_decompra() {
 
             let tipo_de_compra = document.querySelector("#tipo_de_compra");
             let forma_de_pago = document.querySelector("#forma_de_pago");
             let tipo_de_comprobante = document.querySelector("#tipo_de_comprobante");
 
-            switch(tipo_de_compra.value){
+            switch (tipo_de_compra.value) {
                 case '1':
                     forma_de_pago.innerHTML =
                         '<option value="01" selected>Efectivo</option>' +
@@ -834,8 +848,8 @@
                     forma_de_pago.innerHTML =
                         '<option value="99" selected >Crédito</option>';
                     tipo_de_comprobante.innerHTML =
-                        '<option value="1" selected>Factura</option>'+
-                        ( preventa == 1 ? '<option value="3">Preventa</option>' : '' );
+                        '<option value="1" selected>Factura</option>' +
+                        (preventa == 1 ? '<option value="3">Preventa</option>' : '');
                     break;
             }
         }
@@ -847,9 +861,9 @@
             datos.append('estado', document.querySelector('#estado').value);
 
             fetch('modelo/consultar_carrito', {
-                method: 'POST',
-                body: datos
-            })
+                    method: 'POST',
+                    body: datos
+                })
                 .then((respuesta) => {
                     return respuesta.json();
                 })
@@ -872,16 +886,16 @@
                     document.querySelector("#numero_exterior").value = respuesta_json['cliente']['Num_Exterior'];
 
                     document.querySelector("#domicilio").value = respuesta_json['cliente']['Domicilio'];
-                    
+
                     /* Le mostramos la opcion de pago credito si la tiene habilitada, ademas si es su forma de pago por defecto la seleccionamos */
                     let credito = respuesta_json['cliente']['Credito'];
                     let tipo_de_compra = document.querySelector("#tipo_de_compra");
                     let forma_pago = respuesta_json['cliente']['FormaPago'];
-                    switch(credito){
+                    switch (credito) {
                         case 1:
-                            tipo_de_compra.innerHTML = 
-                                '<option value="1" ' + ( forma_pago != '99' ? 'selected' : '' ) + ' >Contado</option>'+
-                                '<option value="2" ' + ( forma_pago == '99' ? 'selected' : '' ) + ' >Crédito</option>';
+                            tipo_de_compra.innerHTML =
+                                '<option value="1" ' + (forma_pago != '99' ? 'selected' : '') + ' >Contado</option>' +
+                                '<option value="2" ' + (forma_pago == '99' ? 'selected' : '') + ' >Crédito</option>';
                             break;
                         case 0:
                             tipo_de_compra.innerHTML =
@@ -896,12 +910,12 @@
                     Por lo tanto seleccionamos la primera que tenga la lista */
                     let forma_de_pago = document.querySelector("#forma_de_pago");
                     forma_de_pago.value = forma_pago;
-                    if(forma_de_pago.selectedIndex == -1){
+                    if (forma_de_pago.selectedIndex == -1) {
                         //console.log('forma de pago invalida');
                         forma_de_pago.selectedIndex = 0;
                     }
 
-                    respuesta_json['productos'].forEach( (producto) =>{
+                    respuesta_json['productos'].forEach((producto) => {
 
                         let refaccion_html = document.querySelector('.plantilla_refaccion').cloneNode(true);
                         refaccion_html.querySelector('.producto').innerHTML = producto['Producto'];
@@ -914,7 +928,7 @@
 
                         /* CALCULO PRECIO */
 
-                        let precio = producto['Costo'] * ( 1 + ( ( respuesta_json['cliente']['Utilidad'] > 0 ? respuesta_json['cliente']['Utilidad'] : producto['Utilidades'] ) * 0.01) );
+                        let precio = producto['Costo'] * (1 + ((respuesta_json['cliente']['Utilidad'] > 0 ? respuesta_json['cliente']['Utilidad'] : producto['Utilidades']) * 0.01));
 
                         /* CALCULO PRECIO */
 
@@ -922,60 +936,60 @@
 
                         for (let i = 0; i < respuesta_json['descuentos'].length; i++) {
                             let descuento = respuesta_json['descuentos'][i];
-                            if( descuento['Sistema'] == producto['Sistema'] ){
+                            if (descuento['Sistema'] == producto['Sistema']) {
                                 descuento_esperado =
-                                    (1-(
-                                        (1-descuento_esperado*0.01) *
-                                        (1-descuento['DescuentoSistema']*0.01)
-                                    ))*100;
+                                    (1 - (
+                                        (1 - descuento_esperado * 0.01) *
+                                        (1 - descuento['DescuentoSistema'] * 0.01)
+                                    )) * 100;
                                 break;
                             }
                         }
 
                         for (let i = 0; i < respuesta_json['descuentos'].length; i++) {
                             let descuento = respuesta_json['descuentos'][i];
-                            if( descuento['Subsistema'] == producto['Subsistema'] ){
+                            if (descuento['Subsistema'] == producto['Subsistema']) {
                                 descuento_esperado =
-                                    (1-(
-                                        (1-descuento_esperado*0.01) *
-                                        (1-descuento['DescuentoSubsistema']*0.01)
-                                    ))*100;
+                                    (1 - (
+                                        (1 - descuento_esperado * 0.01) *
+                                        (1 - descuento['DescuentoSubsistema'] * 0.01)
+                                    )) * 100;
                                 break;
                             }
                         }
 
                         for (let i = 0; i < respuesta_json['descuentos'].length; i++) {
                             let descuento = respuesta_json['descuentos'][i];
-                            if( descuento['Producto'] == producto['Producto'] ){
+                            if (descuento['Producto'] == producto['Producto']) {
                                 descuento_esperado =
-                                    (1-(
-                                        (1-descuento_esperado*0.01) *
-                                        (1-descuento['DescuentoProducto']*0.01)
-                                    ))*100;
+                                    (1 - (
+                                        (1 - descuento_esperado * 0.01) *
+                                        (1 - descuento['DescuentoProducto'] * 0.01)
+                                    )) * 100;
                                 break;
                             }
                         }
 
                         for (let i = 0; i < respuesta_json['descuentos'].length; i++) {
                             let descuento = respuesta_json['descuentos'][i];
-                            if( descuento['Fabricante'] == producto['Fabricante'] ){
+                            if (descuento['Fabricante'] == producto['Fabricante']) {
                                 descuento_esperado =
-                                    (1-(
-                                        (1-descuento_esperado*0.01) *
-                                        (1-descuento['DescuentoFabricante']*0.01)
-                                    ))*100;
+                                    (1 - (
+                                        (1 - descuento_esperado * 0.01) *
+                                        (1 - descuento['DescuentoFabricante'] * 0.01)
+                                    )) * 100;
                                 break;
                             }
                         }
 
-                        precio = precio * ( 1 - descuento_esperado * 0.01 );
+                        precio = precio * (1 - descuento_esperado * 0.01);
 
                         /* CALCULO DESCUENTOS */
-                        
+
                         /* CALCULO IVA */
 
                         //precio = precio * ( 1 + producto['Iva'] * 0.01 );
-                        precio = precio * ( 1 + 16 * 0.01 );
+                        precio = precio * (1 + 16 * 0.01);
 
                         /* CALCULO IVA */
 
@@ -985,60 +999,60 @@
                         document.querySelector('#contenedor_refacciones').appendChild(refaccion_html);
 
                         refaccion_html.classList.remove('d-none');
-                        
+
 
 
                         let datos_codigo_refaccion = new FormData();
                         datos_codigo_refaccion.append('codigo', producto['Codigo']);
 
                         fetch('modelo/codigo_refaccion', {
-                            method: 'POST',
-                            body: datos_codigo_refaccion
-                        })
-                        .then((respuesta) => {
-                            return respuesta.json();
-                        })
-                        .catch(error => {
-                            alert('Error al agregar la refaccion: ' + error);
-                        })
-                        .then(refacciones => {
+                                method: 'POST',
+                                body: datos_codigo_refaccion
+                            })
+                            .then((respuesta) => {
+                                return respuesta.json();
+                            })
+                            .catch(error => {
+                                alert('Error al agregar la refaccion: ' + error);
+                            })
+                            .then(refacciones => {
 
-                            refaccion_html.querySelector('img').onload = () => {
-                                refaccion_html.querySelector('.spinner_refaccion').remove();
-                                refaccion_html.querySelector('img').classList.remove('d-none');
-                            };
-
-                            let refaccion = null;
-                            refacciones.forEach( (posible_refaccion) =>{
-                                if(posible_refaccion['clave']){
-                                    refaccion = posible_refaccion;
-                                }
-                            } );
-
-                            if( refaccion ){
-
-                                refaccion_html.querySelector('img').onerror = () => {
-                                    refaccion_html.querySelector('img').onerror = () => {
-                                        refaccion_html.querySelector('img').src = 'img/logo.png';
-                                    };
-                                    refaccion_html.querySelector('img').src = refaccion['imagen'];
+                                refaccion_html.querySelector('img').onload = () => {
+                                    refaccion_html.querySelector('.spinner_refaccion').remove();
+                                    refaccion_html.querySelector('img').classList.remove('d-none');
                                 };
 
-                                try {
-                                    refaccion_html.querySelector('img').src = 'https://marver.mx/img/fabricantes/' + refaccion['fabricante'] + '/' + refaccion['clave'].replace('/', '-').replace('\\', '-');
-                                } catch (exc) {
-                                    refaccion_html.querySelector('img').src = refaccion['imagen'];
-                                }                             
+                                let refaccion = null;
+                                refacciones.forEach((posible_refaccion) => {
+                                    if (posible_refaccion['clave']) {
+                                        refaccion = posible_refaccion;
+                                    }
+                                });
 
-                            }else{
-                                refaccion_html.querySelector('img').src = 'img/logo.png';
-                            }
+                                if (refaccion) {
 
-                        });  
+                                    refaccion_html.querySelector('img').onerror = () => {
+                                        refaccion_html.querySelector('img').onerror = () => {
+                                            refaccion_html.querySelector('img').src = 'img/logo.png';
+                                        };
+                                        refaccion_html.querySelector('img').src = refaccion['imagen'];
+                                    };
+
+                                    try {
+                                        refaccion_html.querySelector('img').src = 'https://marver.mx/img/fabricantes/' + refaccion['fabricante'] + '/' + refaccion['clave'].replace('/', '-').replace('\\', '-');
+                                    } catch (exc) {
+                                        refaccion_html.querySelector('img').src = refaccion['imagen'];
+                                    }
+
+                                } else {
+                                    refaccion_html.querySelector('img').src = 'img/logo.png';
+                                }
+
+                            });
 
 
 
-                    } );
+                    });
 
                     actualizar_totales();
 
@@ -1046,17 +1060,17 @@
                 });
         }
 
-        function finalizar_pedido(){
+        function finalizar_pedido() {
 
             // Verificamos si el navegador soporta la Geolocation API
             if (navigator.geolocation) {
                 // Solicitar la ubicación del usuario
                 navigator.geolocation.getCurrentPosition(
                     // Éxito: se obtuvo la ubicación
-                    function (position) {
-                        document.querySelectorAll('.cantidad').forEach( (cantidad) => {
+                    function(position) {
+                        document.querySelectorAll('.cantidad').forEach((cantidad) => {
                             cantidad.classList.remove('is-invalid');
-                        } );
+                        });
 
                         let datos = new FormData();
                         datos.append('tipo_de_compra', document.querySelector('#tipo_de_compra').value);
@@ -1069,62 +1083,66 @@
                         datos.append('precision', position.coords.accuracy);
 
                         fetch('modelo/finalizar_pedido', {
-                            method: 'POST',
-                            body: datos
-                        })
-                        .then((respuesta) => {
-                            return respuesta.json();
-                        })
-                        .catch(error => {
-                            console.error('Error al finalizar el pedido: ', error);
-                        })
-                        .then(respuesta_json => {
-                            switch (respuesta_json['codigo']){
-                                case 0:
-                                    document.location.href = 'https://www.marverrefacciones.mx/pedido?folio=' + respuesta_json['folio'];
-                                    break;
-                                case 1:
-                                    respuesta_json['productos_insuficientes'].forEach( (producto_insuficiente) => {
-                                        let cantidad = document.querySelector('#cantidad-' + producto_insuficiente['producto']);
-                                        cantidad.classList.add('is-invalid');
-                                        cantidad.parentNode.querySelector('div').innerText = producto_insuficiente['existencias'] + ' Existencias';
-                                        } );
-                                    window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
-                                    break;
-                                case 2:
-                                    let el_modal = document.querySelector('.modal');
-                                    el_modal.querySelector('.modal-body').innerHTML = 
-                                        'Su limite de credito se ha exedido<br>'+
-                                        'favor de llamar a credito y cobranza.';
-                                    let miModal = new bootstrap.Modal(el_modal, {
-                                        keyboard: false
-                                    });
-                                    miModal.show();
-                                    break;
-                                case 3:
-                                    let el_modal_2 = document.querySelector('.modal');
-                                    el_modal_2.querySelector('.modal-body').innerHTML = 
-                                        'Tiene pagos pendientes vencidos<br>'+
-                                        'favor de llamar a credito y cobranza.';
-                                    let miModal_2 = new bootstrap.Modal(el_modal_2, {
-                                        keyboard: false
-                                    });
-                                    miModal_2.show();
-                                    break;
-                                default:
-                                    let el_modal_3 = document.querySelector('.modal');
-                                    el_modal_3.querySelector('.modal-body').innerHTML = 'Agregue refacciones al carrito.';
-                                    let miModal_3 = new bootstrap.Modal(el_modal_3, {
-                                        keyboard: false
-                                    });
-                                    miModal_3.show();
-                                    break;
-                            }
-                        });
+                                method: 'POST',
+                                body: datos
+                            })
+                            .then((respuesta) => {
+                                return respuesta.json();
+                            })
+                            .catch(error => {
+                                console.error('Error al finalizar el pedido: ', error);
+                            })
+                            .then(respuesta_json => {
+                                switch (respuesta_json['codigo']) {
+                                    case 0:
+                                        document.location.href = 'https://www.marverrefacciones.mx/pedido?folio=' + respuesta_json['folio'];
+                                        break;
+                                    case 1:
+                                        respuesta_json['productos_insuficientes'].forEach((producto_insuficiente) => {
+                                            let cantidad = document.querySelector('#cantidad-' + producto_insuficiente['producto']);
+                                            cantidad.classList.add('is-invalid');
+                                            cantidad.parentNode.querySelector('div').innerText = producto_insuficiente['existencias'] + ' Existencias';
+                                        });
+                                        window.scrollTo({
+                                            top: 0,
+                                            left: 0,
+                                            behavior: 'smooth'
+                                        });
+                                        break;
+                                    case 2:
+                                        let el_modal = document.querySelector('.modal');
+                                        el_modal.querySelector('.modal-body').innerHTML =
+                                            'Su limite de credito se ha exedido<br>' +
+                                            'favor de llamar a credito y cobranza.';
+                                        let miModal = new bootstrap.Modal(el_modal, {
+                                            keyboard: false
+                                        });
+                                        miModal.show();
+                                        break;
+                                    case 3:
+                                        let el_modal_2 = document.querySelector('.modal');
+                                        el_modal_2.querySelector('.modal-body').innerHTML =
+                                            'Tiene pagos pendientes vencidos<br>' +
+                                            'favor de llamar a credito y cobranza.';
+                                        let miModal_2 = new bootstrap.Modal(el_modal_2, {
+                                            keyboard: false
+                                        });
+                                        miModal_2.show();
+                                        break;
+                                    default:
+                                        let el_modal_3 = document.querySelector('.modal');
+                                        el_modal_3.querySelector('.modal-body').innerHTML = 'Agregue refacciones al carrito.';
+                                        let miModal_3 = new bootstrap.Modal(el_modal_3, {
+                                            keyboard: false
+                                        });
+                                        miModal_3.show();
+                                        break;
+                                }
+                            });
 
                     },
                     // Error: manejo de errores
-                    function (error) {
+                    function(error) {
                         switch (error.code) {
                             case error.PERMISSION_DENIED:
                                 let el_modal_denegado = document.querySelector('.modal');
@@ -1163,8 +1181,8 @@
                     // Opciones para obtener una posición más precisa
                     {
                         enableHighAccuracy: true, // Prioriza la precisión sobre la velocidad o el consumo de energía
-                        timeout: 10000,           // Espera hasta 10 segundos para obtener la posición
-                        maximumAge: 0             // No usa posiciones en caché, siempre solicita una nueva
+                        timeout: 10000, // Espera hasta 10 segundos para obtener la posición
+                        maximumAge: 0 // No usa posiciones en caché, siempre solicita una nueva
                     }
                 );
             } else {
@@ -1180,166 +1198,205 @@
         consultar_carrito();
     </script>
 
-<script>(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
-            ({ key: "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo", v: "weekly" });</script>
-
-<script>
-
-let marcador = null;
-let imagen = document.createElement('img');
-let mapa;
-imagen.src = 'https://www.marverrefacciones.mx/android/marcador_cliente.png';
-
-let Marcadores;
-let ServicioLugares;
-
-function actualizar_posicion(){
-
-    let datos = new FormData();
-    datos.append('latitud', marcador.position.lat);
-    datos.append('longitud', marcador.position.lng);
-
-    fetch('modelo/actualizar_posicion', {
-        method: 'POST',
-        body: datos
-    })
-    .then((respuesta) => {
-        return respuesta.json();
-    })
-    .catch(error => {
-        console.error('Error al finalizar el actualizar posicion: ', error);
-    })
-    .then(respuesta_json => {
-        /*anima cuando a un div se le cambia la alturalet alerta = document.querySelector('.alert').cloneNode(true);
-                    alerta.querySelector('div').innerText = 'Posicion actualizada correctamente';
-                    alerta.classList.add('d-flex');
-                    alerta.classList.remove('d-none');
-                    document.querySelector('body').appendChild(alerta);
-                    setTimeout(() => { new bootstrap.Alert(alerta).close(); }, 2000);*/
-        alerta = document.querySelector('.alert');
-        alerta.style.border = "1px";
-        alerta.style.padding = "20px";
-        alerta.style.height = "60px";
-
-        setTimeout(() => {
-            document.querySelector('.alert').innerText = "Dirección actualizada.";
-        }, 250);
-
-        setTimeout(() => {
-            alerta.style.border = "0px";
-            alerta.style.padding = "0px";
-            alerta.style.height = "0px";
-
-            setTimeout(() => {
-                document.querySelector('.alert').innerText = "";
-            }, 250);
-        }, 4000);
-
-        console.log(respuesta_json);
-    });
-}
-
-</script>
-
-<script type="module">
-
-    async function initMap() {
-        const { Map, InfoWindow } = await google.maps.importLibrary("maps");
-        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-        Marcadores = AdvancedMarkerElement;
-        const { PlacesService } = await google.maps.importLibrary("places");
-        ServicioLugares = PlacesService;
-
-        mapa = new Map(document.getElementById("mapa"), {
-            center: { lat: 25.7887317, lng: -108.994305 },
-            zoom: 12,
-            mapId: '7845e7dffe8cea37',
-            mapTypeId: google.maps.MapTypeId.HYBRID
+    <script>
+        (g => {
+            var h, a, k, p = "The Google Maps JavaScript API",
+                c = "google",
+                l = "importLibrary",
+                q = "__ib__",
+                m = document,
+                b = window;
+            b = b[c] || (b[c] = {});
+            var d = b.maps || (b.maps = {}),
+                r = new Set,
+                e = new URLSearchParams,
+                u = () => h || (h = new Promise(async (f, n) => {
+                    await (a = m.createElement("script"));
+                    e.set("libraries", [...r] + "");
+                    for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]);
+                    e.set("callback", c + ".maps." + q);
+                    a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
+                    d[q] = f;
+                    a.onerror = () => h = n(Error(p + " could not load."));
+                    a.nonce = m.querySelector("script[nonce]")?.nonce || "";
+                    m.head.append(a)
+                }));
+            d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n))
+        })
+        ({
+            key: "AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo",
+            v: "weekly"
         });
+    </script>
 
-        mapa.addListener("click", (e) => {
-            if(marcador == null){
-                    marcador = new AdvancedMarkerElement({
-                    content: imagen,
-                    map: mapa,
-                    position: e.latLng
+    <script>
+        let marcador = null;
+        let imagen = document.createElement('img');
+        let mapa;
+        imagen.src = 'https://www.marverrefacciones.mx/android/marcador_cliente.png';
+
+        let Marcadores;
+        let ServicioLugares;
+
+        function actualizar_posicion() {
+
+            let datos = new FormData();
+            datos.append('latitud', marcador.position.lat);
+            datos.append('longitud', marcador.position.lng);
+
+            fetch('modelo/actualizar_posicion', {
+                    method: 'POST',
+                    body: datos
+                })
+                .then((respuesta) => {
+                    return respuesta.json();
+                })
+                .catch(error => {
+                    console.error('Error al finalizar el actualizar posicion: ', error);
+                })
+                .then(respuesta_json => {
+                    /*anima cuando a un div se le cambia la alturalet alerta = document.querySelector('.alert').cloneNode(true);
+                                alerta.querySelector('div').innerText = 'Posicion actualizada correctamente';
+                                alerta.classList.add('d-flex');
+                                alerta.classList.remove('d-none');
+                                document.querySelector('body').appendChild(alerta);
+                                setTimeout(() => { new bootstrap.Alert(alerta).close(); }, 2000);*/
+                    alerta = document.querySelector('.alert');
+                    alerta.style.border = "1px";
+                    alerta.style.padding = "20px";
+                    alerta.style.height = "60px";
+
+                    setTimeout(() => {
+                        document.querySelector('.alert').innerText = "Dirección actualizada.";
+                    }, 250);
+
+                    setTimeout(() => {
+                        alerta.style.border = "0px";
+                        alerta.style.padding = "0px";
+                        alerta.style.height = "0px";
+
+                        setTimeout(() => {
+                            document.querySelector('.alert').innerText = "";
+                        }, 250);
+                    }, 4000);
+
+                    console.log(respuesta_json);
                 });
-            }else{
-                marcador.position = e.latLng;
-            }
-            actualizar_posicion();
-        });
-
-        fetch('modelo/obtener_posicion_pedido', {
-            method: 'GET'
-        })
-        .then((respuesta) => {
-            return respuesta.json();
-        })
-        .catch(error => {
-            console.error('Error al pedir la posicion de pedido: ', error);
-        })
-        .then(respuesta_json => {
-            if(respuesta_json["latitud"] != "no" && respuesta_json["longitud"] != "no"){
-                marcador = new Marcadores({
-                        content: imagen,
-                        map: mapa,
-                        position: { lat: respuesta_json["latitud"], lng: respuesta_json["longitud"] }
-                    });
-                mapa.setCenter({ lat: respuesta_json["latitud"], lng: respuesta_json["longitud"] });
-                mapa.setZoom(18);
-            }
-        });
-
-    }
-
-    initMap();
-</script>
-
-<script>
-
-    function buscar_direccion() {
-
-        let consulta = {
-            query: document.getElementById("direccion").value,
-            fields: ['name', 'geometry'],
-        };
-
-        let service = new ServicioLugares(mapa);
-        
-        service.findPlaceFromQuery(consulta, function(results, status) {
-            if (status === google.maps.places.PlacesServiceStatus.OK) {
-                if(results.length > 0){
-                    if(marcador == null){
-                        marcador = new Marcadores({
-                        content: imagen,
-                        map: mapa,
-                        position: results[0].geometry.location
-                    });
-                    }else{
-                        marcador.position = results[0].geometry.location;
-                    }
-                    mapa.setCenter(results[0].geometry.location);
-                    mapa.setZoom(18);
-                    actualizar_posicion();
-                }
-            }
-        });
-    }
-
-    window.addEventListener("load", ()=>{
-
-    document.getElementById("direccion").addEventListener("keypress", function(event) {
-        if (event.key == "Enter") {
-            buscar_direccion();
         }
+    </script>
+
+    <script type="module">
+        async function initMap() {
+            const {
+                Map,
+                InfoWindow
+            } = await google.maps.importLibrary("maps");
+            const {
+                AdvancedMarkerElement
+            } = await google.maps.importLibrary("marker");
+            Marcadores = AdvancedMarkerElement;
+            const {
+                PlacesService
+            } = await google.maps.importLibrary("places");
+            ServicioLugares = PlacesService;
+
+            mapa = new Map(document.getElementById("mapa"), {
+                center: {
+                    lat: 25.7887317,
+                    lng: -108.994305
+                },
+                zoom: 12,
+                mapId: '7845e7dffe8cea37',
+                mapTypeId: google.maps.MapTypeId.HYBRID
+            });
+
+            mapa.addListener("click", (e) => {
+                if (marcador == null) {
+                    marcador = new AdvancedMarkerElement({
+                        content: imagen,
+                        map: mapa,
+                        position: e.latLng
+                    });
+                } else {
+                    marcador.position = e.latLng;
+                }
+                actualizar_posicion();
+            });
+
+            fetch('modelo/obtener_posicion_pedido', {
+                    method: 'GET'
+                })
+                .then((respuesta) => {
+                    return respuesta.json();
+                })
+                .catch(error => {
+                    console.error('Error al pedir la posicion de pedido: ', error);
+                })
+                .then(respuesta_json => {
+                    if (respuesta_json["latitud"] != "no" && respuesta_json["longitud"] != "no") {
+                        marcador = new Marcadores({
+                            content: imagen,
+                            map: mapa,
+                            position: {
+                                lat: respuesta_json["latitud"],
+                                lng: respuesta_json["longitud"]
+                            }
+                        });
+                        mapa.setCenter({
+                            lat: respuesta_json["latitud"],
+                            lng: respuesta_json["longitud"]
+                        });
+                        mapa.setZoom(18);
+                    }
+                });
+
+        }
+
+        initMap();
+    </script>
+
+    <script>
+        function buscar_direccion() {
+
+            let consulta = {
+                query: document.getElementById("direccion").value,
+                fields: ['name', 'geometry'],
+            };
+
+            let service = new ServicioLugares(mapa);
+
+            service.findPlaceFromQuery(consulta, function(results, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    if (results.length > 0) {
+                        if (marcador == null) {
+                            marcador = new Marcadores({
+                                content: imagen,
+                                map: mapa,
+                                position: results[0].geometry.location
+                            });
+                        } else {
+                            marcador.position = results[0].geometry.location;
+                        }
+                        mapa.setCenter(results[0].geometry.location);
+                        mapa.setZoom(18);
+                        actualizar_posicion();
+                    }
+                }
+            });
+        }
+
+        window.addEventListener("load", () => {
+
+            document.getElementById("direccion").addEventListener("keypress", function(event) {
+                if (event.key == "Enter") {
+                    buscar_direccion();
+                }
+            });
+
         });
+    </script>
 
-    });
-
-</script>
-
-<!-- <script src="https://www.paypal.com/sdk/js?&client-id=AWirsRs7Nml-lTS--1gL0ZNDvrBNB9pjHEuLHjlCM-h2DVMFB4LcNum5QdTkKMjAjb4UbV8YNzVK3Svo&currency=MXN"></script>
+    <!-- <script src="https://www.paypal.com/sdk/js?&client-id=AWirsRs7Nml-lTS--1gL0ZNDvrBNB9pjHEuLHjlCM-h2DVMFB4LcNum5QdTkKMjAjb4UbV8YNzVK3Svo&currency=MXN"></script>
 <script>
   function initPayPalButton() {
     paypal.Buttons({
