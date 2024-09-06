@@ -73,16 +73,18 @@
 
     function notificar($celular, $cliente, $vendedor, $repartidor){
         if( is_null($celular) ){
-            $resultado["status"] = 4;
+            return;
+            /*$resultado["status"] = 4;
             $resultado["mensaje"] = "Error al notificar, no tiene numero celular";
             echo json_encode($resultado);
-            exit();
+            exit();*/
         }
         if( $celular == '' ){
-            $resultado["status"] = 4;
+            return;
+            /*$resultado["status"] = 4;
             $resultado["mensaje"] = "Error al notificar, no tiene numero celular";
             echo json_encode($resultado);
-            exit();
+            exit();*/
         }
 
         $Bearer = "EAAVE5rJaMKwBO980nYpnZCI4PiJVcssTkhplxFLNvvyUVdFvwqd5m5JMPbLZCA6XxWpNANrd9QoRNPsk6WhQZBhfvcFsps5a1Bp7PHWSkhycZCwb31GH2BkupUPySiyi0ZA1gE9mdL0SZBPWEJonpZAVkoZCjPg2XZCgU6dLZAzgP1UcGKaiUelN8s9jCDoZBi0FtKq";
@@ -157,18 +159,20 @@
         $response = json_decode(curl_exec($curl), true);
 
         if( $response == false ){
-            $resultado["status"] = 4;
+            return;
+            /*$resultado["status"] = 4;
             $resultado["mensaje"] = "Error al notificar";
             echo json_encode($resultado);
-            exit();
+            exit();*/
         }
 
         $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         if( $status_code != 200 ){
-            $resultado["status"] = 5;
+            return;
+            /*$resultado["status"] = 5;
             $resultado["mensaje"] = "Error al notificar";
             echo json_encode($resultado);
-            exit();
+            exit();*/
         }
 
         curl_close($curl);
