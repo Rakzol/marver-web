@@ -177,7 +177,7 @@
             $id_ruta_reparto = $rutas_repartidores[0]['id'];
         }
 
-        $preparada = $conexion->prepare('INSERT INTO pedidos_repartidores VALUES (:ruta_repartidor,:folio)');
+        $preparada = $conexion->prepare('INSERT INTO pedidos_repartidores VALUES (:ruta_repartidor,:folio,NULL)');
         $preparada->bindValue(':ruta_repartidor', $id_ruta_reparto);
         $preparada->bindValue(':folio', $_POST['folio']);
         $preparada->execute();
