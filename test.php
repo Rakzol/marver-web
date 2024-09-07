@@ -1,29 +1,53 @@
 <?php
-    $ip_eticketera = '10.10.10.126';
-    $puerto_eticketera = 9100;
+$json_envio['origin'] = array(
+    'location' => array(
+        'latLng' => array(
+            'latitude' => 25.7941814,
+            'longitude' => -108.9858957
+        )
+    )
+);
 
-    $esc = chr(27);
-    $gs = chr(29);
-    $line_feed = chr(10);
-    $cut_paper = $esc . 'm';
 
-    $socket_eticketera = fsockopen($ip_eticketera, $puerto_eticketera, $errno, $errstr, 3);
+$intermediarios[] = array(
+    'location' => array(
+        'latLng' => array(
+            'latitude' => 25.79364297992391,
+            'longitude' => -108.9817418526033
+        )
+    )
+);
 
-    for($c = 0; $c < 256; $c++){
-    
-        $esc_pos = $esc . '@';
-        $esc_pos .= $esc . 'a' . chr(1); 
-        $esc_pos .= $gs . 'k' . chr($c) . chr(strlen('1')) . '1';
-        $esc_pos .= $c;
-        $esc_pos .= $line_feed;
-        $esc_pos .= $line_feed;
-        $esc_pos .= $line_feed;
-        $esc_pos .= $line_feed;
-        $esc_pos .= $line_feed;
-        //$esc_pos .= $cut_paper;
+if( isset($intermediarios) ){
+    $json_envio['intermediates'] = $intermediarios;
+}
 
-        fwrite($socket_eticketera, $esc_pos);
+$json_envio['destination'] = array(
+    'location' => array(
+        'latLng' => array(
+            'latitude' => 25.7941814,
+            'longitude' => -108.9858957
+        )
+    )
+);
 
-        echo $c;
-    }
+$json_envio['routingPreference'] = "TRAFFIC_AWARE";
+$json_envio['optimizeWaypointOrder'] = true;
+
+$curl = curl_init('https://routes.googleapis.com/directions/v2:computeRoutes');
+$cabecera = array(
+    'Content-Type: application/json',
+    'X-Goog-Api-Key: AIzaSyCAaLR-LdWOBIf1pDXFq8nDi3-j67uiheo',
+    'X-Goog-FieldMask: routes.legs.duration,routes.legs.distanceMeters,routes.optimizedIntermediateWaypointIndex,routes.legs.polyline.encodedPolyline'
+);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($json_envio));
+curl_setopt($curl, CURLOPT_HTTPHEADER, $cabecera);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+
+$respuesta = curl_exec($curl);
+
+echo $respuesta;
 ?>
