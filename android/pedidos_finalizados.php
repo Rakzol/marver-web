@@ -45,7 +45,7 @@
             LEFT JOIN MoviemientosVenta ON MoviemientosVenta.Folio = PedidosCliente.FolioComprobante AND MoviemientosVenta.TipoComprobante = 11 AND MoviemientosVenta.Importe < 0
             WHERE
             EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
-            AND Ventas.Status = 2
+            AND ( Ventas.Status = 2 OR Ventas.Status = 5 )
             AND Responsable = :vendedor_1
 
 			UNION ALL
@@ -76,7 +76,7 @@
             LEFT JOIN MoviemientosVenta ON MoviemientosVenta.Folio = PedidosCliente.FolioComprobante AND MoviemientosVenta.TipoComprobante = 11 AND MoviemientosVenta.Importe < 0
             WHERE
             EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
-            AND Preventa.Status = 2
+            AND ( Preventa.Status = 2 OR Preventa.Status = 5 )
             AND Responsable = :vendedor_2
 
             ORDER BY folio DESC
