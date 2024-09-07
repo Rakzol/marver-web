@@ -195,6 +195,7 @@
     }catch( Exception $exception ) {
         // header('HTTP/1.1 500 ' . $exception->getMessage());
 
+        echo $exception->getMessage();
         $resultado["status"] = 5;
         $resultado["mensaje"] = "El pedido con el folio: " . $_GET['folio'] . " no es valido";
         echo json_encode($resultado);
