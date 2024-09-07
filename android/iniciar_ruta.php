@@ -98,6 +98,66 @@
 
             curl_close($curl);
 
+            /* Coloar la llegada estimada */
+            /*$rutas = json_decode( $respuesta, true);
+
+            $indice_leg = 0;
+            foreach( $rutas['routes'][0]['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
+    
+                if( $indice_pedido == -1 ){
+    
+                    if(!isset($pedidos_repartidor[0])){
+                        $pedidos_repartidor[0] = array(
+                            "status" => 0,
+                            "folio" => 0,
+                            "cliente_clave" => 0,
+                            "cliente_nombre" => "0",
+                            "pedido" => 0,
+                            "total" => 0,
+                            "feria" => NULL,
+                            "calle" => NULL,
+                            "numero_exterior" => NULL,
+                            "numero_interior" => NULL,
+                        );
+                    }
+    
+                    $rutas['routes'][0]['legs'][0]['pedido'] = $pedidos_repartidor[0];
+    
+                    if( $pedidos_repartidor[0]['status'] == 4 ){
+                        $rutas['routes'][0]['legs'][0]['color'] = "#6495ED";
+                        $leg = $rutas['routes'][0]['legs'][0];
+                    }
+    
+                }else{
+    
+                    if(!isset($pedidos_repartidor[$indice_pedido])){
+                        $pedidos_repartidor[$indice_pedido] = array(
+                            "status" => 0,
+                            "folio" => 0,
+                            "cliente_clave" => 0,
+                            "cliente_nombre" => "0",
+                            "pedido" => 0,
+                            "total" => 0,
+                            "feria" => NULL,
+                            "calle" => NULL,
+                            "numero_exterior" => NULL,
+                            "numero_interior" => NULL,
+                        );
+                    }
+    
+                    $rutas['routes'][0]['legs'][$indice_leg]['pedido'] = $pedidos_repartidor[$indice_pedido];
+    
+                    if( $pedidos_repartidor[$indice_pedido]['status'] == 4 && !isset($leg)){
+                        $rutas['routes'][0]['legs'][$indice_leg]['color'] = "#6495ED";
+                        $leg = $rutas['routes'][0]['legs'][$indice_leg];
+                    }
+    
+                    $indice_leg++;
+                }
+    
+            }*/
+            /* Colocar la llegada estimada */
+
             $preparada = $conexion->prepare('UPDATE rutas_repartidores SET ruta = :ruta, fecha_inicio = GETDATE() WHERE id = :id');
             $preparada->bindValue(':ruta', $respuesta);
             $preparada->bindValue(':id', $ruta_reparto);

@@ -153,7 +153,7 @@
                 $nueva_ruta = $conexion->lastInsertId();
 
                 foreach($pedidos_pendientes as $pedido_pendiente){
-                    $preparada = $conexion->prepare('INSERT INTO pedidos_repartidores VALUES (:ruta_repartidor,:folio)');
+                    $preparada = $conexion->prepare('INSERT INTO pedidos_repartidores VALUES (:ruta_repartidor,:folio, NULL)');
                     $preparada->bindValue(':ruta_repartidor', $nueva_ruta);
                     $preparada->bindValue(':folio', $pedido_pendiente['folio']);
                     $preparada->execute();
