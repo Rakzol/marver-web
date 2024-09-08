@@ -120,7 +120,7 @@
                 exit();
             }
 
-            $preparada = $conexion->prepare('UPDATE rutas_repartidores SET ruta = :ruta, fecha_inicio = GETDATE() WHERE id = :id; SELECT GETDATE() AS fecha;');
+            $preparada = $conexion->prepare('UPDATE rutas_repartidores SET ruta = :ruta, fecha_inicio = GETDATE() WHERE id = :id;');
             $preparada->bindValue(':ruta', $respuesta);
             $preparada->bindValue(':id', $ruta_reparto);
             $preparada->execute();
