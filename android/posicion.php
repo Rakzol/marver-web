@@ -162,7 +162,7 @@
                     $preparada->bindValue(':id', $ruta_iniciada);
                     $preparada->execute();    
 
-                    $fecha = DateTime::createFromFormat('Y-m-d H:i:s.u', $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['fecha']);
+                    $fecha = DateTime::createFromFormat('Y-m-d H:i:s.u', $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['fecha_inicio']);
 
                     $indice_leg = 0;
                     foreach( $rutas['routes'][0]['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
@@ -307,7 +307,7 @@
                 $preparada->bindValue(':id', $ruta_reparto);
                 $preparada->execute();
 
-                $fecha = DateTime::createFromFormat('Y-m-d H:i:s.u', $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['fecha']);
+                $fecha = DateTime::createFromFormat('Y-m-d H:i:s.u', $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['fecha_inicio']);
 
                 $indice_leg = 0;
                 foreach( $rutas['routes'][0]['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
