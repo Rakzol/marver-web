@@ -15,7 +15,16 @@ $intermediarios[] = array(
             'latitude' => 25.79364297992391,
             'longitude' => -108.9817418526033
         )
-    )
+        )
+);
+
+$intermediarios[] = array(
+    'location' => array(
+        'latLng' => array(
+            'latitude' => 25.75364297992391,
+            'longitude' => -108.9517418526033
+        )
+        )
 );
 
 if( isset($intermediarios) ){
@@ -49,5 +58,7 @@ curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
 
 $respuesta = curl_exec($curl);
 
+$rutas = json_decode( $respuesta, true); 
+echo isset($rutas['routes'][0]['optimizedIntermediateWaypointIndex']);
 echo $respuesta;
 ?>

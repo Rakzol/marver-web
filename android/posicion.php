@@ -63,14 +63,14 @@
                 if( count($pedidos_pendientes) == 0 ){
     
                     $preparada = $conexion->prepare("
-                        SELECT pr.folio, cp.latitud, cp.longitud FROM pedidos_repartidores pr
+                        SELECT pr.id, pr.folio, cp.latitud, cp.longitud FROM pedidos_repartidores pr
                         INNER JOIN PedidosCliente pc ON pc.Folio = pr.folio 
                         INNER JOIN clientes_posiciones cp ON cp.clave = pc.Cliente
                         WHERE pr.ruta_repartidor = :ruta_repartidor ORDER BY pr.folio;
                     ");
                     $preparada->bindValue(':ruta_repartidor', $ruta_iniciada);
                     $preparada->execute();
-                    $pedidos_repartidores = $preparada->fetchAll(PDO::FETCH_ASSOC);
+                    $pedidos_repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC);
         
                     $json_envio['origin'] = array(
                         'location' => array(
@@ -81,7 +81,7 @@
                         )
                     );
         
-                    foreach($pedidos_repartidores as $pedido_repartidor){
+                    foreach($pedidos_repartidor as $pedido_repartidor){
                         if( $pedido_repartidor['latitud'] != 0 && $pedido_repartidor['longitud'] != 0 ){
                             $intermediarios[] = array(
                                 'location' => array(
@@ -130,14 +130,63 @@
                         echo json_encode($resultado);
                         exit();
                     }
+                    if (curl_errno($curl)) {
+                        $resultado["status"] = 2;
+                        $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
+                        echo json_encode($resultado);
+                        exit();
+                    }
+                    if (curl_getinfo($ch, CURLINFO_HTTP_CODE) != 200) {
+                        $resultado["status"] = 2;
+                        $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
+                        echo json_encode($resultado);
+                        exit();
+                    }
         
                     curl_close($curl);
         
-                    $preparada = $conexion->prepare('UPDATE rutas_repartidores SET ruta = :ruta, fecha_fin = GETDATE() WHERE id = :id');
+                    $rutas = json_decode( $respuesta, true);  
+                    if(!isset($rutas['routes'][0]['optimizedIntermediateWaypointIndex'])){
+                        $resultado["status"] = 2;
+                        $resultado["mensaje"] = "Error con las rustas optimizadas de google maps ";
+                        echo json_encode($resultado);
+                        exit();
+                    }
+
+                    $preparada = $conexion->prepare('UPDATE rutas_repartidores SET ruta = :ruta, fecha_fin = GETDATE() WHERE id = :id; SELECT GETDATE() AS fecha;');
                     $preparada->bindValue(':ruta', $respuesta);
                     $preparada->bindValue(':id', $ruta_iniciada);
                     $preparada->execute();
 
+                    $fecha = DateTime::createFromFormat('Y-m-d H:i:s.u', $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['fecha']);
+
+                    $indice_leg = 0;
+                    foreach( $rutas['routes'][0]['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
+            
+                        if( $indice_pedido == -1 ){
+            
+                            $segundos = intval( substr($rutas['routes'][0]['legs'][0]['duration'], 0, -1) );
+                            $fecha->modify('+' . $segundos . ' seconds');
+        
+                            $preparada = $conexion->prepare('UPDATE pedidos_repartidores SET llegada_estimada = :llegada_estimada WHERE id = :id');
+                            $preparada->bindValue(':llegada_estimada', $fecha->format('Y-m-d H:i:s.u'));
+                            $preparada->bindValue(':id', $pedidos_repartidor[0]['id']);
+                            $preparada->execute();
+            
+                        }else{
+            
+                            $segundos = intval( substr($rutas['routes'][0]['legs'][$indice_leg]['duration'], 0, -1) );
+                            $fecha->modify('+' . $segundos . ' seconds');
+        
+                            $preparada = $conexion->prepare('UPDATE pedidos_repartidores SET llegada_estimada = :llegada_estimada WHERE id = :id');
+                            $preparada->bindValue(':llegada_estimada', $fecha->format('Y-m-d H:i:s.u'));
+                            $preparada->bindValue(':id', $pedidos_repartidor[$indice_pedido]['id']);
+                            $preparada->execute();
+        
+                            $indice_leg++;
+                        }
+            
+                    }
                 }
 
             }
@@ -155,14 +204,14 @@
                 $ruta_reparto = $rutas_iniciadas[0]['id'];
     
                 $preparada = $conexion->prepare("
-                    SELECT pr.folio, cp.latitud, cp.longitud FROM pedidos_repartidores pr
+                    SELECT pr.id, pr.folio, cp.latitud, cp.longitud FROM pedidos_repartidores pr
                     INNER JOIN PedidosCliente pc ON pc.Folio = pr.folio 
                     INNER JOIN clientes_posiciones cp ON cp.clave = pc.Cliente
                     WHERE pr.ruta_repartidor = :ruta_repartidor ORDER BY pr.folio;
                 ");
                 $preparada->bindValue(':ruta_repartidor', $ruta_reparto);
                 $preparada->execute();
-                $pedidos_repartidores = $preparada->fetchAll(PDO::FETCH_ASSOC);
+                $pedidos_repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC);
     
                 $json_envio['origin'] = array(
                     'location' => array(
@@ -173,7 +222,7 @@
                     )
                 );
     
-                foreach($pedidos_repartidores as $pedido_repartidor){
+                foreach($pedidos_repartidor as $pedido_repartidor){
                     if( $pedido_repartidor['latitud'] != 0 && $pedido_repartidor['longitud'] != 0 ){
                         $intermediarios[] = array(
                             'location' => array(
@@ -222,14 +271,64 @@
                     echo json_encode($resultado);
                     exit();
                 }
+                if (curl_errno($curl)) {
+                    $resultado["status"] = 2;
+                    $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
+                    echo json_encode($resultado);
+                    exit();
+                }
+                if (curl_getinfo($ch, CURLINFO_HTTP_CODE) != 200) {
+                    $resultado["status"] = 2;
+                    $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
+                    echo json_encode($resultado);
+                    exit();
+                }
     
                 curl_close($curl);
     
-                $preparada = $conexion->prepare('UPDATE rutas_repartidores SET ruta = :ruta, fecha_inicio = GETDATE() WHERE id = :id');
+                $rutas = json_decode( $respuesta, true);  
+                if(!isset($rutas['routes'][0]['optimizedIntermediateWaypointIndex'])){
+                    $resultado["status"] = 2;
+                    $resultado["mensaje"] = "Error con las rustas optimizadas de google maps ";
+                    echo json_encode($resultado);
+                    exit();
+                }
+
+                $preparada = $conexion->prepare('UPDATE rutas_repartidores SET ruta = :ruta, fecha_inicio = GETDATE() WHERE id = :id; SELECT GETDATE() AS fecha;');
                 $preparada->bindValue(':ruta', $respuesta);
                 $preparada->bindValue(':id', $ruta_reparto);
                 $preparada->execute();
     
+                $fecha = DateTime::createFromFormat('Y-m-d H:i:s.u', $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['fecha']);
+
+                $indice_leg = 0;
+                foreach( $rutas['routes'][0]['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
+        
+                    if( $indice_pedido == -1 ){
+        
+                        $segundos = intval( substr($rutas['routes'][0]['legs'][0]['duration'], 0, -1) );
+                        $fecha->modify('+' . $segundos . ' seconds');
+    
+                        $preparada = $conexion->prepare('UPDATE pedidos_repartidores SET llegada_estimada = :llegada_estimada WHERE id = :id');
+                        $preparada->bindValue(':llegada_estimada', $fecha->format('Y-m-d H:i:s.u'));
+                        $preparada->bindValue(':id', $pedidos_repartidor[0]['id']);
+                        $preparada->execute();
+        
+                    }else{
+        
+                        $segundos = intval( substr($rutas['routes'][0]['legs'][$indice_leg]['duration'], 0, -1) );
+                        $fecha->modify('+' . $segundos . ' seconds');
+    
+                        $preparada = $conexion->prepare('UPDATE pedidos_repartidores SET llegada_estimada = :llegada_estimada WHERE id = :id');
+                        $preparada->bindValue(':llegada_estimada', $fecha->format('Y-m-d H:i:s.u'));
+                        $preparada->bindValue(':id', $pedidos_repartidor[$indice_pedido]['id']);
+                        $preparada->execute();
+    
+                        $indice_leg++;
+                    }
+        
+                }
+
             }
 
         }
