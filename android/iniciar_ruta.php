@@ -120,11 +120,15 @@
                 exit();
             }
 
-            $preparada = $conexion->prepare('UPDATE rutas_repartidores SET ruta = :ruta, fecha_inicio = GETDATE() WHERE id = :id; SELECT GETDATE() AS fecha;');
+            $preparada = $conexion->prepare('UPDATE rutas_repartidores SET ruta = :ruta, fecha_inicio = GETDATE() WHERE id = :id;');
             $preparada->bindValue(':ruta', $respuesta);
             $preparada->bindValue(':id', $ruta_reparto);
             $preparada->execute();
             
+            $preparada = $conexion->prepare('SELECT fecha_inicio FROM rutas_repartidores WHERE id = :id;');
+            $preparada->bindValue(':id', $ruta_reparto);
+            $preparada->execute(); 
+
             $fecha = DateTime::createFromFormat('Y-m-d H:i:s.u', $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['fecha']);
 
             $indice_leg = 0;
