@@ -342,7 +342,7 @@
         }
 
     }catch( Exception $exception ) {
-        echo $exception->getMessage();
-        header('HTTP/1.1 500 ' . $exception->getMessage());
+        var_dump($exception);
+        //header('HTTP/1.1 500 ' . $exception->getMessage());
     }
 ?>
