@@ -173,7 +173,7 @@
                             $fecha->modify('+' . $segundos . ' seconds');
         
                             $preparada = $conexion->prepare('UPDATE pedidos_repartidores SET llegada_estimada = :llegada_estimada WHERE id = :id');
-                            $preparada->bindValue(':llegada_estimada', $fecha->format('Y-m-d H:i:s.u'));
+                            $preparada->bindValue(':llegada_estimada', $fecha->format('Y-m-d H:i:s'));
                             $preparada->bindValue(':id', $pedidos_repartidor[0]['id']);
                             $preparada->execute();
             
@@ -183,7 +183,7 @@
                             $fecha->modify('+' . $segundos . ' seconds');
         
                             $preparada = $conexion->prepare('UPDATE pedidos_repartidores SET llegada_estimada = :llegada_estimada WHERE id = :id');
-                            $preparada->bindValue(':llegada_estimada', $fecha->format('Y-m-d H:i:s.u'));
+                            $preparada->bindValue(':llegada_estimada', $fecha->format('Y-m-d H:i:s'));
                             $preparada->bindValue(':id', $pedidos_repartidor[$indice_pedido]['id']);
                             $preparada->execute();
         
@@ -318,7 +318,7 @@
                         $fecha->modify('+' . $segundos . ' seconds');
     
                         $preparada = $conexion->prepare('UPDATE pedidos_repartidores SET llegada_estimada = :llegada_estimada WHERE id = :id');
-                        $preparada->bindValue(':llegada_estimada', $fecha->format('Y-m-d H:i:s.u'));
+                        $preparada->bindValue(':llegada_estimada', $fecha->format('Y-m-d H:i:s'));
                         $preparada->bindValue(':id', $pedidos_repartidor[0]['id']);
                         $preparada->execute();
         
@@ -328,7 +328,7 @@
                         $fecha->modify('+' . $segundos . ' seconds');
     
                         $preparada = $conexion->prepare('UPDATE pedidos_repartidores SET llegada_estimada = :llegada_estimada WHERE id = :id');
-                        $preparada->bindValue(':llegada_estimada', $fecha->format('Y-m-d H:i:s.u'));
+                        $preparada->bindValue(':llegada_estimada', $fecha->format('Y-m-d H:i:s'));
                         $preparada->bindValue(':id', $pedidos_repartidor[$indice_pedido]['id']);
                         $preparada->execute();
     
