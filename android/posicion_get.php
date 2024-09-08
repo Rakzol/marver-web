@@ -10,8 +10,8 @@
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
         $preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Clave = :clave AND Contraseña = :contrasena');
-        $preparada->bindValue(':clave', $_POST['u']);
-        $preparada->bindValue(':contrasena', $_POST['c']);
+        $preparada->bindValue(':clave', $_GET['u']);
+        $preparada->bindValue(':contrasena', $_GET['c']);
         $preparada->execute();
 
         $usuarios = $preparada->fetchAll(PDO::FETCH_ASSOC);
@@ -23,18 +23,18 @@
         }
 
         $preparada = $conexion->prepare('INSERT INTO posiciones VALUES( :usuario, :latitud, :longitud, :velocidad, GETDATE() )');
-        $preparada->bindValue(':usuario', $_POST['u']);
-        $preparada->bindValue(':latitud', $_POST['la']);
-        $preparada->bindValue(':longitud', $_POST['ln']);
-        $preparada->bindValue(':velocidad', $_POST['v']);
+        $preparada->bindValue(':usuario', $_GET['u']);
+        $preparada->bindValue(':latitud', $_GET['la']);
+        $preparada->bindValue(':longitud', $_GET['ln']);
+        $preparada->bindValue(':velocidad', $_GET['v']);
         $preparada->execute();
 
-        $distancia_marver = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => 25.794285, 'lng' => -108.985924 ], [ 'lat' => $_POST['la'], 'lng' => $_POST['ln'] ] );
+        $distancia_marver = \GeometryLibrary\SphericalUtil::computeDistanceBetween( [ 'lat' => 25.794285, 'lng' => -108.985924 ], [ 'lat' => $_GET['la'], 'lng' => $_GET['ln'] ] );
         /* Verificamos si esta en el perimetro de marver para finalizar la ruta, siempre que tenga todo en status valido para la entrega */
         if( $distancia_marver <= 15 ){
             /* Verificamos que tenga alguna ruta sin finalizar */
             $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
-            $preparada->bindValue(':repartidor', $_POST['u']);
+            $preparada->bindValue(':repartidor', $_GET['u']);
             $preparada->execute();
 
             $rutas_iniciadas = $preparada->fetchAll(PDO::FETCH_ASSOC);
@@ -200,7 +200,7 @@
         else if( $distancia_marver >= 150 ){
 
             $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NULL AND fecha_fin IS NULL');
-            $preparada->bindValue(':repartidor', $_POST['u']);
+            $preparada->bindValue(':repartidor', $_GET['u']);
             $preparada->execute();
     
             $rutas_iniciadas = $preparada->fetchAll(PDO::FETCH_ASSOC);
