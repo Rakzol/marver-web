@@ -136,7 +136,7 @@
                         echo json_encode($resultado);
                         exit();
                     }
-                    if (curl_getinfo($ch, CURLINFO_HTTP_CODE) != 200) {
+                    if (curl_getinfo($curl, CURLINFO_HTTP_CODE) != 200) {
                         $resultado["status"] = 2;
                         $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
                         echo json_encode($resultado);
