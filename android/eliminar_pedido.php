@@ -27,8 +27,10 @@
         $preparada->execute();
         $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['Folio'];
 
-        $preparada = $conexion->prepare("DELETE EnvioPedidoCliente WHERE Pedido = :pedido");
+        //???????????????????????????????????
+        $preparada = $conexion->prepare("DELETE EnvioPedidoCliente WHERE Pedido = :pedido AND Responsable = :repartidor");
         $preparada->bindValue(':pedido', $pedido);
+        $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
 
         $preparada = $conexion->prepare("SELECT pr.id, pr.ruta_repartidor FROM pedidos_repartidores pr INNER JOIN rutas_repartidores rr ON rr.id = pr.ruta_repartidor WHERE pr.folio = :pedido AND rr.repartidor = :repartidor");

@@ -179,7 +179,7 @@
             
                         }else{
             
-                            $segundos = intval( substr($rutas['routes'][0]['legs'][$indice_leg]['duration'], 0, -1) );
+                            $segundos = intval( substr($rutas['routes'][0]['legs'][$indice_leg]['duration'], 0, -1) ) + ( $indice_leg > 0 ? 180 : 0 );
                             $fecha->modify('+' . $segundos . ' seconds');
         
                             $preparada = $conexion->prepare('UPDATE pedidos_repartidores SET llegada_estimada = :llegada_estimada WHERE id = :id');
@@ -324,7 +324,7 @@
         
                     }else{
         
-                        $segundos = intval( substr($rutas['routes'][0]['legs'][$indice_leg]['duration'], 0, -1) );
+                        $segundos = intval( substr($rutas['routes'][0]['legs'][$indice_leg]['duration'], 0, -1) ) + ( $indice_leg > 0 ? 180 : 0 );
                         $fecha->modify('+' . $segundos . ' seconds');
     
                         $preparada = $conexion->prepare('UPDATE pedidos_repartidores SET llegada_estimada = :llegada_estimada WHERE id = :id');

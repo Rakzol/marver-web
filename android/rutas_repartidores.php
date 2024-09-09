@@ -352,7 +352,7 @@
 
         for( $c = 0; $c < count($resultado['ruta']['legs']); $c++ ){
             
-            $segundos = intval( substr($resultado['ruta']['legs'][$c]['duration'], 0, -1) ) + ( $c > 0 ? 120 : 0 );
+            $segundos = intval( substr($resultado['ruta']['legs'][$c]['duration'], 0, -1) ) + ( $c > 0 ? 180 : 0 );
             $fecha->modify('+' . $segundos . ' seconds');
             $resultado['ruta']['legs'][$c]['llegada'] = $fecha->format('h:i A');
 

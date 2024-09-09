@@ -41,11 +41,17 @@
             exit();
         }
 
-        $preparada = $conexion->prepare("UPDATE EnvioPedidoCliente SET Extra1 = GETDATE() WHERE Pedido = :pedido");
+        $preparada = $conexion->prepare("UPDATE EnvioPedidoCliente SET Extra1 = GETDATE() WHERE Pedido = :pedido AND Responsable = :repartidor");
         $preparada->bindValue(':pedido', $pedido[0]['Pedido']);
+        $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
 
         $preparada = $conexion->prepare("UPDATE Ventas SET Status = 18 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
+        $preparada->bindValue(':folio', $_POST['folio']);
+        $preparada->bindValue(':comprobante', $_POST['comprobante']);
+        $preparada->execute();
+
+        $preparada = $conexion->prepare("UPDATE Preventa SET Status = 18 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
         $preparada->bindValue(':folio', $_POST['folio']);
         $preparada->bindValue(':comprobante', $_POST['comprobante']);
         $preparada->execute();
