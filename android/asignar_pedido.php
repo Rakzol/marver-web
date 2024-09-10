@@ -21,24 +21,13 @@
         }
 
         $preparada = $conexion->prepare("
-            SELECT PedidosCliente.Folio, EnvioPedidoCliente.Responsable, Ventas.Status
+            SELECT PedidosCliente.Folio, EnvioPedidoCliente.Responsable
             FROM PedidosCliente
             LEFT JOIN EnvioPedidoCliente
-            ON EnvioPedidoCliente.Pedido = PedidosCliente.Folio
-            INNER JOIN Ventas
-            ON Ventas.Folio = PedidosCliente.FolioComprobante AND Ventas.TipoComprobante = PedidosCliente.Tipocomprobante
-            WHERE PedidosCliente.Folio = :folio1
-            UNION ALL
-            SELECT PedidosCliente.Folio, EnvioPedidoCliente.Responsable, Preventa.Status
-            FROM PedidosCliente
-            LEFT JOIN EnvioPedidoCliente
-            ON EnvioPedidoCliente.Pedido = PedidosCliente.Folio
-            INNER JOIN Preventa
-            ON Preventa.Folio = PedidosCliente.FolioComprobante AND Preventa.TipoComprobante = PedidosCliente.Tipocomprobante
-            WHERE PedidosCliente.Folio = :folio2
+            ON EnvioPedidoCliente.Pedido = PedidosCliente.Folio AND ( EnvioPedidoCliente.Extra2 IS NULL OR EnvioPedidoCliente.Extra2 = 'E' )
+            WHERE PedidosCliente.Folio = :folio
         ");
-        $preparada->bindValue(':folio1', $_POST['folio']);
-        $preparada->bindValue(':folio2', $_POST['folio']);
+        $preparada->bindValue(':folio', $_POST['folio']);
         $preparada->execute();
 
         $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC);
@@ -49,7 +38,7 @@
             exit();
         }
 
-        if( $pedido[0]['Responsable'] != NULL && $pedido[0]['Status'] != 5 ){
+        if( $pedido[0]['Responsable'] ){
             $resultado["status"] = 3;
             $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " ya esta asignado al repartidor: " . $pedido[0]['Responsable'];
             echo json_encode($resultado);
