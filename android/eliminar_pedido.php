@@ -20,7 +20,7 @@
             exit();
         }
 
-        /* Obtenemos el folio del pedido basandonos en el folio de comprobante y tipo de comprobante, tanto deventa como de preventa */
+        /* Obtenemos el folio del pedido basandonos en el folio de comprobante y tipo de comprobante, tanto de venta como de preventa */
         $preparada = $conexion->prepare("SELECT Folio FROM PedidosCliente WHERE FolioComprobante = :folio AND Tipocomprobante = :comprobante;");
         $preparada->bindValue(':folio', $_POST['folio']);
         $preparada->bindValue(':comprobante', $_POST['comprobante']);
@@ -28,19 +28,19 @@
         $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['Folio'];
 
         //???????????????????????????????????
-        $preparada = $conexion->prepare("DELETE EnvioPedidoCliente WHERE Pedido = :pedido AND Responsable = :repartidor");
+        $preparada = $conexion->prepare("SELECT Pedido, Extra1 FROM EnvioPedidoCliente WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 IS NULL");
         $preparada->bindValue(':pedido', $pedido);
         $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
+        $EnvioPedidoCliente = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-        $preparada = $conexion->prepare("SELECT pr.id, pr.ruta_repartidor FROM pedidos_repartidores pr INNER JOIN rutas_repartidores rr ON rr.id = pr.ruta_repartidor WHERE pr.folio = :pedido AND rr.repartidor = :repartidor");
+        $preparada = $conexion->prepare("DELETE EnvioPedidoCliente WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 IS NULL");
         $preparada->bindValue(':pedido', $pedido);
         $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
-        $pedido_repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
         $preparada = $conexion->prepare("DELETE pedidos_repartidores WHERE id = :id");
-        $preparada->bindValue(':id', $pedido_repartidor['id']);
+        $preparada->bindValue(':id', $EnvioPedidoCliente['Extra1']);
         $preparada->execute();
 
         $preparada = $conexion->prepare("UPDATE rutas_repartidores SET fecha_inicio = NULL, fecha_fin = NULL, ruta = NULL WHERE id = :ruta_repartidor");

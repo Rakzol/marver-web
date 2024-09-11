@@ -47,7 +47,7 @@
 
         /*
             Si tiene una ruta iniciada, se recalcula y actualiza la ruta pata todos los pedidos y se finaliza, despues se crea una ruta nueva donde se asigna
-            el pedido escaneado y todos los anteriroes donde el status de venta y preventa sea diferente de 2, 5 y 18
+            el pedido escaneado y todos los anteriroes donde el Extra2 de EnvioPedidoCliente sea NULL (Lo estaba entregando) y del Responsable de este repartidor
         */
         $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
         $preparada->bindValue(':repartidor', $_POST['clave']);
@@ -187,21 +187,14 @@
     
             }
 
-            /* Consultamos todos los pedidos de ventas y preventas donde el status no sea 2, 5 y 18 de los pedidos de la ruta que acabamos de finalizar */
+            /*  Consultamos todos los envio EnvioPedidoCliente que tenga el Extra2 en NULL para ponerlo como T de que se transfirio a otra ruta para ese pedido
+                y lo agregamos de nuevo con otra id en Extra1 despues de agregar el que sera su id en pedidos_repartidores :D */
             $preparada = $conexion->prepare("
-                SELECT pr.folio FROM pedidos_repartidores pr
-                INNER JOIN PedidosCliente pc ON pc.Folio = pr.folio
-                INNER JOIN Ventas ve ON ve.Folio = pc.FolioComprobante AND ve.TipoComprobante = pc.Tipocomprobante
-                WHERE pr.ruta_repartidor = :ruta_repartidor_1 AND ve.Status NOT IN (2, 5, 18)
-                UNION ALL
-                SELECT pr.folio FROM pedidos_repartidores pr
-                INNER JOIN PedidosCliente pc ON pc.Folio = pr.folio
-                INNER JOIN Preventa ve ON ve.Folio = pc.FolioComprobante AND ve.TipoComprobante = pc.Tipocomprobante
-                WHERE pr.ruta_repartidor = :ruta_repartidor_2 AND ve.Status NOT IN (2, 5, 18)
-                ORDER BY pr.folio;
+                SELECT Pedido
+                FROM EnvioPedidoCliente
+                WHERE Responsable = :repartidor AND Extra2 IS NULL
             ");
-            $preparada->bindValue(':ruta_repartidor_1', $ruta_iniciada);
-            $preparada->bindValue(':ruta_repartidor_2', $ruta_iniciada);
+            $preparada->bindValue(':repartidor', $_POST['clave']);
             $preparada->execute();
             $pedidos_pendientes = $preparada->fetchAll(PDO::FETCH_ASSOC);
 
@@ -213,13 +206,28 @@
                 $nueva_ruta = $conexion->lastInsertId();
 
                 foreach($pedidos_pendientes as $pedido_pendiente){
-                    $preparada = $conexion->prepare('INSERT INTO pedidos_repartidores VALUES (:ruta_repartidor,:folio, NULL)');
+                    $preparada = $conexion->prepare("
+                        UPDATE EnvioPedidoCliente
+                        SET Extra2 = 'T'
+                        WHERE Responsable = :repartidor AND Extra2 IS NULL AND Pedido = :pedido
+                    ");
+                    $preparada->bindValue(':repartidor', $_POST['clave']);
+                    $preparada->bindValue(':pedido', $pedido_pendiente['Pedido']);
+                    $preparada->execute();
+
+                    $preparada = $conexion->prepare('INSERT INTO pedidos_repartidores VALUES (:ruta_repartidor,:folio, NULL, NULL)');
                     $preparada->bindValue(':ruta_repartidor', $nueva_ruta);
-                    $preparada->bindValue(':folio', $pedido_pendiente['folio']);
+                    $preparada->bindValue(':folio', $pedido_pendiente['Pedido']);
+                    $preparada->execute();
+                    $id_pedido_repartidor = $conexion->lastInsertId();
+
+                    $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio, Extra1) VALUES (:folio, :responsable, FORMAT(GETDATE(), 'yyyy-MM-dd'), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ), :id_pedido_repartidor )");
+                    $preparada->bindValue(':folio', $pedido_pendiente['Pedido']);
+                    $preparada->bindValue(':responsable', $_POST['clave']);
+                    $preparada->bindValue(':id_pedido_repartidor', $id_pedido_repartidor);
                     $preparada->execute();
                 }
             }
-
         }
 
         $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NULL');
@@ -237,14 +245,16 @@
             $id_ruta_reparto = $rutas_repartidores[0]['id'];
         }
 
-        $preparada = $conexion->prepare('INSERT INTO pedidos_repartidores VALUES (:ruta_repartidor,:folio,NULL)');
+        $preparada = $conexion->prepare('INSERT INTO pedidos_repartidores VALUES (:ruta_repartidor,:folio,NULL, NULL)');
         $preparada->bindValue(':ruta_repartidor', $id_ruta_reparto);
         $preparada->bindValue(':folio', $_POST['folio']);
         $preparada->execute();
+        $id_pedido_nuevo = $conexion->lastInsertId();
 
-        $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio) VALUES (:folio, :responsable, FORMAT(GETDATE(), 'yyyy-MM-dd'), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ) )");
+        $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio, Extra1) VALUES (:folio, :responsable, FORMAT(GETDATE(), 'yyyy-MM-dd'), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ), :id_pedido_nuevo )");
         $preparada->bindValue(':folio', $_POST['folio']);
         $preparada->bindValue(':responsable', $_POST['clave']);
+        $preparada->bindValue(':id_pedido_nuevo', $id_pedido_nuevo);
         $preparada->execute();
 
         $resultado["status"] = 0;
