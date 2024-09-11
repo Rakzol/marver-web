@@ -28,23 +28,29 @@
         $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['Folio'];
 
         //???????????????????????????????????
-        $preparada = $conexion->prepare("SELECT Pedido, Extra1 FROM EnvioPedidoCliente WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 IS NULL");
+        $preparada = $conexion->prepare("SELECT Pedido, Extra1 FROM EnvioPedidoCliente WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 = 'PENDIENTE'");
         $preparada->bindValue(':pedido', $pedido);
         $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
         $EnvioPedidoCliente = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-        $preparada = $conexion->prepare("DELETE EnvioPedidoCliente WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 IS NULL");
+        $preparada = $conexion->prepare("DELETE EnvioPedidoCliente WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 = 'PENDIENTE'");
         $preparada->bindValue(':pedido', $pedido);
         $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
 
-        $preparada = $conexion->prepare("DELETE pedidos_repartidores WHERE id = :id");
+        $preparada = $conexion->prepare("SELECT ruta_repartidor FROM pedidos_repartidores WHERE id = :id");
         $preparada->bindValue(':id', $EnvioPedidoCliente['Extra1']);
         $preparada->execute();
+        $rutaRepartidor = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
+        /* Si tenia un pedido 'PENDIENTE' quiere decir que tiene una ruta sin iniciar entonces a esa se le resetea todo */
         $preparada = $conexion->prepare("UPDATE rutas_repartidores SET fecha_inicio = NULL, fecha_fin = NULL, ruta = NULL WHERE id = :ruta_repartidor");
-        $preparada->bindValue(':ruta_repartidor', $pedido_repartidor['ruta_repartidor']);
+        $preparada->bindValue(':ruta_repartidor', $rutaRepartidor['ruta_repartidor']);
+        $preparada->execute();
+
+        $preparada = $conexion->prepare("DELETE pedidos_repartidores WHERE id = :id");
+        $preparada->bindValue(':id', $EnvioPedidoCliente['Extra1']);
         $preparada->execute();
 
         $resultado["status"] = 0;
