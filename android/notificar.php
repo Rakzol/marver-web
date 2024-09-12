@@ -76,14 +76,7 @@
     }
 
     function notificar($celular, $cliente, $vendedor, $repartidor){
-        if( is_null($celular) ){
-            return;
-            /*$resultado["status"] = 4;
-            $resultado["mensaje"] = "Error al notificar, no tiene numero celular";
-            echo json_encode($resultado);
-            exit();*/
-        }
-        if( $celular == '' ){
+        if( !$celular ){
             return;
             /*$resultado["status"] = 4;
             $resultado["mensaje"] = "Error al notificar, no tiene numero celular";
@@ -162,7 +155,7 @@
 
         $response = json_decode(curl_exec($curl), true);
 
-        if( $response == false ){
+        if( !$response ){
             return;
             /*$resultado["status"] = 4;
             $resultado["mensaje"] = "Error al notificar";

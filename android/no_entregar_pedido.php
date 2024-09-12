@@ -33,19 +33,18 @@ try {
     $preparada->execute();
     $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    $preparada = $conexion->prepare("SELECT TOP 1 latitud, longitud FROM posiciones WHERE usuario = :vendedor ORDER BY fecha DESC;");
+    /*$preparada = $conexion->prepare("SELECT TOP 1 latitud, longitud FROM posiciones WHERE usuario = :vendedor ORDER BY fecha DESC;");
     $preparada->bindValue(':vendedor', $_POST['clave']);
     $preparada->execute();
     $posicionRepartidor = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
     $distancia_de_cliente = \GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => $pedido['latitud'], 'lng' => $pedido['longitud']], ['lat' => $posicionRepartidor['latitud'], 'lng' => $posicionRepartidor['longitud']]);
-    /* Verificamos si esta fuera de la ubicacion del cliente para nodejarlo entregar el pedido si se salio de ella */
     if ($distancia_de_cliente > 50) {
         $resultado["status"] = 1;
         $resultado["mensaje"] = "Se encuentra lejos de la ubicacion del cliente";
         echo json_encode($resultado);
         exit();
-    }
+    }*/
 
     $preparada = $conexion->prepare("SELECT Extra1 FROM EnvioPedidoCliente WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 = 'EN RUTA'");
     $preparada->bindValue(':pedido', $pedido['Folio']);
@@ -53,7 +52,7 @@ try {
     $preparada->execute();
     $EnvioPedidoCliente = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    $preparada = $conexion->prepare("UPDATE EnvioPedidoCliente SET Extra2 = 'ENTREGADO' WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 = 'EN RUTA'");
+    $preparada = $conexion->prepare("UPDATE EnvioPedidoCliente SET Extra2 = 'NO ENTREGADO' WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 = 'EN RUTA'");
     $preparada->bindValue(':pedido', $pedido['Folio']);
     $preparada->bindValue(':repartidor', $_POST['clave']);
     $preparada->execute();
@@ -63,12 +62,12 @@ try {
     $preparada->execute();
 
     /*
-    $preparada = $conexion->prepare("UPDATE Ventas SET Status = 18 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
+    $preparada = $conexion->prepare("UPDATE Ventas SET Status = 19 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
     $preparada->bindValue(':folio', $_POST['folio']);
     $preparada->bindValue(':comprobante', $_POST['comprobante']);
     $preparada->execute();
 
-    $preparada = $conexion->prepare("UPDATE Preventa SET Status = 18 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
+    $preparada = $conexion->prepare("UPDATE Preventa SET Status = 19 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
     $preparada->bindValue(':folio', $_POST['folio']);
     $preparada->bindValue(':comprobante', $_POST['comprobante']);
     $preparada->execute();

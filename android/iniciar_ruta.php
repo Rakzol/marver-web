@@ -23,9 +23,9 @@
         $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
 
-        $rutas_iniciadas = $preparada->fetchAll(PDO::FETCH_ASSOC);
-        if( count($rutas_iniciadas) > 0 ){
-            $ruta_reparto = $rutas_iniciadas[0]['id'];
+        $rutas_iniciables = $preparada->fetchAll(PDO::FETCH_ASSOC);
+        if( count($rutas_iniciables) > 0 ){
+            $ruta_iniciable = $rutas_iniciables[0]['id'];
 
             $preparada = $conexion->prepare("
                 SELECT pr.id, pr.folio, cp.latitud, cp.longitud FROM pedidos_repartidores pr
@@ -33,7 +33,7 @@
                 INNER JOIN clientes_posiciones cp ON cp.clave = pc.Cliente
                 WHERE pr.ruta_repartidor = :ruta_repartidor ORDER BY pr.folio;
             ");
-            $preparada->bindValue(':ruta_repartidor', $ruta_reparto);
+            $preparada->bindValue(':ruta_repartidor', $ruta_iniciable);
             $preparada->execute();
             $pedidos_repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC);
 
@@ -122,11 +122,11 @@
 
             $preparada = $conexion->prepare('UPDATE rutas_repartidores SET ruta = :ruta, fecha_inicio = GETDATE() WHERE id = :id;');
             $preparada->bindValue(':ruta', $respuesta);
-            $preparada->bindValue(':id', $ruta_reparto);
+            $preparada->bindValue(':id', $ruta_iniciable);
             $preparada->execute();
             
             $preparada = $conexion->prepare('SELECT fecha_inicio FROM rutas_repartidores WHERE id = :id;');
-            $preparada->bindValue(':id', $ruta_reparto);
+            $preparada->bindValue(':id', $ruta_iniciable);
             $preparada->execute(); 
 
             $fecha = DateTime::createFromFormat('Y-m-d H:i:s.u', $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['fecha_inicio']);
