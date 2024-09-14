@@ -43,15 +43,12 @@
             LEFT JOIN clientes_posiciones ON clientes_posiciones.clave = PedidosCliente.Cliente
             LEFT JOIN MoviemientosVenta ON MoviemientosVenta.Folio = PedidosCliente.FolioComprobante AND MoviemientosVenta.TipoComprobante = 11 AND MoviemientosVenta.Importe < 0
             WHERE
-            Responsable = :vendedor_1
-            AND EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
-
+            EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE()) AND EnvioPedidoCliente.Extra2 = 'EN RUTA'
+            AND Responsable = :vendedor
             ORDER BY folio DESC
         ");
-        //AND EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
-        //AND Ventas.Status = 4
-        $preparada->bindValue(':vendedor_1', $_POST['clave']);
-        $preparada->bindValue(':vendedor_2', $_POST['clave']);
+
+        $preparada->bindValue(':vendedor', $_POST['clave']);
         $preparada->execute();
 
         echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);

@@ -21,13 +21,26 @@ try {
     }
 
     $preparada = $conexion->prepare("
-            SELECT EnvioPedidoCliente.Responsable, clientes_posiciones.latitud, clientes_posiciones.longitud, PedidosCliente.Cliente
-            FROM PedidosCliente
-            LEFT JOIN EnvioPedidoCliente
-            ON EnvioPedidoCliente.Pedido = PedidosCliente.Folio AND ( EnvioPedidoCliente.Extra2 = 'PENDIENTE' OR EnvioPedidoCliente.Extra2 = 'EN RUTA' OR EnvioPedidoCliente.Extra2 = 'ENTREGADO' )
-            LEFT JOIN clientes_posiciones
-            ON clientes_posiciones.clave = PedidosCliente.Cliente
-            WHERE PedidosCliente.Folio = :folio
+        SELECT
+        en.Responsable,
+        pc.Folio,
+        pc.Cliente,
+        CASE WHEN pc.FolioComprobante > 0
+            THEN cn.latitud
+            ELSE ce.latitud
+        END AS latitud,
+        CASE WHEN pc.FolioComprobante > 0
+            THEN cn.longitud
+            ELSE ce.longitud
+        END AS longitud
+        FROM PedidosCliente pc
+        LEFT JOIN EnvioPedidoCliente en
+        ON en.Pedido = pc.Folio AND ( en.Extra2 = 'PENDIENTE' OR en.Extra2 = 'EN RUTA' OR en.Extra2 = 'ENTREGADO' OR en.Extra2 = 'ENTREGADO FINALIZADO' )
+        LEFT JOIN clientes_posiciones cn
+        ON cn.clave = pc.Cliente
+        LEFT JOIN ubicaciones_especiales ce
+        ON ce.clave = pc.Cliente
+        WHERE Folio = :folio;
         ");
     $preparada->bindValue(':folio', $_POST['folio']);
     $preparada->execute();
@@ -66,7 +79,7 @@ try {
                 de que se transfirio a otra ruta para ese pedido y lo agregamos de nuevo con otra id en Extra1 despues de agregar el que sera su id en pedidos_repartidores :D 
                 manteniendo su Extra2 */
     $preparada = $conexion->prepare("
-                SELECT Pedido, Extra2
+                SELECT Pedido, Responsable, Fecha, HoraEnvio, HoraSalida, Extra2
                 FROM EnvioPedidoCliente
                 WHERE Responsable = :repartidor AND ( Extra2 = 'PENDIENTE' OR Extra2 = 'EN RUTA' )
             ");
@@ -97,9 +110,12 @@ try {
             $preparada->execute();
             $id_pedido_repartidor = $conexion->lastInsertId();
 
-            $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio, Extra1, Extra2) VALUES (:folio, :responsable, FORMAT(GETDATE(), 'yyyy-MM-dd'), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ), :id_pedido_repartidor, :status )");
+            $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio, HoraSalida, Extra1, Extra2) VALUES (:folio, :responsable, :fecha, :hora_envio, :hora_salida, :id_pedido_repartidor, :status )");
             $preparada->bindValue(':folio', $pedido_pendiente['Pedido']);
-            $preparada->bindValue(':responsable', $_POST['clave']);
+            $preparada->bindValue(':responsable', $pedido_pendiente['Responsable']);
+            $preparada->bindValue(':fecha', $pedido_pendiente['Fecha']);
+            $preparada->bindValue(':hora_envio', $pedido_pendiente['HoraEnvio']);
+            $preparada->bindValue(':hora_salida', $pedido_pendiente['HoraSalida']);
             $preparada->bindValue(':id_pedido_repartidor', $id_pedido_repartidor);
             $preparada->bindValue(':status', $pedido_pendiente['Extra2']);
             $preparada->execute();
