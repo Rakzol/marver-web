@@ -28,7 +28,7 @@ try {
     $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['Folio'];
 
     //???????????????????????????????????
-    $preparada = $conexion->prepare("SELECT Pedido, Extra1 FROM EnvioPedidoCliente WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 = 'PENDIENTE'");
+    $preparada = $conexion->prepare("SELECT Extra1 FROM EnvioPedidoCliente WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 = 'PENDIENTE'");
     $preparada->bindValue(':pedido', $pedido);
     $preparada->bindValue(':repartidor', $_POST['clave']);
     $preparada->execute();
