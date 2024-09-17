@@ -20,22 +20,14 @@ try {
         exit();
     }
 
-    /* Obtenemos el folio del pedido basandonos en el folio de comprobante y tipo de comprobante, tanto de venta como de preventa */
-    $preparada = $conexion->prepare("SELECT Folio FROM PedidosCliente WHERE FolioComprobante = :folio AND Tipocomprobante = :comprobante;");
-    $preparada->bindValue(':folio', $_POST['folio']);
-    $preparada->bindValue(':comprobante', $_POST['comprobante']);
-    $preparada->execute();
-    $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['Folio'];
-
-    //???????????????????????????????????
     $preparada = $conexion->prepare("SELECT Extra1 FROM EnvioPedidoCliente WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 = 'PENDIENTE'");
-    $preparada->bindValue(':pedido', $pedido);
+    $preparada->bindValue(':pedido', $_POST['folio']);
     $preparada->bindValue(':repartidor', $_POST['clave']);
     $preparada->execute();
     $EnvioPedidoCliente = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
     $preparada = $conexion->prepare("DELETE EnvioPedidoCliente WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 = 'PENDIENTE'");
-    $preparada->bindValue(':pedido', $pedido);
+    $preparada->bindValue(':pedido', $_POST['folio']);
     $preparada->bindValue(':repartidor', $_POST['clave']);
     $preparada->execute();
 
@@ -53,7 +45,7 @@ try {
     $preparada->execute();
 
     $resultado["status"] = 0;
-    $resultado["mensaje"] = "El pedido con el folio: " . $pedido . " se elimino correctamente";
+    $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " se elimino correctamente";
     echo json_encode($resultado);
 
     // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
@@ -61,6 +53,6 @@ try {
     // header('HTTP/1.1 500 ' . $exception->getMessage());
 
     $resultado["status"] = 5;
-    $resultado["mensaje"] = "El pedido con el folio: " . $pedido . " no es valido";
+    $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " no es valido";
     echo json_encode($resultado);
 }

@@ -28,9 +28,22 @@
             $ruta_iniciable = $rutas_iniciables[0]['id'];
 
             $preparada = $conexion->prepare("
-                SELECT pr.id, pr.folio, cp.latitud, cp.longitud FROM pedidos_repartidores pr
+                SELECT
+                pr.id,
+                CASE WHEN pc.FolioComprobante > 0
+                    THEN cn.latitud
+                    ELSE ce.latitud
+                END AS Latitud,
+                CASE WHEN pc.FolioComprobante > 0
+                    THEN cn.longitud
+                    ELSE ce.longitud
+                END AS Longitud
+                FROM pedidos_repartidores pr
                 INNER JOIN PedidosCliente pc ON pc.Folio = pr.folio 
-                INNER JOIN clientes_posiciones cp ON cp.clave = pc.Cliente
+                LEFT JOIN clientes_posiciones cn
+                ON cn.clave = pc.Cliente
+                LEFT JOIN ubicaciones_especiales ce
+                ON ce.clave = pc.Cliente
                 WHERE pr.ruta_repartidor = :ruta_repartidor ORDER BY pr.folio;
             ");
             $preparada->bindValue(':ruta_repartidor', $ruta_iniciable);
@@ -47,12 +60,12 @@
             );
 
             foreach($pedidos_repartidor as $pedido_repartidor){
-                if( $pedido_repartidor['latitud'] != 0 && $pedido_repartidor['longitud'] != 0 ){
+                if( $pedido_repartidor['Latitud'] != 0 && $pedido_repartidor['Longitud'] != 0 ){
                     $intermediarios[] = array(
                         'location' => array(
                             'latLng' => array(
-                                'latitude' => $pedido_repartidor['latitud'],
-                                'longitude' => $pedido_repartidor['longitud']
+                                'latitude' => $pedido_repartidor['Latitud'],
+                                'longitude' => $pedido_repartidor['Longitud']
                             )
                         )
                     );

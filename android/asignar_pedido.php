@@ -23,24 +23,23 @@ try {
     $preparada = $conexion->prepare("
         SELECT
         en.Responsable,
-        pc.Folio,
         pc.Cliente,
         CASE WHEN pc.FolioComprobante > 0
             THEN cn.latitud
             ELSE ce.latitud
-        END AS latitud,
+        END AS Latitud,
         CASE WHEN pc.FolioComprobante > 0
             THEN cn.longitud
             ELSE ce.longitud
-        END AS longitud
+        END AS Longitud
         FROM PedidosCliente pc
         LEFT JOIN EnvioPedidoCliente en
-        ON en.Pedido = pc.Folio AND ( en.Extra2 = 'PENDIENTE' OR en.Extra2 = 'EN RUTA' OR en.Extra2 = 'ENTREGADO' OR en.Extra2 = 'ENTREGADO FINALIZADO' )
+        ON en.Pedido = pc.Folio AND ( en.Extra2 != 'NO ENTREGADO REENVIADO' AND en.Extra2 != 'SIGUIENTE RUTA' )
         LEFT JOIN clientes_posiciones cn
         ON cn.clave = pc.Cliente
         LEFT JOIN ubicaciones_especiales ce
         ON ce.clave = pc.Cliente
-        WHERE Folio = :folio;
+        WHERE pc.Folio = :folio;
         ");
     $preparada->bindValue(':folio', $_POST['folio']);
     $preparada->execute();
@@ -53,7 +52,7 @@ try {
         exit();
     }
 
-    if (!$pedido[0]['latitud'] || !$pedido[0]['longitud']) {
+    if (!$pedido[0]['Latitud'] || !$pedido[0]['Longitud']) {
         $resultado["status"] = 3;
         $resultado["mensaje"] = "El cliente con la clave: " . $pedido[0]['Cliente'] . " no tiene ubicacion en el mapa";
         echo json_encode($resultado);
