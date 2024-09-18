@@ -43,8 +43,8 @@ try {
     $preparada->execute();
     $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    $preparada = $conexion->prepare("SELECT TOP 1 latitud, longitud FROM posiciones WHERE usuario = :repartidor ORDER BY fecha DESC;");
-    $preparada->bindValue(':repartidor', $_POST['clave']);
+    $preparada = $conexion->prepare("SELECT TOP 1 latitud, longitud FROM posiciones WHERE usuario = :vendedor ORDER BY fecha DESC;");
+    $preparada->bindValue(':vendedor', $_POST['clave']);
     $preparada->execute();
     $posicionRepartidor = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
@@ -63,7 +63,7 @@ try {
     $preparada->execute();
     $EnvioPedidoCliente = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    $preparada = $conexion->prepare("UPDATE EnvioPedidoCliente SET Extra2 = 'ENTREGADO' WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 = 'EN RUTA'");
+    $preparada = $conexion->prepare("UPDATE EnvioPedidoCliente SET Extra2 = 'RECHAZADO' WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 = 'EN RUTA'");
     $preparada->bindValue(':pedido', $_POST['folio']);
     $preparada->bindValue(':repartidor', $_POST['clave']);
     $preparada->execute();
@@ -73,19 +73,19 @@ try {
     $preparada->execute();
 
     /* ?????? */
-    $preparada = $conexion->prepare("UPDATE Ventas SET Status = 18 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
+    $preparada = $conexion->prepare("UPDATE Ventas SET Status = 20 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
     $preparada->bindValue(':folio', $pedido['FolioComprobante']);
     $preparada->bindValue(':comprobante', $pedido['Tipocomprobante']);
     $preparada->execute();
 
-    $preparada = $conexion->prepare("UPDATE Preventa SET Status = 18 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
+    $preparada = $conexion->prepare("UPDATE Preventa SET Status = 20 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
     $preparada->bindValue(':folio', $pedido['FolioComprobante']);
     $preparada->bindValue(':comprobante', $pedido['Tipocomprobante']);
     $preparada->execute();
     /* ?????? */
 
     $resultado["status"] = 0;
-    $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " se entrego correctamente";
+    $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " se marco como rechazado, correctamente";
     echo json_encode($resultado);
 
     // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);

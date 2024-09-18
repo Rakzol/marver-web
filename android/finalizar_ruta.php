@@ -23,8 +23,8 @@ try {
         exit();
     }
 
-    $preparada = $conexion->prepare("SELECT TOP 1 latitud, longitud FROM posiciones WHERE usuario = :vendedor ORDER BY fecha DESC;");
-    $preparada->bindValue(':vendedor', $_POST['clave']);
+    $preparada = $conexion->prepare("SELECT TOP 1 latitud, longitud FROM posiciones WHERE usuario = :repartidor ORDER BY fecha DESC;");
+    $preparada->bindValue(':repartidor', $_POST['clave']);
     $preparada->execute();
     $posicion = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 

@@ -148,6 +148,12 @@ try {
     $preparada->bindValue(':id_pedido_nuevo', $id_pedido_nuevo);
     $preparada->execute();
 
+    /* ????? */
+    $preparada = $conexion->prepare("UPDATE PedidosCliente SET Status = 'E' WHERE Folio = :pedido");
+    $preparada->bindValue(':pedido', $_POST['folio']);
+    $preparada->execute();
+    /* ?????? */
+
     $resultado["status"] = 0;
     $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " se asigno correctamente";
     echo json_encode($resultado);
