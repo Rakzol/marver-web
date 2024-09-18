@@ -39,6 +39,14 @@
                 ELSE ce.longitud
             END AS longitud,
             CASE WHEN PedidosCliente.FolioComprobante > 0
+                THEN cn.calle
+                ELSE ce.calle
+            END AS calle,
+            CASE WHEN PedidosCliente.FolioComprobante > 0
+                THEN cn.codigo_postal
+                ELSE ce.codigo_postal
+            END AS codigoPostal,
+            CASE WHEN PedidosCliente.FolioComprobante > 0
                 THEN cn.numero_exterior
                 ELSE ce.numero_exterior
             END AS numeroExterior,
@@ -50,14 +58,6 @@
                 THEN cn.observaciones
                 ELSE ce.observaciones
             END AS observaciones,
-            CASE WHEN PedidosCliente.FolioComprobante > 0
-                THEN cn.calle
-                ELSE ce.calle
-            END AS calle,
-            CASE WHEN PedidosCliente.FolioComprobante > 0
-                THEN cn.codigo_postal
-                ELSE ce.codigo_postal
-            END AS codigoPostal,
 			MoviemientosVenta.Importe * -1 AS feria
             FROM
             EnvioPedidoCliente
