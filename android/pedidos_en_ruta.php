@@ -22,6 +22,7 @@
             SELECT
             REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) , ' ', EnvioPedidoCliente.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) AS fecha,
             EnvioPedidoCliente.Pedido AS pedido,
+            PedidosCliente.Observacion AS observacionesPedido,
             PedidosCliente.Tipocomprobante AS tipoComprobante,
             PedidosCliente.FolioComprobante AS folioComprobante,
             Clientes.Clave AS clienteClave,
@@ -57,7 +58,7 @@
             CASE WHEN PedidosCliente.FolioComprobante > 0
                 THEN cn.observaciones
                 ELSE ce.observaciones
-            END AS observaciones,
+            END AS observacionesUbicacion,
 			MoviemientosVenta.Importe * -1 AS feria
             FROM
             EnvioPedidoCliente
