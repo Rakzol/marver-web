@@ -21,26 +21,6 @@
 
         $nombre = explode(".", $_POST['nombre'])[0];
 
-        $preparada = $conexion->prepare("SELECT Responsable FROM EnvioPedidoCliente INNER JOIN PedidosCliente ON PedidosCliente.Folio = EnvioPedidoCliente.Pedido WHERE PedidosCliente.FolioComprobante = :folio AND PedidosCliente.Tipocomprobante = :comprobante;");
-        $preparada->bindValue(':folio', explode("c", $nombre )[0] );
-        $preparada->bindValue(':comprobante', explode("c", $nombre )[1] );
-        $preparada->execute();
-
-        $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC);
-        if( count($pedido) == 0 ){
-            $resultado["status"] = 2;
-            $resultado["mensaje"] = "El pedido con el folio: " . $nombre . " no esta asignado";
-            echo json_encode($resultado);
-            exit();
-        }
-
-        if( $pedido[0]['Responsable'] != $_POST['clave'] ){
-            $resultado["status"] = 3;
-            $resultado["mensaje"] = "El pedido con el folio: " . $nombre . " ya esta asignado al repartidor: " . $pedido[0]['Responsable'];
-            echo json_encode($resultado);
-            exit();
-        }
-
         /*$sin_espacios = str_replace(" ", "", $_POST['foto']);
         $sin_salto = str_replace("\n", "", $sin_espacios);
         $sin_reseteo = str_replace("\r", "", $sin_salto);*/
@@ -51,14 +31,8 @@
             exit();
         }
 
-        $preparada = $conexion->prepare("SELECT DATEDIFF(DAY, CONVERT(DATE, GETDATE()), FechaPedido) AS eliminar FROM PedidosCliente WHERE FolioComprobante = :folio AND Tipocomprobante = :comprobante;");
-        $preparada->bindValue(':folio', explode("c", $nombre )[0] );
-        $preparada->bindValue(':comprobante', explode("c", $nombre )[1] );
-        $preparada->execute();
-
         $resultado["status"] = 0;
-        $resultado["mensaje"] = "El pedido con el folio: " . $nombre . " se entrego correctamente";
-        //$resultado["eliminar"] = $preparada[0]['eliminar'];
+        $resultado["mensaje"] = "La foto para el Pedido: " . $nombre . " se subio correctamente";
         $resultado["eliminar"] = 1;
         echo json_encode($resultado);
 
