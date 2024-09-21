@@ -269,13 +269,13 @@
     
                 $respuesta = curl_exec($curl);
     
-                if ($respuesta == false) {
+                if (curl_errno($curl)) {
                     $resultado["status"] = 2;
                     $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
                     echo json_encode($resultado);
                     exit();
                 }
-                if (curl_errno($curl)) {
+                if ($respuesta == false) {
                     $resultado["status"] = 2;
                     $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
                     echo json_encode($resultado);

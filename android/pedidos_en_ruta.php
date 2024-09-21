@@ -26,8 +26,14 @@
             PedidosCliente.Observacion AS observacionesPedido,
             PedidosCliente.Tipocomprobante AS tipoComprobante,
             PedidosCliente.FolioComprobante AS folioComprobante,
-            Clientes.Clave AS clienteClave,
-            Clientes.Razon_Social AS clienteNombre,
+            CASE WHEN PedidosCliente.FolioComprobante > 0
+                THEN Clientes.Clave
+                ELSE ce.clave
+            END AS clienteClave,
+            CASE WHEN PedidosCliente.FolioComprobante > 0
+                THEN Clientes.Razon_Social
+                ELSE ce.nombre
+            END AS clienteNombre,
             EnvioPedidoCliente.Responsable AS repartidor,
             PedidosCliente.CodigosFacturado AS codigos,
             PedidosCliente.UnidadesFacturado AS piezas,
@@ -66,9 +72,9 @@
             INNER JOIN PedidosCliente ON PedidosCliente.Folio = EnvioPedidoCliente.Pedido
             LEFT JOIN Clientes ON Clientes.Clave = PedidosCliente.Cliente
             LEFT JOIN clientes_posiciones cn
-            ON cn.clave = pc.Cliente
+            ON cn.clave = PedidosCliente.Cliente
             LEFT JOIN ubicaciones_especiales ce
-            ON ce.clave = pc.Cliente
+            ON ce.clave = PedidosCliente.Cliente
             LEFT JOIN MoviemientosVenta ON MoviemientosVenta.Folio = PedidosCliente.FolioComprobante AND MoviemientosVenta.TipoComprobante = 11 AND MoviemientosVenta.Importe < 0
             WHERE
             EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE()) AND EnvioPedidoCliente.Extra2 = 'EN RUTA'
