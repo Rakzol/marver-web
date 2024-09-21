@@ -24,6 +24,7 @@ try {
         SELECT
         en.Responsable,
         pc.Cliente,
+        pc.FolioComprobante,
         CASE WHEN pc.FolioComprobante > 0
             THEN cn.latitud
             ELSE ce.latitud
@@ -142,11 +143,19 @@ try {
     $preparada->execute();
     $id_pedido_nuevo = $conexion->lastInsertId();
 
-    $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio, Extra1, Extra2) VALUES (:folio, :responsable, FORMAT(GETDATE(), 'yyyy-MM-dd'), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ), :id_pedido_nuevo, 'PENDIENTE' )");
-    $preparada->bindValue(':folio', $_POST['folio']);
-    $preparada->bindValue(':responsable', $_POST['clave']);
-    $preparada->bindValue(':id_pedido_nuevo', $id_pedido_nuevo);
-    $preparada->execute();
+    if($pedido[0]['FolioComprobante'] > 0){
+        $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio, Extra1, Extra2) VALUES (:folio, :responsable, FORMAT(GETDATE(), 'yyyy-MM-dd'), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ), :id_pedido_nuevo, 'PENDIENTE' )");
+        $preparada->bindValue(':folio', $_POST['folio']);
+        $preparada->bindValue(':responsable', $_POST['clave']);
+        $preparada->bindValue(':id_pedido_nuevo', $id_pedido_nuevo);
+        $preparada->execute();
+    }else{
+        $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio, HoraSalida, Extra1, Extra2) VALUES (:folio, :responsable, FORMAT(GETDATE(), 'yyyy-MM-dd'), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ), :id_pedido_nuevo, 'EN RUTA')");
+        $preparada->bindValue(':folio', $_POST['folio']);
+        $preparada->bindValue(':responsable', $_POST['clave']);
+        $preparada->bindValue(':id_pedido_nuevo', $id_pedido_nuevo);
+        $preparada->execute();
+    }
 
     /* ????? */
     $preparada = $conexion->prepare("UPDATE PedidosCliente SET Status = 'E' WHERE Folio = :pedido");
