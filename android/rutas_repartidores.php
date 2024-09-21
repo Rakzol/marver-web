@@ -1,12 +1,5 @@
 <?php
     try{
-
-        /*
-        
-        
-        
-        */
-
         require_once 'geometria/SphericalUtil.php';
         require_once 'geometria/PolyUtil.php';
         require_once 'geometria/MathUtil.php';
@@ -17,20 +10,6 @@
 
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
-
-        /*$preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Clave = :clave AND Contraseña = :contrasena');
-        $preparada->bindValue(':clave', $POST['clave']);
-        $preparada->bindValue(':contrasena', $POST['contraseña']);
-        $preparada->execute();
-
-        $usuarios = $preparada->fetchAll(PDO::FETCH_ASSOC);
-
-        if( count($usuarios) == 0 ){
-            $resultado["status"] = 1;
-            $resultado["mensaje"] = "El vendedor no existe";
-            echo json_encode($resultado);
-            exit();
-        }*/
 
         $repartidor_seguido = $POST['repartidor'];
 

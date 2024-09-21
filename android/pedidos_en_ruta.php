@@ -78,7 +78,7 @@
             LEFT JOIN MoviemientosVenta ON MoviemientosVenta.Folio = PedidosCliente.FolioComprobante AND MoviemientosVenta.TipoComprobante = 11 AND MoviemientosVenta.Importe < 0
             WHERE
             EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE()) AND EnvioPedidoCliente.Extra2 = 'EN RUTA'
-            AND Responsable = :repartidor
+            AND EnvioPedidoCliente.Responsable = :repartidor
             ORDER BY folio DESC
         ");
 

@@ -35,7 +35,7 @@ try {
         END AS Longitud
         FROM PedidosCliente pc
         LEFT JOIN EnvioPedidoCliente en
-        ON en.Pedido = pc.Folio AND ( en.Extra2 != 'NO ENTREGADO REENVIADO' AND en.Extra2 != 'SIGUIENTE RUTA' )
+        ON en.Pedido = pc.Folio AND en.Extra2 NOT IN ( 'NO ENTREGADO-REENVIADO', 'SIGUIENTE RUTA' )
         LEFT JOIN clientes_posiciones cn
         ON cn.clave = pc.Cliente
         LEFT JOIN ubicaciones_especiales ce
@@ -81,7 +81,7 @@ try {
     $preparada = $conexion->prepare("
                 SELECT Pedido, Responsable, Fecha, HoraEnvio, HoraSalida, Extra2
                 FROM EnvioPedidoCliente
-                WHERE Responsable = :repartidor AND ( Extra2 = 'PENDIENTE' OR Extra2 = 'EN RUTA' )
+                WHERE Responsable = :repartidor AND Extra2 IN ( 'PENDIENTE', 'EN RUTA' )
             ");
     $preparada->bindValue(':repartidor', $_POST['clave']);
     $preparada->execute();
@@ -98,7 +98,7 @@ try {
             $preparada = $conexion->prepare("
                         UPDATE EnvioPedidoCliente
                         SET Extra2 = 'SIGUIENTE RUTA'
-                        WHERE Responsable = :repartidor AND Pedido = :pedido AND ( Extra2 = 'PENDIENTE' OR Extra2 = 'EN RUTA' )
+                        WHERE Responsable = :repartidor AND Pedido = :pedido AND Extra2 IN ( 'PENDIENTE', 'EN RUTA' )
                     ");
             $preparada->bindValue(':repartidor', $_POST['clave']);
             $preparada->bindValue(':pedido', $pedido_pendiente['Pedido']);

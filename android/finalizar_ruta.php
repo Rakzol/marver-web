@@ -50,7 +50,7 @@ try {
         $preparada = $conexion->prepare("
                     SELECT Pedido, Responsable, Fecha, HoraEnvio, HoraSalida, Extra2
                     FROM EnvioPedidoCliente
-                    WHERE Responsable = :repartidor AND ( Extra2 = 'PENDIENTE' OR Extra2 = 'EN RUTA' )
+                    WHERE Responsable = :repartidor AND Extra2 IN ( 'PENDIENTE', 'EN RUTA' )
                 ");
         $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
@@ -67,7 +67,7 @@ try {
                 $preparada = $conexion->prepare("
                             UPDATE EnvioPedidoCliente
                             SET Extra2 = 'SIGUIENTE RUTA'
-                            WHERE Responsable = :repartidor AND Pedido = :pedido AND ( Extra2 = 'PENDIENTE' OR Extra2 = 'EN RUTA' )
+                            WHERE Responsable = :repartidor AND Pedido = :pedido AND Extra2 IN ( 'PENDIENTE', 'EN RUTA' )
                         ");
                 $preparada->bindValue(':repartidor', $_POST['clave']);
                 $preparada->bindValue(':pedido', $pedido_pendiente['Pedido']);

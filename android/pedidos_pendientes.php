@@ -21,34 +21,68 @@
         $preparada = $conexion->prepare("
             SELECT
             REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, EnvioPedidoCliente.Fecha) , ' ', EnvioPedidoCliente.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) AS fecha,
-            PedidosCliente.Tipocomprobante AS comprobante,
-            PedidosCliente.FolioComprobante AS folio,
-            Clientes.Clave AS cliente_clave,
-            Clientes.Razon_Social AS cliente_nombre,
-            EnvioPedidoCliente.Responsable AS vendedor,
+            EnvioPedidoCliente.Pedido AS pedido,
+            EnvioPedidoCliente.Extra1 AS pedidoRepartidor,
+            PedidosCliente.Observacion AS observacionesPedido,
+            PedidosCliente.Tipocomprobante AS tipoComprobante,
+            PedidosCliente.FolioComprobante AS folioComprobante,
+            CASE WHEN PedidosCliente.FolioComprobante > 0
+                THEN Clientes.Clave
+                ELSE ce.clave
+            END AS clienteClave,
+            CASE WHEN PedidosCliente.FolioComprobante > 0
+                THEN Clientes.Razon_Social
+                ELSE ce.nombre
+            END AS clienteNombre,
+            EnvioPedidoCliente.Responsable AS repartidor,
             PedidosCliente.CodigosFacturado AS codigos,
             PedidosCliente.UnidadesFacturado AS piezas,
             PedidosCliente.TotalFacturado AS total,
-            clientes_posiciones.latitud AS latitud,
-			clientes_posiciones.longitud AS longitud,
-			clientes_posiciones.numero_exterior AS numero_exterior,
-			clientes_posiciones.numero_interior AS numero_interior,
-			clientes_posiciones.observaciones AS observaciones,
-			clientes_posiciones.calle AS calle,
-            NULL feria
+            CASE WHEN PedidosCliente.FolioComprobante > 0
+                THEN cn.latitud
+                ELSE ce.latitud
+            END AS latitud,
+            CASE WHEN PedidosCliente.FolioComprobante > 0
+                THEN cn.longitud
+                ELSE ce.longitud
+            END AS longitud,
+            CASE WHEN PedidosCliente.FolioComprobante > 0
+                THEN cn.calle
+                ELSE ce.calle
+            END AS calle,
+            CASE WHEN PedidosCliente.FolioComprobante > 0
+                THEN cn.codigo_postal
+                ELSE ce.codigo_postal
+            END AS codigoPostal,
+            CASE WHEN PedidosCliente.FolioComprobante > 0
+                THEN cn.numero_exterior
+                ELSE ce.numero_exterior
+            END AS numeroExterior,
+            CASE WHEN PedidosCliente.FolioComprobante > 0
+                THEN cn.numero_interior
+                ELSE ce.numero_interior
+            END AS numeroInterior,
+            CASE WHEN PedidosCliente.FolioComprobante > 0
+                THEN cn.observaciones
+                ELSE ce.observaciones
+            END AS observacionesUbicacion,
+			MoviemientosVenta.Importe * -1 AS feria
             FROM
             EnvioPedidoCliente
             INNER JOIN PedidosCliente ON PedidosCliente.Folio = EnvioPedidoCliente.Pedido
-            INNER JOIN Clientes ON Clientes.Clave = PedidosCliente.Cliente
-            LEFT JOIN clientes_posiciones ON clientes_posiciones.clave = PedidosCliente.Cliente
-
+            LEFT JOIN Clientes ON Clientes.Clave = PedidosCliente.Cliente
+            LEFT JOIN clientes_posiciones cn
+            ON cn.clave = PedidosCliente.Cliente
+            LEFT JOIN ubicaciones_especiales ce
+            ON ce.clave = PedidosCliente.Cliente
+            LEFT JOIN MoviemientosVenta ON MoviemientosVenta.Folio = PedidosCliente.FolioComprobante AND MoviemientosVenta.TipoComprobante = 11 AND MoviemientosVenta.Importe < 0
             WHERE
-            EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE())
-            AND Responsable = :vendedor
+            EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE()) AND EnvioPedidoCliente.Extra2 = 'PENDIENTE'
+            AND EnvioPedidoCliente.Responsable = :repartidor
             ORDER BY folio DESC
         ");
 
-        $preparada->bindValue(':vendedor', $_POST['clave']);
+        $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
 
         echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
