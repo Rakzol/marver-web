@@ -66,7 +66,7 @@
                 THEN cn.observaciones
                 ELSE ce.observaciones
             END AS observacionesUbicacion,
-			MoviemientosVenta.Importe * -1 AS feria
+			MoviemientosVenta.Feria + (MoviemientosVenta.Importe * -1) AS feria
             FROM
             EnvioPedidoCliente
             INNER JOIN PedidosCliente ON PedidosCliente.Folio = EnvioPedidoCliente.Pedido

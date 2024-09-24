@@ -66,7 +66,7 @@
                 THEN cn.observaciones
                 ELSE ce.observaciones
             END AS observacionesUbicacion,
-			MoviemientosVenta.Importe * -1 AS feria
+			NULL AS feria
             FROM
             EnvioPedidoCliente
             INNER JOIN PedidosCliente ON PedidosCliente.Folio = EnvioPedidoCliente.Pedido
@@ -75,7 +75,6 @@
             ON cn.clave = PedidosCliente.Cliente
             LEFT JOIN ubicaciones_especiales ce
             ON ce.clave = PedidosCliente.Cliente
-            LEFT JOIN MoviemientosVenta ON MoviemientosVenta.Folio = PedidosCliente.FolioComprobante AND MoviemientosVenta.TipoComprobante = 11 AND MoviemientosVenta.Importe < 0
             WHERE
             EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE()) AND EnvioPedidoCliente.Extra2 = 'PENDIENTE'
             AND EnvioPedidoCliente.Responsable = :repartidor

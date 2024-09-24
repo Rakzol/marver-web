@@ -116,6 +116,7 @@ try {
                 )
             );
 
+            $json_envio['travelMode'] = "TWO_WHEELER";
             $json_envio['routingPreference'] = "TRAFFIC_AWARE";
             $json_envio['optimizeWaypointOrder'] = true;
 

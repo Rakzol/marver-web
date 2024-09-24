@@ -84,6 +84,7 @@
                 )
             );
 
+            $json_envio['travelMode'] = "TWO_WHEELER";
             $json_envio['routingPreference'] = "TRAFFIC_AWARE";
             $json_envio['optimizeWaypointOrder'] = true;
 
@@ -141,36 +142,74 @@
             $preparada = $conexion->prepare('SELECT fecha_inicio FROM rutas_repartidores WHERE id = :id;');
             $preparada->bindValue(':id', $ruta_iniciable);
             $preparada->execute(); 
+            $fecha_inicio = $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['fecha_inicio'];
 
-            $fecha = DateTime::createFromFormat('Y-m-d H:i:s.u', $preparada->fetchAll(PDO::FETCH_ASSOC)[0]['fecha_inicio']);
-
-            $indice_leg = 0;
+            $indice_leg = -1;
+            $segundos_estimados_sumatoria = 0;
+            $metros_estimados_sumatoria = 0;
             foreach( $rutas['routes'][0]['optimizedIntermediateWaypointIndex'] as $indice_pedido ){
-    
+
+                $indice_leg++;
                 if( $indice_pedido == -1 ){
-    
-                    $segundos = intval( substr($rutas['routes'][0]['legs'][0]['duration'], 0, -1) );
-                    $fecha->modify('+' . $segundos . ' seconds');
-
-                    $preparada = $conexion->prepare('UPDATE pedidos_repartidores SET llegada_estimada = :llegada_estimada WHERE id = :id');
-                    $preparada->bindValue(':llegada_estimada', $fecha->format('Y-m-d H:i:s'));
-                    $preparada->bindValue(':id', $pedidos_repartidor[0]['id']);
-                    $preparada->execute();
-    
-                }else{
-    
-                    $segundos = intval( substr($rutas['routes'][0]['legs'][$indice_leg]['duration'], 0, -1) ) + ( $indice_leg > 0 ? 180 : 0 );
-                    $fecha->modify('+' . $segundos . ' seconds');
-
-                    $preparada = $conexion->prepare('UPDATE pedidos_repartidores SET llegada_estimada = :llegada_estimada WHERE id = :id');
-                    $preparada->bindValue(':llegada_estimada', $fecha->format('Y-m-d H:i:s'));
-                    $preparada->bindValue(':id', $pedidos_repartidor[$indice_pedido]['id']);
-                    $preparada->execute();
-
-                    $indice_leg++;
+                    $indice_pedido = 0;
                 }
+
+                $segundos_estimados = intval( substr($rutas['routes'][0]['legs'][$indice_leg]['duration'], 0, -1) ) + ( $indice_leg > 0 ? 180 : 0 );
+                $segundos_estimados_sumatoria += $segundos_estimados;
+                $fecha_llegada_estimada = DateTime::createFromFormat('Y-m-d H:i:s.u', $fecha_inicio);
+                $fecha_llegada_estimada->modify('+' . $segundos_estimados_sumatoria . ' seconds');
+                $metros_estimados = $rutas['routes'][0]['legs'][$indice_leg]['distanceMeters'];
+                $metros_estimados_sumatoria += $metros_estimados;
+
+                $preparada = $conexion->prepare('
+                    UPDATE pedidos_repartidores SET
+                    indice = :indice,
+                    fecha_llegada_estimada = :fecha_llegada_estimada,
+                    segundos_estimados = :segundos_estimados,
+                    segundos_estimados_sumatoria = :segundos_estimados_sumatoria,
+                    metros_estimados = :metros_estimados,
+                    metros_estimados_sumatoria = :metros_estimados_sumatoria,
+                    polylinea_codificada = :polylinea_codificada
+                    WHERE id = :id');
+                $preparada->bindValue(':indice', $indice_leg);
+                $preparada->bindValue(':fecha_llegada_estimada', $fecha_llegada_estimada);
+                $preparada->bindValue(':segundos_estimados', $segundos_estimados);
+                $preparada->bindValue(':segundos_estimados_sumatoria', $segundos_estimados_sumatoria);
+                $preparada->bindValue(':metros_estimados', $metros_estimados);
+                $preparada->bindValue(':metros_estimados_sumatoria', $metros_estimados_sumatoria);
+                $preparada->bindValue(':polylinea_codificada', $rutas['routes'][0]['legs'][$indice_leg]['polyline']['encodedPolyline']);
+                $preparada->bindValue(':id', $pedidos_repartidor[$indice_pedido]['id']);
+                $preparada->execute();
     
             }
+
+            $indice_leg++;
+
+            $segundos_estimados = intval( substr($rutas['routes'][0]['legs'][$indice_leg]['duration'], 0, -1) ) + ( $indice_leg > 0 ? 180 : 0 );
+            $segundos_estimados_sumatoria += $segundos_estimados;
+            $fecha_llegada_estimada = DateTime::createFromFormat('Y-m-d H:i:s.u', $fecha_inicio);
+            $fecha_llegada_estimada->modify('+' . $segundos_estimados_sumatoria . ' seconds');
+            $metros_estimados = $rutas['routes'][0]['legs'][$indice_leg]['distanceMeters'];
+            $metros_estimados_sumatoria += $metros_estimados;
+
+            $preparada = $conexion->prepare('
+                UPDATE rutas_repartidores SET
+                fecha_llegada_estimada = :fecha_llegada_estimada,
+                segundos_estimados = :segundos_estimados,
+                segundos_estimados_sumatoria = :segundos_estimados_sumatoria,
+                metros_estimados = :metros_estimados,
+                metros_estimados_sumatoria = :metros_estimados_sumatoria,
+                polylinea_codificada = :polylinea_codificada
+                WHERE id = :id;');
+            $preparada->bindValue(':fecha_llegada_estimada', $fecha_llegada_estimada);
+            $preparada->bindValue(':segundos_estimados', $segundos_estimados);
+            $preparada->bindValue(':segundos_estimados_sumatoria', $segundos_estimados_sumatoria);
+            $preparada->bindValue(':metros_estimados', $metros_estimados);
+            $preparada->bindValue(':metros_estimados_sumatoria', $metros_estimados_sumatoria);
+            $preparada->bindValue(':polylinea_codificada', $rutas['routes'][0]['legs'][$indice_leg]['polyline']['encodedPolyline']);
+            $preparada->bindValue(':id', $ruta_iniciable);
+            $preparada->execute();
+
             /* Colocar la llegada estimada */
 
         }
