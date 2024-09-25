@@ -6,7 +6,7 @@ try {
     $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
     /* Verificamos que el vendedor exista */
-    $preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Clave = :clave AND Contraseña = :contrasena');
+    $preparada = $conexion->prepare('SELECT TOP 1 Clave FROM Vendedores WHERE Clave = :clave AND Contraseña = :contrasena');
     $preparada->bindValue(':clave', $_POST['clave']);
     $preparada->bindValue(':contrasena', $_POST['contraseña']);
     $preparada->execute();
@@ -21,7 +21,7 @@ try {
     }
 
     $preparada = $conexion->prepare("
-        SELECT
+        SELECT TOP 1
         en.Responsable,
         pc.Cliente,
         pc.FolioComprobante,
@@ -71,7 +71,7 @@ try {
             Si tiene una ruta iniciada, se finaliza, despues se crea una ruta nueva donde se asigna
             el pedido escaneado y todos los anteriroes donde el Extra2 de EnvioPedidoCliente sea 'PENDIENTE' OR 'EN RUTA' y del Responsable de este repartidor
         */
-    $preparada = $conexion->prepare('UPDATE rutas_repartidores SET fecha_fin = GETDATE() WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
+    $preparada = $conexion->prepare('UPDATE rutas_repartidores SET fecha_fin = GETDATE(), fecha_actualizacion = GETDATE() WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
     $preparada->bindValue(':repartidor', $_POST['clave']);
     $preparada->execute();
 
@@ -104,7 +104,7 @@ try {
             $preparada->bindValue(':pedido', $pedido_pendiente['Pedido']);
             $preparada->execute();
 
-            $preparada = $conexion->prepare('INSERT INTO pedidos_repartidores VALUES (:ruta_repartidor,:folio, NULL, NULL)');
+            $preparada = $conexion->prepare('INSERT INTO pedidos_repartidores (ruta_repartidor, folio) VALUES (:ruta_repartidor, :folio)');
             $preparada->bindValue(':ruta_repartidor', $nueva_ruta);
             $preparada->bindValue(':folio', $pedido_pendiente['Pedido']);
             $preparada->execute();
@@ -137,7 +137,7 @@ try {
         $id_ruta_reparto = $rutas_repartidores[0]['id'];
     }
 
-    $preparada = $conexion->prepare('INSERT INTO pedidos_repartidores VALUES (:ruta_repartidor,:folio,NULL, NULL)');
+    $preparada = $conexion->prepare('INSERT INTO pedidos_repartidores (ruta_repartidor, folio) VALUES (:ruta_repartidor, :folio)');
     $preparada->bindValue(':ruta_repartidor', $id_ruta_reparto);
     $preparada->bindValue(':folio', $_POST['folio']);
     $preparada->execute();
