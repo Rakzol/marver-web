@@ -19,7 +19,7 @@
             exit();
         }
 
-        $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NULL AND fecha_fin IS NULL');
+        $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NULL');
         $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
 
@@ -134,7 +134,7 @@
                 exit();
             }
 
-            $preparada = $conexion->prepare('UPDATE rutas_repartidores SET ruta = :ruta, fecha_inicio = GETDATE() WHERE id = :id;');
+            $preparada = $conexion->prepare('UPDATE rutas_repartidores SET ruta = :ruta, fecha_inicio = GETDATE(), fecha_actualizacion = GETDATE() WHERE id = :id;');
             $preparada->bindValue(':ruta', $respuesta);
             $preparada->bindValue(':id', $ruta_iniciable);
             $preparada->execute();

@@ -36,7 +36,7 @@ try {
     $preparada->execute();
     $rutaRepartidor = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    $preparada = $conexion->prepare("UPDATE rutas_repartidores SET fecha_inicio = NULL, fecha_fin = NULL, ruta = NULL WHERE id = :ruta_repartidor");
+    $preparada = $conexion->prepare("UPDATE rutas_repartidores SET fecha_inicio = NULL, fecha_fin = NULL, ruta = NULL, fecha_actualizacion = GETDATE() WHERE id = :ruta_repartidor");
     $preparada->bindValue(':ruta_repartidor', $rutaRepartidor['ruta_repartidor']);
     $preparada->execute();
 

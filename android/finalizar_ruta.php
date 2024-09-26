@@ -36,11 +36,12 @@ try {
         exit();
     }
 
+    /*FINALIZAR RUTA*/
     /*
             Si tiene una ruta iniciada, se finaliza, despues se crea una ruta nueva donde se asigna
             el pedido escaneado y todos los anteriroes donde el Extra2 de EnvioPedidoCliente sea 'PENDIENTE' OR 'EN RUTA' y del Responsable de este repartidor
         */
-        $preparada = $conexion->prepare('UPDATE rutas_repartidores SET fecha_fin = GETDATE() WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
+        $preparada = $conexion->prepare('UPDATE rutas_repartidores SET fecha_fin = GETDATE(), fecha_actualizacion = GETDATE() WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
         $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
     
@@ -58,7 +59,7 @@ try {
     
         if (count($pedidos_pendientes) > 0) {
     
-            $preparada = $conexion->prepare('INSERT INTO rutas_repartidores (repartidor) VALUES (:repartidor)');
+            $preparada = $conexion->prepare('INSERT INTO rutas_repartidores (repartidor, fecha_actualizacion) VALUES (:repartidor, GETDATE())');
             $preparada->bindValue(':repartidor', $_POST['clave']);
             $preparada->execute();
             $nueva_ruta = $conexion->lastInsertId();
@@ -73,7 +74,7 @@ try {
                 $preparada->bindValue(':pedido', $pedido_pendiente['Pedido']);
                 $preparada->execute();
     
-                $preparada = $conexion->prepare('INSERT INTO pedidos_repartidores VALUES (:ruta_repartidor,:folio, NULL, NULL)');
+                $preparada = $conexion->prepare('INSERT INTO pedidos_repartidores (ruta_repartidor, folio) VALUES (:ruta_repartidor, :folio)');
                 $preparada->bindValue(':ruta_repartidor', $nueva_ruta);
                 $preparada->bindValue(':folio', $pedido_pendiente['Pedido']);
                 $preparada->execute();
@@ -90,6 +91,7 @@ try {
                 $preparada->execute();
             }
         }
+    /* FINALIZAR RUTA*/
 
     $resultado["status"] = 0;
     $resultado["mensaje"] = "Ruta finalizada correctamente";

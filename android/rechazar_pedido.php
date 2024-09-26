@@ -73,12 +73,12 @@ try {
     $preparada->execute();
 
     /* ?????? */
-    $preparada = $conexion->prepare("UPDATE Ventas SET Status = 20 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
+    $preparada = $conexion->prepare("UPDATE Ventas SET Status = 21 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
     $preparada->bindValue(':folio', $pedido['FolioComprobante']);
     $preparada->bindValue(':comprobante', $pedido['Tipocomprobante']);
     $preparada->execute();
 
-    $preparada = $conexion->prepare("UPDATE Preventa SET Status = 20 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
+    $preparada = $conexion->prepare("UPDATE Preventa SET Status = 21 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
     $preparada->bindValue(':folio', $pedido['FolioComprobante']);
     $preparada->bindValue(':comprobante', $pedido['Tipocomprobante']);
     $preparada->execute();

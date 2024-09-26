@@ -67,6 +67,7 @@ try {
         exit();
     }
 
+    /*FINALIZAR RUTA*/
     /*
             Si tiene una ruta iniciada, se finaliza, despues se crea una ruta nueva donde se asigna
             el pedido escaneado y todos los anteriroes donde el Extra2 de EnvioPedidoCliente sea 'PENDIENTE' OR 'EN RUTA' y del Responsable de este repartidor
@@ -89,7 +90,7 @@ try {
 
     if (count($pedidos_pendientes) > 0) {
 
-        $preparada = $conexion->prepare('INSERT INTO rutas_repartidores (repartidor) VALUES (:repartidor)');
+        $preparada = $conexion->prepare('INSERT INTO rutas_repartidores (repartidor, fecha_actualizacion) VALUES (:repartidor, GETDATE())');
         $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
         $nueva_ruta = $conexion->lastInsertId();
@@ -121,6 +122,7 @@ try {
             $preparada->execute();
         }
     }
+    /* FINALIZAR RUTA*/
 
     $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NULL');
     $preparada->bindValue(':repartidor', $_POST['clave']);
@@ -128,7 +130,7 @@ try {
 
     $rutas_repartidores = $preparada->fetchAll(PDO::FETCH_ASSOC);
     if (count($rutas_repartidores) == 0) {
-        $preparada = $conexion->prepare('INSERT INTO rutas_repartidores (repartidor) VALUES (:repartidor)');
+        $preparada = $conexion->prepare('INSERT INTO rutas_repartidores (repartidor, fecha_actualizacion) VALUES (:repartidor, GETDATE())');
         $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
 

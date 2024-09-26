@@ -63,7 +63,7 @@ try {
     $preparada->execute();
     $EnvioPedidoCliente = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    $preparada = $conexion->prepare("UPDATE EnvioPedidoCliente SET Extra2 = 'ENTREGADO' WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 = 'EN RUTA'");
+    $preparada = $conexion->prepare("UPDATE EnvioPedidoCliente SET Extra2 = 'NO PAGADO' WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 = 'EN RUTA'");
     $preparada->bindValue(':pedido', $_POST['folio']);
     $preparada->bindValue(':repartidor', $_POST['clave']);
     $preparada->execute();
@@ -72,29 +72,20 @@ try {
     $preparada->bindValue(':id', $EnvioPedidoCliente['Extra1']);
     $preparada->execute();
 
-    $preparada = $conexion->prepare("SELECT ruta_repartidor FROM pedidos_repartidores WHERE id = :id");
-    $preparada->bindValue(':id', $EnvioPedidoCliente['Extra1']);
-    $preparada->execute();
-    $rutaRepartidor = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
-
-    $preparada = $conexion->prepare("UPDATE rutas_repartidores SET fecha_actualizacion = GETDATE() WHERE id = :ruta_repartidor");
-    $preparada->bindValue(':ruta_repartidor', $rutaRepartidor['ruta_repartidor']);
-    $preparada->execute();
-
     /* ?????? */
-    $preparada = $conexion->prepare("UPDATE Ventas SET Status = 18 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
+    $preparada = $conexion->prepare("UPDATE Ventas SET Status = 20 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
     $preparada->bindValue(':folio', $pedido['FolioComprobante']);
     $preparada->bindValue(':comprobante', $pedido['Tipocomprobante']);
     $preparada->execute();
 
-    $preparada = $conexion->prepare("UPDATE Preventa SET Status = 18 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
+    $preparada = $conexion->prepare("UPDATE Preventa SET Status = 20 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
     $preparada->bindValue(':folio', $pedido['FolioComprobante']);
     $preparada->bindValue(':comprobante', $pedido['Tipocomprobante']);
     $preparada->execute();
     /* ?????? */
 
     $resultado["status"] = 0;
-    $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " se entrego correctamente";
+    $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " se marco como no pagado, correctamente";
     echo json_encode($resultado);
 
     // echo json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
