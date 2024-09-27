@@ -69,7 +69,7 @@ try {
 
     /*FINALIZAR RUTA*/
     /* Finalizamos todas las rutas que esten iniciadas y no finalizadas */
-    $preparada = $conexion->prepare('UPDATE rutas_repartidores SET fecha_fin = GETDATE(), fecha_actualizacion = GETDATE() WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
+    $preparada = $conexion->prepare('UPDATE rutas_repartidores SET fecha_fin = GETDATE(), fecha_actualizacion = GETDATE(), fecha_llegada_eficiencia = DATEDIFF(SECOND, fecha_llegada_estimada, GETDATE()) WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
     $preparada->bindValue(':repartidor', $_POST['clave']);
     $preparada->execute();
     

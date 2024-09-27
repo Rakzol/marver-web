@@ -68,7 +68,7 @@ try {
     $preparada->bindValue(':repartidor', $_POST['clave']);
     $preparada->execute();
 
-    $preparada = $conexion->prepare("UPDATE pedidos_repartidores SET fecha_finalizacion = GETDATE() WHERE id = :id");
+    $preparada = $conexion->prepare("UPDATE pedidos_repartidores SET fecha_llegada = GETDATE(), fecha_llegada_eficiencia = DATEDIFF(SECOND, fecha_llegada_estimada, GETDATE()) WHERE id = :id");
     $preparada->bindValue(':id', $EnvioPedidoCliente['Extra1']);
     $preparada->execute();
 

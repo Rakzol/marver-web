@@ -44,7 +44,7 @@ try {
 
         /* Si ya todo se entrego de alguna manera se procedera a finalizar la ruta actual */
         if (count($pedidos_pendientes) == 0) {
-            $preparada = $conexion->prepare('UPDATE rutas_repartidores SET fecha_fin = GETDATE(), fecha_actualizacion = GETDATE() WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
+            $preparada = $conexion->prepare('UPDATE rutas_repartidores SET fecha_fin = GETDATE(), fecha_actualizacion = GETDATE(), fecha_llegada_eficiencia = DATEDIFF(SECOND, fecha_llegada_estimada, GETDATE()) WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
             $preparada->bindValue(':repartidor', $_POST['u']);
             $preparada->execute();
         }
