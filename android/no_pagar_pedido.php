@@ -72,6 +72,15 @@ try {
     $preparada->bindValue(':id', $EnvioPedidoCliente['Extra1']);
     $preparada->execute();
 
+    $preparada = $conexion->prepare("SELECT ruta_repartidor FROM pedidos_repartidores WHERE id = :id");
+    $preparada->bindValue(':id', $EnvioPedidoCliente['Extra1']);
+    $preparada->execute();
+    $rutaRepartidor = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
+
+    $preparada = $conexion->prepare("UPDATE rutas_repartidores SET fecha_actualizacion = GETDATE() WHERE id = :ruta_repartidor");
+    $preparada->bindValue(':ruta_repartidor', $rutaRepartidor['ruta_repartidor']);
+    $preparada->execute();
+
     /* ?????? */
     $preparada = $conexion->prepare("UPDATE Ventas SET Status = 20 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
     $preparada->bindValue(':folio', $pedido['FolioComprobante']);

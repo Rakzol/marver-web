@@ -19,6 +19,7 @@
             exit();
         }
 
+        /* INICAIR RUTA */
         $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NULL');
         $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
@@ -213,6 +214,7 @@
             /* Colocar la llegada estimada */
 
         }
+        /* INICIAR RUTA */
 
         $resultado["status"] = 0;
         $resultado["mensaje"] = "Ruta iniciada correctamente";

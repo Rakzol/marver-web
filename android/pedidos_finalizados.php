@@ -77,7 +77,7 @@
             ON ce.clave = PedidosCliente.Cliente
             LEFT JOIN MoviemientosVenta ON MoviemientosVenta.Folio = PedidosCliente.FolioComprobante AND MoviemientosVenta.TipoComprobante = 11 AND MoviemientosVenta.Importe < 0
             WHERE
-            EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE()) AND EnvioPedidoCliente.Extra2 LIKE '%-FINALIZADO'
+            EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE()) AND ( EnvioPedidoCliente.Extra2 LIKE '%-FINALIZADO' OR EnvioPedidoCliente.Extra2 = 'NO ENTREGADO-REENVIADO' )
             AND EnvioPedidoCliente.Responsable = :repartidor
             ORDER BY folio DESC
         ");

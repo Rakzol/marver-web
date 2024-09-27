@@ -68,58 +68,65 @@ try {
     }
 
     /*FINALIZAR RUTA*/
-    /*
-            Si tiene una ruta iniciada, se finaliza, despues se crea una ruta nueva donde se asigna
-            el pedido escaneado y todos los anteriroes donde el Extra2 de EnvioPedidoCliente sea 'PENDIENTE' OR 'EN RUTA' y del Responsable de este repartidor
-        */
+    /* Finalizamos todas las rutas que esten iniciadas y no finalizadas */
     $preparada = $conexion->prepare('UPDATE rutas_repartidores SET fecha_fin = GETDATE(), fecha_actualizacion = GETDATE() WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL');
     $preparada->bindValue(':repartidor', $_POST['clave']);
     $preparada->execute();
+    
+    /* 
+    Preguntamos si hay alguna rutia sin iniciar y sin finalizar, que seria obviamente la ruta que tenga enlazado todos los pedidos PENDIENTE y EN RUTA
+    lo cual no necesitaria ninguna accion, pero si no hay, vemos todos los pedidos PENDIENTE y EN RUTA que quedaron sin enlazar a una rauta sin finalizar
+    para agregarlos a una nueva ruta sin finalizar (a la conclucion que se llega es que la ruta que se finalizo puede tener rutas PENDIENTE y EN RUTA)
+    */
+    $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NULL');
+    $preparada->bindValue(':repartidor', $_POST['clave']);
+    $preparada->execute();
 
-    /*  Consultamos todos los envio EnvioPedidoCliente que tenga el Extra2 en 'PENDIENTE' OR 'EN RUTA' para ponerlo como 'SIGUIENTE RUTA'
-                de que se transfirio a otra ruta para ese pedido y lo agregamos de nuevo con otra id en Extra1 despues de agregar el que sera su id en pedidos_repartidores :D 
-                manteniendo su Extra2 */
-    $preparada = $conexion->prepare("
-                SELECT Pedido, Responsable, Fecha, HoraEnvio, HoraSalida, Extra2
+    $rutas_repartidores = $preparada->fetchAll(PDO::FETCH_ASSOC);
+    if (count($rutas_repartidores) == 0) {
+
+        $preparada = $conexion->prepare("
+                SELECT Pedido, Fecha, HoraEnvio, HoraSalida, Extra2
                 FROM EnvioPedidoCliente
                 WHERE Responsable = :repartidor AND Extra2 IN ( 'PENDIENTE', 'EN RUTA' )
             ");
-    $preparada->bindValue(':repartidor', $_POST['clave']);
-    $preparada->execute();
-    $pedidos_pendientes = $preparada->fetchAll(PDO::FETCH_ASSOC);
-
-    if (count($pedidos_pendientes) > 0) {
-
-        $preparada = $conexion->prepare('INSERT INTO rutas_repartidores (repartidor, fecha_actualizacion) VALUES (:repartidor, GETDATE())');
         $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
-        $nueva_ruta = $conexion->lastInsertId();
+        $pedidos_pendientes = $preparada->fetchAll(PDO::FETCH_ASSOC);
 
-        foreach ($pedidos_pendientes as $pedido_pendiente) {
-            $preparada = $conexion->prepare("
-                        UPDATE EnvioPedidoCliente
-                        SET Extra2 = 'SIGUIENTE RUTA'
-                        WHERE Responsable = :repartidor AND Pedido = :pedido AND Extra2 IN ( 'PENDIENTE', 'EN RUTA' )
-                    ");
+        if (count($pedidos_pendientes) > 0) {
+
+            $preparada = $conexion->prepare('INSERT INTO rutas_repartidores (repartidor, fecha_actualizacion) VALUES (:repartidor, GETDATE())');
             $preparada->bindValue(':repartidor', $_POST['clave']);
-            $preparada->bindValue(':pedido', $pedido_pendiente['Pedido']);
             $preparada->execute();
+            $nueva_ruta = $conexion->lastInsertId();
 
-            $preparada = $conexion->prepare('INSERT INTO pedidos_repartidores (ruta_repartidor, folio) VALUES (:ruta_repartidor, :folio)');
-            $preparada->bindValue(':ruta_repartidor', $nueva_ruta);
-            $preparada->bindValue(':folio', $pedido_pendiente['Pedido']);
-            $preparada->execute();
-            $id_pedido_repartidor = $conexion->lastInsertId();
+            foreach ($pedidos_pendientes as $pedido_pendiente) {
+                $preparada = $conexion->prepare("
+                            UPDATE EnvioPedidoCliente
+                            SET Extra2 = 'SIGUIENTE RUTA'
+                            WHERE Responsable = :repartidor AND Pedido = :pedido AND Extra2 IN ( 'PENDIENTE', 'EN RUTA' )
+                        ");
+                $preparada->bindValue(':repartidor', $_POST['clave']);
+                $preparada->bindValue(':pedido', $pedido_pendiente['Pedido']);
+                $preparada->execute();
 
-            $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio, HoraSalida, Extra1, Extra2) VALUES (:folio, :responsable, :fecha, :hora_envio, :hora_salida, :id_pedido_repartidor, :status )");
-            $preparada->bindValue(':folio', $pedido_pendiente['Pedido']);
-            $preparada->bindValue(':responsable', $pedido_pendiente['Responsable']);
-            $preparada->bindValue(':fecha', $pedido_pendiente['Fecha']);
-            $preparada->bindValue(':hora_envio', $pedido_pendiente['HoraEnvio']);
-            $preparada->bindValue(':hora_salida', $pedido_pendiente['HoraSalida']);
-            $preparada->bindValue(':id_pedido_repartidor', $id_pedido_repartidor);
-            $preparada->bindValue(':status', $pedido_pendiente['Extra2']);
-            $preparada->execute();
+                $preparada = $conexion->prepare('INSERT INTO pedidos_repartidores (ruta_repartidor, folio) VALUES (:ruta_repartidor, :folio)');
+                $preparada->bindValue(':ruta_repartidor', $nueva_ruta);
+                $preparada->bindValue(':folio', $pedido_pendiente['Pedido']);
+                $preparada->execute();
+                $id_pedido_repartidor = $conexion->lastInsertId();
+
+                $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio, HoraSalida, Extra1, Extra2) VALUES (:folio, :responsable, :fecha, :hora_envio, :hora_salida, :id_pedido_repartidor, :status )");
+                $preparada->bindValue(':folio', $pedido_pendiente['Pedido']);
+                $preparada->bindValue(':responsable', $_POST['clave']);
+                $preparada->bindValue(':fecha', $pedido_pendiente['Fecha']);
+                $preparada->bindValue(':hora_envio', $pedido_pendiente['HoraEnvio']);
+                $preparada->bindValue(':hora_salida', $pedido_pendiente['HoraSalida']);
+                $preparada->bindValue(':id_pedido_repartidor', $id_pedido_repartidor);
+                $preparada->bindValue(':status', $pedido_pendiente['Extra2']);
+                $preparada->execute();
+            }
         }
     }
     /* FINALIZAR RUTA*/
@@ -144,6 +151,10 @@ try {
     $preparada->bindValue(':folio', $_POST['folio']);
     $preparada->execute();
     $id_pedido_nuevo = $conexion->lastInsertId();
+
+    $preparada = $conexion->prepare("UPDATE rutas_repartidores SET fecha_actualizacion = GETDATE() WHERE id = :ruta_repartidor");
+    $preparada->bindValue(':ruta_repartidor', $id_ruta_reparto);
+    $preparada->execute();
 
     if($pedido[0]['FolioComprobante'] > 0){
         $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio, Extra1, Extra2) VALUES (:folio, :responsable, FORMAT(GETDATE(), 'yyyy-MM-dd'), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ), :id_pedido_nuevo, 'PENDIENTE' )");
