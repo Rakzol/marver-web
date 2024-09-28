@@ -51,6 +51,10 @@
                 ELSE ce.calle
             END AS calle,
             CASE WHEN PedidosCliente.FolioComprobante > 0
+                THEN cn.colonia
+                ELSE ce.colonia
+            END AS colonia,
+            CASE WHEN PedidosCliente.FolioComprobante > 0
                 THEN cn.codigo_postal
                 ELSE ce.codigo_postal
             END AS codigoPostal,

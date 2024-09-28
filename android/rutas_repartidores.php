@@ -69,7 +69,7 @@
                         pr.fecha_llegada_estimada AS fechaLlegadaEstimada,
                         pr.fecha_llegada AS fechaLlegada,
                         pr.fecha_llegada_eficiencia AS fechaLlegadaEficiencia,
-                        en.Extra1 AS status,
+                        en.Extra2 AS status,
                         REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, en.Fecha) , ' ', en.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) AS fechaAsignacion,
                         pc.folio AS pedido,
                         pc.FolioComprobante AS folioComprobante,
@@ -99,6 +99,10 @@
                             THEN un.calle
                             ELSE ue.calle
                         END AS calle,
+                        CASE WHEN pc.FolioComprobante > 0
+                            THEN un.colonia
+                            ELSE ue.colonia
+                        END AS colonia,
                         CASE WHEN pc.FolioComprobante > 0
                             THEN un.codigo_postal
                             ELSE ue.codigo_postal
@@ -153,7 +157,7 @@ CREATE TABLE rutas_repartidores(
 	fecha_inicio DATETIME,
 	fecha_llegada_estimada DATETIME,
 	fecha_fin DATETIME,
-	fecha_llegada_eficiencia DATETIME,
+	fecha_llegada_eficiencia INT,
 	segundos_estimados INT,
 	segundos_estimados_sumatoria INT,
 	metros_estimados INT,
@@ -169,7 +173,7 @@ CREATE TABLE pedidos_repartidores(
 	indice INT,
 	fecha_llegada_estimada DATETIME,
 	fecha_llegada DATETIME,
-	fecha_llegada_eficiencia DATETIME,
+	fecha_llegada_eficiencia INT,
 	segundos_estimados INT,
 	segundos_estimados_sumatoria INT,
 	metros_estimados INT,
