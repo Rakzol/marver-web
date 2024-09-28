@@ -40,12 +40,19 @@
                     metros_estimados_sumatoria AS metrosEstimadosSumatoria,
                     25.7941814 AS latitud,
                     -108.9858957 AS longitud
-                FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL
+                FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL
                 ORDER BY fecha_inicio DESC
             ');
             $preparada->bindValue(':repartidor', $_POST['repartidor']);
             $preparada->execute();
-            $marver = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
+            $marvers = $preparada->fetchAll(PDO::FETCH_ASSOC);
+
+            if(count($marvers) == 0){
+                $resultado["status"] = 0;
+                echo json_encode($resultado, JSON_UNESCAPED_UNICODE);
+                exit();
+            }
+            $marver = $marvers[0];
 
             $actualizar = true;
             if( isset($_POST['id']) && isset($_POST['fechaActualizacion']) ){
@@ -137,5 +144,38 @@
         $resultado["mensaje"] = "Error al calcular las rutas";
         echo json_encode($resultado);
     }
+
+/*
+CREATE TABLE rutas_repartidores(
+	id INT PRIMARY KEY IDENTITY(1,1),
+	repartidor INT,
+	ruta VARCHAR(MAX),
+	fecha_inicio DATETIME,
+	fecha_llegada_estimada DATETIME,
+	fecha_fin DATETIME,
+	fecha_llegada_eficiencia DATETIME,
+	segundos_estimados INT,
+	segundos_estimados_sumatoria INT,
+	metros_estimados INT,
+	metros_estimados_sumatoria INT,
+	polylinea_codificada VARCHAR(MAX),
+	fecha_actualizacion DATETIME
+);
+
+CREATE TABLE pedidos_repartidores(
+	id INT PRIMARY KEY IDENTITY(1,1),
+	folio INT,
+	ruta_repartidor INT,
+	indice INT,
+	fecha_llegada_estimada DATETIME,
+	fecha_llegada DATETIME,
+	fecha_llegada_eficiencia DATETIME,
+	segundos_estimados INT,
+	segundos_estimados_sumatoria INT,
+	metros_estimados INT,
+	metros_estimados_sumatoria INT,
+	polylinea_codificada VARCHAR(MAX)
+);
+*/
 
 ?>
