@@ -21,38 +21,46 @@
             exit();
         }
 
-        $preparada = $conexion->prepare("SELECT EnvioPedidoCliente.Responsable, EnvioPedidoCliente.Pedido, PedidosCliente.Cliente, PedidosCliente.Vendedor FROM EnvioPedidoCliente INNER JOIN PedidosCliente ON PedidosCliente.Folio = EnvioPedidoCliente.Pedido WHERE PedidosCliente.FolioComprobante = :folio AND PedidosCliente.Tipocomprobante = :comprobante;");
+        $preparada = $conexion->prepare("
+            SELECT
+                PedidosCliente.Vendedor,
+                PedidosCliente.Cliente
+            FROM
+                PedidosCliente
+                INNER JOIN EnvioPedidoCliente
+                    ON EnvioPedidoCliente.Pedido = PedidosCliente.Folio
+                    AND EnvioPedidoCliente.Extra2 = 'ENTREGADO'
+                    AND EnvioPedidoCliente.Responsable = :responsable
+            WHERE
+                PedidosCliente.FolioComprobante = :folio AND
+                PedidosCliente.Tipocomprobante = :comprobante;
+        ");
         $preparada->bindValue(':folio', $_POST['folio']);
         $preparada->bindValue(':comprobante', $_POST['comprobante']);
+        $preparada->bindValue(':responsable', $_POST['clave']);
         $preparada->execute();
 
-        $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC);
-        if( count($pedido) == 0 ){
-            $resultado["status"] = 2;
-            $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " no esta asignado";
-            echo json_encode($resultado);
-            exit();
-        }
+        $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-        if( $pedido[0]['Responsable'] != $_POST['clave'] ){
-            $resultado["status"] = 3;
-            $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " ya esta asignado al repartidor: " . $pedido[0]['Responsable'];
-            echo json_encode($resultado);
-            exit();
+        if( $_POST['comprobante'] > 0 ){
+            $preparada = $conexion->prepare("SELECT Razon_Social AS Nombre, Celular FROM Clientes WHERE Clave = :cliente");
+            $preparada->bindValue(':cliente', $pedido['Cliente']);
+            $preparada->execute();
+            $cliente = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
+        }else{
+            $preparada = $conexion->prepare("SELECT nombre AS Nombre, celular AS Celular FROM ubicaciones_especiales WHERE clave = :cliente");
+            $preparada->bindValue(':cliente', $pedido['Cliente']);
+            $preparada->execute();
+            $cliente = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
         }
-
-        $preparada = $conexion->prepare("SELECT Razon_Social, Celular FROM Clientes WHERE Clave = :cliente");
-        $preparada->bindValue(':cliente', $pedido[0]['Cliente']);
-        $preparada->execute();
-        $cliente = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
         $preparada = $conexion->prepare("SELECT Clave, Nombre, Celular FROM Vendedores WHERE Clave = :vendedor");
-        $preparada->bindValue(':vendedor', $pedido[0]['Vendedor']);
+        $preparada->bindValue(':vendedor', $pedido['Vendedor']);
         $preparada->execute();
         $vendedor = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
         $preparada = $conexion->prepare("SELECT Clave, Nombre, Celular FROM Vendedores WHERE Clave = :repartidor");
-        $preparada->bindValue(':repartidor', $pedido[0]['Responsable']);
+        $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->execute();
         $repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
@@ -60,10 +68,10 @@
         $preparada->execute();
         $jesus = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-        notificar($cliente['Celular'], $cliente, $vendedor, $repartidor);
-        notificar($vendedor['Celular'], $cliente, $vendedor, $repartidor);
-        notificar($repartidor['Celular'], $cliente, $vendedor, $repartidor);
-        notificar($jesus['Celular'], $cliente, $vendedor, $repartidor);
+        notificar($vendedor['Celular'], $cliente, $vendedor, $repartidor, false);
+        notificar($repartidor['Celular'], $cliente, $vendedor, $repartidor, false);
+        notificar($jesus['Celular'], $cliente, $vendedor, $repartidor, false);
+        notificar($cliente['Celular'], $cliente, $vendedor, $repartidor, true);
 
         $resultado["status"] = 0;
         $resultado["mensaje"] = "Cliente notificado";
@@ -75,20 +83,15 @@
         echo json_encode($resultado);
     }
 
-    function notificar($celular, $cliente, $vendedor, $repartidor){
-        if( is_null($celular) ){
+    function notificar($celular, $cliente, $vendedor, $repartidor, $validar){
+        if( !$celular ){
+            if($validar){
+                $resultado["status"] = 4;
+                $resultado["mensaje"] = "Error al notificar, no tiene numero celular";
+                echo json_encode($resultado);
+                exit();
+            }
             return;
-            /*$resultado["status"] = 4;
-            $resultado["mensaje"] = "Error al notificar, no tiene numero celular";
-            echo json_encode($resultado);
-            exit();*/
-        }
-        if( $celular == '' ){
-            return;
-            /*$resultado["status"] = 4;
-            $resultado["mensaje"] = "Error al notificar, no tiene numero celular";
-            echo json_encode($resultado);
-            exit();*/
         }
 
         $Bearer = "EAAVE5rJaMKwBO980nYpnZCI4PiJVcssTkhplxFLNvvyUVdFvwqd5m5JMPbLZCA6XxWpNANrd9QoRNPsk6WhQZBhfvcFsps5a1Bp7PHWSkhycZCwb31GH2BkupUPySiyi0ZA1gE9mdL0SZBPWEJonpZAVkoZCjPg2XZCgU6dLZAzgP1UcGKaiUelN8s9jCDoZBi0FtKq";
@@ -111,7 +114,7 @@
                                 "parameters": [
                                 {
                                     "type": "text",
-                                    "text": "' . $cliente['Razon_Social'] . '"
+                                    "text": "' . $cliente['Nombre'] . '"
                                 },
                                 {
                                     "type": "text",
@@ -127,7 +130,7 @@
                                 },
                                 {
                                     "type": "text",
-                                    "text": "' . ( $_POST['comprobante'] == 1 ? 'Factura' : ( $_POST['comprobante'] == 2 ? 'Recibo' : ( $_POST['comprobante'] == 5 ? 'Preventa' : '' ) ) ) . '"
+                                    "text": "' . ( $_POST['comprobante'] == 1 ? 'Factura' : ( $_POST['comprobante'] == 2 ? 'Recibo' : ( $_POST['comprobante'] == 5 ? 'Preventa' : 'Especial' ) ) ) . '"
                                 },
                                 {
                                     "type": "text",
@@ -160,23 +163,37 @@
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
 
-        $response = json_decode(curl_exec($curl), true);
+        $response = curl_exec($curl);
 
-        if( $response == false ){
+        if (curl_errno($curl)) {
+            if($validar){
+                $resultado["status"] = 6;
+                $resultado["mensaje"] = "Error al notificar " . curl_error($curl);
+                echo json_encode($resultado);
+                exit();
+            }
             return;
-            /*$resultado["status"] = 4;
-            $resultado["mensaje"] = "Error al notificar";
-            echo json_encode($resultado);
-            exit();*/
+        }
+
+        if( !$response ){
+            if($validar){
+                $resultado["status"] = 6;
+                $resultado["mensaje"] = "Error al notificar " . curl_error($curl);
+                echo json_encode($resultado);
+                exit();
+            }
+            return;
         }
 
         $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         if( $status_code != 200 ){
+            if($validar){
+                $resultado["status"] = 6;
+                $resultado["mensaje"] = "Error al notificar " . curl_error($curl);
+                echo json_encode($resultado);
+                exit();
+            }
             return;
-            /*$resultado["status"] = 5;
-            $resultado["mensaje"] = "Error al notificar";
-            echo json_encode($resultado);
-            exit();*/
         }
 
         curl_close($curl);
