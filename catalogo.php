@@ -511,7 +511,7 @@
 
     <div class="col d-none">
         <div class="card text-center h-100">
-            <img src="https://dynamik.mx/archivos/imagenes/DNKE3555SM" class="card-img-top imagen-producto" alt="...">
+            <img src="" class="card-img-top imagen-producto" alt="...">
             <div class="card-header">
                 <h5 class="card-title">Producto Motor</h5>
                 <h6 class="card-subtitle"></h6>
@@ -542,7 +542,7 @@
         <div class="modal-body">
           <div class="row">
             <div class="mb-3 col-md-6" style='text-align: center;'>
-              <img src="https://via.placeholder.com/300" alt="Producto" class="img-fluid">
+              <img src="" alt="Producto" class="img-fluid">
             </div>
             <div class="col-md-6">
               <h2>Código: 123456</h2>
