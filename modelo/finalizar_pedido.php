@@ -337,7 +337,7 @@
 
         // Configuración de la impresora
         //$ip_eticketera = '10.10.10.104';
-        $ip_eticketera = '10.10.10.126';
+        $ip_eticketera = '10.10.10.104';
         $puerto_eticketera = 9100; // Puerto típico para impresoras de red
 
         // Comandos ESC/POS
