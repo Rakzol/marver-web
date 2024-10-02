@@ -75,11 +75,11 @@
                         pc.FolioComprobante AS folioComprobante,
                         pc.Tipocomprobante AS tipoComprobante,
                         pc.Observacion AS observacionesPedido,
-                        CASE WHEN pc.FolioComprobante > 0
+                        CASE WHEN pc.Tipocomprobante != 3
                             THEN cl.Clave
                             ELSE ue.clave
                         END AS clienteClave,
-                        CASE WHEN pc.FolioComprobante > 0
+                        CASE WHEN pc.Tipocomprobante != 3
                             THEN cl.Razon_Social
                             ELSE ue.nombre
                         END AS clienteNombre,
@@ -87,35 +87,35 @@
                         pc.CodigosFacturado AS codigos,
                         pc.UnidadesFacturado AS piezas,
                         pc.TotalFacturado AS total,
-                        CASE WHEN pc.FolioComprobante > 0
+                        CASE WHEN pc.Tipocomprobante != 3
                             THEN un.latitud
                             ELSE ue.latitud
                         END AS latitud,
-                        CASE WHEN pc.FolioComprobante > 0
+                        CASE WHEN pc.Tipocomprobante != 3
                             THEN un.longitud
                             ELSE ue.longitud
                         END AS longitud,
-                        CASE WHEN pc.FolioComprobante > 0
+                        CASE WHEN pc.Tipocomprobante != 3
                             THEN un.calle
                             ELSE ue.calle
                         END AS calle,
-                        CASE WHEN pc.FolioComprobante > 0
+                        CASE WHEN pc.Tipocomprobante != 3
                             THEN un.colonia
                             ELSE ue.colonia
                         END AS colonia,
-                        CASE WHEN pc.FolioComprobante > 0
+                        CASE WHEN pc.Tipocomprobante != 3
                             THEN un.codigo_postal
                             ELSE ue.codigo_postal
                         END AS codigoPostal,
-                        CASE WHEN pc.FolioComprobante > 0
+                        CASE WHEN pc.Tipocomprobante != 3
                             THEN un.numero_exterior
                             ELSE ue.numero_exterior
                         END AS numeroExterior,
-                        CASE WHEN pc.FolioComprobante > 0
+                        CASE WHEN pc.Tipocomprobante != 3
                             THEN un.numero_interior
                             ELSE ue.numero_interior
                         END AS numeroInterior,
-                        CASE WHEN pc.FolioComprobante > 0
+                        CASE WHEN pc.Tipocomprobante != 3
                             THEN un.observaciones
                             ELSE ue.observaciones
                         END AS observacionesUbicacion,

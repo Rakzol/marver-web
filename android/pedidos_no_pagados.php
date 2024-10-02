@@ -26,11 +26,11 @@
             PedidosCliente.Observacion AS observacionesPedido,
             PedidosCliente.Tipocomprobante AS tipoComprobante,
             PedidosCliente.FolioComprobante AS folioComprobante,
-            CASE WHEN PedidosCliente.FolioComprobante > 0
+            CASE WHEN PedidosCliente.Tipocomprobante != 3
                 THEN Clientes.Clave
                 ELSE ce.clave
             END AS clienteClave,
-            CASE WHEN PedidosCliente.FolioComprobante > 0
+            CASE WHEN PedidosCliente.Tipocomprobante != 3
                 THEN Clientes.Razon_Social
                 ELSE ce.nombre
             END AS clienteNombre,
@@ -38,35 +38,35 @@
             PedidosCliente.CodigosFacturado AS codigos,
             PedidosCliente.UnidadesFacturado AS piezas,
             PedidosCliente.TotalFacturado AS total,
-            CASE WHEN PedidosCliente.FolioComprobante > 0
+            CASE WHEN PedidosCliente.Tipocomprobante != 3
                 THEN cn.latitud
                 ELSE ce.latitud
             END AS latitud,
-            CASE WHEN PedidosCliente.FolioComprobante > 0
+            CASE WHEN PedidosCliente.Tipocomprobante != 3
                 THEN cn.longitud
                 ELSE ce.longitud
             END AS longitud,
-            CASE WHEN PedidosCliente.FolioComprobante > 0
+            CASE WHEN PedidosCliente.Tipocomprobante != 3
                 THEN cn.calle
                 ELSE ce.calle
             END AS calle,
-            CASE WHEN PedidosCliente.FolioComprobante > 0
+            CASE WHEN PedidosCliente.Tipocomprobante != 3
                 THEN cn.colonia
                 ELSE ce.colonia
             END AS colonia,
-            CASE WHEN PedidosCliente.FolioComprobante > 0
+            CASE WHEN PedidosCliente.Tipocomprobante != 3
                 THEN cn.codigo_postal
                 ELSE ce.codigo_postal
             END AS codigoPostal,
-            CASE WHEN PedidosCliente.FolioComprobante > 0
+            CASE WHEN PedidosCliente.Tipocomprobante != 3
                 THEN cn.numero_exterior
                 ELSE ce.numero_exterior
             END AS numeroExterior,
-            CASE WHEN PedidosCliente.FolioComprobante > 0
+            CASE WHEN PedidosCliente.Tipocomprobante != 3
                 THEN cn.numero_interior
                 ELSE ce.numero_interior
             END AS numeroInterior,
-            CASE WHEN PedidosCliente.FolioComprobante > 0
+            CASE WHEN PedidosCliente.Tipocomprobante != 3
                 THEN cn.observaciones
                 ELSE ce.observaciones
             END AS observacionesUbicacion,

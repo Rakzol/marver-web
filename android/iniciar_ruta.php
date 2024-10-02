@@ -31,11 +31,11 @@
             $preparada = $conexion->prepare("
                 SELECT
                 pr.id,
-                CASE WHEN pc.FolioComprobante > 0
+                CASE WHEN pc.Tipocomprobante != 3
                     THEN cn.latitud
                     ELSE ce.latitud
                 END AS Latitud,
-                CASE WHEN pc.FolioComprobante > 0
+                CASE WHEN pc.Tipocomprobante != 3
                     THEN cn.longitud
                     ELSE ce.longitud
                 END AS Longitud

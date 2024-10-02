@@ -25,11 +25,11 @@ try {
         en.Responsable,
         pc.Cliente,
         pc.FolioComprobante,
-        CASE WHEN pc.FolioComprobante > 0
+        CASE WHEN pc.Tipocomprobante != 3
             THEN cn.latitud
             ELSE ce.latitud
         END AS Latitud,
-        CASE WHEN pc.FolioComprobante > 0
+        CASE WHEN pc.Tipocomprobante != 3
             THEN cn.longitud
             ELSE ce.longitud
         END AS Longitud
@@ -156,7 +156,7 @@ try {
     $preparada->bindValue(':ruta_repartidor', $id_ruta_reparto);
     $preparada->execute();
 
-    if($pedido[0]['FolioComprobante'] > 0){
+    if($pedido[0]['Tipocomprobante'] != 3){
         $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio, Extra1, Extra2) VALUES (:folio, :responsable, FORMAT(GETDATE(), 'yyyy-MM-dd'), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ), :id_pedido_nuevo, 'PENDIENTE' )");
         $preparada->bindValue(':folio', $_POST['folio']);
         $preparada->bindValue(':responsable', $_POST['clave']);
