@@ -81,9 +81,9 @@
             ON ce.clave = PedidosCliente.Cliente
             LEFT JOIN MoviemientosVenta ON MoviemientosVenta.Folio = PedidosCliente.FolioComprobante AND MoviemientosVenta.TipoComprobante = 11 AND MoviemientosVenta.Importe < 0
             WHERE
-            EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE()) AND EnvioPedidoCliente.Extra2 = 'NO PAGADO'
+            EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE()) AND EnvioPedidoCliente.Extra2 = 'ENTREGADO NO PAGADO'
             AND EnvioPedidoCliente.Responsable = :repartidor
-            ORDER BY folio DESC
+            ORDER BY EnvioPedidoCliente.Pedido DESC
         ");
 
         $preparada->bindValue(':repartidor', $_POST['clave']);

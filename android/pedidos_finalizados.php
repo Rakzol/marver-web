@@ -83,7 +83,7 @@
             WHERE
             EnvioPedidoCliente.Fecha = CONVERT(DATE, GETDATE()) AND ( EnvioPedidoCliente.Extra2 LIKE '%-FINALIZADO' OR EnvioPedidoCliente.Extra2 = 'NO ENTREGADO-REENVIADO' )
             AND EnvioPedidoCliente.Responsable = :repartidor
-            ORDER BY folio DESC
+            ORDER BY EnvioPedidoCliente.Pedido DESC
         ");
 
         $preparada->bindValue(':repartidor', $_POST['clave']);
