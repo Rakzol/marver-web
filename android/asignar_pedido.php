@@ -25,6 +25,7 @@ try {
         en.Responsable,
         pc.Cliente,
         pc.FolioComprobante,
+        pc.Tipocomprobante,
         CASE WHEN pc.Tipocomprobante != 3
             THEN cn.latitud
             ELSE ce.latitud
@@ -173,6 +174,18 @@ try {
     /* ????? */
     $preparada = $conexion->prepare("UPDATE PedidosCliente SET Status = 'E' WHERE Folio = :pedido");
     $preparada->bindValue(':pedido', $_POST['folio']);
+    $preparada->execute();
+    /* ?????? */
+
+    /* ?????? */
+    $preparada = $conexion->prepare("UPDATE Ventas SET Status = 3 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
+    $preparada->bindValue(':folio', $pedido[0]['FolioComprobante']);
+    $preparada->bindValue(':comprobante', $pedido[0]['Tipocomprobante']);
+    $preparada->execute();
+
+    $preparada = $conexion->prepare("UPDATE Preventa SET Status = 3 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
+    $preparada->bindValue(':folio', $pedido[0]['FolioComprobante']);
+    $preparada->bindValue(':comprobante', $pedido[0]['Tipocomprobante']);
     $preparada->execute();
     /* ?????? */
 
