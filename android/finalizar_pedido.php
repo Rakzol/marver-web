@@ -38,10 +38,10 @@ try {
 
     $distancia_marver = \GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => 25.794285, 'lng' => -108.985924], ['lat' => $posicion['latitud'], 'lng' => $posicion['longitud']]);
     if ($distancia_marver > 15) {
-        $resultado["status"] = 2;
+        /*$resultado["status"] = 2;
         $resultado["mensaje"] = "No esta dentro de la sucursal";
         echo json_encode($resultado);
-        exit();
+        exit();*/
     }
 
     $preparada = $conexion->prepare("UPDATE EnvioPedidoCliente SET Extra2 = CONCAT(Extra2, '-FINALIZADO'), HoraLlegada = REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ) WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 IN ('ENTREGADO', 'NO ENTREGADO', 'RECHAZADO')");
