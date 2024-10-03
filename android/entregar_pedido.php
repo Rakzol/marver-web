@@ -3,7 +3,7 @@ try {
     require_once 'geometria/SphericalUtil.php';
     require_once 'geometria/PolyUtil.php';
     require_once 'geometria/MathUtil.php';
-    
+
     header('Content-Type: application/json');
 
     $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true', 'MARITE', '2505M$RITE');
@@ -55,10 +55,10 @@ try {
     $distancia_de_cliente = \GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => $pedido['Latitud'], 'lng' => $pedido['Longitud']], ['lat' => $posicionRepartidor['latitud'], 'lng' => $posicionRepartidor['longitud']]);
     /* Verificamos si esta fuera de la ubicacion del cliente para no dejarlo entregar el pedido si se salio de ella */
     if ($distancia_de_cliente > 50) {
-        $resultado["status"] = 1;
+        /*$resultado["status"] = 1;
         $resultado["mensaje"] = "Se encuentra lejos de la ubicacion del cliente";
         echo json_encode($resultado);
-        exit();
+        exit();*/
     }
 
     $preparada = $conexion->prepare("SELECT Extra1 FROM EnvioPedidoCliente WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 = 'EN RUTA'");
@@ -86,12 +86,12 @@ try {
     $preparada->execute();
 
     /* ?????? */
-    $preparada = $conexion->prepare("UPDATE Ventas SET Status = 20 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
+    $preparada = $conexion->prepare("UPDATE Ventas SET Status = 18 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
     $preparada->bindValue(':folio', $pedido['FolioComprobante']);
     $preparada->bindValue(':comprobante', $pedido['Tipocomprobante']);
     $preparada->execute();
 
-    $preparada = $conexion->prepare("UPDATE Preventa SET Status = 20 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
+    $preparada = $conexion->prepare("UPDATE Preventa SET Status = 18 WHERE Folio = :folio AND Tipocomprobante = :comprobante");
     $preparada->bindValue(':folio', $pedido['FolioComprobante']);
     $preparada->bindValue(':comprobante', $pedido['Tipocomprobante']);
     $preparada->execute();
