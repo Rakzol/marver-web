@@ -55,10 +55,10 @@ try {
     $distancia_de_cliente = \GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => $pedido['Latitud'], 'lng' => $pedido['Longitud']], ['lat' => $posicionRepartidor['latitud'], 'lng' => $posicionRepartidor['longitud']]);
     /* Verificamos si esta fuera de la ubicacion del cliente para no dejarlo entregar el pedido si se salio de ella */
     if ($distancia_de_cliente > 50) {
-        /*$resultado["status"] = 1;
+        $resultado["status"] = 1;
         $resultado["mensaje"] = "Se encuentra lejos de la ubicacion del cliente";
         echo json_encode($resultado);
-        exit();*/
+        exit();
     }
 
     $preparada = $conexion->prepare("SELECT Extra1 FROM EnvioPedidoCliente WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 = 'EN RUTA'");
