@@ -377,6 +377,9 @@
 
                     if( json_api.hasOwnProperty('marver') ){
 
+                        idRuta = json_api['marver']['id'];
+                        fechaActualizacion = json_api['marver']['fechaActualizacion'];
+
                         polylineas.forEach( (polylineaCiclo)=>{
                             polylineaCiclo.setMap(null);
                         });
