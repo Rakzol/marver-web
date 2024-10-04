@@ -173,7 +173,7 @@
                     polylinea_codificada = :polylinea_codificada
                     WHERE id = :id');
                 $preparada->bindValue(':indice', $indice_leg);
-                $preparada->bindValue(':fecha_llegada_estimada', $fecha_llegada_estimada);
+                $preparada->bindValue(':fecha_llegada_estimada', $fecha_llegada_estimada->format('Y-m-d H:i:s'));
                 $preparada->bindValue(':segundos_estimados', $segundos_estimados);
                 $preparada->bindValue(':segundos_estimados_sumatoria', $segundos_estimados_sumatoria);
                 $preparada->bindValue(':metros_estimados', $metros_estimados);
@@ -202,7 +202,7 @@
                 metros_estimados_sumatoria = :metros_estimados_sumatoria,
                 polylinea_codificada = :polylinea_codificada
                 WHERE id = :id;');
-            $preparada->bindValue(':fecha_llegada_estimada', $fecha_llegada_estimada);
+            $preparada->bindValue(':fecha_llegada_estimada', $fecha_llegada_estimada->format('Y-m-d H:i:s'));
             $preparada->bindValue(':segundos_estimados', $segundos_estimados);
             $preparada->bindValue(':segundos_estimados_sumatoria', $segundos_estimados_sumatoria);
             $preparada->bindValue(':metros_estimados', $metros_estimados);
