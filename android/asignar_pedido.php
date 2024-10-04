@@ -26,6 +26,9 @@ try {
         pc.Cliente,
         pc.FolioComprobante,
         pc.Tipocomprobante,
+        pc.Alfacturar,
+        pc.FechaFacturado,
+        pc.HoraFacturado,
         CASE WHEN pc.Tipocomprobante != 3
             THEN cn.latitud
             ELSE ce.latitud
@@ -64,6 +67,13 @@ try {
     if ($pedido[0]['Responsable']) {
         $resultado["status"] = 3;
         $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " ya esta asignado al repartidor: " . $pedido[0]['Responsable'];
+        echo json_encode($resultado);
+        exit();
+    }
+
+    if (!$pedido[0]['Alfacturar'] || !$pedido[0]['FechaFacturado'] || !$pedido[0]['HoraFacturado']) {
+        $resultado["status"] = 4;
+        $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " aun no esta facturado.";
         echo json_encode($resultado);
         exit();
     }
