@@ -57,6 +57,7 @@ try {
         header('HTTP/1.1 11');
 
         $rutas_iniciables = $preparada->fetchAll(PDO::FETCH_ASSOC);
+        header('HTTP/1.1 11'.count($rutas_iniciables));
         if( count($rutas_iniciables) > 0 ){
             header('HTTP/1.1 2');
             $ruta_iniciable = $rutas_iniciables[0]['id'];
