@@ -162,8 +162,13 @@
             // Separar la fecha y la hora
             const [fechaParte, horaParte] = fecha.split(" ");
             
-            // Separar horas, minutos y segundos
+            // Separar horas, minutos y segundos (ignoramos milisegundos si existen)
             let [hora, minutos, segundos] = horaParte.split(":");
+
+            // Eliminar milisegundos si vienen en el string (caso: "HH:mm:ss.fff")
+            if (segundos.includes(".")) {
+                segundos = segundos.split(".")[0]; // Tomamos solo la parte antes de los milisegundos
+            }
             
             // Convertir la hora de string a número
             hora = parseInt(hora);
@@ -433,9 +438,9 @@
                                     disableAutoPan: true,
                                     content: '<p class="infoWindow" >' + 
                                     "<strong>Pedido Normal</strong><br>" + 
-                                    "<strong>Llegada estimada: </strong>" + pedido["fechaLlegadaEstimada"] + "<br>" +
-                                    "<strong>Llegada: </strong>" + pedido["fechaLlegada"] + "<br>" +
-                                    "<strong>Eficiencia: </strong>" + pedido["fechaLlegadaEficiencia"] + "<br>" +
+                                    "<strong>Llegada estimada: </strong>" + convertirFormato(pedido["fechaLlegadaEstimada"]) + "<br>" +
+                                    "<strong>Llegada: </strong>" + convertirFormato(pedido["fechaLlegada"]) + "<br>" +
+                                    "<strong>Eficiencia: </strong>" + convertirFormato(pedido["fechaLlegadaEficiencia"]) + "<br>" +
                                     "<strong>Status: </strong>" + pedido["status"] + "<br>" +
                                     "<strong>Pedido: </strong>" + pedido["pedido"] + "<br>" +
                                     "<strong>Cliente: </strong>" + pedido["clienteClave"] + " " + pedido["clienteNombre"] + "<br>" +
@@ -481,9 +486,9 @@
                                     disableAutoPan: true,
                                     content: '<p class="infoWindow" >' + 
                                     "<strong>Pedido Especial</strong><br>" + 
-                                    "<strong>Llegada estimada: </strong>" + pedido["fechaLlegadaEstimada"] + "<br>" +
-                                    "<strong>Llegada: </strong>" + pedido["fechaLlegada"] + "<br>" +
-                                    "<strong>Eficiencia: </strong>" + pedido["fechaLlegadaEficiencia"] + "<br>" +
+                                    "<strong>Llegada estimada: </strong>" + convertirFormato(pedido["fechaLlegadaEstimada"]) + "<br>" +
+                                    "<strong>Llegada: </strong>" + convertirFormato(pedido["fechaLlegada"]) + "<br>" +
+                                    "<strong>Eficiencia: </strong>" + convertirFormato(pedido["fechaLlegadaEficiencia"]) + "<br>" +
                                     "<strong>Status: </strong>" + pedido["status"] + "<br>" +
                                     "<strong>Pedido: </strong>" + pedido["pedido"] + "<br>" +
                                     "<strong>Cliente: </strong>" + pedido["clienteClave"] + " " + pedido["clienteNombre"] + "<br>" +
