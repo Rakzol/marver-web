@@ -229,7 +229,7 @@
         let idRuta = 0;
         let fechaActualizacion = "";
 
-        let max_frame = 250;
+        let max_frame = 220;
         let frame = max_frame + 1;
 
         let polylineas = [];
@@ -258,6 +258,9 @@
                             repartidores[repartidor['id']]['longitudObjetivo'] = repartidor['longitud'];
                             repartidores[repartidor['id']]['velocidad'] = repartidor['velocidad'];
 
+                            if(repartidorSeguido == repartidor){
+                                document.getElementById('velocidadRepartidor').innerText = (repartidores[repartidor['id']]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
+                            }
                         }else{
 
                             let imagen = document.createElement('img');
@@ -279,7 +282,6 @@
                             marcador.addListener("click", () => {
                                 document.getElementById('txtIdRepartidor').innerText = repartidor['id'];
                                 document.getElementById('txtNombreRepartidor').innerText = repartidor['nombre'];
-                                document.getElementById('velocidadRepartidor').innerText = (repartidores[repartidor['id']]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
 
                                 infowindow.open({
                                     anchor: marcador,
@@ -330,7 +332,6 @@
 
                                 document.getElementById('txtIdRepartidor').innerText = repartidor['id'];
                                 document.getElementById('txtNombreRepartidor').innerText = repartidor['nombre'];
-                                document.getElementById('velocidadRepartidor').innerText = ( repartidores[repartidor['id']]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
 
                                 infowindow.open({
                                     anchor: marcador,
@@ -586,6 +587,7 @@
         }
 
         function todosRepartidores(){
+
             document.getElementById('txtIdRepartidor').innerText = "";
             document.getElementById('txtNombreRepartidor').innerText = "";
             document.getElementById('velocidadRepartidor').innerText = "";
@@ -602,6 +604,10 @@
             Object.keys(repartidores).forEach( (id) => {
                 repartidores[id]['marcador'].setMap(mapa);
             } );
+
+            repartidorSeguido = 0;
+            idRuta = 0;
+            fechaActualizacion = "";
 
             document.getElementById('btnCerrarModal').click();
         }
