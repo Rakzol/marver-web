@@ -54,6 +54,7 @@ try {
         $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NULL');
         $preparada->bindValue(':repartidor', $_POST['c']);
         $preparada->execute();
+        header('HTTP/1.1 11');
 
         $rutas_iniciables = $preparada->fetchAll(PDO::FETCH_ASSOC);
         if( count($rutas_iniciables) > 0 ){
