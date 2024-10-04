@@ -229,7 +229,7 @@
         let idRuta = 0;
         let fechaActualizacion = "";
 
-        let max_frame = 300;
+        let max_frame = 100;
         let frame = max_frame + 1;
 
         let polylineas = [];
