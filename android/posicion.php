@@ -31,7 +31,7 @@ try {
 
     $distancia_marver = \GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => 25.794285, 'lng' => -108.985924], ['lat' => $_POST['la'], 'lng' => $_POST['ln']]);
     /* Verificamos si esta en el perimetro de marver para finalizar la ruta, siempre que tenga todo en status valido para la entrega */
-    header('HTTP/1.1 201');
+    header('HTTP/1.1 ' . $distancia_marver);
     if ($distancia_marver <= 15) {
         /* Verificamos que no tenga pedidos sin llegar a una resolicion de entrega */
         $preparada = $conexion->prepare("
