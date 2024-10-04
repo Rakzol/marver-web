@@ -544,7 +544,7 @@
                     Object.keys(repartidores).forEach( (id) => {
 
                         console.log(repartidores[id]);
-                        let posicion_nueva = calcularPuntoIntermedio( repartidores[id]['latitudObjetivo'], repartidores[id]['longitudObjetivo'], repartidores[id]['latitudInicial'], repartidores[id]['longitudInicial'], frame / max_frame );
+                        let posicion_nueva = calcularPuntoIntermedio( repartidores[id]['latitudInicial'], repartidores[id]['longitudInicial'], repartidores[id]['latitudObjetivo'], repartidores[id]['longitudObjetivo'], frame / max_frame );
                         repartidores[id]['marcador'].position = { lat: posicion_nueva[0], lng: posicion_nueva[1] };
 
                     } );
