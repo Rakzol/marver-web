@@ -260,6 +260,12 @@
 
                         }else{
 
+                            repartidores[repartidor['id']]['latitudInicial'] = repartidor['latitud'];
+                            repartidores[repartidor['id']]['longitudInicial'] = repartidor['longitud'];
+                            repartidores[repartidor['id']]['latitudObjetivo'] = repartidor['latitud'];
+                            repartidores[repartidor['id']]['longitudObjetivo'] = repartidor['longitud'];
+                            repartidores[repartidor['id']]['velocidad'] = repartidor['velocidad'];
+
                             let imagen = document.createElement('img');
                             imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador.png';
 
