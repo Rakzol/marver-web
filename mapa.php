@@ -258,7 +258,7 @@
                             repartidores[repartidor['id']]['longitudObjetivo'] = repartidor['longitud'];
                             repartidores[repartidor['id']]['velocidad'] = repartidor['velocidad'];
 
-                            if(repartidorSeguido == repartidor){
+                            if(repartidorSeguido == repartidor['id']){
                                 document.getElementById('velocidadRepartidor').innerText = (repartidores[repartidor['id']]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
                             }
                         }else{
