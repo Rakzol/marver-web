@@ -443,7 +443,7 @@
                                     "<strong>Pedido Normal</strong><br>" + 
                                     "<strong>Llegada estimada: </strong>" + convertirFormato(pedido["fechaLlegadaEstimada"]) + "<br>" +
                                     "<strong>Llegada: </strong>" + convertirFormato(pedido["fechaLlegada"]) + "<br>" +
-                                    "<strong>Eficiencia: </strong>" + convertirFormato(pedido["fechaLlegadaEficiencia"]) + "<br>" +
+                                    "<strong>Eficiencia: </strong>" + pedido["fechaLlegadaEficiencia"] + "<br>" +
                                     "<strong>Status: </strong>" + pedido["status"] + "<br>" +
                                     "<strong>Pedido: </strong>" + pedido["pedido"] + "<br>" +
                                     "<strong>Cliente: </strong>" + pedido["clienteClave"] + " " + pedido["clienteNombre"] + "<br>" +
@@ -491,7 +491,7 @@
                                     "<strong>Pedido Especial</strong><br>" + 
                                     "<strong>Llegada estimada: </strong>" + convertirFormato(pedido["fechaLlegadaEstimada"]) + "<br>" +
                                     "<strong>Llegada: </strong>" + convertirFormato(pedido["fechaLlegada"]) + "<br>" +
-                                    "<strong>Eficiencia: </strong>" + convertirFormato(pedido["fechaLlegadaEficiencia"]) + "<br>" +
+                                    "<strong>Eficiencia: </strong>" + pedido["fechaLlegadaEficiencia"] + "<br>" +
                                     "<strong>Status: </strong>" + pedido["status"] + "<br>" +
                                     "<strong>Pedido: </strong>" + pedido["pedido"] + "<br>" +
                                     "<strong>Cliente: </strong>" + pedido["clienteClave"] + " " + pedido["clienteNombre"] + "<br>" +
