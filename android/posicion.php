@@ -50,16 +50,12 @@ try {
         }
     } else if ($distancia_marver >= 150) {
         /* INICAIR RUTA */
-        header('HTTP/1.1 1');
         $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NULL');
-        $preparada->bindValue(':repartidor', $_POST['c']);
+        $preparada->bindValue(':repartidor', $_POST['u']);
         $preparada->execute();
-        header('HTTP/1.1 11');
 
         $rutas_iniciables = $preparada->fetchAll(PDO::FETCH_ASSOC);
-        header('HTTP/1.1 11'.count($rutas_iniciables));
         if( count($rutas_iniciables) > 0 ){
-            header('HTTP/1.1 2');
             $ruta_iniciable = $rutas_iniciables[0]['id'];
 
             $preparada = $conexion->prepare("
@@ -144,21 +140,18 @@ try {
                 /*$resultado["status"] = 2;
                 $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
                 echo json_encode($resultado);*/
-                header('HTTP/1.1 3');
                 exit();
             }
             if ($respuesta == false) {
                 /*$resultado["status"] = 2;
                 $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
                 echo json_encode($resultado);*/
-                header('HTTP/1.1 4');
                 exit();
             }
             if (curl_getinfo($curl, CURLINFO_HTTP_CODE) != 200) {
                 /*$resultado["status"] = 2;
                 $resultado["mensaje"] = "Error con google maps " . curl_error($curl);
                 echo json_encode($resultado);*/
-                header('HTTP/1.1 5');
                 exit();
             }
 
@@ -169,7 +162,6 @@ try {
                 /*$resultado["status"] = 2;
                 $resultado["mensaje"] = "Error con las rustas optimizadas de google maps ";
                 echo json_encode($resultado);*/
-                header('HTTP/1.1 6');
                 exit();
             }
 
@@ -250,8 +242,6 @@ try {
             $preparada->execute();
 
             /* Colocar la llegada estimada */
-
-            header('HTTP/1.1 7');
         }
         /* INICIAR RUTA */
     }
