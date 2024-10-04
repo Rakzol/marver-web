@@ -159,6 +159,9 @@
         }
 
         function convertirFormato(fecha) {
+            if(!fecha){
+                return "";
+            }
             // Separar la fecha y la hora
             const [fechaParte, horaParte] = fecha.split(" ");
             
