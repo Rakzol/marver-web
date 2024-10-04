@@ -594,6 +594,8 @@
             Object.keys(repartidores).forEach( (id) => {
                 repartidores[id]['marcador'].setMap(mapa);
             } );
+
+            document.getElementById('btnCerrarModal').click();
         }
 
         document.getElementById('modalSelector').addEventListener('hidden.bs.modal', function () {
