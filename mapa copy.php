@@ -127,43 +127,6 @@
 
 <script>
 
-        function calcularPuntoIntermedio(latitud1, longitud1, latitud2, longitud2, porcentaje) {
-            // Convertir grados a radianes
-            const lat1Rad = latitud1 * Math.PI / 180;
-            const lon1Rad = longitud1 * Math.PI / 180;
-            const lat2Rad = latitud2 * Math.PI / 180;
-            const lon2Rad = longitud2 * Math.PI / 180;
-
-            // Radio de la Tierra en metros (aproximado)
-            const radioTierra = 6371 * 1000; // en metros
-
-            // Calcular la distancia entre los dos puntos
-            const distancia = Math.acos(Math.sin(lat1Rad) * Math.sin(lat2Rad) + Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.cos(lon2Rad - lon1Rad)) * radioTierra;
-
-            // Calcular el punto intermedio
-            const puntoIntermedioLatitud = latitud1 + (latitud2 - latitud1) * porcentaje;
-            const puntoIntermedioLongitud = longitud1 + (longitud2 - longitud1) * porcentaje;
-
-            return [puntoIntermedioLatitud, puntoIntermedioLongitud];
-        }
-
-        function calcularDistancia(lat1, lon1, lat2, lon2) {
-            const radioTierraKm = 6371; // Radio de la Tierra en kilómetros
-            const dLat = toRadians(lat2 - lat1);
-            const dLon = toRadians(lon2 - lon1);
-            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                    Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
-                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            const distanciaKm = radioTierraKm * c;
-            const distanciaMetros = distanciaKm * 1000;
-            return distanciaMetros;
-        }
-
-        function toRadians(grados) {
-            return grados * Math.PI / 180;
-        }
-
         function GeoPolylineToGooglePolyline(geoPolylines){
             let googlePolylines = [];
             geoPolylines.forEach( (geoPolyline)=> {
