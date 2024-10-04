@@ -11,7 +11,7 @@
 
         if( isset($_POST['web']) ){
             $preparada = $conexion->prepare('
-                SELECT c.usuario, v.Nombre, c.latitud, c.longitud, c.velocidad
+                SELECT c.usuario AS id, v.Nombre AS nombre, c.latitud, c.longitud, c.velocidad
                 FROM (
                     SELECT usuario, latitud, longitud, velocidad,
                         ROW_NUMBER() OVER (PARTITION BY usuario ORDER BY fecha DESC) AS indice
