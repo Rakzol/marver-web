@@ -44,7 +44,7 @@ try {
         exit();
     }
 
-    $preparada = $conexion->prepare("UPDATE EnvioPedidoCliente SET Extra2 = CONCAT(Extra2, '-FINALIZADO'), HoraLlegada = REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ) WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 IN ('ENTREGADO', 'NO ENTREGADO', 'RECHAZADO')");
+    $preparada = $conexion->prepare("UPDATE EnvioPedidoCliente SET Extra2 = CONCAT(Extra2, '-FINALIZADO'), HoraLlegada = REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ) WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 IN ('ENTREGADO', 'ENTREGADO NO PAGADO', 'NO ENTREGADO', 'RECHAZADO')");
     $preparada->bindValue(':pedido', $_POST['folio']);
     $preparada->bindValue(':repartidor', $_POST['clave']);
     $preparada->execute();
