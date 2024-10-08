@@ -54,7 +54,7 @@ try {
 
     $distancia_de_cliente = \GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => $pedido['Latitud'], 'lng' => $pedido['Longitud']], ['lat' => $posicionRepartidor['latitud'], 'lng' => $posicionRepartidor['longitud']]);
     /* Verificamos si esta fuera de la ubicacion del cliente para no dejarlo entregar el pedido si se salio de ella */
-    if ($distancia_de_cliente > 50) {
+    if ($distancia_de_cliente > 100) {
         $resultado["status"] = 1;
         $resultado["mensaje"] = "Se encuentra lejos de la ubicacion del cliente";
         echo json_encode($resultado);
