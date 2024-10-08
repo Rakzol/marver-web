@@ -37,7 +37,7 @@ try {
     $posicion = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
     $distancia_marver = \GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => 25.794285, 'lng' => -108.985924], ['lat' => $posicion['latitud'], 'lng' => $posicion['longitud']]);
-    if ($distancia_marver > 15) {
+    if ($distancia_marver > 50) {
         $resultado["status"] = 2;
         $resultado["mensaje"] = "No esta dentro de la sucursal";
         echo json_encode($resultado);
