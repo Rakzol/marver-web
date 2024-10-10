@@ -115,7 +115,7 @@ try {
             foreach ($pedidos_pendientes as $pedido_pendiente) {
                 $preparada = $conexion->prepare("
                             UPDATE EnvioPedidoCliente
-                            SET Extra2 = 'SIGUIENTE RUTA'
+                            SET Extra2 = 'SIGUIENTE RUTA', Extra3 = '1'
                             WHERE Responsable = :repartidor AND Pedido = :pedido AND Extra2 IN ( 'PENDIENTE', 'EN RUTA' )
                         ");
                 $preparada->bindValue(':repartidor', $_POST['clave']);
