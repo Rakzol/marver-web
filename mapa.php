@@ -251,17 +251,11 @@
 
         let mapa;
 
-        let json_api;
         let repartidores = {};
-
-        let id_actualizar;
 
         let repartidorSeguido = 0;
         let idRuta = 0;
         let fechaActualizacion = "";
-
-        let max_frame = 100;
-        let frame = max_frame + 1;
 
         let polylineas = [];
         let marcadores = [];
@@ -275,136 +269,139 @@
 
         function actualizar() {
 
-            if(frame <= max_frame){
+            let datosEnviar = new FormData();
+            datosEnviar.append('web', '');
+            datosEnviar.append('repartidor', repartidorSeguido);
+            datosEnviar.append('id', idRuta);
+            datosEnviar.append('fechaActualizacion', fechaActualizacion);
 
-                if( frame == 0 ){
+            fetch('android/rutas_repartidores', {
+                method: 'POST',
+                body: datosEnviar
+            })
+            .then((respuesta) => {
+                return respuesta.json();
+            })
+            .catch(error => {
+                console.error('Error al solicitar las ruta de los repartidores: ', error);
+                actualizar();
+            })
+            .then(json_api => {
 
-                    json_api['repartidores'].forEach( (repartidor) => {
+                json_api['repartidores'].forEach( (repartidor) => {
 
-                        if(repartidores.hasOwnProperty(repartidor['id'])){
+                    if(repartidores.hasOwnProperty(repartidor['id'])){
 
-                            repartidores[repartidor['id']]['latitudInicial'] = repartidores[repartidor['id']]['marcador']['position']['lat'];
-                            repartidores[repartidor['id']]['longitudInicial'] = repartidores[repartidor['id']]['marcador']['position']['lng'];
-                            repartidores[repartidor['id']]['latitudObjetivo'] = repartidor['latitud'];
-                            repartidores[repartidor['id']]['longitudObjetivo'] = repartidor['longitud'];
-                            repartidores[repartidor['id']]['velocidad'] = repartidor['velocidad'];
-
-                            if(repartidorSeguido == repartidor['id']){
-                                document.getElementById('velocidadRepartidor').innerText = (repartidores[repartidor['id']]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-                            }
-                        }else{
-
-                            let imagen = document.createElement('img');
-                            imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador.png';
-
-                            let marcador = new ElementoMarcadorAvanzado({
-                                content: imagen,
-                                map: mapa,
-                                position: { lat: repartidor['latitud'], lng: repartidor['longitud'] },
-                                zIndex: 1
-                            });
-
-                            let infowindow = new VentanaInformacion({
-                                disableAutoPan: true,
-                                content: '<p class="infoWindow" ><strong>' + repartidor['id'] + ' </strong> ' + repartidor['nombre'] + '</p>',
-                                zIndex: 1
-                            });
-
-                            marcador.addListener("click", () => {
-                                document.getElementById('txtIdRepartidor').innerText = repartidor['id'];
-                                document.getElementById('txtNombreRepartidor').innerText = repartidor['nombre'];
-
-                                infowindow.open({
-                                    anchor: marcador,
-                                    map: mapa,
-                                    zIndex: -2
-                                });
-
-                                clearTimeout(id_actualizar);
-                                frame = max_frame + 1;
-                                repartidorSeguido = repartidor['id'];
-                                Object.keys(repartidores).forEach( (id) => {
-                                    if(id != repartidorSeguido){
-                                        repartidores[id]['marcador'].setMap(null);
-                                    }else{
-                                        repartidores[id]['marcador'].setMap(mapa);
-                                    }
-                                } );
-                                polylineas.forEach( (polylineaCiclo)=>{
-                                    polylineaCiclo.setMap(null);
-                                });
-                                polylineas = [];
-                                marcadores.forEach( (marcadoresCiclo)=>{
-                                    marcadoresCiclo.setMap(null);
-                                });
-                                marcadores = [];
-                                infowindowMarver.setContent('<p class="infoWindow" ></p>');
-                                infowindowMarver.close();
-                                idRuta = 0;
-                                fechaActualizacion = "";
-                                actualizar();
-                            });
-
-                            repartidores[repartidor['id']] = {};
-                            repartidores[repartidor['id']]['id'] = repartidor['id'];
-                            repartidores[repartidor['id']]['nombre'] = repartidor['nombre'];
-                            repartidores[repartidor['id']]['marcador'] = marcador;
-
-                            repartidores[repartidor['id']]['latitudInicial'] = repartidor['latitud'];
-                            repartidores[repartidor['id']]['longitudInicial'] = repartidor['longitud'];
-                            repartidores[repartidor['id']]['latitudObjetivo'] = repartidor['latitud'];
-                            repartidores[repartidor['id']]['longitudObjetivo'] = repartidor['longitud'];
-                            repartidores[repartidor['id']]['velocidad'] = repartidor['velocidad'];
-
-                            let li = document.createElement('li');
-
-                            li.addEventListener('click', () => {
-                                document.getElementById('btnCerrarModal').click();
-
-                                document.getElementById('txtIdRepartidor').innerText = repartidor['id'];
-                                document.getElementById('txtNombreRepartidor').innerText = repartidor['nombre'];
-
-                                infowindow.open({
-                                    anchor: marcador,
-                                    map: mapa,
-                                    zIndex: -2
-                                });
-
-                                clearTimeout(id_actualizar);
-                                frame = max_frame + 1;
-                                repartidorSeguido = repartidor['id'];
-                                Object.keys(repartidores).forEach( (id) => {
-                                    if(id != repartidorSeguido){
-                                        repartidores[id]['marcador'].setMap(null);
-                                    }else{
-                                        repartidores[id]['marcador'].setMap(mapa);
-                                    }
-                                } );
-                                polylineas.forEach( (polylineaCiclo)=>{
-                                    polylineaCiclo.setMap(null);
-                                });
-                                polylineas = [];
-                                marcadores.forEach( (marcadoresCiclo)=>{
-                                    marcadoresCiclo.setMap(null);
-                                });
-                                marcadores = [];
-                                infowindowMarver.setContent('<p class="infoWindow" ></p>');
-                                infowindowMarver.close();
-                                idRuta = 0;
-                                fechaActualizacion = "";
-                                actualizar();
-                            });
-
-                            li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
-                            li.innerText = repartidor['nombre'];
-
-                            let span = document.createElement('span');
-                            span.classList.add('badge', 'bg-primary', 'rounded-pill');
-                            span.innerText = repartidor['id'];
-
-                            li.appendChild(span);
-                            document.getElementById('listaRepartidores').appendChild(li);
+                        repartidores[repartidor['id']]['marcador'].position = { lat: repartidor['latitud'], lng: repartidor['longitud'] };
+                        repartidores[repartidor['id']]['velocidad'] = repartidor['velocidad'];
+                    
+                        if(repartidorSeguido == repartidor['id']){
+                            document.getElementById('velocidadRepartidor').innerText = (repartidores[repartidor['id']]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
                         }
+                    }else{
+
+                        let imagen = document.createElement('img');
+                        imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador.png';
+
+                        let marcador = new ElementoMarcadorAvanzado({
+                            content: imagen,
+                            map: mapa,
+                            position: { lat: repartidor['latitud'], lng: repartidor['longitud'] },
+                            zIndex: 1
+                        });
+
+                        let infowindow = new VentanaInformacion({
+                            disableAutoPan: true,
+                            content: '<p class="infoWindow" ><strong>' + repartidor['id'] + ' </strong> ' + repartidor['nombre'] + '</p>',
+                            zIndex: 1
+                        });
+
+                        marcador.addListener("click", () => {
+                            document.getElementById('txtIdRepartidor').innerText = repartidor['id'];
+                            document.getElementById('txtNombreRepartidor').innerText = repartidor['nombre'];
+
+                            infowindow.open({
+                                anchor: marcador,
+                                map: mapa,
+                                zIndex: -2
+                            });
+
+                            repartidorSeguido = repartidor['id'];
+                            Object.keys(repartidores).forEach( (id) => {
+                                if(id != repartidorSeguido){
+                                    repartidores[id]['marcador'].setMap(null);
+                                }else{
+                                    repartidores[id]['marcador'].setMap(mapa);
+                                }
+                            } );
+                            polylineas.forEach( (polylineaCiclo)=>{
+                                polylineaCiclo.setMap(null);
+                            });
+                            polylineas = [];
+                            marcadores.forEach( (marcadoresCiclo)=>{
+                                marcadoresCiclo.setMap(null);
+                            });
+                            marcadores = [];
+                            infowindowMarver.setContent('<p class="infoWindow" ></p>');
+                            infowindowMarver.close();
+                            idRuta = 0;
+                            fechaActualizacion = "";
+                            actualizar();
+                        });
+
+                        repartidores[repartidor['id']] = {};
+                        repartidores[repartidor['id']]['id'] = repartidor['id'];
+                        repartidores[repartidor['id']]['nombre'] = repartidor['nombre'];
+                        repartidores[repartidor['id']]['marcador'] = marcador;
+                        repartidores[repartidor['id']]['velocidad'] = repartidor['velocidad'];
+
+                        let li = document.createElement('li');
+
+                        li.addEventListener('click', () => {
+                            document.getElementById('btnCerrarModal').click();
+
+                            document.getElementById('txtIdRepartidor').innerText = repartidor['id'];
+                            document.getElementById('txtNombreRepartidor').innerText = repartidor['nombre'];
+
+                            infowindow.open({
+                                anchor: marcador,
+                                map: mapa,
+                                zIndex: -2
+                            });
+
+                            repartidorSeguido = repartidor['id'];
+                            Object.keys(repartidores).forEach( (id) => {
+                                if(id != repartidorSeguido){
+                                    repartidores[id]['marcador'].setMap(null);
+                                }else{
+                                    repartidores[id]['marcador'].setMap(mapa);
+                                }
+                            } );
+                            polylineas.forEach( (polylineaCiclo)=>{
+                                polylineaCiclo.setMap(null);
+                            });
+                            polylineas = [];
+                            marcadores.forEach( (marcadoresCiclo)=>{
+                                marcadoresCiclo.setMap(null);
+                            });
+                            marcadores = [];
+                            infowindowMarver.setContent('<p class="infoWindow" ></p>');
+                            infowindowMarver.close();
+                            idRuta = 0;
+                            fechaActualizacion = "";
+                            actualizar();
+                        });
+
+                        li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+                        li.innerText = repartidor['nombre'];
+
+                        let span = document.createElement('span');
+                        span.classList.add('badge', 'bg-primary', 'rounded-pill');
+                        span.innerText = repartidor['id'];
+
+                        li.appendChild(span);
+                        document.getElementById('listaRepartidores').appendChild(li);
+                    }
                     } );
 
                     if( json_api.hasOwnProperty('marver') ){
@@ -497,7 +494,7 @@
                                 marcadores.push(marcador);
 
                             }else{
-  
+
                                 let imagen = document.createElement('img');
                                 imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/' + tipo + "_" + ( pedido["indice"] + 1 ) + '.png';
 
@@ -574,47 +571,7 @@
                         polylineas.push(polylinea);
                     }
 
-                }else{
-
-                    Object.keys(repartidores).forEach( (id) => {
-
-                        let posicion_nueva = calcularPuntoIntermedio( repartidores[id]['latitudInicial'], repartidores[id]['longitudInicial'], repartidores[id]['latitudObjetivo'], repartidores[id]['longitudObjetivo'], frame / max_frame );
-                        repartidores[id]['marcador'].position = { lat: posicion_nueva[0], lng: posicion_nueva[1] };
-
-                    } );
-
-                }
-
-                frame++;
-            }
-
-            if(frame > max_frame){
-                let datosEnviar = new FormData();
-                datosEnviar.append('web', '');
-                datosEnviar.append('repartidor', repartidorSeguido);
-                datosEnviar.append('id', idRuta);
-                datosEnviar.append('fechaActualizacion', fechaActualizacion);
-
-                fetch('android/rutas_repartidores', {
-                    method: 'POST',
-                    body: datosEnviar
-                })
-                .then((respuesta) => {
-                    return respuesta.json();
-                })
-                .catch(error => {
-                    console.error('Error al solicitar las ruta de los repartidores: ', error);
-                    actualizar();
-                })
-                .then(respuesta_json => {
-                    frame = 0;
-                    json_api = respuesta_json;
-                    actualizar();
-                });
-            }
-            else{
-                id_actualizar = setTimeout(actualizar, 10);
-            }
+            });
         }
 
         function todosRepartidores(){
@@ -694,6 +651,7 @@
             });
 
             actualizar();
+            setInterval(()=>{actualizar();},5000);
         }
 
         initMap();
