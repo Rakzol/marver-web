@@ -167,14 +167,14 @@ try {
     $preparada->bindValue(':ruta_repartidor', $id_ruta_reparto);
     $preparada->execute();
 
-    if($pedido[0]['Tipocomprobante'] != 3){
-        $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio, Extra1, Extra2) VALUES (:folio, :responsable, FORMAT(GETDATE(), 'yyyy-MM-dd'), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ), :id_pedido_nuevo, 'PENDIENTE' )");
+    if($pedido[0]['Tipocomprobante'] == 3 || $pedido[0]['Cliente'] == 2){
+        $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio, HoraSalida, Extra1, Extra2) VALUES (:folio, :responsable, FORMAT(GETDATE(), 'yyyy-MM-dd'), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ), :id_pedido_nuevo, 'EN RUTA')");
         $preparada->bindValue(':folio', $_POST['folio']);
         $preparada->bindValue(':responsable', $_POST['clave']);
         $preparada->bindValue(':id_pedido_nuevo', $id_pedido_nuevo);
         $preparada->execute();
     }else{
-        $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio, HoraSalida, Extra1, Extra2) VALUES (:folio, :responsable, FORMAT(GETDATE(), 'yyyy-MM-dd'), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ), :id_pedido_nuevo, 'EN RUTA')");
+        $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio, Extra1, Extra2) VALUES (:folio, :responsable, FORMAT(GETDATE(), 'yyyy-MM-dd'), REPLACE( REPLACE( FORMAT(GETDATE(), 'hh:mm:ss tt'), 'PM', 'p. m.' ), 'AM', 'a. m.' ), :id_pedido_nuevo, 'PENDIENTE' )");
         $preparada->bindValue(':folio', $_POST['folio']);
         $preparada->bindValue(':responsable', $_POST['clave']);
         $preparada->bindValue(':id_pedido_nuevo', $id_pedido_nuevo);
