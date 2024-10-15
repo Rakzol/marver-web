@@ -8,5 +8,6 @@
     $preparada->execute();
 
     $resultados = $preparada->fetchAll(PDO::FETCH_ASSOC);
+
     echo json_encode($resultados);
 ?>
