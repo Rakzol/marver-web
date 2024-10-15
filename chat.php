@@ -6,10 +6,11 @@
     <title>Document</title>
 </head>
 <body>
-    <?php
-        for($c = 0; $c < 10; $c++){
-            echo $c;
-        }
-    ?>
+
+<script>
+    setInterval(() => {
+        console.log('hola');
+    }, 1000);
+</script>
 </body>
 </html>
