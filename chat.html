@@ -13,13 +13,14 @@
 
     </p>
 
-    <input type="text" id="mensaje" onkeydown="mensajearTecla(evento);" >
+    <input type="text" id="mensaje" onkeydown="mensajearTecla(event);" >
     <input type="button" value="enviar" onclick="mensajearClick();" >
 
     <script>
 
-        function mensajearTecla(evento){
-            if(evento.key == "Enter"){
+        function mensajearTecla(event){
+            console.log(event);
+            if(event.key == "Enter"){
                 mensajearClick();
             }
         }
