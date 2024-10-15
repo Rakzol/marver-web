@@ -29,7 +29,7 @@
                 document.getElementById('mensajes').innerHTML = '';
 
                 jsonRespuesta.forEach((mensaje) => {
-                    document.getElementById('mensajes').innerHTML += mensaje["id"] + '<br>';
+                    document.getElementById('mensajes').innerHTML += mensaje["id"] +  ': ' +  mensaje["mensaje"] + '<br>';
                 });
             });
 
