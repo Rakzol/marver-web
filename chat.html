@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <p id="mensajes" >
+
+    </p>
+
+    <script>
+
+        function actualizar(){
+
+            fetch('getMenaje')
+            .then((respuesta) => {
+                return respuesta.json();
+            })
+            .catch(error => {
+                console.error('Error al solicitar los mensajes');
+            })
+            .then(jsonRespuesta => {
+                console.log(jsonRespuesta);
+            });
+
+        }
+
+        setInterval(() => {
+            actualizar();
+        }, 250);
+
+    </script>
+
+</body>
+
+</html>
