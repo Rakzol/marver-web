@@ -13,12 +13,18 @@
 
     </p>
 
-    <input type="text" id="mensaje">
-    <input type="button" value="enviar" onclick="mensajear();" >
+    <input type="text" id="mensaje" onkeydown="mensajearTecla(evento);" >
+    <input type="button" value="enviar" onclick="mensajearClick();" >
 
     <script>
 
-        function mensajear(){
+        function mensajearTecla(evento){
+            if(evento.key == "Enter"){
+                mensajearClick();
+            }
+        }
+
+        function mensajearClick(){
             let datosEnviar = new FormData();
             datosEnviar.append('mensaje', document.getElementById('mensaje').value );
 
