@@ -57,7 +57,7 @@ try {
         $distancia_de_tufesa = \GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => 25.819547447882798, 'lng' => -108.98026109129121], ['lat' => $posicionRepartidor['latitud'], 'lng' => $posicionRepartidor['longitud']]);
         $distancia_de_casa_mario = \GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => 25.788708413222963, 'lng' => -108.97901283498702], ['lat' => $posicionRepartidor['latitud'], 'lng' => $posicionRepartidor['longitud']]);
         /* Verificamos si esta fuera de la ubicacion del cliente para no dejarlo entregar el pedido si se salio de ella */
-        if ($distancia_de_tufesa > 100 && $distancia_de_casa_mario > 100) {
+        if ($distancia_de_tufesa > 200 && $distancia_de_casa_mario > 200) {
             $resultado["status"] = 1;
             $resultado["mensaje"] = "Se encuentra lejos de la ubicacion del cliente";
             echo json_encode($resultado);
@@ -66,7 +66,7 @@ try {
     }else{
         $distancia_de_cliente = \GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => $pedido['Latitud'], 'lng' => $pedido['Longitud']], ['lat' => $posicionRepartidor['latitud'], 'lng' => $posicionRepartidor['longitud']]);
         /* Verificamos si esta fuera de la ubicacion del cliente para no dejarlo entregar el pedido si se salio de ella */
-        if ($distancia_de_cliente > 100 ) {
+        if ($distancia_de_cliente > 200 ) {
             $resultado["status"] = 1;
             $resultado["mensaje"] = "Se encuentra lejos de la ubicacion del cliente";
             echo json_encode($resultado);
