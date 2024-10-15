@@ -9,7 +9,7 @@
 
 <body>
 
-    <input type="text" id="mensaje" onkeydown="mensajearTecla(event);" >
+    <input type="text" id="mensaje" onkeydown="mensajearTecla(evento);" >
     <input type="button" value="enviar" onclick="mensajearClick();" >
 
     <p id="mensajes" >
@@ -18,9 +18,9 @@
 
     <script>
 
-        function mensajearTecla(event){
-            console.log(event);
-            if(event.key == "Enter"){
+        function mensajearTecla(evento){
+            console.log(evento);
+            if(evento.key == "Enter"){
                 mensajearClick();
             }
         }
