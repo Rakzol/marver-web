@@ -16,24 +16,24 @@
     <input type="text" id="mensaje">
     <input type="button" value="enviar">
 
-    function mensajear(){
-            
-    }
-
     <script>
 
         function mensajear(){
+            let datosEnviar = new FormData();
+            datosEnviar.append('mensaje', document.getElementById('mensaje').value );
 
+            fetch('https://www.marverrefacciones.mx/postMensaje',{
+                method: 'POST',
+                body: datosEnviar
+            });
+
+            document.getElementById('mensaje').value = '';
         }
 
         function actualizar(){
-
             fetch('https://www.marverrefacciones.mx/getMensajes')
             .then((respuesta) => {
                 return respuesta.json();
-            })
-            .catch(error => {
-                console.error('Error al solicitar los mensajes');
             })
             .then(jsonRespuesta => {
                 document.getElementById('mensajes').innerHTML = '';
@@ -42,7 +42,6 @@
                     document.getElementById('mensajes').innerHTML += mensaje["id"] +  ': ' +  mensaje["mensaje"] + '<br>';
                 });
             });
-
         }
 
         setInterval(() => {
