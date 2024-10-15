@@ -4,7 +4,7 @@
     $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
     $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
-    $preparada = $conexion->prepare('SELECT * FROM mensajes');
+    $preparada = $conexion->prepare('SELECT * FROM mensajes ORDER BY id DESC');
     $preparada->execute();
 
     $resultados = $preparada->fetchAll(PDO::FETCH_ASSOC);
