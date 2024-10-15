@@ -26,7 +26,11 @@
                 console.error('Error al solicitar los mensajes');
             })
             .then(jsonRespuesta => {
-                
+                document.getElementById('mensajes').innerHTML = '';
+
+                jsonRespuesta.forEach((mensaje) => {
+                    document.getElementById('mensajes').innerHTML = mensaje["mensaje"];
+                });
             });
 
         }
