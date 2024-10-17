@@ -28,7 +28,7 @@
             let datosEnviar = new FormData();
             datosEnviar.append('mensaje', document.getElementById('mensaje').value );
 
-            fetch('https://www.marverrefacciones.mx/postMensajeE',{
+            fetch('https://www.marverrefacciones.mx/postMensaje',{
                 method: 'POST',
                 body: datosEnviar
             });
@@ -37,7 +37,7 @@
         }
 
         function actualizar(){
-            fetch('https://www.marverrefacciones.mx/getMensajesS')
+            fetch('https://www.marverrefacciones.mx/getMensajes')
             .then((respuesta) => {
                 return respuesta.json();
             })
