@@ -59,10 +59,10 @@ try {
         $resultado["status"] = 1;
         $resultado["mensaje"] = "Se encuentra lejos de la ubicacion del cliente";
 
-        $preparada = $conexion->prepare('INSERT INTO posicionesBoton VALUES(:repartidor, :pedido, GETDATE(), :fechaUltimaActualizacion, :latitudCliente, :longitudCliente, :latitudRepartidor, :longitudRepartidor, :distancia, 0 )');
+        $preparada = $conexion->prepare('INSERT INTO posicionesBoton VALUES(:repartidor, :pedido, GETDATE(), :fechaUltimaUbicacion, :latitudCliente, :longitudCliente, :latitudRepartidor, :longitudRepartidor, :distancia, 0 )');
         $preparada->bindValue(':repartidor', $_POST['clave']);
         $preparada->bindValue(':pedido', $_POST['folio']);
-        $preparada->bindValue(':fechaUltimaActualizacion', $posicionRepartidor['fecha']);
+        $preparada->bindValue(':fechaUltimaUbicacion', $posicionRepartidor['fecha']);
         $preparada->bindValue(':latitudCliente', $pedido['Latitud']);
         $preparada->bindValue(':longitudCliente', $pedido['Longitud']);
         $preparada->bindValue(':latitudRepartidor', $posicionRepartidor['latitud']);
@@ -74,10 +74,10 @@ try {
         exit();
     }
 
-    $preparada = $conexion->prepare('INSERT INTO posicionesBoton VALUES(:repartidor, :pedido, GETDATE(), :fechaUltimaActualizacion, :latitudCliente, :longitudCliente, :latitudRepartidor, :longitudRepartidor, :distancia, 1 )');
+    $preparada = $conexion->prepare('INSERT INTO posicionesBoton VALUES(:repartidor, :pedido, GETDATE(), :fechaUltimaUbicacion, :latitudCliente, :longitudCliente, :latitudRepartidor, :longitudRepartidor, :distancia, 1 )');
     $preparada->bindValue(':repartidor', $_POST['clave']);
     $preparada->bindValue(':pedido', $_POST['folio']);
-    $preparada->bindValue(':fechaUltimaActualizacion', $posicionRepartidor['fecha']);
+    $preparada->bindValue(':fechaUltimaUbicacion', $posicionRepartidor['fecha']);
     $preparada->bindValue(':latitudCliente', $pedido['Latitud']);
     $preparada->bindValue(':longitudCliente', $pedido['Longitud']);
     $preparada->bindValue(':latitudRepartidor', $posicionRepartidor['latitud']);
