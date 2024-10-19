@@ -48,31 +48,42 @@ try {
     $preparada->execute();
     $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    $preparada = $conexion->prepare("SELECT TOP 1 latitud, longitud FROM posiciones WHERE usuario = :repartidor ORDER BY fecha DESC;");
+    $preparada = $conexion->prepare("SELECT TOP 1 latitud, longitud, fecha FROM posiciones WHERE usuario = :repartidor ORDER BY fecha DESC;");
     $preparada->bindValue(':repartidor', $_POST['clave']);
     $preparada->execute();
     $posicionRepartidor = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    if($pedido['Cliente'] == 2){
-        $distancia_de_tufesa = \GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => 25.819547447882798, 'lng' => -108.98026109129121], ['lat' => $posicionRepartidor['latitud'], 'lng' => $posicionRepartidor['longitud']]);
-        $distancia_de_casa_mario = \GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => 25.788708413222963, 'lng' => -108.97901283498702], ['lat' => $posicionRepartidor['latitud'], 'lng' => $posicionRepartidor['longitud']]);
-        /* Verificamos si esta fuera de la ubicacion del cliente para no dejarlo entregar el pedido si se salio de ella */
-        if ($distancia_de_tufesa > 200 && $distancia_de_casa_mario > 200) {
-            $resultado["status"] = 1;
-            $resultado["mensaje"] = "Se encuentra lejos de la ubicacion del cliente";
-            echo json_encode($resultado);
-            exit();
-        }
-    }else{
-        $distancia_de_cliente = \GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => $pedido['Latitud'], 'lng' => $pedido['Longitud']], ['lat' => $posicionRepartidor['latitud'], 'lng' => $posicionRepartidor['longitud']]);
-        /* Verificamos si esta fuera de la ubicacion del cliente para no dejarlo entregar el pedido si se salio de ella */
-        if ($distancia_de_cliente > 200 ) {
-            $resultado["status"] = 1;
-            $resultado["mensaje"] = "Se encuentra lejos de la ubicacion del cliente";
-            echo json_encode($resultado);
-            exit();
-        }
+    $distancia_de_cliente = \GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => $pedido['Latitud'], 'lng' => $pedido['Longitud']], ['lat' => $posicionRepartidor['latitud'], 'lng' => $posicionRepartidor['longitud']]);
+    /* Verificamos si esta fuera de la ubicacion del cliente para no dejarlo entregar el pedido si se salio de ella */
+    if ($distancia_de_cliente > 200 ) {
+        $resultado["status"] = 1;
+        $resultado["mensaje"] = "Se encuentra lejos de la ubicacion del cliente";
+
+        $preparada = $conexion->prepare('INSERT INTO posicionesBoton VALUES(:repartidor, :pedido, GETDATE(), :fechaUltimaActualizacion, :latitudCliente, :longitudCliente, :latitudRepartidor, :longitudRepartidor, :distancia, 0 )');
+        $preparada->bindValue(':repartidor', $_POST['clave']);
+        $preparada->bindValue(':pedido', $_POST['folio']);
+        $preparada->bindValue(':fechaUltimaActualizacion', $posicionRepartidor['fecha']);
+        $preparada->bindValue(':latitudCliente', $pedido['Latitud']);
+        $preparada->bindValue(':longitudCliente', $pedido['Longitud']);
+        $preparada->bindValue(':latitudRepartidor', $posicionRepartidor['latitud']);
+        $preparada->bindValue(':longitudRepartidor', $posicionRepartidor['longitud']);
+        $preparada->bindValue(':distancia', $distancia_de_cliente);
+        $preparada->execute();
+
+        echo json_encode($resultado);
+        exit();
     }
+
+    $preparada = $conexion->prepare('INSERT INTO posicionesBoton VALUES(:repartidor, :pedido, GETDATE(), :fechaUltimaActualizacion, :latitudCliente, :longitudCliente, :latitudRepartidor, :longitudRepartidor, :distancia, 1 )');
+    $preparada->bindValue(':repartidor', $_POST['clave']);
+    $preparada->bindValue(':pedido', $_POST['folio']);
+    $preparada->bindValue(':fechaUltimaActualizacion', $posicionRepartidor['fecha']);
+    $preparada->bindValue(':latitudCliente', $pedido['Latitud']);
+    $preparada->bindValue(':longitudCliente', $pedido['Longitud']);
+    $preparada->bindValue(':latitudRepartidor', $posicionRepartidor['latitud']);
+    $preparada->bindValue(':longitudRepartidor', $posicionRepartidor['longitud']);
+    $preparada->bindValue(':distancia', $distancia_de_cliente);
+    $preparada->execute();
 
     $preparada = $conexion->prepare("SELECT Extra1 FROM EnvioPedidoCliente WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 = 'EN RUTA'");
     $preparada->bindValue(':pedido', $_POST['folio']);
