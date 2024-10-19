@@ -128,15 +128,25 @@ try {
                 $preparada->execute();
                 $id_pedido_repartidor = $conexion->lastInsertId();
 
-                $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio, HoraSalida, Extra1, Extra2) VALUES (:folio, :responsable, :fecha, :hora_envio, :hora_salida, :id_pedido_repartidor, :status )");
-                $preparada->bindValue(':folio', $pedido_pendiente['Pedido']);
-                $preparada->bindValue(':responsable', $_POST['clave']);
-                $preparada->bindValue(':fecha', $pedido_pendiente['Fecha']);
-                $preparada->bindValue(':hora_envio', $pedido_pendiente['HoraEnvio']);
-                $preparada->bindValue(':hora_salida', $pedido_pendiente['HoraSalida']);
-                $preparada->bindValue(':id_pedido_repartidor', $id_pedido_repartidor);
-                $preparada->bindValue(':status', $pedido_pendiente['Extra2']);
-                $preparada->execute();
+                if($pedido_pendiente['Extra2'] == 'EN RUTA'){
+                    $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio, HoraSalida, Extra1, Extra2) VALUES (:folio, :responsable, :fecha, :hora_envio, REPLACE( REPLACE(FORMAT(GETDATE(), 'hh:mm tt'), 'AM', 'a. m.'), 'PM', 'p. m.'), :id_pedido_repartidor, :status )");
+                    $preparada->bindValue(':folio', $pedido_pendiente['Pedido']);
+                    $preparada->bindValue(':responsable', $_POST['clave']);
+                    $preparada->bindValue(':fecha', $pedido_pendiente['Fecha']);
+                    $preparada->bindValue(':hora_envio', $pedido_pendiente['HoraEnvio']);
+                    $preparada->bindValue(':id_pedido_repartidor', $id_pedido_repartidor);
+                    $preparada->bindValue(':status', $pedido_pendiente['Extra2']);
+                    $preparada->execute();
+                }else{
+                    $preparada = $conexion->prepare("INSERT INTO EnvioPedidoCliente (Pedido, Responsable, Fecha, HoraEnvio, Extra1, Extra2) VALUES (:folio, :responsable, :fecha, :hora_envio, :id_pedido_repartidor, :status )");
+                    $preparada->bindValue(':folio', $pedido_pendiente['Pedido']);
+                    $preparada->bindValue(':responsable', $_POST['clave']);
+                    $preparada->bindValue(':fecha', $pedido_pendiente['Fecha']);
+                    $preparada->bindValue(':hora_envio', $pedido_pendiente['HoraEnvio']);
+                    $preparada->bindValue(':id_pedido_repartidor', $id_pedido_repartidor);
+                    $preparada->bindValue(':status', $pedido_pendiente['Extra2']);
+                    $preparada->execute();
+                }
             }
         }
     }
