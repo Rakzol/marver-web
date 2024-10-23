@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animaciones Continuas con Tailwind</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Definir la animación que hace que las imágenes suban continuamente */
+    @keyframes move-up {
+      0% {
+        transform: translateY(100%);
+      }
+      100% {
+        transform: translateY(-100%);
+      }
+    }
+
+    /* Aplicar la animación a las columnas */
+    .animate-scroll-up {
+      animation: move-up 8s linear infinite;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+
+  <div class="relative w-32 h-96 overflow-hidden border-2 border-black">
+    <!-- Contenedor de imágenes que se desplazan hacia arriba -->
+    <div class="absolute inset-0 flex flex-col space-y-4 animate-scroll-up">
+      <div class="w-24 h-36 bg-gray-300 border-2 border-black rounded-lg flex justify-center items-center">
+        1 UP
+      </div>
+      <div class="w-24 h-36 bg-gray-300 border-2 border-black rounded-lg flex justify-center items-center">
+        2 UP
+      </div>
+      <div class="w-24 h-36 bg-gray-300 border-2 border-black rounded-lg flex justify-center items-center">
+        3 UP
+      </div>
+      <div class="w-24 h-36 bg-gray-300 border-2 border-black rounded-lg flex justify-center items-center">
+        4 UP
+      </div>
+      <div class="w-24 h-36 bg-gray-300 border-2 border-black rounded-lg flex justify-center items-center">
+        5 UP
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
