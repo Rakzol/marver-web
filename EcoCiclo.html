@@ -37,7 +37,7 @@
         }
 
         header a{
-            font-size: 1rem;
+            font-size: 1vw;
             font-weight: 400;
             text-decoration: none;
             color: rgb(255, 255, 255);
@@ -70,7 +70,7 @@
             height: 100vh;
 
             display: flex;
-            align-items: center;
+            /* align-items: center; */
 
             overflow: hidden;
 
@@ -78,7 +78,8 @@
         }
 
         main img{
-            /* width: 100%; */
+            width: 20rem;
+            height: 20rem;
             object-fit: none;
         }
 
@@ -86,16 +87,21 @@
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
-            /* width: 20%; */
-            /* height: 20%; */
+        }
+
+        main article div:first-child{
+            /* animation: bajar 20s linear infinite; */
+            align-self: center;
         }
 
         main article div:nth-child(2){
-            animation: subir 20s linear infinite;
+            /* animation: subir 20s linear infinite; */
+            align-self: start;
         }
 
         main article div:last-child{
-            animation: bajar 20s linear infinite;
+            /* animation: bajar 20s linear infinite; */
+            align-self: end;
         }
 
         @keyframes subir {
@@ -107,50 +113,8 @@
             }
         }
 
-        @keyframes bajar {
-            from {
-                transform: translateY(75vh);
-            }
-            to {
-                transform: translateY(-75vh);
-            }
-        }
-
-        @keyframes izquierda {
-            from {
-                transform: translateX(75vh);
-            }
-            to {
-                transform: translateX(-75vh);
-            }
-        }
-
-        @keyframes derecha {
-            from {
-                transform: translateX(-75vh);
-            }
-            to {
-                transform: translateX(75vh);
-            }
-        }
-
-
-        @media (min-height: 100vw) {
-            main article:first-of-type{
-                flex-direction: column;
-            }
-
-            main article div:not(:first-child){
-                flex-direction: row;
-            }
-
-            main article div:nth-child(2){
-                animation: derecha 20s linear infinite;
-            }
-
-            main article div:last-child{
-                animation: izquierda 20s linear infinite;
-            }
+        h1{
+            font-size: 3vw;
         }
     </style>
 </head>
