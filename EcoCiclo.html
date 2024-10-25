@@ -14,8 +14,9 @@
     <style>
         :root{
             --altoImagenes: 20vh;
-            --numeroImagenes: 5;
-            --rapidezAnimacion: 5s;
+            --gapImagenes: 4vh;
+            --numeroImagenes: 10;
+            --rapidezAnimacion: 35s;
         }
 
         *{
@@ -25,7 +26,7 @@
             padding: 0;
             box-sizing: border-box;
 
-            background-color: red;
+            /* background-color: red; */
         }
 
         header{
@@ -38,9 +39,7 @@
             height: 3.5rem;
             width: 100vw;
 
-            /* z-index: 1; */
-
-            display: none;
+            z-index: 1;
         }
 
         header a{
@@ -76,20 +75,20 @@
 
             height: 100vh;
             display: flex;
-            /* overflow: hidden; */
+            overflow: hidden;
             justify-content: space-evenly;
             /* position: relative; */
         }
 
         main img{
             height: var(--altoImagenes);
-            object-fit: none;
+            /* object-fit: none; */
         }
 
         main article div:not(:first-child){
             display: flex;
             flex-direction: column;
-            gap: 2vh;
+            gap: var(--gapImagenes);
         }
 
         main article div:first-child{
@@ -97,49 +96,23 @@
         }
 
         main article div:nth-child(2){
-            /* transform: translateY( calc( -1 * calc(var(--altoImagenes) * var(--numeroImagenes)) ) ); */
-            /* transform: translateY(-110vh); */
-            transform: translateY(-220vh);
+            animation: bajar var(--rapidezAnimacion) linear infinite;
         }
 
         main article div:last-child{
-            /* transform: translateY(calc(var(--altoImagenes) * var(--numeroImagenes))); */
+            animation: subir var(--rapidezAnimacion) linear infinite;
             align-self: end;
         }
 
-        /* main article div:nth-child(2) img{
-            transform: translateY(-20rem);
-            animation: bajar 3s linear infinite;
-            animation-direction: alternate;
-        }
-
-        main article div:nth-child(2) img:nth-child(2){
-            animation-delay: 1s;
-        }
-        main article div:nth-child(2) img:nth-child(3){
-            animation-delay: 2s;
-        }
-        main article div:nth-child(2) img:nth-child(4){
-            animation-delay: 3s;
-        }*/
-
-        /*main article div:last-child img{
-            animation: subir 5s linear infinite;
-        } */
-
-        @keyframes bajarImagen1 {
+        @keyframes bajar {
             100% {
-                transform: translateY(calc(-100vh - var(--altoImagenes) ));
+                transform: translateY( calc( -1 * calc( calc( var(--altoImagenes) + var(--gapImagenes) ) * var(--numeroImagenes) ) ) );
             }
         }
-        @keyframes bajarImagen2 {
+
+        @keyframes subir {
             100% {
-                transform: translateY(calc(-100vh - calc(var(--altoImagenes) * 2) ));
-            }
-        }
-        @keyframes bajarImagen3 {
-            100% {
-                transform: translateY(calc(-100vh - calc(var(--altoImagenes) * 3) ));
+                transform: translateY( calc( calc( var(--altoImagenes) + var(--gapImagenes) ) * var(--numeroImagenes) ) );
             }
         }
 
