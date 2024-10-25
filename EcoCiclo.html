@@ -260,13 +260,28 @@
     <script>
         document.querySelectorAll('video').forEach(video=>{
             video.addEventListener('loadeddata', () => {
-                video.play();
+                console.log('datos cargados');
+                video.play().catch(error => {
+                console.log('No se pudo reproducir automáticamente:', error);
+            });
             });
             video.addEventListener('canplaythrough', () => {
-                video.play();
+                console.log('se puede reproducir');
+                video.play().catch(error => {
+                console.log('No se pudo reproducir automáticamente:', error);
+            });
             });
             video.addEventListener('pause', () => {
-                video.play();
+                console.log('se pauso');
+                video.play().catch(error => {
+                console.log('No se pudo reproducir automáticamente:', error);
+            });
+            });
+            video.addEventListener('play', () => {
+                console.log('se puso PLAY');
+                video.play().catch(error => {
+                console.log('No se pudo reproducir automáticamente:', error);
+            });
             });
         });
     </script>
