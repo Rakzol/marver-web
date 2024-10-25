@@ -76,7 +76,7 @@
 
             height: 100vh;
             display: flex;
-            overflow: hidden;
+            /* overflow: hidden; */
             justify-content: space-evenly;
             /* position: relative; */
         }
@@ -275,6 +275,15 @@
             });
             video.addEventListener('play', () => {
                 console.log('se puso PLAY');
+                video.play().catch(error => {
+                console.log('No se pudo reproducir automáticamente:', error);
+            });
+            });
+        });
+
+        window.addEventListener('load', function() {
+            document.querySelectorAll('video').forEach(video=>{
+                console.log('PLAY DE CARGA');
                 video.play().catch(error => {
                 console.log('No se pudo reproducir automáticamente:', error);
             });
