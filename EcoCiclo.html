@@ -12,6 +12,11 @@
     <title>EcoCiclo</title>
 
     <style>
+        :root{
+            --altoImagenes: 20vh;
+            --numeroImagenes: 5;
+            --rapidezAnimacion: 5s;
+        }
 
         *{
             font-family: 'Inter';
@@ -33,7 +38,9 @@
             height: 3.5rem;
             width: 100vw;
 
-            z-index: 1;
+            /* z-index: 1; */
+
+            display: none;
         }
 
         header a{
@@ -68,48 +75,71 @@
             background-repeat: no-repeat;
 
             height: 100vh;
-
             display: flex;
-            /* align-items: center; */
-
-            overflow: hidden;
-
+            /* overflow: hidden; */
             justify-content: space-evenly;
+            /* position: relative; */
         }
 
         main img{
-            width: 20rem;
-            height: 20rem;
+            height: var(--altoImagenes);
             object-fit: none;
         }
 
         main article div:not(:first-child){
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 2vh;
         }
 
         main article div:first-child{
-            /* animation: bajar 20s linear infinite; */
             align-self: center;
         }
 
         main article div:nth-child(2){
-            /* animation: subir 20s linear infinite; */
-            align-self: start;
+            /* transform: translateY( calc( -1 * calc(var(--altoImagenes) * var(--numeroImagenes)) ) ); */
+            /* transform: translateY(-110vh); */
+            transform: translateY(-220vh);
         }
 
         main article div:last-child{
-            /* animation: bajar 20s linear infinite; */
+            /* transform: translateY(calc(var(--altoImagenes) * var(--numeroImagenes))); */
             align-self: end;
         }
 
-        @keyframes subir {
-            from {
-                transform: translateY(-75vh);
+        /* main article div:nth-child(2) img{
+            transform: translateY(-20rem);
+            animation: bajar 3s linear infinite;
+            animation-direction: alternate;
+        }
+
+        main article div:nth-child(2) img:nth-child(2){
+            animation-delay: 1s;
+        }
+        main article div:nth-child(2) img:nth-child(3){
+            animation-delay: 2s;
+        }
+        main article div:nth-child(2) img:nth-child(4){
+            animation-delay: 3s;
+        }*/
+
+        /*main article div:last-child img{
+            animation: subir 5s linear infinite;
+        } */
+
+        @keyframes bajarImagen1 {
+            100% {
+                transform: translateY(calc(-100vh - var(--altoImagenes) ));
             }
-            to {
-                transform: translateY(75vh);
+        }
+        @keyframes bajarImagen2 {
+            100% {
+                transform: translateY(calc(-100vh - calc(var(--altoImagenes) * 2) ));
+            }
+        }
+        @keyframes bajarImagen3 {
+            100% {
+                transform: translateY(calc(-100vh - calc(var(--altoImagenes) * 3) ));
             }
         }
 
@@ -133,33 +163,43 @@
     <main>
         <article>
             <div>
-                <h1>Velocidad y Expercia</h1>
+                <h1>Velocidad y Experiencia</h1>
                 <h3>Lider en manejo de residuos</h3>
                 <a href="#">Solicitar Recolección</a>
             </div>
             <div>
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
+                <img src="https://placehold.co/1920x1080?text=1" alt="">
+                <img src="https://placehold.co/1920x1080?text=2" alt="">
+                <img src="https://placehold.co/1920x1080?text=3" alt="">
+                <img src="https://placehold.co/1920x1080?text=4" alt="">
+                <img src="https://placehold.co/1920x1080?text=5" alt="">
+                <img src="https://placehold.co/1920x1080?text=6" alt="">
+                <img src="https://placehold.co/1920x1080?text=7" alt="">
+                <img src="https://placehold.co/1920x1080?text=8" alt="">
+                <img src="https://placehold.co/1920x1080?text=9" alt="">
+                <img src="https://placehold.co/1920x1080?text=10" alt="">
+                <img src="https://placehold.co/1920x1080?text=1" alt="">
+                <img src="https://placehold.co/1920x1080?text=2" alt="">
+                <img src="https://placehold.co/1920x1080?text=3" alt="">
+                <img src="https://placehold.co/1920x1080?text=4" alt="">
+                <img src="https://placehold.co/1920x1080?text=5" alt="">
             </div>
             <div>
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
-                <img src="https://www.pasa.mx/front/assets/img/gen/ResiduosPeligrosos-01.webp" alt="">
+                <img src="https://placehold.co/1920x1080?text=5" alt="">
+                <img src="https://placehold.co/1920x1080?text=4" alt="">
+                <img src="https://placehold.co/1920x1080?text=3" alt="">
+                <img src="https://placehold.co/1920x1080?text=2" alt="">
+                <img src="https://placehold.co/1920x1080?text=1" alt="">
+                <img src="https://placehold.co/1920x1080?text=10" alt="">
+                <img src="https://placehold.co/1920x1080?text=9" alt="">
+                <img src="https://placehold.co/1920x1080?text=8" alt="">
+                <img src="https://placehold.co/1920x1080?text=7" alt="">
+                <img src="https://placehold.co/1920x1080?text=6" alt="">
+                <img src="https://placehold.co/1920x1080?text=5" alt="">
+                <img src="https://placehold.co/1920x1080?text=4" alt="">
+                <img src="https://placehold.co/1920x1080?text=3" alt="">
+                <img src="https://placehold.co/1920x1080?text=2" alt="">
+                <img src="https://placehold.co/1920x1080?text=1" alt="">
             </div>
         </article>
 
