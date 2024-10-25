@@ -76,7 +76,7 @@
 
             height: 100vh;
             display: flex;
-            /* overflow: hidden; */
+            overflow: hidden;
             justify-content: space-evenly;
             /* position: relative; */
         }
@@ -151,7 +151,7 @@
                 <a href="#">Solicitar Recolección</a>
             </div>
             <div>
-                <video autoplay loop muted>
+                <video loop muted>
                     <source src="llantas1.mp4" type="video/mp4">
                 </video>
                 <img src="https://placehold.co/1920x1080?text=2" alt="">
@@ -163,7 +163,7 @@
                 <img src="https://placehold.co/1920x1080?text=8" alt="">
                 <img src="https://placehold.co/1920x1080?text=9" alt="">
                 <img src="https://placehold.co/1920x1080?text=10" alt="">
-                <video autoplay loop muted>
+                <video loop muted>
                     <source src="llantas2.mp4" type="video/mp4">
                 </video>
                 <img src="https://placehold.co/1920x1080?text=2" alt="">
@@ -254,39 +254,9 @@
         </nav>
     </footer>
     <script>
-        document.querySelectorAll('video').forEach(video=>{
-            video.addEventListener('loadeddata', () => {
-                console.log('datos cargados');
-                video.play().catch(error => {
-                console.log('No se pudo reproducir automáticamente:', error);
-            });
-            });
-            video.addEventListener('canplaythrough', () => {
-                console.log('se puede reproducir');
-                video.play().catch(error => {
-                console.log('No se pudo reproducir automáticamente:', error);
-            });
-            });
-            video.addEventListener('pause', () => {
-                console.log('se pauso');
-                video.play().catch(error => {
-                console.log('No se pudo reproducir automáticamente:', error);
-            });
-            });
-            video.addEventListener('play', () => {
-                console.log('se puso PLAY');
-                video.play().catch(error => {
-                console.log('No se pudo reproducir automáticamente:', error);
-            });
-            });
-        });
-
         window.addEventListener('load', function() {
             document.querySelectorAll('video').forEach(video=>{
-                console.log('PLAY DE CARGA');
-                video.play().catch(error => {
-                console.log('No se pudo reproducir automáticamente:', error);
-            });
+                video.play();
             });
         });
     </script>
