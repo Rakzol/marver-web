@@ -257,5 +257,18 @@
             </ul>
         </nav>
     </footer>
+    <script>
+        document.querySelectorAll('video').forEach(video=>{
+            video.addEventListener('loadeddata', () => {
+                video.play();
+            });
+            video.addEventListener('canplaythrough', () => {
+                video.play();
+            });
+            video.addEventListener('pause', () => {
+                video.play();
+            });
+        });
+    </script>
 </body>
 </html>
