@@ -16,7 +16,7 @@
             --altoImagenes: 20vh;
             --gapImagenes: 4vh;
             --numeroImagenes: 10;
-            --rapidezAnimacion: 40s;
+            --rapidezAnimacion: 10s;
         }
 
         *{
@@ -88,6 +88,13 @@
             /* object-fit: none; */
         }
 
+        main video{
+            /* box-shadow: 0vh 1vh 8px rgba(0, 0, 0, 0.3); */
+            box-shadow: 0vh 1vh 8px rgba(0, 0, 0, 0.25);
+            height: var(--altoImagenes);
+            /* object-fit: none; */
+        }
+
         main article div:not(:first-child){
             display: flex;
             flex-direction: column;
@@ -144,7 +151,11 @@
                 <a href="#">Solicitar Recolección</a>
             </div>
             <div>
-                <img src="https://placehold.co/1920x1080?text=1" alt="">
+                <video preload="auto" muted autoplay>
+                    <source src="llantas1.mp4" type="video/mp4">
+                    <source src="llantas1.ogg" type="video/ogg">
+                    Tu navegador no soporta el elemento de video.
+                </video>
                 <img src="https://placehold.co/1920x1080?text=2" alt="">
                 <img src="https://placehold.co/1920x1080?text=3" alt="">
                 <img src="https://placehold.co/1920x1080?text=4" alt="">
@@ -154,7 +165,11 @@
                 <img src="https://placehold.co/1920x1080?text=8" alt="">
                 <img src="https://placehold.co/1920x1080?text=9" alt="">
                 <img src="https://placehold.co/1920x1080?text=10" alt="">
-                <img src="https://placehold.co/1920x1080?text=1" alt="">
+                <video preload="auto" muted autoplay>
+                    <source src="llantas1.mp4" type="video/mp4">
+                    <source src="llantas1.ogg" type="video/ogg">
+                    Tu navegador no soporta el elemento de video.
+                </video>
                 <img src="https://placehold.co/1920x1080?text=2" alt="">
                 <img src="https://placehold.co/1920x1080?text=3" alt="">
                 <img src="https://placehold.co/1920x1080?text=4" alt="">
