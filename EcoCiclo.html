@@ -13,10 +13,10 @@
 
     <style>
         :root{
-            --altoImagenes: 30dvh;
-            --gapImagenesAltas: 4dvh;
-            --anchoImagenes: 90dvw;
-            --gapImagenesAnchas: 4dvw;
+            --altoImagenes: 30svh;
+            --gapImagenesAltas: 4svh;
+            --anchoImagenes: 90svw;
+            --gapImagenesAnchas: 4svw;
             --numeroImagenes: 10;
             --rapidezAnimacion: 60s;
 
@@ -38,10 +38,10 @@
             left: 0;
             position: fixed;
             background: #66BB6A;
-            box-shadow: 0dvh 0.5rem 0.5rem rgba(0, 0, 0, 0.2);
+            box-shadow: 0svh 0.5rem 0.5rem rgba(0, 0, 0, 0.2);
 
             height: var(--alturaBarra);
-            width: 100dvw;
+            width: 100svw;
 
             z-index: 1;
         }
@@ -72,7 +72,7 @@
 
         .contenedorPrincipal{
             height: calc( 100svh - var(--alturaBarra) );
-            /* height: 100dvh; */
+            /* height: 100svh; */
             display: flex;
             overflow: hidden;
             justify-content: space-evenly;
@@ -172,7 +172,7 @@
         }
 
         .carrusel video{
-            box-shadow: 0dvh 1dvh 0.75dvh rgba(0, 0, 0, 0.25);
+            box-shadow: 0svh 1svh 0.75svh rgba(0, 0, 0, 0.25);
             height: var(--altoImagenes);
             border-radius: 0.5rem;
         }
@@ -200,7 +200,7 @@
                 animation: derecha var(--rapidezAnimacion) linear infinite;
             }
             .carrusel video{
-                box-shadow: 0dvh 1dvw 0.75dvw rgba(0, 0, 0, 0.25);
+                box-shadow: 0svh 1svw 0.75svw rgba(0, 0, 0, 0.25);
                 height: auto;
                 width: var(--anchoImagenes);
             }
@@ -220,7 +220,7 @@
                 animation: derecha var(--rapidezAnimacion) linear infinite;
             }
             .carrusel video{
-                box-shadow: 0dvh 1dvw 0.75dvw rgba(0, 0, 0, 0.25);
+                box-shadow: 0svh 1svw 0.75svw rgba(0, 0, 0, 0.25);
                 height: auto;
                 width: var(--anchoImagenes);
             }
