@@ -1,33 +1,27 @@
-from moviepy.editor import VideoFileClip  # Asegúrate de usar esta línea para importar correctamente
+from moviepy.editor import VideoFileClip
 
-def recortar_video(ruta_video, inicio_minuto, inicio_segundo, fin_minuto, fin_segundo, ruta_salida):
-    # Calcula el tiempo de inicio y fin en segundos
-    tiempo_inicio = inicio_minuto * 60 + inicio_segundo
-    tiempo_fin = fin_minuto * 60 + fin_segundo
+from PIL import Image
 
-    # Carga el video y recorta el tiempo especificado
-    video = VideoFileClip(ruta_video).subclip(tiempo_inicio, tiempo_fin)
-    
-    # Quita el audio para reducir el tamaño
-    video = video.without_audio()
+# Verifica si 'ANTIALIAS' está en la versión actual de Pillow
+if not hasattr(Image, 'ANTIALIAS'):
+    Image.ANTIALIAS = Image.LANCZOS
 
-    # Exporta el video con compresión máxima
-    video.write_videofile(
-        ruta_salida, 
-        codec='libx264', 
-        preset='ultrafast', 
-        ffmpeg_params=["-crf", "35"]  # Aumenta el valor de crf para una compresión máxima
-    )
+video = VideoFileClip('C:/Users/rakzol/Downloads/videoplayback.mp4')
 
-    # Cierra el clip
-    video.close()
+clips = [
+    [(0,1,29),(0,1,34)],
+    [(0,2,58),(0,3,3)],
+    [(0,6,2),(0,6,7)],
+    [(0,6,58),(0,7,3)],
+    [(0,7,32),(0,7,37)],
+    [(0,8,45),(0,8,50)],
+    [(0,4,11),(0,4,16)],
+    [(0,4,21),(0,4,26)],
+    [(0,10,59),(0,11,4)],
+    [(0,12,1),(0,12,6)],
+]
 
-# Ejemplo de uso
-ruta_video = 'C:/Users/rakzol/Downloads/videoplayback.mp4'  # Cambia esto por la ruta de tu video
-inicio_minuto = 4   # Minuto de inicio
-inicio_segundo = 21 # Segundo de inicio
-fin_minuto = 4     # Minuto de fin
-fin_segundo = 31    # Segundo de fin
-ruta_salida = 'llantas8.mp4'  # Ruta donde se guardará el video recortado
-
-recortar_video(ruta_video, inicio_minuto, inicio_segundo, fin_minuto, fin_segundo, ruta_salida)
+c = 0
+for clip in clips:
+    c += 1
+    video.subclip(clip[0], clip[1]).resize(height=480).set_fps(30).write_videofile(f'Lowllantas{c}.mp4', codec='libx264', audio=False, bitrate='500k')
