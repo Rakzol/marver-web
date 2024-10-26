@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcoCiclo</title>
 
     <style>
-        :root{
+        :root {
             --altoImagenes: 30svh;
             --gapImagenesAltas: 4svh;
             --anchoImagenes: 90svw;
@@ -23,7 +28,7 @@
             --alturaBarra: 3.5rem;
         }
 
-        *{
+        * {
             font-family: 'Inter';
             margin: 0;
             border: 0;
@@ -33,7 +38,7 @@
             /* background-color: red; */
         }
 
-        .cabecera{
+        .cabecera {
             top: 0;
             left: 0;
             position: fixed;
@@ -46,7 +51,7 @@
             z-index: 1;
         }
 
-        .cabecera a{
+        .cabecera a {
             font-size: 1rem;
             font-weight: 400;
             text-decoration: none;
@@ -55,14 +60,15 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
-        .cabecera a:hover{
+        .cabecera a:hover {
             text-decoration: underline;
         }
 
-        .cabecera nav{
+        .cabecera nav {
             height: 100%;
         }
-        .cabecera ul{
+
+        .cabecera ul {
             height: 100%;
             display: flex;
             list-style-type: none;
@@ -70,8 +76,8 @@
             justify-content: space-evenly;
         }
 
-        .contenedorPrincipal{
-            height: calc( 100svh - var(--alturaBarra) );
+        .contenedorPrincipal {
+            height: calc(100svh - var(--alturaBarra));
             /* height: 100svh; */
             display: flex;
             overflow: hidden;
@@ -100,7 +106,7 @@
             filter: brightness(0.85);
         }
 
-        .titulos{
+        .titulos {
             align-self: center;
             display: flex;
             flex-direction: column;
@@ -109,7 +115,7 @@
             /* gap: 0.5rem; */
         }
 
-        .titulos h1{
+        .titulos h1 {
             color: #6bdf70;
             text-align: center;
             font-size: 3.25rem;
@@ -117,7 +123,7 @@
             text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
         }
 
-        .titulos h2{
+        .titulos h2 {
             color: #ffffff;
             text-align: center;
             font-size: 1.75rem;
@@ -125,7 +131,7 @@
             text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
         }
 
-        .titulos a{
+        .titulos a {
             background-color: #52be55;
             border: none;
             border-radius: 8px;
@@ -157,12 +163,12 @@
             background-color: #FFE356;
         }
 
-        .titulos svg{
+        .titulos svg {
             width: 3rem;
             height: 3rem;
         }
 
-        .carrusel{
+        .carrusel {
             display: flex;
             flex-direction: column;
             gap: var(--gapImagenesAltas);
@@ -171,7 +177,7 @@
             align-self: end;
         }
 
-        .carrusel video{
+        .carrusel video {
             box-shadow: 0svh 1svh 0.75svh rgba(0, 0, 0, 0.25);
             height: var(--altoImagenes);
             border-radius: 0.5rem;
@@ -179,58 +185,61 @@
 
         @keyframes subir {
             100% {
-                transform: translateY( calc( calc( var(--altoImagenes) + var(--gapImagenesAltas) ) * var(--numeroImagenes) ) );
+                transform: translateY(calc(calc(var(--altoImagenes) + var(--gapImagenesAltas)) * var(--numeroImagenes)));
             }
         }
 
         @keyframes derecha {
             100% {
-                transform: translateX( calc( calc( var(--anchoImagenes) + var(--gapImagenesAnchas) ) * var(--numeroImagenes) ) );
+                transform: translateX(calc(calc(var(--anchoImagenes) + var(--gapImagenesAnchas)) * var(--numeroImagenes)));
             }
         }
 
         @media (max-aspect-ratio: 12/13) {
-            .contenedorPrincipal{
+            .contenedorPrincipal {
                 padding: 1rem 0 1rem 0;
                 flex-direction: column;
             }
-            .carrusel{
+
+            .carrusel {
                 flex-direction: row;
-                gap: var(--gapImagenesAnchas); 
+                gap: var(--gapImagenesAnchas);
                 animation: derecha var(--rapidezAnimacion) linear infinite;
             }
-            .carrusel video{
+
+            .carrusel video {
                 box-shadow: 0svh 1svw 0.75svw rgba(0, 0, 0, 0.25);
                 height: auto;
                 width: var(--anchoImagenes);
             }
         }
 
-        @media (min-aspect-ratio: 13/12) {
-        }
+        @media (min-aspect-ratio: 13/12) {}
 
         @media (min-aspect-ratio: 12/13) and (max-aspect-ratio: 13/12) {
-            .contenedorPrincipal{
+            .contenedorPrincipal {
                 padding: 1rem 0 1rem 0;
                 flex-direction: column;
             }
-            .carrusel{
+
+            .carrusel {
                 flex-direction: row;
-                gap: var(--gapImagenesAnchas); 
+                gap: var(--gapImagenesAnchas);
                 animation: derecha var(--rapidezAnimacion) linear infinite;
             }
-            .carrusel video{
+
+            .carrusel video {
                 box-shadow: 0svh 1svw 0.75svw rgba(0, 0, 0, 0.25);
                 height: auto;
                 width: var(--anchoImagenes);
             }
         }
-
     </style>
 </head>
+
 <body>
 
-    <header class="cabecera" >
+    <header class="cabecera">
         <nav>
             <ul>
                 <li><a href="#">EcoCiclo</a></li>
@@ -241,13 +250,33 @@
     </header>
 
     <main>
-        <article class="contenedorPrincipal" >
-            <div class="titulos" >
+        <article class="contenedorPrincipal">
+            <div class="titulos">
                 <h1>Velocidad y Experiencia</h1>
                 <h2>Lider en manejo de residuos</h2>
-                <a href="#"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 511.88 511.88" xmlns:bx="https://boxy-svg.com"><circle style="fill:#FFE356;" cx="255.94" cy="255.94" r="255.94"/><g><polygon style="fill:#596366;" points="82.365,334.599 427.364,334.599 427.364,346.075 82.365,346.075 &#9;"/><path style="fill:#596366;" d="M365.68,307.583c25.343,0,46.861,16.019,54.99,38.493H310.571 c8.248-22.474,29.766-38.493,54.989-38.493H365.68z"/></g><path style="fill:#FFFFFF;" d="M325.275,166.762h65.151c9.563,0,13.389,8.846,17.334,17.573l29.647,65.868 c1.554,3.467,2.271,6.814,2.152,10.639l-2.032,73.758h-24.148c-10.639-15.182-28.092-25.104-47.817-25.104 s-37.178,9.922-47.817,25.104h-9.922V184.334c0-9.683,7.77-17.573,17.334-17.573H325.275z"/><circle style="fill:#6B7F9E;" cx="365.68" cy="366.158" r="47.817"/><path style="fill:#5FDC68;" d="M296.106,157.079H80.213c-6.455,0-8.607,6.097-11.835,11.835l-48.654,86.668 c-4.304,7.77-1.913,16.616,3.108,23.908l30.722,43.992c3.706,5.26,8.248,10.998,14.704,10.998h227.848 c6.455,0,11.835-5.26,11.835-11.835V168.794c0-6.455-5.26-11.835-11.835-11.835V157.079z"/><path style="fill:#8597B1;" d="M348.346,186.247h40.405c6.097,0,10.042,4.901,12.193,9.922l21.996,51.164 c2.152,5.021-1.195,11.476-7.292,11.476h-67.302c-6.097,0-10.998-4.423-10.998-9.922v-52.718 C337.349,190.67,342.369,186.247,348.346,186.247z"/><path style="fill:#596366;" d="M153.492,307.583c25.343,0,46.861,16.019,54.989,38.493H98.383 c8.248-22.474,29.766-38.493,54.989-38.493H153.492z"/><circle style="fill:#6B7F9E;" cx="153.492" cy="366.158" r="47.817"/><circle style="fill:#FFE356;" cx="215.296" cy="237.65" r="47.1"/></svg>Solicitar Recolección</a>
+                <a href="#"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 511.88 511.88" xmlns:bx="https://boxy-svg.com">
+                        <circle style="fill:#FFE356;" cx="255.94" cy="255.94" r="255.94" />
+                        <g>
+                            <polygon style="fill:#596366;"
+                                points="82.365,334.599 427.364,334.599 427.364,346.075 82.365,346.075 &#9;" />
+                            <path style="fill:#596366;"
+                                d="M365.68,307.583c25.343,0,46.861,16.019,54.99,38.493H310.571 c8.248-22.474,29.766-38.493,54.989-38.493H365.68z" />
+                        </g>
+                        <path style="fill:#FFFFFF;"
+                            d="M325.275,166.762h65.151c9.563,0,13.389,8.846,17.334,17.573l29.647,65.868 c1.554,3.467,2.271,6.814,2.152,10.639l-2.032,73.758h-24.148c-10.639-15.182-28.092-25.104-47.817-25.104 s-37.178,9.922-47.817,25.104h-9.922V184.334c0-9.683,7.77-17.573,17.334-17.573H325.275z" />
+                        <circle style="fill:#6B7F9E;" cx="365.68" cy="366.158" r="47.817" />
+                        <path style="fill:#5FDC68;"
+                            d="M296.106,157.079H80.213c-6.455,0-8.607,6.097-11.835,11.835l-48.654,86.668 c-4.304,7.77-1.913,16.616,3.108,23.908l30.722,43.992c3.706,5.26,8.248,10.998,14.704,10.998h227.848 c6.455,0,11.835-5.26,11.835-11.835V168.794c0-6.455-5.26-11.835-11.835-11.835V157.079z" />
+                        <path style="fill:#8597B1;"
+                            d="M348.346,186.247h40.405c6.097,0,10.042,4.901,12.193,9.922l21.996,51.164 c2.152,5.021-1.195,11.476-7.292,11.476h-67.302c-6.097,0-10.998-4.423-10.998-9.922v-52.718 C337.349,190.67,342.369,186.247,348.346,186.247z" />
+                        <path style="fill:#596366;"
+                            d="M153.492,307.583c25.343,0,46.861,16.019,54.989,38.493H98.383 c8.248-22.474,29.766-38.493,54.989-38.493H153.492z" />
+                        <circle style="fill:#6B7F9E;" cx="153.492" cy="366.158" r="47.817" />
+                        <circle style="fill:#FFE356;" cx="215.296" cy="237.65" r="47.1" />
+                    </svg>Solicitar Recolección</a>
             </div>
-            <div class="carrusel" >
+            <div class="carrusel">
 
                 <!-- <img src="llantas3.gif" alt="">
                 <img src="llantas2.gif" alt="">
@@ -352,13 +381,14 @@
             </ul>
         </nav>
     </footer>
-    
+
     <script>
-        window.addEventListener('load', function() {
-            document.querySelectorAll('video').forEach(video=>{
+        window.addEventListener('load', function () {
+            document.querySelectorAll('video').forEach(video => {
                 video.play();
             });
         });
     </script>
 </body>
+
 </html>
