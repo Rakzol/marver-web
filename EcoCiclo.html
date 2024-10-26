@@ -19,6 +19,8 @@
             --gapImagenesAnchas: 4dvw;
             --numeroImagenes: 10;
             --rapidezAnimacion: 60s;
+
+            --alturaBarra: 3.5rem;
         }
 
         *{
@@ -32,11 +34,13 @@
         }
 
         header{
+            top: 0;
+            left: 0;
             position: fixed;
             background: #66BB6A;
             box-shadow: 0dvh 0.5rem 0.5rem rgba(0, 0, 0, 0.2);
 
-            height: 3.5rem;
+            height: var(--alturaBarra);
             width: 100dvw;
 
             z-index: 1;
@@ -122,13 +126,14 @@
         }
 
         main article:first-of-type{
-            height: 100dvh;
+            height: calc( 100dvh - var(--alturaBarra) );
             display: flex;
             overflow: hidden;
             justify-content: space-evenly;
 
             gap: 1rem;
             padding: 0 1rem 0 1rem;
+            margin-top: var(--alturaBarra);
         }
 
         main article:first-of-type::before {
