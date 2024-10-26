@@ -14,7 +14,9 @@
     <style>
         :root{
             --altoImagenes: 20vh;
-            --gapImagenes: 4vh;
+            --gapImagenesAltas: 4vh;
+            --anchoImagenes: 70vw;
+            --gapImagenesAnchas: 4vw;
             --numeroImagenes: 10;
             --rapidezAnimacion: 60s;
         }
@@ -31,11 +33,8 @@
 
         header{
             position: fixed;
-            /*backdrop-filter: blur(0.5rem);*/
-            background: #50c878;
-
-            /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
-            box-shadow: 0vh 0.75vh 8px rgba(0, 0, 0, 0.2);
+            background: #66BB6A;
+            box-shadow: 0vh 0.5rem 0.5rem rgba(0, 0, 0, 0.2);
 
             height: 3.5rem;
             width: 100vw;
@@ -44,7 +43,7 @@
         }
 
         header a{
-            font-size: 1vw;
+            font-size: 1rem;
             font-weight: 400;
             text-decoration: none;
             color: rgb(255, 255, 255);
@@ -68,46 +67,111 @@
             justify-content: space-around;
         }
 
+        h1{
+            color: #6bdf70;
+            text-align: center;
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        h2{
+            color: #ffffff;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 400;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        main article div a{
+            background-color: #52be55;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0px 5px 0px #388E3C, 0px 10px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.25s ease;
+            text-decoration: none;
+
+            color: #ffffff;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 400;
+
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            gap: 0.5rem;
+
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 1rem;
+
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Efecto hover en el botón */
+        main article div a:hover {
+            transform: translateY(-2px);
+            /* box-shadow: 0px 10px 0px #388E3C, 0px 8px 12px rgba(0, 0, 0, 0.15); */
+            box-shadow: 0px 10px 0px #b8a33f, 0px 8px 12px rgba(0, 0, 0, 0.15);
+            background-color: #FFE356;
+        }
+
+        svg{
+            width: 3rem;
+            height: 3rem;
+        }
+
         main article:first-of-type{
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+            justify-content: space-evenly;
+
+            gap: 1rem;
+            padding: 0 1rem 0 1rem;
+        }
+
+        main article:first-of-type::before {
+            content: '';
+
             background-image: url('https://png.pngtree.com/background/20230610/original/pngtree-sunny-green-field-with-blue-clouds-over-it-picture-image_3054664.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
 
-            height: 100vh;
-            display: flex;
-            overflow: hidden;
-            justify-content: space-evenly;
-            /* position: relative; */
-        }
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
 
-        main img{
-            /* box-shadow: 0vh 1vh 8px rgba(0, 0, 0, 0.3); */
-            box-shadow: 0vh 1vh 8px rgba(0, 0, 0, 0.25);
-            height: var(--altoImagenes);
-            /* object-fit: none; */
+            filter: brightness(0.85);
         }
 
         main video{
-            /* box-shadow: 0vh 1vh 8px rgba(0, 0, 0, 0.3); */
-            box-shadow: 0vh 1vh 8px rgba(0, 0, 0, 0.25);
+            box-shadow: 0vh 1vh 0.75vh rgba(0, 0, 0, 0.25);
             height: var(--altoImagenes);
             border-radius: 0.5rem;
-            /* object-fit: none; */
         }
 
         main article div:not(:first-child){
             display: flex;
             flex-direction: column;
-            gap: var(--gapImagenes);
+            gap: var(--gapImagenesAltas);
         }
 
         main article div:first-child{
             align-self: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         main article div:nth-child(2){
             animation: bajar var(--rapidezAnimacion) linear infinite;
+            align-self: start;
         }
 
         main article div:last-child{
@@ -117,19 +181,70 @@
 
         @keyframes bajar {
             100% {
-                transform: translateY( calc( -1 * calc( calc( var(--altoImagenes) + var(--gapImagenes) ) * var(--numeroImagenes) ) ) );
+                transform: translateY( calc( -1 * calc( calc( var(--altoImagenes) + var(--gapImagenesAltas) ) * var(--numeroImagenes) ) ) );
+            }
+        }
+
+        @keyframes izquierda {
+            100% {
+                transform: translateX( calc( -1 * calc( calc( var(--anchoImagenes) + var(--gapImagenesAnchas) ) * var(--numeroImagenes) ) ) );
             }
         }
 
         @keyframes subir {
             100% {
-                transform: translateY( calc( calc( var(--altoImagenes) + var(--gapImagenes) ) * var(--numeroImagenes) ) );
+                transform: translateY( calc( calc( var(--altoImagenes) + var(--gapImagenesAltas) ) * var(--numeroImagenes) ) );
             }
         }
 
-        h1{
-            font-size: 3vw;
+        @keyframes derecha {
+            100% {
+                transform: translateX( calc( calc( var(--anchoImagenes) + var(--gapImagenesAnchas) ) * var(--numeroImagenes) ) );
+            }
         }
+
+        @media (max-aspect-ratio: 8/10) {
+            * {
+            }
+            main article:first-of-type{
+                padding: 1rem 0 1rem 0;
+                flex-direction: column;
+            }
+            main article div:not(:first-child){
+                flex-direction: row;
+                gap: var(--gapImagenesAnchas); 
+            }
+
+            main article div:nth-child(2){
+                order: -1;
+                animation: izquierda var(--rapidezAnimacion) linear infinite;
+            }
+
+            main article div:last-child{
+                animation: derecha var(--rapidezAnimacion) linear infinite;
+            }
+
+            main video{
+                box-shadow: 0vh 1vw 0.75vw rgba(0, 0, 0, 0.25);
+                height: auto;
+                width: var(--anchoImagenes);
+            }
+        }
+
+        @media (min-aspect-ratio: 10/8) {
+            * {
+            }
+        }
+
+        @media (min-aspect-ratio: 8/10) and (max-aspect-ratio: 10/8) {
+            * {
+            }
+
+            main article div:nth-child(2){
+                display: none;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -148,8 +263,8 @@
         <article>
             <div>
                 <h1>Velocidad y Experiencia</h1>
-                <h3>Lider en manejo de residuos</h3>
-                <a href="#">Solicitar Recolección</a>
+                <h2>Lider en manejo de residuos</h2>
+                <a href="#"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 511.88 511.88" xmlns:bx="https://boxy-svg.com"><circle style="fill:#FFE356;" cx="255.94" cy="255.94" r="255.94"/><g><polygon style="fill:#596366;" points="82.365,334.599 427.364,334.599 427.364,346.075 82.365,346.075 &#9;"/><path style="fill:#596366;" d="M365.68,307.583c25.343,0,46.861,16.019,54.99,38.493H310.571 c8.248-22.474,29.766-38.493,54.989-38.493H365.68z"/></g><path style="fill:#FFFFFF;" d="M325.275,166.762h65.151c9.563,0,13.389,8.846,17.334,17.573l29.647,65.868 c1.554,3.467,2.271,6.814,2.152,10.639l-2.032,73.758h-24.148c-10.639-15.182-28.092-25.104-47.817-25.104 s-37.178,9.922-47.817,25.104h-9.922V184.334c0-9.683,7.77-17.573,17.334-17.573H325.275z"/><circle style="fill:#6B7F9E;" cx="365.68" cy="366.158" r="47.817"/><path style="fill:#5FDC68;" d="M296.106,157.079H80.213c-6.455,0-8.607,6.097-11.835,11.835l-48.654,86.668 c-4.304,7.77-1.913,16.616,3.108,23.908l30.722,43.992c3.706,5.26,8.248,10.998,14.704,10.998h227.848 c6.455,0,11.835-5.26,11.835-11.835V168.794c0-6.455-5.26-11.835-11.835-11.835V157.079z"/><path style="fill:#8597B1;" d="M348.346,186.247h40.405c6.097,0,10.042,4.901,12.193,9.922l21.996,51.164 c2.152,5.021-1.195,11.476-7.292,11.476h-67.302c-6.097,0-10.998-4.423-10.998-9.922v-52.718 C337.349,190.67,342.369,186.247,348.346,186.247z"/><path style="fill:#596366;" d="M153.492,307.583c25.343,0,46.861,16.019,54.989,38.493H98.383 c8.248-22.474,29.766-38.493,54.989-38.493H153.492z"/><circle style="fill:#6B7F9E;" cx="153.492" cy="366.158" r="47.817"/><circle style="fill:#FFE356;" cx="215.296" cy="237.65" r="47.1"/></svg>Solicitar Recolección</a>
             </div>
             <div>
                 <video preload="auto" loop muted>
@@ -199,21 +314,51 @@
                 </video>
             </div>
             <div>
-                <img src="https://placehold.co/1920x1080?text=5" alt="">
-                <img src="https://placehold.co/1920x1080?text=4" alt="">
-                <img src="https://placehold.co/1920x1080?text=3" alt="">
-                <img src="https://placehold.co/1920x1080?text=2" alt="">
-                <img src="https://placehold.co/1920x1080?text=1" alt="">
-                <img src="https://placehold.co/1920x1080?text=10" alt="">
-                <img src="https://placehold.co/1920x1080?text=9" alt="">
-                <img src="https://placehold.co/1920x1080?text=8" alt="">
-                <img src="https://placehold.co/1920x1080?text=7" alt="">
-                <img src="https://placehold.co/1920x1080?text=6" alt="">
-                <img src="https://placehold.co/1920x1080?text=5" alt="">
-                <img src="https://placehold.co/1920x1080?text=4" alt="">
-                <img src="https://placehold.co/1920x1080?text=3" alt="">
-                <img src="https://placehold.co/1920x1080?text=2" alt="">
-                <img src="https://placehold.co/1920x1080?text=1" alt="">
+                <video preload="auto" loop muted>
+                    <source src="llantas5.mp4" type="video/mp4">
+                </video>
+                <video preload="auto" loop muted>
+                    <source src="llantas4.mp4" type="video/mp4">
+                </video>
+                <video preload="auto" loop muted>
+                    <source src="llantas3.mp4" type="video/mp4">
+                </video>
+                <video preload="auto" loop muted>
+                    <source src="llantas2.mp4" type="video/mp4">
+                </video>
+                <video preload="auto" loop muted>
+                    <source src="llantas1.mp4" type="video/mp4">
+                </video>
+                <video preload="auto" loop muted>
+                    <source src="llantas10.mp4" type="video/mp4">
+                </video>
+                <video preload="auto" loop muted>
+                    <source src="llantas9.mp4" type="video/mp4">
+                </video>
+                <video preload="auto" loop muted>
+                    <source src="llantas8.mp4" type="video/mp4">
+                </video>
+                <video preload="auto" loop muted>
+                    <source src="llantas7.mp4" type="video/mp4">
+                </video>
+                <video preload="auto" loop muted>
+                    <source src="llantas6.mp4" type="video/mp4">
+                </video>
+                <video preload="auto" loop muted>
+                    <source src="llantas5.mp4" type="video/mp4">
+                </video>
+                <video preload="auto" loop muted>
+                    <source src="llantas4.mp4" type="video/mp4">
+                </video>
+                <video preload="auto" loop muted>
+                    <source src="llantas3.mp4" type="video/mp4">
+                </video>
+                <video preload="auto" loop muted>
+                    <source src="llantas2.mp4" type="video/mp4">
+                </video>
+                <video preload="auto" loop muted>
+                    <source src="llantas1.mp4" type="video/mp4">
+                </video>
             </div>
         </article>
 
