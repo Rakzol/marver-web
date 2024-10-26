@@ -25,6 +25,7 @@ c = 0
 for clip in clips:
     c += 1
     subclip = video.subclip(clip[0], clip[1]).resize(height=480).set_fps(30)
-    subclip.write_videofile(f'Lowllantas{c}.mp4', codec='libx264', audio=False, bitrate='500k')
-    subclip.write_videofile(f'Lowllantas{c}.webm', codec='libvpx', audio=False, bitrate='500k')
-    subclip.write_videofile(f'Lowllantas{c}.mov', codec='libx264', audio=False, bitrate='500k')
+    # subclip.write_videofile(f'Lowllantas{c}.mp4', codec='libx264', audio=False, bitrate='500k')
+    # subclip.write_videofile(f'Lowllantas{c}.webm', codec='libvpx', audio=False, bitrate='500k')
+    # subclip.write_videofile(f'Lowllantas{c}.mov', codec='libx264', audio=False, bitrate='500k')
+    video.subclip(clip[0], clip[1]).resize(height=144).write_gif(f'Lowllantas{c}.gif', fps=30)
