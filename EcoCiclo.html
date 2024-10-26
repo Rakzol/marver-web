@@ -67,8 +67,7 @@
             display: flex;
             list-style-type: none;
             align-items: center;
-            justify-content: center;
-            justify-content: space-around;
+            justify-content: space-evenly;
         }
 
         .contenedorPrincipal{
@@ -105,13 +104,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.5rem;
+            padding: 0 1rem 0 1rem;
+            /* gap: 0.5rem; */
         }
 
         .titulos h1{
             color: #6bdf70;
             text-align: center;
-            font-size: 3.5rem;
+            font-size: 3.25rem;
             font-weight: 800;
             text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
         }
@@ -119,7 +119,7 @@
         .titulos h2{
             color: #ffffff;
             text-align: center;
-            font-size: 2rem;
+            font-size: 1.75rem;
             font-weight: 400;
             text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
         }
@@ -134,7 +134,7 @@
 
             color: #ffffff;
             text-align: center;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 400;
 
             display: flex;
@@ -144,7 +144,7 @@
 
             justify-content: center;
             flex-wrap: wrap;
-            margin: 1rem;
+            margin: 0.75rem;
 
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
@@ -188,7 +188,7 @@
             }
         }
 
-        @media (max-aspect-ratio: 8/10) {
+        @media (max-aspect-ratio: 12/13) {
             .contenedorPrincipal{
                 padding: 1rem 0 1rem 0;
                 flex-direction: column;
@@ -205,10 +205,24 @@
             }
         }
 
-        @media (min-aspect-ratio: 10/8) {
+        @media (min-aspect-ratio: 13/12) {
         }
 
-        @media (min-aspect-ratio: 8/10) and (max-aspect-ratio: 10/8) {
+        @media (min-aspect-ratio: 12/13) and (max-aspect-ratio: 13/12) {
+            .contenedorPrincipal{
+                padding: 1rem 0 1rem 0;
+                flex-direction: column;
+            }
+            .carrusel{
+                flex-direction: row;
+                gap: var(--gapImagenesAnchas); 
+                animation: derecha var(--rapidezAnimacion) linear infinite;
+            }
+            .carrusel video{
+                box-shadow: 0dvh 1dvw 0.75dvw rgba(0, 0, 0, 0.25);
+                height: auto;
+                width: var(--anchoImagenes);
+            }
         }
 
     </style>
