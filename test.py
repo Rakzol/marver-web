@@ -2,11 +2,11 @@ from moviepy.editor import VideoFileClip
 
 from PIL import Image
 
-# Verifica si 'ANTIALIAS' está en la versión actual de Pillow
+#Verifica si 'ANTIALIAS' está en la versión actual de Pillow
 if not hasattr(Image, 'ANTIALIAS'):
     Image.ANTIALIAS = Image.LANCZOS
 
-video = VideoFileClip('C:/Users/rakzol/Downloads/videoplayback.mp4')
+video = VideoFileClip('C:/Users/Rakzol/Downloads/videoplayback.mp4')
 
 clips = [
     [(0,1,29),(0,1,34)],
@@ -24,4 +24,7 @@ clips = [
 c = 0
 for clip in clips:
     c += 1
-    video.subclip(clip[0], clip[1]).resize(height=480).set_fps(30).write_videofile(f'Low2llantas{c}.mp4', codec='libx264', audio=False, bitrate='700k')
+    subclip = video.subclip(clip[0], clip[1]).resize(height=480).set_fps(30)
+    subclip.write_videofile(f'Lowllantas{c}.mp4', codec='libx264', audio=False, bitrate='500k')
+    subclip.write_videofile(f'Lowllantas{c}.webm', codec='libvpx', audio=False, bitrate='500k')
+    subclip.write_videofile(f'Lowllantas{c}.mov', codec='libx264', audio=False, bitrate='500k')
