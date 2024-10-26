@@ -24,4 +24,4 @@ clips = [
 c = 0
 for clip in clips:
     c += 1
-    video.subclip(clip[0], clip[1]).resize(height=480).set_fps(30).write_videofile(f'Lowllantas{c}.mp4', codec='libx264', audio=False, bitrate='500k')
+    video.subclip(clip[0], clip[1]).resize(height=480).set_fps(30).write_videofile(f'Low2llantas{c}.mp4', codec='libx264', audio=False, bitrate='700k')
