@@ -25,9 +25,10 @@ def convert_video_to_webp(input_video_path, output_webp_path, quality=90):
     imageio.mimwrite(output_webp_path, frames, format='WEBP', fps=fps, quality=quality, loop=0)
 
 if __name__ == "__main__":
-    input_video = "llantas480p-500k.mp4"  # Cambia esto por tu archivo de entrada
-    output_webp = "video480p-500k-25.webp"  # Cambia esto por tu archivo de salida
-    quality = 25  # Ajusta la calidad del WebP (0-100)
+    input_video = "llanta480p.mp4"  # Cambia esto por tu archivo de entrada
+    output_webp = "webp480p-100.webp"  # Cambia esto por tu archivo de salida
+    quality = 100  # Ajusta la calidad del WebP (0-100)
 
-    convert_video_to_webp(input_video, output_webp, quality)
+    convert_video_to_webp("llanta480p.mp4", "webp480p-40.webp", 40)
+
     print(f"Conversión completada: {output_webp}")

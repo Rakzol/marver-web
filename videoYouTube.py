@@ -1,5 +1,4 @@
 from pytubefix import YouTube
-import re
 
 def descargar_video(url):
     try:

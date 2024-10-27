@@ -1,8 +1,9 @@
-from moviepy.editor import VideoFileClip
+from moviepy.editor import VideoFileClip, vfx
 
-# VideoFileClip('video480p.mp4').subclip((0,1,30),(0,1,35)).write_videofile('llantas480p-500k.mp4', codec='libx264', bitrate='500k')
-# # VideoFileClip('video720p.mp4').subclip((0,1,30),(0,1,35)).write_videofile('llantas720p.mp4', codec='libx264')
-# # VideoFileClip('video1080p.mp4').subclip((0,1,30),(0,1,35)).write_videofile('llantas1080p.mp4', codec='libx264')
+# VideoFileClip('video480p.mp4').subclip((0,1,33),(0,1,35)).fx(vfx.speedx, 0.5).write_videofile('llanta480pv.mp4')
+# VideoFileClip('video480p.mp4').subclip((0,1,30),(0,1,35)).write_videofile('llanta480p.mp4')
+# VideoFileClip('video1440p.mp4').subclip((0,1,30),(0,1,35)).resize(height=480).write_videofile('llanta1440p.mp4')
+# VideoFileClip('video1440p2.webm').subclip((0,1,30),(0,1,35)).resize(height=480).write_videofile('llanta1440p2.mp4')
 
 # exit()
 
