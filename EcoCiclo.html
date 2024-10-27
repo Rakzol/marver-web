@@ -388,6 +388,11 @@
                 video.pause();
                 video.currentTime = 0;
                 video.play();
+                video.addEventListener('ended', () => {
+                    video.pause();
+                    video.currentTime = 0;
+                    video.play();
+                });
             });
         });
     </script>
