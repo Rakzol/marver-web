@@ -7,7 +7,7 @@ from moviepy.editor import VideoFileClip, vfx
 
 # exit()
 
-video = VideoFileClip('video480p.mp4')
+video = VideoFileClip('video480pwebm.webm')
 
 clips = [
     [(0,1,30),(0,1,35)],
@@ -28,7 +28,7 @@ for clip in clips:
     c += 1
     subclip = video.subclip(clip[0], clip[1])
     # subclip.write_videofile(f'Low2llantas{c}.mp4', codec='libx264', preset='ultrafast', fps=30, audio=False, bitrate='500k')
-    subclip.write_videofile(f'llantas{c}.mp4', codec='libx264', bitrate='500k')
+    subclip.write_videofile(f'llantas{c}.webm', bitrate='500k')
 
     # subclip.write_videofile(f'Lowllantas{c}.webm', codec='libvpx', audio=False, bitrate='500k')
     # subclip.write_videofile(f'Lowllantas{c}.mov', codec='libx264', audio=False, bitrate='500k')
