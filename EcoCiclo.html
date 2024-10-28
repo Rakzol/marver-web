@@ -384,8 +384,10 @@
 
     <script>
         window.addEventListener('load', function () {
-            document.querySelectorAll('video').forEach(video => {
-                // video.play();
+        });
+        document.querySelectorAll('video').forEach(video => {
+            video.addEventListener('canplaythrough', () => {
+                video.play();
             });
         });
     </script>
