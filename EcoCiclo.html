@@ -384,8 +384,8 @@
 
     <script>
         window.addEventListener('load', function () {
-        });
-        document.querySelectorAll('video').forEach(video => {
+            document.querySelectorAll('video').forEach(video => {
+                video.play();
                 video.addEventListener('canplaythrough', (videoEvento) => {
                     if(videoEvento.paused){
                         videoEvento.play();
@@ -393,6 +393,7 @@
                     }
                 });
             });
+        });
     </script>
 </body>
 
