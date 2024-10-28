@@ -393,9 +393,11 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     console.log("play");
+                    console.log(entry.intersectionRatio);
                     entry.target.play();
                 } else {
                     console.log("pause");
+                    console.log(entry.intersectionRatio);
                     entry.target.pause();
                 }
             });
