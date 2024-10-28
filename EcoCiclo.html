@@ -385,20 +385,18 @@
     <script>
         function reproducir() {
             document.querySelectorAll('video').forEach(video => {
-                document.querySelector('h2').innerText += "," + video.paused + ",";
+                document.querySelector('h2').innerText += "," + (video.paused ? 'p' : 'r' ) + ",";
                 if (video.paused) {
                     video.play();
                 }
             });
         }
-        // window.addEventListener('load', function () {
-        //     document.querySelectorAll('video').forEach(video => {
-        //         document.querySelector('h2').innerText += "," + video.paused + ",";
-        //         if(video.paused){
-        //             video.play();
-        //         }
-        //     });
-        // });
+        window.addEventListener('load', function () {
+            document.querySelectorAll('video').forEach(video => {
+                document.querySelector('h2').innerText += "," + (video.paused ? 'p' : 'r' ) + ",";
+                video.play();
+            });
+        });
     </script>
 </body>
 
