@@ -174,7 +174,7 @@
             gap: var(--gapImagenesAltas);
 
             animation: subir var(--rapidezAnimacion) linear infinite;
-            align-self: end;
+            align-self: start;
         }
 
         .carrusel video {
@@ -185,13 +185,13 @@
 
         @keyframes subir {
             100% {
-                transform: translateY(calc(calc(var(--altoImagenes) + var(--gapImagenesAltas)) * var(--numeroImagenes)));
+                transform: translateY(calc(-1 * calc(calc(var(--altoImagenes) + var(--gapImagenesAltas)) * var(--numeroImagenes))));
             }
         }
 
         @keyframes derecha {
             100% {
-                transform: translateX(calc(calc(var(--anchoImagenes) + var(--gapImagenesAnchas)) * var(--numeroImagenes)));
+                transform: translateX(calc(-1 * calc(calc(var(--anchoImagenes) + var(--gapImagenesAnchas)) * var(--numeroImagenes))));
             }
         }
 
@@ -293,43 +293,43 @@
                 <img src="llantas1.gif" alt=""> -->
 
                 <video autoplay muted playsinline loop>
-                    <source src="llantas3.mp4" type="video/mp4">
+                    <source src="llantas1.mp4" type="video/mp4">
                 </video>
                 <video autoplay muted playsinline loop>
                     <source src="llantas2.mp4" type="video/mp4">
                 </video>
                 <video autoplay muted playsinline loop>
-                    <source src="llantas1.mp4" type="video/mp4">
-                </video>
-                <video autoplay muted playsinline loop>
-                    <source src="llantas10.mp4" type="video/mp4">
-                </video>
-                <video autoplay muted playsinline loop>
-                    <source src="llantas9.mp4" type="video/mp4">
-                </video>
-                <video autoplay muted playsinline loop>
-                    <source src="llantas8.mp4" type="video/mp4">
-                </video>
-                <video autoplay muted playsinline loop>
-                    <source src="llantas7.mp4" type="video/mp4">
-                </video>
-                <video autoplay muted playsinline loop>
-                    <source src="llantas6.mp4" type="video/mp4">
-                </video>
-                <video autoplay muted playsinline loop>
-                    <source src="llantas5.mp4" type="video/mp4">
+                    <source src="llantas3.mp4" type="video/mp4">
                 </video>
                 <video autoplay muted playsinline loop>
                     <source src="llantas4.mp4" type="video/mp4">
                 </video>
                 <video autoplay muted playsinline loop>
-                    <source src="llantas3.mp4" type="video/mp4">
+                    <source src="llantas5.mp4" type="video/mp4">
+                </video>
+                <video autoplay muted playsinline loop>
+                    <source src="llantas6.mp4" type="video/mp4">
+                </video>
+                <video autoplay muted playsinline loop>
+                    <source src="llantas7.mp4" type="video/mp4">
+                </video>
+                <video autoplay muted playsinline loop>
+                    <source src="llantas8.mp4" type="video/mp4">
+                </video>
+                <video autoplay muted playsinline loop>
+                    <source src="llantas9.mp4" type="video/mp4">
+                </video>
+                <video autoplay muted playsinline loop>
+                    <source src="llantas10.mp4" type="video/mp4">
+                </video>
+                <video autoplay muted playsinline loop>
+                    <source src="llantas1.mp4" type="video/mp4">
                 </video>
                 <video autoplay muted playsinline loop>
                     <source src="llantas2.mp4" type="video/mp4">
                 </video>
                 <video autoplay muted playsinline loop>
-                    <source src="llantas1.mp4" type="video/mp4">
+                    <source src="llantas3.mp4" type="video/mp4">
                 </video>
             </div>
         </article>
@@ -388,10 +388,6 @@
                 // video.pause();
                 // video.currentTime = 0;
                 // video.play();
-                // video.play();
-                // video.play();
-                // video.play();
-                document.querySelector('h2').innerText += "-";
                 // video.addEventListener('ended', () => {
                 //     video.pause();
                 //     video.currentTime = 0;
