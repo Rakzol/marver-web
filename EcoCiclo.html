@@ -389,11 +389,13 @@
         let callback = (entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    console.log("play");
-                    entry.target.play();
+                    if(entry.target.paused){
+                        entry.target.play();
+                    }
                 } else {
-                    console.log("pause");
-                    entry.target.pause();
+                    if(!entry.target.paused){
+                        entry.target.pause();
+                    }
                 }
             });
         };
