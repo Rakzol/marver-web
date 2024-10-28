@@ -292,43 +292,43 @@
                 <img src="llantas2.gif" alt="">
                 <img src="llantas1.gif" alt=""> -->
 
-                <video autoplay muted playsinline loop>
+                <video muted playsinline loop>
                     <source src="llantas1.mp4" type="video/mp4">
                 </video>
-                <video autoplay muted playsinline loop>
+                <video muted playsinline loop>
                     <source src="llantas2.mp4" type="video/mp4">
                 </video>
-                <video autoplay muted playsinline loop>
+                <video muted playsinline loop>
                     <source src="llantas3.mp4" type="video/mp4">
                 </video>
-                <video autoplay muted playsinline loop>
+                <video muted playsinline loop>
                     <source src="llantas4.mp4" type="video/mp4">
                 </video>
-                <video autoplay muted playsinline loop>
+                <video muted playsinline loop>
                     <source src="llantas5.mp4" type="video/mp4">
                 </video>
-                <video autoplay muted playsinline loop>
+                <video muted playsinline loop>
                     <source src="llantas6.mp4" type="video/mp4">
                 </video>
-                <video autoplay muted playsinline loop>
+                <video muted playsinline loop>
                     <source src="llantas7.mp4" type="video/mp4">
                 </video>
-                <video autoplay muted playsinline loop>
+                <video muted playsinline loop>
                     <source src="llantas8.mp4" type="video/mp4">
                 </video>
-                <video autoplay muted playsinline loop>
+                <video muted playsinline loop>
                     <source src="llantas9.mp4" type="video/mp4">
                 </video>
-                <video autoplay muted playsinline loop>
+                <video muted playsinline loop>
                     <source src="llantas10.mp4" type="video/mp4">
                 </video>
-                <video autoplay muted playsinline loop>
+                <video muted playsinline loop>
                     <source src="llantas1.mp4" type="video/mp4">
                 </video>
-                <video autoplay muted playsinline loop>
+                <video muted playsinline loop>
                     <source src="llantas2.mp4" type="video/mp4">
                 </video>
-                <video autoplay muted playsinline loop>
+                <video muted playsinline loop>
                     <source src="llantas3.mp4" type="video/mp4">
                 </video>
             </div>
@@ -383,20 +383,41 @@
     </footer> -->
 
     <script>
-        function reproducir() {
-            document.querySelectorAll('video').forEach(video => {
-                document.querySelector('h2').innerText += "," + (video.paused ? 'p' : 'r' );
-                if (video.paused) {
-                    video.play();
+        let options = {
+            root: null, // Usar la ventana gráfica del navegador
+            rootMargin: '0px',
+            threshold: 0.5 // 50% del video visible para reproducir
+        };
+
+        let callback = (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.play();
+                } else {
+                    entry.target.pause();
                 }
             });
-        }
-        window.addEventListener('load', function () {
-            document.querySelectorAll('video').forEach(video => {
-                document.querySelector('h2').innerText += "," + (video.paused ? 'p' : 'r' );
-                video.play();
-            });
+        };
+
+        let observer = new IntersectionObserver(callback/*, options*/);
+
+        document.querySelectorAll('.video').forEach(video => {
+            observer.observe(video);
         });
+        // function reproducir() {
+        //     document.querySelectorAll('video').forEach(video => {
+        //         document.querySelector('h2').innerText += "," + (video.paused ? 'p' : 'r' );
+        //         if (video.paused) {
+        //             video.play();
+        //         }
+        //     });
+        // }
+        // window.addEventListener('load', function () {
+        //     document.querySelectorAll('video').forEach(video => {
+        //         document.querySelector('h2').innerText += "," + (video.paused ? 'p' : 'r' );
+        //         video.play();
+        //     });
+        // });
     </script>
 </body>
 
