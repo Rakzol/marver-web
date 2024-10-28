@@ -391,6 +391,7 @@
 
         let callback = (entries) => {
             entries.forEach(entry => {
+                console.log(entry.intersectionRatio);
                 if (entry.isIntersecting) {
                     console.log("play");
                     console.log(entry.intersectionRatio);
