@@ -383,11 +383,8 @@
     </footer> -->
 
     <script>
-        let options = {
-            root: null, // Usar la ventana gráfica del navegador
-            rootMargin: '0px',
-            threshold: 0.5 // 50% del video visible para reproducir
-        };
+
+        let videos = document.querySelectorAll('video');
 
         let callback = (entries) => {
             entries.forEach(entry => {
@@ -404,11 +401,27 @@
             });
         };
 
-        let observer = new IntersectionObserver(callback/*, options*/);
+        let observer = new IntersectionObserver(callback);
 
-        document.querySelectorAll('video').forEach(video => {
+        videos.forEach(video => {
             observer.observe(video);
         });
+
+        function checkVisibility() {
+            videos.forEach(video => {
+                observer.unobserve(video);
+            });
+            videos.forEach(video => {
+                observer.observe(video);
+            });
+        }
+
+        function animate(timestamp) {
+            checkVisibility();
+            requestAnimationFrame(animate);
+        }
+        requestAnimationFrame(animate);
+
         // function reproducir() {
         //     document.querySelectorAll('video').forEach(video => {
         //         document.querySelector('h2').innerText += "," + (video.paused ? 'p' : 'r' );
