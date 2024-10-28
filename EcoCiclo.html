@@ -384,10 +384,11 @@
 
     <script>
         window.addEventListener('load', function () {
-        });
-        document.querySelectorAll('video').forEach(video => {
-            video.addEventListener('canplaythrough', () => {
-                video.play();
+            document.querySelectorAll('video').forEach(video => {
+                document.querySelectorAll('h2'),innerText += "*";
+                if(video.paused){
+                    video.play();
+                }
             });
         });
     </script>
