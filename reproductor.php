@@ -183,7 +183,15 @@
         }
 
         function actualizar_todo(){
-            
+
+            const fechat = new Date(cursro.value);
+
+            const año = fechat.getFullYear();
+            const mes = fechat.getMonth() + 1; // Los meses empiezan desde 0
+            const día = fechat.getDate();
+
+            console.log(`${día}/${mes}/${año}`); // Formato: DD/MM/AAAA
+
 
             return;
             frame = 1;
