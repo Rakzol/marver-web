@@ -17,7 +17,7 @@
         $preparada->execute();
 
         echo '<script>';
-        echo 'let fechaConsulta = ' . $_GET['fecha'] . ';';
+        echo 'let fechaConsulta = "' . $_GET['fecha'] . '";';
         echo 'let indice_infraccion = 0;';
         echo 'let posiciones = ' . json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE) . ';';
         echo '</script>';
