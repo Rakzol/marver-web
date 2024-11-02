@@ -184,7 +184,7 @@
 
         function actualizar_todo(){
 
-            const fechat = new Date(cursro.value);
+            const fechat = new Date(cursor.value);
 
             const año = fechat.getFullYear();
             const mes = fechat.getMonth() + 1; // Los meses empiezan desde 0
