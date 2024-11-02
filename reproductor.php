@@ -183,6 +183,9 @@
         }
 
         function actualizar_todo(){
+            
+
+            return;
             frame = 1;
 
             if( cursor.valueAsNumber + 1 <= posiciones.length - 1 ){
