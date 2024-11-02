@@ -189,8 +189,11 @@
             const año = fechat.getFullYear();
             const mes = fechat.getMonth() + 1; // Los meses empiezan desde 0
             const día = fechat.getDate();
+            const horas = fechat.getHours();
+            const minutos = fechat.getMinutes();
+            const segundos = fechat.getSeconds();
 
-            console.log(`${día}/${mes}/${año}`); // Formato: DD/MM/AAAA
+            console.log(`${día}/${mes}/${año} ${horas}:${minutos}:${segundos}`); 
 
 
             return;
