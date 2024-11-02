@@ -272,7 +272,7 @@
 
             cursor.min = Date.parse(fechaConsulta);
             cursor.max = posiciones.length - 1;
-            cursro.max = cursor.min + 86400000;
+            cursor.max = cursor.min + 86400000;
             cursor.value = indice_infraccion;
             velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
             let fecha = new Date(posiciones[cursor.valueAsNumber]['fecha']);
