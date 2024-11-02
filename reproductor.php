@@ -17,6 +17,7 @@
         $preparada->execute();
 
         echo '<script>';
+        echo 'let fechaConsulta = ' . $_GET['fecha'] . ';';
         echo 'let indice_infraccion = 0;';
         echo 'let posiciones = ' . json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE) . ';';
         echo '</script>';
@@ -127,7 +128,6 @@
     <script>
 
         let mapa;
-        let seguirRepartidor;
         let velocidadRepartidor;
         let txtPosicion;
         let marcador;
@@ -265,12 +265,12 @@
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
             velocidadRepartidor = document.getElementById('velocidadRepartidor');
-            seguirRepartidor = document.getElementById('seguirRepartidor');
             cursor = document.getElementById('cursor');
             txtPosicion = document.getElementById('txtPosicion');
 
             indice_infraccion = posiciones.findIndex( posicion => posicion.id == <?php echo $_GET['posicion']; ?> );
 
+            cursor.min = 
             cursor.max = posiciones.length - 1;
             cursor.value = indice_infraccion;
             velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
