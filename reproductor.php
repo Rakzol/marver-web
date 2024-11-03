@@ -299,7 +299,7 @@
 
             mapa = new Map(document.getElementById("mapa"), {
                 center: { lat: posicionActual()['latitud'], lng: posicionActual()['longitud'] },
-                zoom: 13,
+                zoom: 14,
                 mapId: '7845e7dffe8cea37',
                 mapTypeId: google.maps.MapTypeId.HYBRID
             });
@@ -318,7 +318,7 @@
             });
 
             marcador.addListener("click", () => {
-                mapa.setZoom(13);
+                mapa.setZoom(14);
                 mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
                 mapa.panTo(marcador.position);
 
