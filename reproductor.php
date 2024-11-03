@@ -281,10 +281,10 @@
             cursor = document.getElementById('cursor');
             txtFecha = document.getElementById('txtFecha');
 
-            document.getElementById('txtIdRepartidor').innerText = <?php echo $_GET['id']; ?>;
-            document.getElementById('txtNombreRepartidor').innerText = '<?php echo $_GET['nombre']; ?>';
+            document.getElementById('txtIdRepartidor').innerText = <?= $_GET['id']; ?>;
+            document.getElementById('txtNombreRepartidor').innerText = '<?= $_GET['nombre']; ?>';
 
-            indice_infraccion = posiciones.findIndex( posicion => posicion.id == <?php echo $_GET['posicion']; ?> );
+            indice_infraccion = <?= $_GET['fechaMaxima']; ?>;
 
             cursor.min = new Date(fechaConsulta).getTime();
             cursor.max = parseInt(cursor.min) + 86399999;
