@@ -184,17 +184,12 @@
 
         function actualizar_todo(){
 
-            const fechat = new Date(cursor.valueAsNumber);
+            velocidadRepartidor.innerText = (posicionActual()['velocidad'] * 3.6).toFixed(1) + ' Km/h';
+            let fecha = new Date(posicionActual()['fecha']);
+            txtFecha.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDate() < 10 ? '0' + fecha.getDate() : fecha.getDate() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
 
-            const año = fechat.getFullYear();
-            const mes = fechat.getMonth() + 1; // Los meses empiezan desde 0
-            const día = fechat.getDate();
-            const horas = fechat.getHours();
-            const minutos = fechat.getMinutes();
-            const segundos = fechat.getSeconds();
-
-            console.log(`${día}/${mes}/${año} ${horas}:${minutos}:${segundos}`); 
-
+            marcador.position = { lat: posicionActual()['latitud'], lng: posicionActual()['longitud'] };
+            mapa.panTo(marcador.position);
 
             return;
             frame = 1;
@@ -206,11 +201,6 @@
                 gap_reproduccion = 1;
             }
 
-            velocidadRepartidor.innerText = (posicionActual()['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-            let fecha = new Date(posicionActual()['fecha']);
-            txtFecha.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDate() < 10 ? '0' + fecha.getDate() : fecha.getDate() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
-            marcador.position = { lat: posicionActual()['latitud'], lng: posicionActual()['longitud'] };
-            mapa.panTo(marcador.position);
         }
 
         function velocidadMaxima(){
