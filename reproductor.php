@@ -127,7 +127,7 @@
     <script>
 
         let mapa;
-        let indice_infraccion;
+        let velocidadMaximaTimeStamp;
         let velocidadRepartidor;
         let txtFecha;
         let marcador;
@@ -173,38 +173,26 @@
         }
 
         function adelantar(){
-            cursor.valueAsNumber += 1;
+            cursor.valueAsNumber += 60000;
             actualizar_todo();
         }
 
         function retroceder(){
-            cursor.valueAsNumber -= 1;
+            cursor.valueAsNumber -= 60000;
             actualizar_todo();
         }
 
         function actualizar_todo(){
-
             velocidadRepartidor.innerText = (posicionActual()['velocidad'] * 3.6).toFixed(1) + ' Km/h';
             let fecha = new Date(cursor.valueAsNumber);
             txtFecha.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDate() < 10 ? '0' + fecha.getDate() : fecha.getDate() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
 
             marcador.position = { lat: posicionActual()['latitud'], lng: posicionActual()['longitud'] };
             mapa.panTo(marcador.position);
-
-            return;
-            frame = 1;
-
-            if( cursor.valueAsNumber + 1 <= posiciones.length - 1 ){
-                gap_reproduccion = 1;
-            }else{
-                cursor.valueAsNumber = 0;
-                gap_reproduccion = 1;
-            }
-
         }
 
         function velocidadMaxima(){
-            cursor.valueAsNumber = indice_infraccion;
+            cursor.valueAsNumber = velocidadMaximaTimeStamp;
             actualizar_todo();
         }
 
@@ -217,60 +205,12 @@
         }
 
         function procesar_vista() {
-
-            console.log(1);
-            return;
-
             if(pausado){
-                setTimeout(procesar_vista, 10);
                 return;
             }
 
-            //const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-
-            actualizaciones++;
-            if (actualizaciones % 50 == 0 && seguirRepartidor.checked) {
-                mapa.panTo(marcador.position);
-                actualizaciones = 0;
-            }
-
-            if (frame == 1) {
-                posicion_inicial = { lat: marcador.position['lat'], lng: marcador.position['lng'] };
-                posicion_final = { lat: posiciones[cursor.valueAsNumber + gap_reproduccion]['latitud'], lng: posiciones[cursor.valueAsNumber + gap_reproduccion]['longitud'] };
-                velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber + gap_reproduccion]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-                let fecha = new Date(/*posiciones[cursor.valueAsNumber + gap_reproduccion]['fecha']*/cursor.valueAsNumber);
-                txtFecha.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDate() < 10 ? '0' + fecha.getDate() : fecha.getDate() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
-            
-                if( gap_reproduccion > 0 ){
-                    gap_reproduccion = 0;
-                }
-            }
-
-            if (posicion_inicial['lat'] != posicion_final['lat'] || posicion_inicial['lng'] != posicion_final['lng']) {
-
-                let latitud_dif_abs = Math.abs(posicion_inicial['lat'] - posicion_final['lat']) * frame / velocidad;
-                let longitud_dif_abs = Math.abs(Math.abs(posicion_inicial['lng']) + posicion_final['lng']) * frame / velocidad;
-
-                let latitud = posicion_inicial['lat'] >= posicion_final['lat'] ? posicion_inicial['lat'] - latitud_dif_abs : posicion_inicial['lat'] + latitud_dif_abs;
-                let longitud = posicion_inicial['lng'] >= posicion_final['lng'] ? posicion_inicial['lng'] - longitud_dif_abs : posicion_inicial['lng'] + longitud_dif_abs;
-
-                marcador.position = { lat: latitud, lng: longitud };
-            }
-
-            if (frame >= velocidad) {
-                frame = 1;
-                cursor.valueAsNumber += 1;
-
-                if(cursor.valueAsNumber == posiciones.length - 1){
-                    cursor.valueAsNumber = 0;
-                }
-
-                marcador.position = { lat: posicion_final['lat'], lng: posicion_final['lng'] };
-            } else {
-                frame++;
-            }
-
-            setTimeout(procesar_vista, 10);
+            cursor.valueAsNumber += 1000;
+            actualizar_todo();
         }
     </script>
 
@@ -287,15 +227,11 @@
             document.getElementById('txtIdRepartidor').innerText = <?= $_GET['id']; ?>;
             document.getElementById('txtNombreRepartidor').innerText = '<?= $_GET['nombre']; ?>';
 
-            indice_infraccion = <?= $_GET['fechaMaxima']; ?>;
+            velocidadMaximaTimeStamp = <?= $_GET['velocidadMaximaTimeStamp']; ?>;
 
             cursor.min = new Date(fechaConsulta).getTime();
             cursor.max = parseInt(cursor.min) + 86399999;
-            cursor.valueAsNumber = indice_infraccion;
-
-            velocidadRepartidor.innerText = (posicionActual()['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-            let fecha = new Date(cursor.valueAsNumber);
-            txtFecha.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDate() < 10 ? '0' + fecha.getDate() : fecha.getDate() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
+            cursor.valueAsNumber = velocidadMaximaTimeStamp;
 
             mapa = new Map(document.getElementById("mapa"), {
                 center: { lat: posicionActual()['latitud'], lng: posicionActual()['longitud'] },
@@ -314,12 +250,11 @@
             });
 
             let infowindow = new google.maps.InfoWindow({
-                content: '<p style="margin: 0;" ><strong><?php echo $_GET['id']; ?> </strong><?php echo $_GET['nombre']; ?></p>'
+                content: '<p style="margin: 0;" ><strong><?= $_GET['id']; ?> </strong><?= $_GET['nombre']; ?></p>'
             });
 
             marcador.addListener("click", () => {
                 mapa.setZoom(14);
-                mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
                 mapa.panTo(marcador.position);
 
                 infowindow.open({
@@ -328,14 +263,8 @@
                 });
             });
 
-            // if( cursor.valueAsNumber + 1 <= posiciones.length - 1 ){
-            //     gap_reproduccion = 1;
-            // }else{
-            //     cursor.valueAsNumber = 0;
-            //     gap_reproduccion = 1;
-            // }
-
-            setTimeout(procesar_vista, 10);
+            setInterval(procesar_vista, 1000);
+            actualizar_todo();
         }
 
         initMap();

@@ -504,7 +504,7 @@
                         td = document.createElement('td');
                         let button = document.createElement('button');
                         button.onclick = ()=>{
-                            window.open('https://www.marverrefacciones.mx/reproductor?id=' + repartidor[0] + '&nombre=' + repartidor[1] + '&fecha=' + document.getElementById('fecha').value + '&fechaMaxima=' + repartidor[4], '_blank');
+                            window.open('https://www.marverrefacciones.mx/reproductor?id=' + repartidor[0] + '&nombre=' + repartidor[1] + '&fecha=' + document.getElementById('fecha').value + '&velocidadMaximaTimeStamp=' + repartidor[4], '_blank');
                         }
                         button.innerText = 'Reproducir';
                         button.classList.add('btn');
