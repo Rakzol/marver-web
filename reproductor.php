@@ -217,6 +217,14 @@
             cursor.valueAsNumber = indice_infraccion;
             actualizar_todo();
         }
+
+        function posicionActual(){
+            let posicion = posiciones.find(posicion=>new Date(posicion["fecha"])>=new Date(cursor.valueAsNumber));
+            if (posicion) {
+                return posicion;
+            }
+            return posiciones.at(-1);
+        }
     </script>
 
     <script type="module">
@@ -272,14 +280,6 @@
             }
 
             setTimeout(procesar_vista, 10);
-        }
-
-        async function posicionActual(){
-            let posicion = posiciones.find(posicion=>new Date(posicion["fecha"])>=new Date(cursor.valueAsNumber));
-            if (posicion) {
-                return posicion;
-            }
-            return posiciones.at(-1);
         }
 
         async function initMap() {
