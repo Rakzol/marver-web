@@ -72,7 +72,7 @@
                 $indice++;
             }
 
-            $resultados[] = [$repartidor['Clave'], $repartidor['Nombre'], $distancia_total, $velocidad_maxima, (new DateTime($fechaMaxima, new DateTimeZone('UTC-7')))->getTimestamp() * 1000 ];
+            $resultados[] = [$repartidor['Clave'], $repartidor['Nombre'], $distancia_total, $velocidad_maxima, (new DateTime($fechaMaxima, new DateTimeZone('America/Phoenix')))->getTimestamp() * 1000 ];
         }
 
         echo json_encode($resultados, JSON_UNESCAPED_UNICODE);
