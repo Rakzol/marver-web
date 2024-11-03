@@ -94,7 +94,6 @@
                     <button onclick="retroceder();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-left"></i></button>
                     <button onclick="velocidadMaxima();" class="btn btn-primary"><i class="fa-solid fa-triangle-exclamation"></i></button>
                     <button onclick="adelantar();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-right"></i></button>
-                    <button onclick="velocidadReproduccion();" class="btn btn-primary"><i class="fa-solid fa-forward"></i>  <i class="fa-solid fa-1" id="icono_velocidad" ></i></button>
                 </div>
 
                 <a class="btn btn-primary mt-3" href="https://www.marverrefacciones.mx/mapa" target="_blank" >Rastreo</a>
