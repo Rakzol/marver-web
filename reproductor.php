@@ -128,17 +128,10 @@
 
         let mapa;
         let velocidadMaximaTimeStamp;
-        let velocidadRepartidor;
         let txtFecha;
         let marcador;
-        let posicion_inicial;
-        let posicion_final;
         let cursor;
-        let frame = 1;
         let pausado = true;
-        let velocidad = 1500;
-        let actualizaciones = 0;
-        let gap_reproduccion = 0;
 
         function pausar(){
             if(pausado){
@@ -149,26 +142,6 @@
                 pausado = true
                 document.getElementById("icono_pausar").classList.remove('fa-pause');
                 document.getElementById("icono_pausar").classList.add('fa-play');
-            }
-        }
-
-        function velocidadReproduccion(){
-            if( velocidad == 1500 ){
-                velocidad = 750;
-                document.getElementById("icono_velocidad").classList.remove('fa-1');
-                document.getElementById("icono_velocidad").classList.add('fa-2');
-            }else if(velocidad == 750){
-                velocidad = 375;
-                document.getElementById("icono_velocidad").classList.remove('fa-2');
-                document.getElementById("icono_velocidad").classList.add('fa-4');
-            }else if(velocidad == 375){
-                velocidad = 187;
-                document.getElementById("icono_velocidad").classList.remove('fa-4');
-                document.getElementById("icono_velocidad").classList.add('fa-8');
-            }else if(velocidad == 187){
-                velocidad = 1500;
-                document.getElementById("icono_velocidad").classList.remove('fa-8');
-                document.getElementById("icono_velocidad").classList.add('fa-1');
             }
         }
 
