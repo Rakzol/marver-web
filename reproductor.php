@@ -276,7 +276,9 @@
 
         async function posicionActual(){
             let posicion = posiciones.find(posicion=>new Date(posicion["fecha"])>=new Date(cursor.valueAsNumber));
-            if posicion return posicion;
+            if (posicion) {
+                return posicion
+            };
             return posiciones.at(-1)
         }
 
