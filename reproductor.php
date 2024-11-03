@@ -214,7 +214,7 @@
             });
 
             let imagen = document.createElement('img');
-            imagen.src = 'https://www.marverrefacciones.mx/android/marcador.png';
+            imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador.png';
 
             marcador = new AdvancedMarkerElement({
                 content: imagen,
