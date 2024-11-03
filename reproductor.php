@@ -10,7 +10,7 @@
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
-        $preparada = $conexion->prepare("SELECT * FROM posiciones WHERE fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) AND usuario = :repartidor");
+        $preparada = $conexion->prepare("SELECT * FROM posiciones WHERE fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) AND usuario = :repartidor ORDER BY fecha ASC");
         $preparada->bindValue(':dia_inicial', $_GET['fecha']);
         $preparada->bindValue(':dia_final', $_GET['fecha']);
         $preparada->bindValue(':repartidor', $_GET['id']);
@@ -18,7 +18,6 @@
 
         echo '<script>';
         echo 'let fechaConsulta = "' . $_GET['fecha'] . ' 00:00:00.000";';
-        echo 'let indice_infraccion = 0;';
         echo 'let posiciones = ' . json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE) . ';';
         echo '</script>';
     }catch( Exception $exception ) {
@@ -87,15 +86,15 @@
                     </div> -->
                 </div>
 
-                <label for="cursor" class="form-label mb-0 d-block" id="txtPosicion" >Posicion</label>
-                <input type="range" onchange="actualizar_todo();" style="max-width: 390px;" class="form-range d-block m-auto" min="0" max="1" value="0" id="cursor">
+                <label for="cursor" class="form-label mb-0 d-block" id="txtFecha" >Fecha</label>
+                <input type="range" onchange="actualizar_todo();" style="max-width: 390px;" class="form-range d-block m-auto" id="cursor">
 
                 <div class="d-flex justify-content-center gap-2" >
                     <button onclick="pausar();" class="btn btn-primary"><i class="fa-solid fa-play" id="icono_pausar" ></i></button>
                     <button onclick="retroceder();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-left"></i></button>
-                    <button onclick="infraccion();" class="btn btn-primary"><i class="fa-solid fa-triangle-exclamation"></i></button>
+                    <button onclick="velocidadMaxima();" class="btn btn-primary"><i class="fa-solid fa-triangle-exclamation"></i></button>
                     <button onclick="adelantar();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-right"></i></button>
-                    <button onclick="reproduccion();" class="btn btn-primary"><i class="fa-solid fa-forward"></i>  <i class="fa-solid fa-1" id="icono_velocidad" ></i></button>
+                    <button onclick="velocidadReproduccion();" class="btn btn-primary"><i class="fa-solid fa-forward"></i>  <i class="fa-solid fa-1" id="icono_velocidad" ></i></button>
                 </div>
 
                 <a class="btn btn-primary mt-3" href="https://www.marverrefacciones.mx/mapa" target="_blank" >Rastreo</a>
@@ -129,7 +128,7 @@
 
         let mapa;
         let velocidadRepartidor;
-        let txtPosicion;
+        let txtFecha;
         let marcador;
         let posicion_inicial;
         let posicion_final;
@@ -152,7 +151,7 @@
             }
         }
 
-        function reproduccion(){
+        function velocidadReproduccion(){
             if( velocidad == 1500 ){
                 velocidad = 750;
                 document.getElementById("icono_velocidad").classList.remove('fa-1');
@@ -208,12 +207,12 @@
 
             velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
             let fecha = new Date(posiciones[cursor.valueAsNumber]['fecha']);
-            txtPosicion.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDate() < 10 ? '0' + fecha.getDate() : fecha.getDate() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
+            txtFecha.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDate() < 10 ? '0' + fecha.getDate() : fecha.getDate() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
             marcador.position = { lat: posiciones[cursor.valueAsNumber]['latitud'], lng: posiciones[cursor.valueAsNumber]['longitud'] };
             mapa.panTo(marcador.position);
         }
 
-        function infraccion(){
+        function velocidadMaxima(){
             cursor.valueAsNumber = indice_infraccion;
             actualizar_todo();
         }
@@ -240,7 +239,7 @@
                 posicion_final = { lat: posiciones[cursor.valueAsNumber + gap_reproduccion]['latitud'], lng: posiciones[cursor.valueAsNumber + gap_reproduccion]['longitud'] };
                 velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber + gap_reproduccion]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
                 let fecha = new Date(posiciones[cursor.valueAsNumber + gap_reproduccion]['fecha']);
-                txtPosicion.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDate() < 10 ? '0' + fecha.getDate() : fecha.getDate() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
+                txtFecha.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDate() < 10 ? '0' + fecha.getDate() : fecha.getDate() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
             
                 if( gap_reproduccion > 0 ){
                     gap_reproduccion = 0;
@@ -280,7 +279,10 @@
 
             velocidadRepartidor = document.getElementById('velocidadRepartidor');
             cursor = document.getElementById('cursor');
-            txtPosicion = document.getElementById('txtPosicion');
+            txtFecha = document.getElementById('txtFecha');
+
+            document.getElementById('txtIdRepartidor').innerText = <?php echo $_GET['id']; ?>;
+            document.getElementById('txtNombreRepartidor').innerText = '<?php echo $_GET['nombre']; ?>';
 
             indice_infraccion = posiciones.findIndex( posicion => posicion.id == <?php echo $_GET['posicion']; ?> );
 
@@ -288,11 +290,8 @@
             cursor.max = parseInt(cursor.min) + 86399999;
             cursor.valueAsNumber = indice_infraccion;
             // velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-            let fecha = new Date(posiciones[cursor.valueAsNumber]['fecha']);
-            txtPosicion.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDate() < 10 ? '0' + fecha.getDate() : fecha.getDate() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
-
-            document.getElementById('txtIdRepartidor').innerText = <?php echo $_GET['id']; ?>;
-            document.getElementById('txtNombreRepartidor').innerText = '<?php echo $_GET['nombre']; ?>';
+            // let fecha = new Date(posiciones[cursor.valueAsNumber]['fecha']);
+            // txtFecha.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDate() < 10 ? '0' + fecha.getDate() : fecha.getDate() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
 
             mapa = new Map(document.getElementById("mapa"), {
                 center: { lat: posiciones[cursor.valueAsNumber]['latitud'], lng: posiciones[cursor.valueAsNumber]['longitud'] },
