@@ -56,7 +56,7 @@
             $posiciones = $preparada->fetchAll(PDO::FETCH_ASSOC);
             $distancia_total = 0;
             $velocidad_maxima = 0;
-            $fechaMaxima = 0;
+            $fechaMaxima = "";
             $indice = 0;
 
             while($indice < count($posiciones) ){
@@ -72,7 +72,7 @@
                 $indice++;
             }
 
-            $resultados[] = [$repartidor['Clave'], $repartidor['Nombre'], $distancia_total, $velocidad_maxima, $fechaMaxima];
+            $resultados[] = [$repartidor['Clave'], $repartidor['Nombre'], $distancia_total, $velocidad_maxima, strtotime($fechaMaxima)];
         }
 
         echo json_encode($resultados, JSON_UNESCAPED_UNICODE);
