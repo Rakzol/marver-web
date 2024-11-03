@@ -56,14 +56,14 @@
             $posiciones = $preparada->fetchAll(PDO::FETCH_ASSOC);
             $distancia_total = 0;
             $velocidad_maxima = 0;
-            $id_maxima = 0;
+            $fechaMaxima = 0;
             $indice = 0;
 
             while($indice < count($posiciones) ){
 
                 if($posiciones[$indice]['velocidad'] > $velocidad_maxima){
                     $velocidad_maxima = $posiciones[$indice]['velocidad'];
-                    $id_maxima = $posiciones[$indice]['id'];
+                    $fechaMaxima = $posiciones[$indice]['fecha'];
                 }
                 if( $indice + 1 < count($posiciones) ){
                     $distancia_total += distancia($posiciones[$indice]['latitud'], $posiciones[$indice]['longitud'],$posiciones[$indice + 1]['latitud'], $posiciones[$indice + 1]['longitud']);
@@ -72,7 +72,7 @@
                 $indice++;
             }
 
-            $resultados[] = [$repartidor['Clave'], $repartidor['Nombre'], $distancia_total, $velocidad_maxima, $id_maxima];
+            $resultados[] = [$repartidor['Clave'], $repartidor['Nombre'], $distancia_total, $velocidad_maxima, $fechaMaxima];
         }
 
         echo json_encode($resultados, JSON_UNESCAPED_UNICODE);
