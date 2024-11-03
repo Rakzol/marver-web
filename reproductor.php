@@ -279,7 +279,7 @@
             if (posicion) {
                 return posicion;
             }
-            return posiciones.at(-1)
+            return posiciones.at(-1);
         }
 
         async function initMap() {
