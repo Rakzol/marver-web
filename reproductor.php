@@ -318,7 +318,7 @@
             });
 
             marcador.addListener("click", () => {
-                mapa.setZoom(18.5);
+                mapa.setZoom(14);
                 mapa.setMapTypeId(google.maps.MapTypeId.HYBRID);
                 mapa.panTo(marcador.position);
 
