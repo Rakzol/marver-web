@@ -146,12 +146,12 @@
         }
 
         function adelantar(){
-            cursor.valueAsNumber += 60000;
+            cursor.valueAsNumber += 600000;
             actualizar_todo();
         }
 
         function retroceder(){
-            cursor.valueAsNumber -= 60000;
+            cursor.valueAsNumber -= 600000;
             actualizar_todo();
         }
 
@@ -182,7 +182,7 @@
                 return;
             }
 
-            cursor.valueAsNumber += 1000;
+            cursor.valueAsNumber += 10000;
             actualizar_todo();
         }
     </script>
