@@ -274,7 +274,7 @@
             setTimeout(procesar_vista, 10);
         }
 
-        function posicionActual(){
+        async function posicionActual(){
             let posicion = posiciones.find(posicion=>new Date(posicion["fecha"])>=new Date(cursor.valueAsNumber))["fecha"];
             if posicion return posicion;
             return posiciones.at(-1)
