@@ -47,7 +47,7 @@
         $resultados = [];
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
 
-            $preparada = $conexion->prepare("SELECT id, latitud, longitud, velocidad, fecha FROM posiciones WHERE usuario = :repartidor AND fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final)");
+            $preparada = $conexion->prepare("SELECT id, latitud, longitud, velocidad, DATEDIFF(MILLISECOND, '1970-01-01 00:00:00.000', fecha) FROM posiciones WHERE usuario = :repartidor AND fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final)");
             $preparada->bindValue(':repartidor', $repartidor['Clave']);
             $preparada->bindValue(':dia_inicial', $_POST['fecha']);
             $preparada->bindValue(':dia_final', $_POST['fecha']);
@@ -56,7 +56,7 @@
             $posiciones = $preparada->fetchAll(PDO::FETCH_ASSOC);
             $distancia_total = 0;
             $velocidad_maxima = 0;
-            $fechaMaxima = "";
+            $fechaMaxima = 0;
             $indice = 0;
 
             while($indice < count($posiciones) ){
@@ -72,7 +72,7 @@
                 $indice++;
             }
 
-            $resultados[] = [$repartidor['Clave'], $repartidor['Nombre'], $distancia_total, $velocidad_maxima, (new DateTime($fechaMaxima, new DateTimeZone('America/Phoenix')))->getTimestamp() * 1000 ];
+            $resultados[] = [$repartidor['Clave'], $repartidor['Nombre'], $distancia_total, $velocidad_maxima, $fechaMaxima ];
         }
 
         echo json_encode($resultados, JSON_UNESCAPED_UNICODE);
