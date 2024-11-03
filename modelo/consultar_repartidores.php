@@ -72,7 +72,7 @@
                 $indice++;
             }
 
-            $resultados[] = [$repartidor['Clave'], $repartidor['Nombre'], $distancia_total, $velocidad_maxima, strtotime($fechaMaxima)];
+            $resultados[] = [$repartidor['Clave'], $repartidor['Nombre'], $distancia_total, $velocidad_maxima, strtotime($fechaMaxima)*1000];
         }
 
         echo json_encode($resultados, JSON_UNESCAPED_UNICODE);

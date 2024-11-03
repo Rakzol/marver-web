@@ -288,6 +288,8 @@
             cursor.max = parseInt(cursor.min) + 86399999;
             cursor.valueAsNumber = indice_infraccion;
             // velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
+            let fecha = new Date(posiciones[cursor.valueAsNumber]['fecha']);
+            txtPosicion.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDate() < 10 ? '0' + fecha.getDate() : fecha.getDate() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
 
             document.getElementById('txtIdRepartidor').innerText = <?php echo $_GET['id']; ?>;
             document.getElementById('txtNombreRepartidor').innerText = '<?php echo $_GET['nombre']; ?>';
