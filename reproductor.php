@@ -275,8 +275,9 @@
         }
 
         function posicionActual(){
-            posiciones[cursor.valueAsNumber]
-
+            let posicion = posiciones.find(posicion=>new Date(posicion["fecha"])>=new Date(cursor.valueAsNumber))["fecha"];
+            if posicion return posicion;
+            return posiciones.at(-1)
         }
 
         async function initMap() {
