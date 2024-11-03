@@ -285,7 +285,7 @@
             indice_infraccion = posiciones.findIndex( posicion => posicion.id == <?php echo $_GET['posicion']; ?> );
 
             cursor.min = new Date(fechaConsulta).getTime();
-            cursor.max = parseInt(cursor.min) + 86400000;
+            cursor.max = parseInt(cursor.min) + 86399999;
             cursor.valueAsNumber = indice_infraccion;
             velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
             let fecha = new Date(posiciones[cursor.valueAsNumber]['fecha']);
