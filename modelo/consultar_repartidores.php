@@ -72,7 +72,7 @@
                 $indice++;
             }
 
-            $resultados[] = [$repartidor['Clave'], $repartidor['Nombre'], $distancia_total, $velocidad_maxima, strtotime($fechaMaxima)*1000];
+            $resultados[] = [$repartidor['Clave'], $repartidor['Nombre'], $distancia_total, $velocidad_maxima, DateTime::createFromFormat('Y-m-d H:i:s.u', $fechaMaxima)->format('Uu')];
         }
 
         echo json_encode($resultados, JSON_UNESCAPED_UNICODE);
