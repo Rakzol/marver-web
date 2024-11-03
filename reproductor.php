@@ -17,7 +17,7 @@
         $preparada->execute();
 
         echo '<script>';
-        echo 'let fechaConsulta = "' . $_GET['fecha'] . '";';
+        echo 'let fechaConsulta = "' . $_GET['fecha'] . ' 00:00:00.000";';
         echo 'let indice_infraccion = 0;';
         echo 'let posiciones = ' . json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE) . ';';
         echo '</script>';
@@ -284,8 +284,7 @@
 
             indice_infraccion = posiciones.findIndex( posicion => posicion.id == <?php echo $_GET['posicion']; ?> );
 
-            cursor.min = Date.parse(fechaConsulta);
-            cursor.max = posiciones.length - 1;
+            cursor.min = new Date(fechaConsulta).getTime();
             cursor.max = parseInt(cursor.min) + 86400000;
             cursor.valueAsNumber = indice_infraccion;
             velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
