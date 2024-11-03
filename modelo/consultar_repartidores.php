@@ -47,7 +47,7 @@
         $resultados = [];
         foreach( $preparada->fetchAll(PDO::FETCH_ASSOC) as $repartidor ){
 
-            $preparada = $conexion->prepare("SELECT id, latitud, longitud, velocidad, DATEDIFF(MILLISECOND, '1970-01-01 00:00:00.000', fecha) FROM posiciones WHERE usuario = :repartidor AND fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final)");
+            $preparada = $conexion->prepare("SELECT id, latitud, longitud, velocidad, DATEDIFF(MILLISECOND, '1970-01-01 00:00:00.000', fecha) AS fecha FROM posiciones WHERE usuario = :repartidor AND fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final)");
             $preparada->bindValue(':repartidor', $repartidor['Clave']);
             $preparada->bindValue(':dia_inicial', $_POST['fecha']);
             $preparada->bindValue(':dia_final', $_POST['fecha']);
