@@ -225,11 +225,8 @@
             }
             return posiciones.at(-1);
         }
-    </script>
 
-    <script type="module">
-
-        async function procesar_vista() {
+        function procesar_vista() {
             if(pausado){
                 setTimeout(procesar_vista, 10);
                 return;
@@ -281,6 +278,9 @@
 
             setTimeout(procesar_vista, 10);
         }
+    </script>
+
+    <script type="module">
 
         async function initMap() {
             const { Map, InfoWindow } = await google.maps.importLibrary("maps");
