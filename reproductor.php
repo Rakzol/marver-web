@@ -338,12 +338,12 @@
                 });
             });
 
-            if( cursor.valueAsNumber + 1 <= posiciones.length - 1 ){
-                gap_reproduccion = 1;
-            }else{
-                cursor.valueAsNumber = 0;
-                gap_reproduccion = 1;
-            }
+            // if( cursor.valueAsNumber + 1 <= posiciones.length - 1 ){
+            //     gap_reproduccion = 1;
+            // }else{
+            //     cursor.valueAsNumber = 0;
+            //     gap_reproduccion = 1;
+            // }
 
             setTimeout(procesar_vista, 10);
         }
