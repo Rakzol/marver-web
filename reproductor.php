@@ -236,7 +236,7 @@
                 return;
             }
 
-            const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+            //const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
             actualizaciones++;
             if (actualizaciones % 50 == 0 && seguirRepartidor.checked) {
