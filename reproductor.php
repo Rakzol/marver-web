@@ -126,6 +126,7 @@
     <script>
 
         let mapa;
+        let velocidadRepartidor;
         let velocidadMaximaTimeStamp;
         let txtFecha;
         let marcador;
