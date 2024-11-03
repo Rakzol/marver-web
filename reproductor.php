@@ -185,7 +185,7 @@
         function actualizar_todo(){
 
             velocidadRepartidor.innerText = (posicionActual()['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-            let fecha = new Date(posicionActual()['fecha']);
+            let fecha = new Date(cursor.valueAsNumber);
             txtFecha.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDate() < 10 ? '0' + fecha.getDate() : fecha.getDate() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
 
             marcador.position = { lat: posicionActual()['latitud'], lng: posicionActual()['longitud'] };
@@ -238,7 +238,7 @@
                 posicion_inicial = { lat: marcador.position['lat'], lng: marcador.position['lng'] };
                 posicion_final = { lat: posiciones[cursor.valueAsNumber + gap_reproduccion]['latitud'], lng: posiciones[cursor.valueAsNumber + gap_reproduccion]['longitud'] };
                 velocidadRepartidor.innerText = (posiciones[cursor.valueAsNumber + gap_reproduccion]['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-                let fecha = new Date(posiciones[cursor.valueAsNumber + gap_reproduccion]['fecha']);
+                let fecha = new Date(/*posiciones[cursor.valueAsNumber + gap_reproduccion]['fecha']*/cursor.valueAsNumber);
                 txtFecha.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDate() < 10 ? '0' + fecha.getDate() : fecha.getDate() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
             
                 if( gap_reproduccion > 0 ){
@@ -294,7 +294,7 @@
             cursor.valueAsNumber = indice_infraccion;
 
             velocidadRepartidor.innerText = (posicionActual()['velocidad'] * 3.6).toFixed(1) + ' Km/h';
-            let fecha = new Date(posicionActual()['fecha']);
+            let fecha = new Date(cursor.valueAsNumber);
             txtFecha.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDate() < 10 ? '0' + fecha.getDate() : fecha.getDate() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
 
             mapa = new Map(document.getElementById("mapa"), {
