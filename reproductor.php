@@ -299,7 +299,7 @@
 
             mapa = new Map(document.getElementById("mapa"), {
                 center: { lat: posicionActual()['latitud'], lng: posicionActual()['longitud'] },
-                zoom: 18.5,
+                zoom: 14,
                 mapId: '7845e7dffe8cea37',
                 mapTypeId: google.maps.MapTypeId.HYBRID
             });
