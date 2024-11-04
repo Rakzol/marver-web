@@ -288,7 +288,7 @@
                 let polylinea = new Polylinea({
                     path: decodePolyline(pedido["polylineaCodificada"]),
                     geodesic: true,
-                    strokeColor: "#87CEEB",
+                    strokeColor: "#FF0000",
                     strokeOpacity: 1.0,
                     strokeWeight: 3,
                     zIndex: 1
@@ -296,11 +296,22 @@
                 polylinea.setMap(mapa);
                 polylineas.push(polylinea);
 
+                let imagen = document.createElement('img');
+                imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_marver.png';
+
+                let marcadorMarver = new ElementoMarcadorAvanzado({
+                    content: imagen,
+                    map: mapa,
+                    position: { lat: pedido["latitud"], lng: pedido["longitud"] },
+                    zIndex: 3
+                });
+                marcadores.push(marcadorMarver);
+
                 pedido["entregas"].forEach(entrega => {
                     polylinea = new Polylinea({
                         path: decodePolyline(entrega["polylineaCodificada"]),
                         geodesic: true,
-                        strokeColor: "#87CEEB",
+                        strokeColor: "#FF0000",
                         strokeOpacity: 1.0,
                         strokeWeight: 3,
                         zIndex: 1
