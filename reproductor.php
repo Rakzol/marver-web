@@ -20,6 +20,110 @@
         echo 'let fechaConsulta = "' . $_GET['fecha'] . ' 00:00:00.000";';
         echo 'let posiciones = ' . json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE) . ';';
         echo '</script>';
+
+        $preparada = $conexion->prepare("SELECT
+               id AS id,
+               fecha_actualizacion AS fechaActualizacion,
+               fecha_inicio AS fechaInicio,
+               fecha_llegada_estimada AS fechaLlegadaEstimada,
+               fecha_fin AS fechaFin,
+               fecha_llegada_eficiencia AS fechaLlegadaEficiencia,
+               polylinea_codificada AS polylineaCodificada,
+               segundos_estimados_sumatoria AS segundosEstimadosSumatoria,
+               metros_estimados_sumatoria AS metrosEstimadosSumatoria,
+               25.7941814 AS latitud,
+               -108.9858957 AS longitud
+           FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio >= :fecha_inicial AND fecha_inicio < DATEADD(DAY, 1, :fecha_final) AND fecha_fin IS NOT NULL
+           ORDER BY fecha_inicio ASC;
+        ");
+        $preparada->bindValue(':fecha_inicial', $_GET['fecha']);
+        $preparada->bindValue(':fecha_final', $_GET['fecha']);
+        $preparada->bindValue(':repartidor', $_GET['id']);
+        $preparada->execute();
+
+        $pedidos = $preparada->fetchAll(PDO::FETCH_ASSOC);
+
+        for($c = 0; $c < count($pedidos); $c++){
+                    $preparada = $conexion->prepare("SELECT
+                        pr.indice AS indice,
+                        pr.polylinea_codificada AS polylineaCodificada,
+                        pr.fecha_llegada_estimada AS fechaLlegadaEstimada,
+                        pr.fecha_llegada AS fechaLlegada,
+                        pr.fecha_llegada_eficiencia AS fechaLlegadaEficiencia,
+                        en.Extra2 AS status,
+                        REPLACE( REPLACE( CONCAT( CONVERT(VARCHAR, en.Fecha) , ' ', en.HoraEnvio ), 'p. m.', 'PM' ), 'a. m.', 'AM' ) AS fechaAsignacion,
+                        pc.folio AS pedido,
+                        pc.FolioComprobante AS folioComprobante,
+                        pc.Tipocomprobante AS tipoComprobante,
+                        pc.Observacion AS observacionesPedido,
+                        CASE WHEN pc.Tipocomprobante != 3
+                            THEN cl.Clave
+                            ELSE ue.clave
+                        END AS clienteClave,
+                        CASE WHEN pc.Tipocomprobante != 3
+                            THEN cl.Razon_Social
+                            ELSE ue.nombre
+                        END AS clienteNombre,
+                        en.Responsable AS repartidor,
+                        pc.CodigosFacturado AS codigos,
+                        pc.UnidadesFacturado AS piezas,
+                        pc.TotalFacturado AS total,
+                        CASE WHEN pc.Tipocomprobante != 3
+                            THEN un.latitud
+                            ELSE ue.latitud
+                        END AS latitud,
+                        CASE WHEN pc.Tipocomprobante != 3
+                            THEN un.longitud
+                            ELSE ue.longitud
+                        END AS longitud,
+                        CASE WHEN pc.Tipocomprobante != 3
+                            THEN un.calle
+                            ELSE ue.calle
+                        END AS calle,
+                        CASE WHEN pc.Tipocomprobante != 3
+                            THEN un.colonia
+                            ELSE ue.colonia
+                        END AS colonia,
+                        CASE WHEN pc.Tipocomprobante != 3
+                            THEN un.codigo_postal
+                            ELSE ue.codigo_postal
+                        END AS codigoPostal,
+                        CASE WHEN pc.Tipocomprobante != 3
+                            THEN un.numero_exterior
+                            ELSE ue.numero_exterior
+                        END AS numeroExterior,
+                        CASE WHEN pc.Tipocomprobante != 3
+                            THEN un.numero_interior
+                            ELSE ue.numero_interior
+                        END AS numeroInterior,
+                        CASE WHEN pc.Tipocomprobante != 3
+                            THEN un.observaciones
+                            ELSE ue.observaciones
+                        END AS observacionesUbicacion,
+                        CASE
+                            WHEN en.Extra2 = 'PENDIENTE' THEN NULL
+                            WHEN en.Extra2 = 'EN RUTA' THEN mv.Importe * -1
+                            ELSE mv.Feria + (mv.Importe * -1)
+                        END AS feria
+                    FROM pedidos_repartidores pr
+                    INNER JOIN PedidosCliente pc ON pc.Folio = pr.folio
+                    INNER JOIN EnvioPedidoCliente en ON en.Extra1 = pr.id
+                    LEFT JOIN Clientes cl ON cl.Clave = pc.Cliente
+                    LEFT JOIN clientes_posiciones un ON un.clave = pc.Cliente
+                    LEFT JOIN ubicaciones_especiales ue ON ue.clave = pc.Cliente
+                    LEFT JOIN MoviemientosVenta mv ON mv.Folio = pc.FolioComprobante AND mv.TipoComprobante = 11 AND mv.Importe < 0
+                    WHERE pr.ruta_repartidor = :ruta_repartidor
+                    ORDER BY pr.indice ASC;
+            ");
+            $preparada->bindValue(':ruta_repartidor', $pedidos[$c]["id"]);
+            $preparada->execute();
+
+            $pedidos[$c]["entregas"] = $preparada->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        echo '<script>';
+        echo 'let pedidos = ' . json_encode($pedidos, JSON_UNESCAPED_UNICODE) . ';';
+        echo '</script>';
     }catch( Exception $exception ) {
         header('HTTP/1.1 500 ' . $exception->getMessage());
     }
