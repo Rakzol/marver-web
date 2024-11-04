@@ -237,12 +237,15 @@
         let velocidadRepartidor;
         let velocidadMaximaTimeStamp;
         let txtFecha;
-        let marcador;
+        let marcadorRepartidor;
+        let marcadorMarver;
         let cursor;
         let pausado = true;
 
         let polylineas = [];
         let marcadores = [];
+
+        let idPedido = 0;
 
         function pausar(){
             if(pausado){
@@ -271,45 +274,17 @@
             let fecha = new Date(cursor.valueAsNumber);
             txtFecha.innerText = fecha.getFullYear() + "-" + ( fecha.getMonth() + 1 < 10 ? '0' + ( fecha.getMonth() + 1 ) : fecha.getMonth() + 1 ) + "-" + ( fecha.getDate() < 10 ? '0' + fecha.getDate() : fecha.getDate() ) + ' ' + ( fecha.getHours() % 12 < 10 ? ( fecha.getHours() % 12 == 0 ? '12' : '0' + ( fecha.getHours() % 12 ) ) : fecha.getHours() % 12 ) + ':' + ( fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes() ) + '.' + ( fecha.getSeconds() < 10 ? '0' + fecha.getSeconds() : fecha.getSeconds() ) + ' ' + ( fecha.getHours() >= 12 ? 'pm' : 'am' );
 
-            marcador.position = { lat: posicionActual()['latitud'], lng: posicionActual()['longitud'] };
-            mapa.panTo(marcador.position);
-
-            polylineas.forEach( (polylineaCiclo)=>{
-                polylineaCiclo.setMap(null);
-            });
-            polylineas = [];
-            marcadores.forEach( (marcadoresCiclo)=>{
-                marcadoresCiclo.setMap(null);
-            });
-            marcadores = [];
+            marcadorRepartidor.position = { lat: posicionActual()['latitud'], lng: posicionActual()['longitud'] };
+            mapa.panTo(marcadorRepartidor.position);
 
             let pedido = pedidoActual();
             if(pedido){
-                let polylinea = new Polylinea({
-                    path: decodePolyline(pedido["polylineaCodificada"]),
-                    geodesic: true,
-                    strokeColor: "#FF0000",
-                    strokeOpacity: 1.0,
-                    strokeWeight: 3,
-                    zIndex: 1
-                });
-                polylinea.setMap(mapa);
-                polylineas.push(polylinea);
 
-                let imagen = document.createElement('img');
-                imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_marver.png';
+                if(pedido["id"] != idPedido){
+                    idPedido = pedido["id"];
 
-                let marcadorMarver = new ElementoMarcadorAvanzado({
-                    content: imagen,
-                    map: mapa,
-                    position: { lat: parseFloat(pedido["latitud"]), lng: parseFloat(pedido["longitud"]) },
-                    zIndex: 3
-                });
-                marcadores.push(marcadorMarver);
-
-                pedido["entregas"].forEach(entrega => {
-                    polylinea = new Polylinea({
-                        path: decodePolyline(entrega["polylineaCodificada"]),
+                    let polylinea = new Polylinea({
+                        path: decodePolyline(pedido["polylineaCodificada"]),
                         geodesic: true,
                         strokeColor: "#FF0000",
                         strokeOpacity: 1.0,
@@ -318,7 +293,61 @@
                     });
                     polylinea.setMap(mapa);
                     polylineas.push(polylinea);
+
+                    let indice = 1;
+                    pedido["entregas"].forEach(entrega => {
+                        polylinea = new Polylinea({
+                            path: decodePolyline(entrega["polylineaCodificada"]),
+                            geodesic: true,
+                            strokeColor: "#FF0000",
+                            strokeOpacity: 1.0,
+                            strokeWeight: 3,
+                            zIndex: 1
+                        });
+                        polylinea.setMap(mapa);
+                        polylineas.push(polylinea);
+
+                        let imagen = document.createElement('img');
+                        imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_' + indice + '.png';
+
+                        let marcadorEntrega = new ElementoMarcadorAvanzado({
+                            content: imagen,
+                            map: mapa,
+                            position: { lat: parseFloat(entrega["latitud"]), lng: parseFloat(entrega["longitud"]) },
+                            zIndex: 3
+                        });
+                        marcadorEntrega["idPedido"] = entrega["pedido"];
+                        marcadores.push(marcadorEntrega);
+
+                        indice++;
+                    });
+                }else{
+                    let indice = 1;
+                    pedido["entregas"].forEach(entrega => {
+
+                        if(entrega["fechaFin"]){
+                            if( new Date(cursor.valueAsNumber) >= new Date(entrega["fechaFin"]) ){
+                                let imagen = document.createElement('img');
+                                imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/entregado_' + indice + '.png';
+
+                                marcadores.find(marcadorEntrega=>marcadorEntrega["idPedido"] == entrega["pedido"]).content = imagen;
+                            }
+                        }
+                        indice++;
+                    });
+                }
+
+            }else{
+                idPedido = 0;
+
+                polylineas.forEach( (polylineaCiclo)=>{
+                    polylineaCiclo.setMap(null);
                 });
+                polylineas = [];
+                marcadores.forEach( (marcadoresCiclo)=>{
+                    marcadoresCiclo.setMap(null);
+                });
+                marcadores = [];
             }
         }
 
@@ -414,10 +443,20 @@
                 mapTypeId: google.maps.MapTypeId.HYBRID
             });
 
+            let imagenMarver = document.createElement('img');
+            imagenMarver.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador_marver.png';
+
+            marcadorMarver = new ElementoMarcadorAvanzado({
+                content: imagenMarver,
+                map: mapa,
+                position: { lat: 25.7943047, lng: -108.9859510 },
+                zIndex: 3
+            });
+
             let imagen = document.createElement('img');
             imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador.png';
 
-            marcador = new ElementoMarcadorAvanzado({
+            marcadorRepartidor = new ElementoMarcadorAvanzado({
                 content: imagen,
                 map: mapa,
                 position: { lat: posicionActual()['latitud'], lng: posicionActual()['longitud'] }
@@ -427,12 +466,12 @@
                 content: '<p style="margin: 0;" ><strong><?= $_GET['id']; ?> </strong><?= $_GET['nombre']; ?></p>'
             });
 
-            marcador.addListener("click", () => {
+            marcadorRepartidor.addListener("click", () => {
                 mapa.setZoom(14);
-                mapa.panTo(marcador.position);
+                mapa.panTo(marcadorRepartidor.position);
 
                 infowindow.open({
-                    anchor: marcador,
+                    anchor: marcadorRepartidor,
                     map: mapa,
                 });
             });
