@@ -398,7 +398,7 @@
 
                         marcadorEntrega.addListener("click", () => {
                             infowindow.open({
-                                anchor: marcador,
+                                anchor: marcadorEntrega,
                                 map: mapa,
                             });
                         });
