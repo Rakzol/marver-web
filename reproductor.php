@@ -229,6 +229,10 @@
 
     <script>
 
+        let ElementoMarcadorAvanzado;
+        let VentanaInformacion;
+        let Polylinea;
+
         let mapa;
         let velocidadRepartidor;
         let velocidadMaximaTimeStamp;
@@ -281,6 +285,14 @@
             return posiciones.at(-1);
         }
 
+        function pedidoActual(){
+            let pedido = pedidos.find(pedido=>new Date(pedido["fechaInicio"])>=new Date(cursor.valueAsNumber));
+            if (pedido) {
+                return pedido;
+            }
+            return pedidos.at(-1);
+        }
+
         function procesar_vista() {
             if(pausado){
                 return;
@@ -294,8 +306,12 @@
     <script type="module">
 
         async function initMap() {
-            const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+            const { Map, InfoWindow, Polyline } = await google.maps.importLibrary("maps");
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+            ElementoMarcadorAvanzado = AdvancedMarkerElement;
+            VentanaInformacion = InfoWindow;
+            Polylinea = Polyline;
 
             velocidadRepartidor = document.getElementById('velocidadRepartidor');
             cursor = document.getElementById('cursor');
@@ -320,13 +336,13 @@
             let imagen = document.createElement('img');
             imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/marcador.png';
 
-            marcador = new AdvancedMarkerElement({
+            marcador = new ElementoMarcadorAvanzado({
                 content: imagen,
                 map: mapa,
                 position: { lat: posicionActual()['latitud'], lng: posicionActual()['longitud'] }
             });
 
-            let infowindow = new google.maps.InfoWindow({
+            let infowindow = new VentanaInformacion({
                 content: '<p style="margin: 0;" ><strong><?= $_GET['id']; ?> </strong><?= $_GET['nombre']; ?></p>'
             });
 
