@@ -302,7 +302,7 @@
                 let marcadorMarver = new ElementoMarcadorAvanzado({
                     content: imagen,
                     map: mapa,
-                    position: { lat: pedido["latitud"], lng: pedido["longitud"] },
+                    position: { lat: parseFloat(pedido["latitud"]), lng: parseFloat(pedido["longitud"]) },
                     zIndex: 3
                 });
                 marcadores.push(marcadorMarver);
