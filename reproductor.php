@@ -452,6 +452,7 @@
 
         function velocidadMaxima(){
             cursor.valueAsNumber = velocidadMaximaTimeStamp;
+            idPedido = 0;
             actualizar_todo();
         }
 
