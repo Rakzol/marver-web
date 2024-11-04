@@ -328,18 +328,16 @@
                         if(entrega["fechaLlegada"]){
                             let marcadorEntrega = marcadores.find(marcadorEntrega=>marcadorEntrega["idPedido"] == entrega["pedido"]);
                             if( new Date(cursor.valueAsNumber) >= new Date(entrega["fechaLlegada"]) ){
-                                let imagen = document.createElement('img');
-                                imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/entregado_' + indice + '.png';
+                                let src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/entregado_' + indice + '.png';
 
-                                if(marcadorEntrega.content.src != imagen.src){
-                                    marcadorEntrega.content = imagen;
+                                if(marcadorEntrega.content.src != src){
+                                    marcadorEntrega.content.src = src;
                                 }
                             }else{
-                                let imagen = document.createElement('img');
-                                imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_' + indice + '.png';
+                                let src ='https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_' + indice + '.png';
 
-                                if(marcadorEntrega.content.src != imagen.src){
-                                    marcadorEntrega.content = imagen;
+                                if(marcadorEntrega.content.src != src){
+                                    marcadorEntrega.content.src = src;
                                 }
                             }
                         }
