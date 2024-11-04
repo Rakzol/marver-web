@@ -167,6 +167,24 @@
     <link href="css/style.css" rel="stylesheet">
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <style>
+        .infoWindow{
+            margin: 0;
+            font-size: 15px;
+            color: black;
+            font-weight: 400;
+        }
+
+        .dinero{
+            margin: 0;
+            color: green;
+        }
+
+        .dinero::before{
+            content: '$ ';
+        }
+    </style>
 </head>
 
 <body class="h-100">
