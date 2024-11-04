@@ -304,7 +304,9 @@
 
                     infowindowMarver.setContent('<p class="infoWindow" >' + 
                                 '<strong>Inicio: </strong> ' + convertirFormato(pedido['fechaInicio']) + '<br>' +
-                                '<strong>Llegada Estimada: </strong> ' + convertirFormato(pedido['fechaLlegadaEstimada'])
+                                '<strong>Llegada Estimada: </strong> ' + convertirFormato(pedido['fechaLlegadaEstimada']) + '<br>' +
+                                '<strong>LLegada: </strong> ' + convertirFormato(pedido['fechaFin']) + '<br>' +
+                                '<strong>Eficiencia: </strong> ' + formatoTiempo(pedido["fechaLlegadaEficiencia"])
                             + '</p>');
 
                     let polylinea = new Polylinea({
@@ -476,6 +478,29 @@
             
             // Retornar el nuevo formato con la fecha original
             return `${fechaParte} ${nuevaHora}`;
+        }
+
+        function formatoTiempo(segundos) {
+            // Verificar si el número es negativo
+            const negativo = segundos < 0;
+            // Convertir a positivo para hacer los cálculos
+            segundos = Math.abs(segundos);
+
+            // Calcular horas, minutos y segundos
+            const horas = Math.floor(segundos / 3600);
+            const minutos = Math.floor((segundos % 3600) / 60);
+            const seg = segundos % 60;
+
+            // Formatear horas, minutos y segundos con ceros a la izquierda si es necesario
+            const formatoHoras = horas.toString().padStart(2, '0');
+            const formatoMinutos = minutos.toString().padStart(2, '0');
+            const formatoSegundos = seg.toString().padStart(2, '0');
+
+            // Armar el string en formato "horas:minutos:segundos"
+            const resultado = `${formatoHoras}:${formatoMinutos}:${formatoSegundos}`;
+
+            // Devolver el resultado con signo negativo si es necesario
+            return negativo ? `-${resultado}` : resultado;
         }
     </script>
 
