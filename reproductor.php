@@ -34,7 +34,7 @@
                25.7941814 AS latitud,
                -108.9858957 AS longitud
            FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio >= :fecha_inicial AND fecha_inicio < DATEADD(DAY, 1, :fecha_final) AND fecha_fin IS NOT NULL
-           ORDER BY fecha_inicio ASC;
+           ORDER BY fecha_inicio DESC;
         ");
         $preparada->bindValue(':fecha_inicial', $_GET['fecha']);
         $preparada->bindValue(':fecha_final', $_GET['fecha']);
@@ -286,7 +286,7 @@
         }
 
         function pedidoActual(){
-            let pedido = pedidos.find(pedido=>new Date(pedido["fechaInicio"])>=new Date(cursor.valueAsNumber));
+            let pedido = pedidos.find(pedido=>new Date(pedido["fechaInicio"])<=new Date(cursor.valueAsNumber));
             if (pedido) {
                 return pedido;
             }
