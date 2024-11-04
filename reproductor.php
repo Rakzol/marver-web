@@ -325,8 +325,8 @@
                     let indice = 1;
                     pedido["entregas"].forEach(entrega => {
 
-                        if(entrega["fechaFin"]){
-                            if( new Date(cursor.valueAsNumber) >= new Date(entrega["fechaFin"]) ){
+                        if(entrega["fechaLlegada"]){
+                            if( new Date(cursor.valueAsNumber) >= new Date(entrega["fechaLlegada"]) ){
                                 let imagen = document.createElement('img');
                                 imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/entregado_' + indice + '.png';
 
