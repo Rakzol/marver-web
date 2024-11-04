@@ -407,6 +407,8 @@
 
                         indice++;
                     });
+
+                    actualizar_todo();
                 }else{
                     let indice = 1;
                     pedido["entregas"].forEach(entrega => {
