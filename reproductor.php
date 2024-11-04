@@ -333,6 +333,58 @@
                         polylinea.setMap(mapa);
                         polylineas.push(polylinea);
 
+                        let infowindow;
+                        if(entrega["tipoComprobante"] != 3){
+                            infowindow = new VentanaInformacion({
+                                disableAutoPan: true,
+                                content: '<p class="infoWindow" >' + 
+                                "<strong>Pedido Normal</strong><br>" + 
+                                "<strong>Llegada estimada: </strong>" + convertirFormato(entrega["fechaLlegadaEstimada"]) + "<br>" +
+                                "<strong>Llegada: </strong>" + convertirFormato(entrega["fechaLlegada"]) + "<br>" +
+                                "<strong>Eficiencia: </strong>" + formatoTiempo(entrega["fechaLlegadaEficiencia"]) + "<br>" +
+                                "<strong>Status: </strong>" + entrega["status"] + "<br>" +
+                                "<strong>Pedido: </strong>" + entrega["pedido"] + "<br>" +
+                                "<strong>Cliente: </strong>" + entrega["clienteClave"] + " " + entrega["clienteNombre"] + "<br>" +
+                                "<strong>Calle: </strong>" + entrega["calle"] + "<br>" +
+                                "<strong>Colonia: </strong>" + entrega["colonia"] + "<br>" +
+                                "<strong>Codigo postal: </strong>" + entrega["codigoPostal"] + "<br>" +
+                                "<strong>Número exterior: </strong>" + entrega["numeroExterior"] + "<br>" +
+                                "<strong>Número interior: </strong>" + entrega["numeroInterior"] + "<br>" +
+                                "<strong>Observaciones: </strong>" + entrega["observacionesUbicacion"] + "<br>" +
+
+                                "<strong>Folio: </strong>" + entrega["folioComprobante"] + "<br>" +
+                                "<strong>Comprobante: </strong>" + entrega["tipoComprobante"] + "<br>" +
+                                "<strong>Codigos: </strong>" + entrega["codigos"] + "<br>" +
+                                "<strong>Unidades: </strong>" + entrega["piezas"] + "<br>" +
+                                "<strong>Total: </strong>" + entrega["total"] + "<br>" +
+                                "<strong>Observaciones: </strong>" + entrega["observacionesPedido"]
+                                + '</p>',
+                                zIndex: 3
+                            });
+                        }else{
+                            let infowindow = new VentanaInformacion({
+                                disableAutoPan: true,
+                                content: '<p class="infoWindow" >' + 
+                                "<strong>Pedido Especial</strong><br>" + 
+                                "<strong>Llegada estimada: </strong>" + convertirFormato(entrega["fechaLlegadaEstimada"]) + "<br>" +
+                                "<strong>Llegada: </strong>" + convertirFormato(entrega["fechaLlegada"]) + "<br>" +
+                                "<strong>Eficiencia: </strong>" + formatoTiempo(entrega["fechaLlegadaEficiencia"]) + "<br>" +
+                                "<strong>Status: </strong>" + entrega["status"] + "<br>" +
+                                "<strong>Pedido: </strong>" + entrega["pedido"] + "<br>" +
+                                "<strong>Cliente: </strong>" + entrega["clienteClave"] + " " + entrega["clienteNombre"] + "<br>" +
+                                "<strong>Calle: </strong>" + entrega["calle"] + "<br>" +
+                                "<strong>Colonia: </strong>" + entrega["colonia"] + "<br>" +
+                                "<strong>Codigo postal: </strong>" + entrega["codigoPostal"] + "<br>" +
+                                "<strong>Número exterior: </strong>" + entrega["numeroExterior"] + "<br>" +
+                                "<strong>Número interior: </strong>" + entrega["numeroInterior"] + "<br>" +
+                                "<strong>Observaciones: </strong>" + entrega["observacionesUbicacion"] + "<br>" +
+
+                                "<strong>Observaciones: </strong>" + entrega["observacionesPedido"]
+                                + '</p>',
+                                zIndex: 3
+                            });
+                        }
+
                         let imagen = document.createElement('img');
                         imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_' + indice + '.png';
 
@@ -343,6 +395,14 @@
                             zIndex: 3
                         });
                         marcadorEntrega["idPedido"] = entrega["pedido"];
+
+                        marcadorEntrega.addListener("click", () => {
+                            infowindow.open({
+                                anchor: marcador,
+                                map: mapa,
+                            });
+                        });
+
                         marcadores.push(marcadorEntrega);
 
                         indice++;
