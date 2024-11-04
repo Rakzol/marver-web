@@ -331,14 +331,14 @@
                                 let imagen = document.createElement('img');
                                 imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/entregado_' + indice + '.png';
 
-                                if(marcadorEntrega.content != imagen){
+                                if(marcadorEntrega.content.src != imagen.src){
                                     marcadorEntrega.content = imagen;
                                 }
                             }else{
                                 let imagen = document.createElement('img');
                                 imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_' + indice + '.png';
 
-                                if(marcadorEntrega.content != imagen){
+                                if(marcadorEntrega.content.src != imagen.src){
                                     marcadorEntrega.content = imagen;
                                 }
                             }
