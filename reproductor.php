@@ -241,6 +241,9 @@
         let cursor;
         let pausado = true;
 
+        let polylineas;
+        let marcadores;
+
         function pausar(){
             if(pausado){
                 pausado = false;
@@ -270,6 +273,42 @@
 
             marcador.position = { lat: posicionActual()['latitud'], lng: posicionActual()['longitud'] };
             mapa.panTo(marcador.position);
+
+            polylineas.forEach( (polylineaCiclo)=>{
+                polylineaCiclo.setMap(null);
+            });
+            polylineas = [];
+            marcadores.forEach( (marcadoresCiclo)=>{
+                marcadoresCiclo.setMap(null);
+            });
+            marcadores = [];
+
+            let pedido = pedidoActual();
+            if(pedido){
+                let polylinea = new Polylinea({
+                    path: decodePolyline(pedido["polylineaCodificada"]),
+                    geodesic: true,
+                    strokeColor: "#87CEEB",
+                    strokeOpacity: 1.0,
+                    strokeWeight: 3,
+                    zIndex: indicePolylinea
+                });
+                polylinea.setMap(mapa);
+                polylineas.push(polylinea);
+
+                pedido["entregas"].forEach(entrega => {
+                    polylinea = new Polylinea({
+                        path: decodePolyline(entrega["polylineaCodificada"]),
+                        geodesic: true,
+                        strokeColor: "#87CEEB",
+                        strokeOpacity: 1.0,
+                        strokeWeight: 3,
+                        zIndex: indicePolylinea
+                    });
+                    polylinea.setMap(mapa);
+                    polylineas.push(polylinea);
+                });
+            }
         }
 
         function velocidadMaxima(){
@@ -301,6 +340,36 @@
 
             cursor.valueAsNumber += 1000;
             actualizar_todo();
+        }
+
+        function decodePolyline(encoded) {
+            let poly = [];
+            let index = 0, len = encoded.length;
+            let lat = 0, lng = 0;
+
+            while (index < len) {
+                let b, shift = 0, result = 0;
+                do {
+                    b = encoded.charCodeAt(index++) - 63;
+                    result |= (b & 0x1f) << shift;
+                    shift += 5;
+                } while (b >= 0x20);
+                let dlat = ((result >> 1) ^ -(result & 1));
+                lat += dlat;
+
+                shift = 0;
+                result = 0;
+                do {
+                    b = encoded.charCodeAt(index++) - 63;
+                    result |= (b & 0x1f) << shift;
+                    shift += 5;
+                } while (b >= 0x20);
+                let dlng = ((result >> 1) ^ -(result & 1));
+                lng += dlng;
+
+                poly.push({ lat: lat / 1E5, lng: lng / 1E5 });
+            }
+            return poly;
         }
     </script>
 
