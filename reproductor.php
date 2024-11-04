@@ -241,6 +241,7 @@
         let marcadorMarver;
         let cursor;
         let pausado = true;
+        let infowindowMarver;
 
         let polylineas = [];
         let marcadores = [];
@@ -282,6 +283,11 @@
 
                 if(pedido["id"] != idPedido){
                     idPedido = pedido["id"];
+
+                    infowindowMarver.setContent('<p class="infoWindow" >' + 
+                                '<strong>Inicio: </strong> ' + convertirFormato(pedido['fechaInicio']) + '<br>' +
+                                '<strong>Llegada Estimada: </strong> ' + convertirFormato(pedido['fechaLlegadaEstimada'])
+                            + '</p>');
 
                     let polylinea = new Polylinea({
                         path: decodePolyline(pedido["polylineaCodificada"]),
@@ -356,6 +362,9 @@
                     marcadoresCiclo.setMap(null);
                 });
                 marcadores = [];
+            
+                infowindowMarver.setContent('<p class="infoWindow" ></p>');
+                infowindowMarver.close();
             }
         }
 
@@ -419,6 +428,37 @@
             }
             return poly;
         }
+
+        function convertirFormato(fecha) {
+            if(!fecha){
+                return "";
+            }
+            // Separar la fecha y la hora
+            const [fechaParte, horaParte] = fecha.split(" ");
+            
+            // Separar horas, minutos y segundos (ignoramos milisegundos si existen)
+            let [hora, minutos, segundos] = horaParte.split(":");
+
+            // Eliminar milisegundos si vienen en el string (caso: "HH:mm:ss.fff")
+            if (segundos.includes(".")) {
+                segundos = segundos.split(".")[0]; // Tomamos solo la parte antes de los milisegundos
+            }
+            
+            // Convertir la hora de string a número
+            hora = parseInt(hora);
+            
+            // Determinar si es AM o PM
+            const periodo = hora >= 12 ? "PM" : "AM";
+            
+            // Convertir la hora al formato de 12 horas
+            hora = hora % 12 || 12; // Si es 0, se cambia a 12 (caso especial de la medianoche)
+            
+            // Formatear la nueva hora
+            const nuevaHora = `${hora.toString().padStart(2, '0')}:${minutos}:${segundos} ${periodo}`;
+            
+            // Retornar el nuevo formato con la fecha original
+            return `${fechaParte} ${nuevaHora}`;
+        }
     </script>
 
     <script type="module">
@@ -459,6 +499,19 @@
                 map: mapa,
                 position: { lat: 25.7943047, lng: -108.9859510 },
                 zIndex: 3
+            });
+
+            infowindowMarver = new VentanaInformacion({
+                disableAutoPan: true,
+                content: '<p class="infoWindow" ></p>',
+                zIndex: 2
+            });
+
+            marcadorMarver.addListener("click", () => {
+                infowindowMarver.open({
+                    anchor: marcadorMarver,
+                    map: mapa,
+                });
             });
 
             let imagen = document.createElement('img');
