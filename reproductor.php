@@ -291,7 +291,7 @@
                     strokeColor: "#87CEEB",
                     strokeOpacity: 1.0,
                     strokeWeight: 3,
-                    zIndex: indicePolylinea
+                    zIndex: 1
                 });
                 polylinea.setMap(mapa);
                 polylineas.push(polylinea);
@@ -303,7 +303,7 @@
                         strokeColor: "#87CEEB",
                         strokeOpacity: 1.0,
                         strokeWeight: 3,
-                        zIndex: indicePolylinea
+                        zIndex: 1
                     });
                     polylinea.setMap(mapa);
                     polylineas.push(polylinea);
