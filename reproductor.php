@@ -331,6 +331,11 @@
                                 imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/entregado_' + indice + '.png';
 
                                 marcadores.find(marcadorEntrega=>marcadorEntrega["idPedido"] == entrega["pedido"]).content = imagen;
+                            }else{
+                                let imagen = document.createElement('img');
+                                imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_' + indice + '.png';
+
+                                marcadores.find(marcadorEntrega=>marcadorEntrega["idPedido"] == entrega["pedido"]).content = imagen;
                             }
                         }
                         indice++;
