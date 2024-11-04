@@ -241,8 +241,8 @@
         let cursor;
         let pausado = true;
 
-        let polylineas;
-        let marcadores;
+        let polylineas = [];
+        let marcadores = [];
 
         function pausar(){
             if(pausado){
