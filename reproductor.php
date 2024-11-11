@@ -452,6 +452,19 @@
 
         function velocidadMaxima(){
             cursor.valueAsNumber = velocidadMaximaTimeStamp;
+            idPedido = 0;
+
+            polylineas.forEach( (polylineaCiclo)=>{
+                polylineaCiclo.setMap(null);
+            });
+            polylineas = [];
+            marcadores.forEach( (marcadoresCiclo)=>{
+                marcadoresCiclo.setMap(null);
+            });
+            marcadores = [];
+
+            infowindowMarver.setContent('<p class="infoWindow" ></p>');
+            infowindowMarver.close();
             actualizar_todo();
         }
 
