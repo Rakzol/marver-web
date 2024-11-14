@@ -185,7 +185,7 @@ try {
                     $indice_pedido = 0;
                 }
 
-                $segundos_estimados = intval( substr($rutas['routes'][0]['legs'][$indice_leg]['duration'], 0, -1) ) + ( $indice_leg > 0 ? 180 : 0 );
+                $segundos_estimados = intval( substr($rutas['routes'][0]['legs'][$indice_leg]['duration'], 0, -1) ) + ( $indice_leg > 0 ? 360 : 0 );
                 $segundos_estimados_sumatoria += $segundos_estimados;
                 $fecha_llegada_estimada = DateTime::createFromFormat('Y-m-d H:i:s.u', $fecha_inicio);
                 $fecha_llegada_estimada->modify('+' . $segundos_estimados_sumatoria . ' seconds');
@@ -216,7 +216,7 @@ try {
 
             $indice_leg++;
 
-            $segundos_estimados = intval( substr($rutas['routes'][0]['legs'][$indice_leg]['duration'], 0, -1) ) + ( $indice_leg > 0 ? 180 : 0 );
+            $segundos_estimados = intval( substr($rutas['routes'][0]['legs'][$indice_leg]['duration'], 0, -1) ) + ( $indice_leg > 0 ? 360 : 0 );
             $segundos_estimados_sumatoria += $segundos_estimados;
             $fecha_llegada_estimada = DateTime::createFromFormat('Y-m-d H:i:s.u', $fecha_inicio);
             $fecha_llegada_estimada->modify('+' . $segundos_estimados_sumatoria . ' seconds');
