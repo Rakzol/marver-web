@@ -82,8 +82,6 @@
 
         var_dump($jesus);
         echo '<br><br><br>';
-        
-        exit();
 
         notificar($vendedor['Celular'], $cliente, $vendedor, $repartidor, false);
         notificar($repartidor['Celular'], $cliente, $vendedor, $repartidor, false);
@@ -109,6 +107,7 @@
                 echo json_encode($resultado);
                 exit();
             }
+            echo 'NO TIENE CELULAR';
             return;
         }
 
