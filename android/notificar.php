@@ -68,10 +68,10 @@
         $preparada->execute();
         $jesus = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
+        notificar($cliente['Celular'], $cliente, $vendedor, $repartidor, true);
         notificar($vendedor['Celular'], $cliente, $vendedor, $repartidor, false);
         notificar($repartidor['Celular'], $cliente, $vendedor, $repartidor, false);
         notificar($jesus['Celular'], $cliente, $vendedor, $repartidor, false);
-        notificar($cliente['Celular'], $cliente, $vendedor, $repartidor, true);
 
         $resultado["status"] = 0;
         $resultado["mensaje"] = "Cliente notificado";
@@ -87,7 +87,7 @@
         if( !$celular ){
             if($validar){
                 $resultado["status"] = 4;
-                $resultado["mensaje"] = "Error al notificar, no tiene numero celular";
+                $resultado["mensaje"] = "Error al notificar, el Cliente no tiene numero celular";
                 echo json_encode($resultado);
                 exit();
             }
