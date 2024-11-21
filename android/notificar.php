@@ -68,6 +68,10 @@
         $preparada->execute();
         $jesus = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
+        $preparada = $conexion->prepare("SELECT Celular FROM Vendedores WHERE Clave = 13");
+        $preparada->execute();
+        $papas = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
+
         $preparada = $conexion->prepare("SELECT Celular FROM Vendedores WHERE Clave = 32");
         $preparada->execute();
         $guillermo = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
@@ -76,6 +80,7 @@
         notificar($vendedor['Celular'], $cliente, $vendedor, $repartidor, false);
         notificar($repartidor['Celular'], $cliente, $vendedor, $repartidor, false);
         notificar($jesus['Celular'], $cliente, $vendedor, $repartidor, false);
+        notificar($papas['Celular'], $cliente, $vendedor, $repartidor, false);
         notificar($guillermo['Celular'], $cliente, $vendedor, $repartidor, false);
 
         $resultado["status"] = 0;
