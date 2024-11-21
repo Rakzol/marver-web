@@ -39,7 +39,7 @@ try {
         END AS Longitud
         FROM PedidosCliente pc
         LEFT JOIN EnvioPedidoCliente en
-        ON en.Pedido = pc.Folio AND ( en.Extra2 NOT IN ( 'NO ENTREGADO-REENVIADO' ) OR en.Extra2 IS NULL )
+        ON en.Pedido = pc.Folio AND ( en.Extra2 NOT IN ( 'NO ENTREGADO-REENVIADO', 'SIGUIENTE RUTA' ) OR en.Extra2 IS NULL )
         LEFT JOIN clientes_posiciones cn
         ON cn.clave = pc.Cliente
         LEFT JOIN ubicaciones_especiales ce
