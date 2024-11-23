@@ -153,9 +153,9 @@ try {
     /* FINALIZAR RUTA*/
 
     /* ?????? */
-    $preparada = $conexion->prepare("UPDATE EnvioPedidoCliente SET Extra3 = 1 WHERE Pedido = :folio");
-    $preparada->bindValue(':folio', $_POST['folio']);
-    $preparada->execute();
+    // $preparada = $conexion->prepare("UPDATE EnvioPedidoCliente SET Extra3 = 1 WHERE Pedido = :folio");
+    // $preparada->bindValue(':folio', $_POST['folio']);
+    // $preparada->execute();
     /* ?????? */
 
     $preparada = $conexion->prepare('SELECT TOP 1 id FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NULL');
