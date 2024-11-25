@@ -209,17 +209,17 @@
         <div class="barraRutas ocultarBarra" >
             <div>
                 <p class="infoWindow">
-                <strong>Inicio: </strong> 2024-11-20 10:21:32 AM
-                <strong>Llegada Estimada: </strong> 2024-11-20 10:46:58 AM
-                <strong>LLegada: </strong> 2024-11-20 11:11:32 AM
+                <strong>Inicio: </strong>10:21:32 AM<br>
+                <strong>LLegada: </strong>11:11:32 AM<br>
                 <strong>Eficiencia: </strong> 00:24:34</p>
+                <strong>Pedidos: </strong>4<br>
             </div>
             <div>
                 <p class="infoWindow">
-                <strong>Inicio: </strong> 2024-11-20 10:21:32 AM
-                <strong>Llegada Estimada: </strong> 2024-11-20 10:46:58 AM
-                <strong>LLegada: </strong> 2024-11-20 11:11:32 AM
+                <strong>Inicio: </strong>10:21:32 AM<br>
+                <strong>LLegada: </strong>11:11:32 AM<br>
                 <strong>Eficiencia: </strong> 00:24:34</p>
+                <strong>Pedidos: </strong>4<br>
             </div>
         </div>
 
