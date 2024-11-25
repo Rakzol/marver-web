@@ -214,8 +214,8 @@
         }
 
         .rutaSeleccionada, .rutaSeleccionada p{
-            background-color: #1e88e5; /* Azul claro o cualquier color suave */
-            color: white; /* Texto en un tono oscuro que contraste */
+            background-color: #1e88e5 !important; /* Azul claro o cualquier color suave */
+            color: white !important; /* Texto en un tono oscuro que contraste */
         }
     </style>
 </head>
