@@ -208,13 +208,14 @@
         <div class="flex-grow-1" id="mapa"></div>
 
         <div class="card text-center border-0">
-            <h5 class="card-header">
+            <!-- <h5 class="card-header">
                 Repartidor : <strong id="txtIdRepartidor"></strong>
-            </h5>
+            </h5> -->
             <div class="card-body">
 
                 <div class="d-flex justify-content-center gap-3 mb-3" >
                     <h5 class="card-title mb-0 align-self-center" id="txtNombreRepartidor">Seleccione un Repartidor</h5>
+                    <strong id="txtIdRepartidor"></strong>
                     <p class="card-text mb-0 align-self-center" id="velocidadRepartidor">0.0 Km/h</p>
                     <!-- <div class="form-check form-switch d-inline-block align-self-center" >
                         <input class="form-check-input" id="seguirRepartidor" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
