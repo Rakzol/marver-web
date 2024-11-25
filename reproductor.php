@@ -698,7 +698,11 @@
     });
 
     function verRutas(){
-        document.querySelector(".barraRutas").classList.remove("ocultarBarra");
+        if(document.querySelector(".barraRutas").classList.contains("ocultarBarra")){
+            document.querySelector(".barraRutas").classList.remove("ocultarBarra");
+        }else{
+            document.querySelector(".barraRutas").classList.add("ocultarBarra");
+        }        
     }
 
 </script>
