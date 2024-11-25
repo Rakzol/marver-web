@@ -212,6 +212,11 @@
             padding: 15px;
             cursor: pointer;
         }
+
+        .rutaSeleccionada{
+            background-color: #e0f7fa; /* Azul claro o cualquier color suave */
+            color: #004d40; /* Texto en un tono oscuro que contraste */
+        }
     </style>
 </head>
 
