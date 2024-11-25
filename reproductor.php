@@ -208,6 +208,7 @@
             background: white;
             border-radius: 10px; /* Bordes redondeados */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave por debajo */
+            margin: 15px;
         }
     </style>
 </head>
