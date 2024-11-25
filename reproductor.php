@@ -206,7 +206,7 @@
 
 <body class="h-100">
 
-        <div class="barraRutas ocultarBarra" >
+        <div class="barraRutas ocultarBarra" tabindex="0" >
 
         </div>
 
