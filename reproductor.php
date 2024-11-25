@@ -198,6 +198,7 @@
             transition: left 0.5s ease;
             overflow-y: auto;
             box-shadow: 8px 0 16px rgba(0, 0, 0, 0.3); /* Caja de sombra */
+            user-select: none;
         }
 
         .ocultarBarra{
