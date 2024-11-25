@@ -708,6 +708,7 @@
 
     function verRutas(){
         if(document.querySelector(".barraRutas").classList.contains("ocultarBarra")){
+            console.log(document.activeElement);
             if(perderFocus){
                 perderFocus = false;
                 return;
