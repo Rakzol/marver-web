@@ -206,7 +206,7 @@
 
 <body class="h-100">
 
-        <div class="barraRutas ocultarBarra" tabindex="0" >
+        <div class="barraRutas ocultarBarra" >
 
         </div>
 
@@ -693,24 +693,11 @@
         if(window.innerWidth >= 1000){
             document.querySelector(".barraRutas").classList.remove("ocultarBarra");
         }
-
-        document.querySelector(".barraRutas").addEventListener('click', ()=>{
-            document.querySelector(".barraRutas").classList.add("ocultarBarra");
-        });
-
-        document.querySelector(".barraRutas").addEventListener('blur', ()=>{
-            perderFocus = true;
-            document.querySelector(".barraRutas").classList.add("ocultarBarra");
-            setInterval( ()=>{ perderFocus = false; }, 500 );
-        });
-
-        document.querySelector(".barraRutas").focus();
     });
 
     function verRutas(){
-        if(document.querySelector(".barraRutas").classList.contains("ocultarBarra") && !perderFocus){
+        if(document.querySelector(".barraRutas").classList.contains("ocultarBarra")){
             document.querySelector(".barraRutas").classList.remove("ocultarBarra");
-            document.querySelector(".barraRutas").focus();
         }else{
             document.querySelector(".barraRutas").classList.add("ocultarBarra");
         }        
