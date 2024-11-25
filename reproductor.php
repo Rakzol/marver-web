@@ -712,7 +712,7 @@
 
         pedidos.forEach(pedido=>{
             document.querySelector(".barraRutas").innerHTML +=
-            `<div>
+            `<div onclick="cursor.valueAsNumber = new Date(`+pedido['fechaInicio']+`).getTime(); actualizar_todo();" >
                 <p class="infoWindow">
                 <strong>Inicio: </strong> `+ convertirFormato(pedido['fechaInicio']).slice(10) +`<br>
                 <strong>LLegada: </strong> `+ convertirFormato(pedido['fechaFin']).slice(10) +`<br>
