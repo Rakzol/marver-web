@@ -699,21 +699,16 @@
         });
 
         document.querySelector(".barraRutas").addEventListener('blur', ()=>{
-            console.log(document.activeElement);
             perderFocus = true;
             document.querySelector(".barraRutas").classList.add("ocultarBarra");
+            setInterval( ()=>{ perderFocus = false; }, 500 );
         });
 
         document.querySelector(".barraRutas").focus();
     });
 
     function verRutas(){
-        if(document.querySelector(".barraRutas").classList.contains("ocultarBarra")){
-            
-            if(perderFocus){
-                perderFocus = false;
-                return;
-            }
+        if(document.querySelector(".barraRutas").classList.contains("ocultarBarra") && !perderFocus){
             document.querySelector(".barraRutas").classList.remove("ocultarBarra");
             document.querySelector(".barraRutas").focus();
         }else{
