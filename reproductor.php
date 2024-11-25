@@ -335,6 +335,12 @@
             mapa.panTo(marcadorRepartidor.position);
 
             let pedido = pedidoActual();
+
+            document.querySelectorAll(".barraRutas div").forEach(div=>{div.classList.remove("rutaSeleccionada")});
+            if(pedidos.indexOf(pedido) > -1){
+                document.querySelectorAll(".barraRutas div")[pedidos.indexOf(pedido)].classList.add("rutaSeleccionada");
+            }
+
             if(pedido){
 
                 //POSIBLE BUG, A VECES EL REPARTIDOR SIGUE CON EL MISMO PEDIDO PORQUE NO ENTREGO TODO Y SE RE-ASIGNA LO QUE AGREGUE AL ASUCURSLA AL MISMO PEDIDO
@@ -712,6 +718,24 @@
             });
 
             setInterval(procesar_vista, 1000);
+
+
+            if(window.innerWidth >= 1000){
+                document.querySelector(".barraRutas").classList.remove("ocultarBarra");
+            }
+
+            pedidos.forEach(pedido=>{
+                document.querySelector(".barraRutas").innerHTML +=
+                `<div onclick="cursor.valueAsNumber = new Date('`+pedido['fechaInicio']+`').getTime(); actualizar_todo();" >
+                    <p class="infoWindow">
+                    <strong>Inicio: </strong> `+ convertirFormato(pedido['fechaInicio']).slice(10) +`<br>
+                    <strong>LLegada: </strong> `+ convertirFormato(pedido['fechaFin']).slice(10) +`<br>
+                    <strong>Eficiencia: </strong> `+ formatoTiempo(pedido["fechaLlegadaEficiencia"]) +`<br>
+                    <strong>Pedidos: </strong>`+ pedido.entregas.length +`</p>
+                </div>`;
+            });
+
+
             actualizar_todo();
         }
 
@@ -719,24 +743,6 @@
     </script>
 
 <script>
-
-    window.addEventListener('load', ()=>{
-        if(window.innerWidth >= 1000){
-            document.querySelector(".barraRutas").classList.remove("ocultarBarra");
-        }
-
-        pedidos.forEach(pedido=>{
-            document.querySelector(".barraRutas").innerHTML +=
-            `<div onclick="cursor.valueAsNumber = new Date('`+pedido['fechaInicio']+`').getTime(); actualizar_todo();" >
-                <p class="infoWindow">
-                <strong>Inicio: </strong> `+ convertirFormato(pedido['fechaInicio']).slice(10) +`<br>
-                <strong>LLegada: </strong> `+ convertirFormato(pedido['fechaFin']).slice(10) +`<br>
-                <strong>Eficiencia: </strong> `+ formatoTiempo(pedido["fechaLlegadaEficiencia"]) +`<br>
-                <strong>Pedidos: </strong>`+ pedido.entregas.length +`</p>
-            </div>`;
-        });
-        
-    });
 
     function verRutas(){
         if(document.querySelector(".barraRutas").classList.contains("ocultarBarra")){
