@@ -704,6 +704,7 @@
     function verRutas(){
         if(document.querySelector(".barraRutas").classList.contains("ocultarBarra")){
             document.querySelector(".barraRutas").classList.remove("ocultarBarra");
+            document.querySelector(".barraRutas").focus();
         }else{
             document.querySelector(".barraRutas").classList.add("ocultarBarra");
         }        
