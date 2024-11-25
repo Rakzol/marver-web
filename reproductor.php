@@ -197,7 +197,7 @@
             left: 0;
             transition: left 0.5s ease;
 
-            box-shadow: 4px 0 8px rgba(0, 0, 0, 0.3); /* Caja de sombra */
+            box-shadow: 8px 0 16px rgba(0, 0, 0, 0.3); /* Caja de sombra */
         }
 
         .ocultarBarra{
@@ -207,7 +207,7 @@
         .barraRutas div{
             background: white;
             border-radius: 10px; /* Bordes redondeados */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave por debajo */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Sombra suave por debajo */
             margin: 15px;
             padding: 15px;
         }
