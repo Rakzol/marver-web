@@ -188,6 +188,11 @@
 
     <style>
         .barraRutas{
+            position: fixed;
+            width: 250px;
+            height: 100%;
+            background: blue;
+            z-index: 1000;
         }
     </style>
 </head>
@@ -221,6 +226,7 @@
                 <input type="range" onchange="actualizar_todo();" style="max-width: 390px;" class="form-range d-block m-auto" id="cursor">
 
                 <div class="d-flex justify-content-center gap-2" >
+                    <button onclick="verRutas();" class="btn btn-primary"><i class="fa-solid fa-eye" id="icono_ver_rutas" > Ver Rutas</i></button>
                     <button onclick="pausar();" class="btn btn-primary"><i class="fa-solid fa-play" id="icono_pausar" ></i></button>
                     <button onclick="retroceder();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-left"></i></button>
                     <button onclick="velocidadMaxima();" class="btn btn-primary"><i class="fa-solid fa-triangle-exclamation"></i></button>
