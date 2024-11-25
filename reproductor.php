@@ -210,6 +210,7 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Sombra suave por debajo */
             margin: 15px;
             padding: 15px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -217,6 +218,76 @@
 <body class="h-100">
 
         <div class="barraRutas ocultarBarra" >
+            <div>
+                <p class="infoWindow">
+                <strong>Inicio: </strong>10:21:32 AM<br>
+                <strong>LLegada: </strong>11:11:32 AM<br>
+                <strong>Eficiencia: </strong> 00:24:34<br>
+                <strong>Pedidos: </strong>4</p>
+            </div>
+            <div>
+                <p class="infoWindow">
+                <strong>Inicio: </strong>10:21:32 AM<br>
+                <strong>LLegada: </strong>11:11:32 AM<br>
+                <strong>Eficiencia: </strong> 00:24:34<br>
+                <strong>Pedidos: </strong>4</p>
+            </div>
+            <div>
+                <p class="infoWindow">
+                <strong>Inicio: </strong>10:21:32 AM<br>
+                <strong>LLegada: </strong>11:11:32 AM<br>
+                <strong>Eficiencia: </strong> 00:24:34<br>
+                <strong>Pedidos: </strong>4</p>
+            </div>
+            <div>
+                <p class="infoWindow">
+                <strong>Inicio: </strong>10:21:32 AM<br>
+                <strong>LLegada: </strong>11:11:32 AM<br>
+                <strong>Eficiencia: </strong> 00:24:34<br>
+                <strong>Pedidos: </strong>4</p>
+            </div>
+            <div>
+                <p class="infoWindow">
+                <strong>Inicio: </strong>10:21:32 AM<br>
+                <strong>LLegada: </strong>11:11:32 AM<br>
+                <strong>Eficiencia: </strong> 00:24:34<br>
+                <strong>Pedidos: </strong>4</p>
+            </div>
+            <div>
+                <p class="infoWindow">
+                <strong>Inicio: </strong>10:21:32 AM<br>
+                <strong>LLegada: </strong>11:11:32 AM<br>
+                <strong>Eficiencia: </strong> 00:24:34<br>
+                <strong>Pedidos: </strong>4</p>
+            </div>
+            <div>
+                <p class="infoWindow">
+                <strong>Inicio: </strong>10:21:32 AM<br>
+                <strong>LLegada: </strong>11:11:32 AM<br>
+                <strong>Eficiencia: </strong> 00:24:34<br>
+                <strong>Pedidos: </strong>4</p>
+            </div>
+            <div>
+                <p class="infoWindow">
+                <strong>Inicio: </strong>10:21:32 AM<br>
+                <strong>LLegada: </strong>11:11:32 AM<br>
+                <strong>Eficiencia: </strong> 00:24:34<br>
+                <strong>Pedidos: </strong>4</p>
+            </div>
+            <div>
+                <p class="infoWindow">
+                <strong>Inicio: </strong>10:21:32 AM<br>
+                <strong>LLegada: </strong>11:11:32 AM<br>
+                <strong>Eficiencia: </strong> 00:24:34<br>
+                <strong>Pedidos: </strong>4</p>
+            </div>
+            <div>
+                <p class="infoWindow">
+                <strong>Inicio: </strong>10:21:32 AM<br>
+                <strong>LLegada: </strong>11:11:32 AM<br>
+                <strong>Eficiencia: </strong> 00:24:34<br>
+                <strong>Pedidos: </strong>4</p>
+            </div>
             <div>
                 <p class="infoWindow">
                 <strong>Inicio: </strong>10:21:32 AM<br>
