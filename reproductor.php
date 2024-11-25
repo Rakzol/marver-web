@@ -215,7 +215,7 @@
 
                 <div class="d-flex justify-content-center gap-3 mb-3" >
                     <h5 class="card-title mb-0 align-self-center" id="txtNombreRepartidor">Seleccione un Repartidor</h5>
-                    <h5 id="txtIdRepartidor"></h5>
+                    <h5 id="txtIdRepartidor" class="card-title mb-0 align-self-center"></h5>
                     <p class="card-text mb-0 align-self-center" id="velocidadRepartidor">0.0 Km/h</p>
                     <!-- <div class="form-check form-switch d-inline-block align-self-center" >
                         <input class="form-check-input" id="seguirRepartidor" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
@@ -237,7 +237,6 @@
 
                 <a class="btn btn-primary mt-3" href="https://www.marverrefacciones.mx/mapa" target="_blank" >Rastreo</a>
                 <a class="btn btn-primary mt-3 ms-1 me-1" href="https://www.marverrefacciones.mx/repartidores" target="_blank" >Repartidores</a>
-                <a class="btn btn-primary mt-3" href="https://www.marverrefacciones.mx/excesos" target="_blank"  >Excesos</a>
             </div>
         </div>
 
