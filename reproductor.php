@@ -193,13 +193,19 @@
             height: 100%;
             background: blue;
             z-index: 1000;
+            top: 0;
+            transition: left 0.3s ease;
+        }
+
+        .ocultarBarra{
+            left: -250px;
         }
     </style>
 </head>
 
 <body class="h-100">
 
-        <div class="barraRutas" >
+        <div class="barraRutas ocultarBarra" >
 
         </div>
 
@@ -677,6 +683,16 @@
 
         initMap();
     </script>
+
+<script>
+
+    window.addEventListener('load', ()=>{
+        if(window.innerWidth >= 1000){
+            document.querySelector(".barraRutas").classList.remove("ocultarBarra");
+        }
+    });
+
+</script>
 
 </body>
 
