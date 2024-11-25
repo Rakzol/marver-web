@@ -691,7 +691,15 @@
         if(window.innerWidth >= 1000){
             document.querySelector(".barraRutas").classList.remove("ocultarBarra");
         }
+
+        document.querySelector(".barraRutas").addEventListener('click', ()=>{
+            document.querySelector(".barraRutas").classList.add("ocultarBarra");
+        });
     });
+
+    function verRutas(){
+        document.querySelector(".barraRutas").classList.remove("ocultarBarra");
+    }
 
 </script>
 
