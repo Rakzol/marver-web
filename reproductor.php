@@ -225,8 +225,9 @@
                 <label for="cursor" class="form-label mb-0 d-block" id="txtFecha" >Fecha</label>
                 <input type="range" onchange="actualizar_todo();" style="max-width: 390px;" class="form-range d-block m-auto" id="cursor">
 
+                <button onclick="verRutas();" class="btn btn-primary"><i class="fa-solid fa-eye" id="icono_ver_rutas" ></i> Ver Rutas</button>
+                
                 <div class="d-flex justify-content-center gap-2" >
-                    <button onclick="verRutas();" class="btn btn-primary"><i class="fa-solid fa-eye" id="icono_ver_rutas" ></i> Ver Rutas</button>
                     <button onclick="pausar();" class="btn btn-primary"><i class="fa-solid fa-play" id="icono_pausar" ></i></button>
                     <button onclick="retroceder();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-left"></i></button>
                     <button onclick="velocidadMaxima();" class="btn btn-primary"><i class="fa-solid fa-triangle-exclamation"></i></button>
