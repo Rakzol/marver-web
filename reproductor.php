@@ -223,90 +223,6 @@
 <body class="h-100">
 
         <div class="barraRutas ocultarBarra" >
-            <div>
-                <p class="infoWindow">
-                <strong>Inicio: </strong>10:21:32 AM<br>
-                <strong>LLegada: </strong>11:11:32 AM<br>
-                <strong>Eficiencia: </strong> 00:24:34<br>
-                <strong>Pedidos: </strong>4</p>
-            </div>
-            <div>
-                <p class="infoWindow">
-                <strong>Inicio: </strong>10:21:32 AM<br>
-                <strong>LLegada: </strong>11:11:32 AM<br>
-                <strong>Eficiencia: </strong> 00:24:34<br>
-                <strong>Pedidos: </strong>4</p>
-            </div>
-            <div>
-                <p class="infoWindow">
-                <strong>Inicio: </strong>10:21:32 AM<br>
-                <strong>LLegada: </strong>11:11:32 AM<br>
-                <strong>Eficiencia: </strong> 00:24:34<br>
-                <strong>Pedidos: </strong>4</p>
-            </div>
-            <div class="rutaSeleccionada" >
-                <p class="infoWindow">
-                <strong>Inicio: </strong>10:21:32 AM<br>
-                <strong>LLegada: </strong>11:11:32 AM<br>
-                <strong>Eficiencia: </strong> 00:24:34<br>
-                <strong>Pedidos: </strong>4</p>
-            </div>
-            <div>
-                <p class="infoWindow">
-                <strong>Inicio: </strong>10:21:32 AM<br>
-                <strong>LLegada: </strong>11:11:32 AM<br>
-                <strong>Eficiencia: </strong> 00:24:34<br>
-                <strong>Pedidos: </strong>4</p>
-            </div>
-            <div>
-                <p class="infoWindow">
-                <strong>Inicio: </strong>10:21:32 AM<br>
-                <strong>LLegada: </strong>11:11:32 AM<br>
-                <strong>Eficiencia: </strong> 00:24:34<br>
-                <strong>Pedidos: </strong>4</p>
-            </div>
-            <div>
-                <p class="infoWindow">
-                <strong>Inicio: </strong>10:21:32 AM<br>
-                <strong>LLegada: </strong>11:11:32 AM<br>
-                <strong>Eficiencia: </strong> 00:24:34<br>
-                <strong>Pedidos: </strong>4</p>
-            </div>
-            <div>
-                <p class="infoWindow">
-                <strong>Inicio: </strong>10:21:32 AM<br>
-                <strong>LLegada: </strong>11:11:32 AM<br>
-                <strong>Eficiencia: </strong> 00:24:34<br>
-                <strong>Pedidos: </strong>4</p>
-            </div>
-            <div>
-                <p class="infoWindow">
-                <strong>Inicio: </strong>10:21:32 AM<br>
-                <strong>LLegada: </strong>11:11:32 AM<br>
-                <strong>Eficiencia: </strong> 00:24:34<br>
-                <strong>Pedidos: </strong>4</p>
-            </div>
-            <div>
-                <p class="infoWindow">
-                <strong>Inicio: </strong>10:21:32 AM<br>
-                <strong>LLegada: </strong>11:11:32 AM<br>
-                <strong>Eficiencia: </strong> 00:24:34<br>
-                <strong>Pedidos: </strong>4</p>
-            </div>
-            <div>
-                <p class="infoWindow">
-                <strong>Inicio: </strong>10:21:32 AM<br>
-                <strong>LLegada: </strong>11:11:32 AM<br>
-                <strong>Eficiencia: </strong> 00:24:34<br>
-                <strong>Pedidos: </strong>4</p>
-            </div>
-            <div>
-                <p class="infoWindow">
-                <strong>Inicio: </strong>10:21:32 AM<br>
-                <strong>LLegada: </strong>11:11:32 AM<br>
-                <strong>Eficiencia: </strong> 00:24:34<br>
-                <strong>Pedidos: </strong>4</p>
-            </div>
         </div>
 
     <div class="d-flex h-100 flex-column">
@@ -793,6 +709,18 @@
         if(window.innerWidth >= 1000){
             document.querySelector(".barraRutas").classList.remove("ocultarBarra");
         }
+
+        pedidos.forEach(pedido=>{
+            document.querySelector(".barraRutas").innerHTML +=
+            `<div>
+                <p class="infoWindow">
+                <strong>Inicio: </strong> `+ convertirFormato(pedido['fechaInicio']).slice(10) +`<br>
+                <strong>LLegada: </strong> `+ convertirFormato(pedido['fechaFin']).slice(10) +`<br>
+                <strong>Eficiencia: </strong> `+ formatoTiempo(pedido["fechaLlegadaEficiencia"]) +`<br>
+                <strong>Pedidos: </strong>`+ pedido.entregas.length +`</p>
+            </div>`;
+        });
+        
     });
 
     function verRutas(){
