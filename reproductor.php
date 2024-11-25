@@ -340,7 +340,22 @@
                 //POSIBLE BUG, A VECES EL REPARTIDOR SIGUE CON EL MISMO PEDIDO PORQUE NO ENTREGO TODO Y SE RE-ASIGNA LO QUE AGREGUE AL ASUCURSLA AL MISMO PEDIDO
                 //ENTONCES TENDRA NUEVOS MARCADORES EN EL MAPA Y NO SE REMOVERAN LOS NUEVOS PORQUE ES EL MISMO PEDIDO
                 //TAMBIEN HAY BUGS DE SI SE RECORRE PARA ADELANTE O ATRAS LOS MARCADORES VIEJOS NO SE BORRAN POR LO MISMO
+                //al ir para atras tambien prevalezen los marcadores, pero solo al ir jalando hacia atras la barra de tiempo wtf
                 if(pedido["id"] != idPedido){
+                    /*????????PORQUE NO TENIA ESTO DE ANTES??????????*/
+                    polylineas.forEach( (polylineaCiclo)=>{
+                        polylineaCiclo.setMap(null);
+                    });
+                    polylineas = [];
+                    marcadores.forEach( (marcadoresCiclo)=>{
+                        marcadoresCiclo.setMap(null);
+                    });
+                    marcadores = [];
+
+                    infowindowMarver.setContent('<p class="infoWindow" ></p>');
+                    infowindowMarver.close();
+                    /*????????PORQUE NO TENIA ESTO DE ANTES??????????*/
+
                     idPedido = pedido["id"];
 
                     infowindowMarver.setContent('<p class="infoWindow" >' + 
@@ -493,7 +508,7 @@
 
         function velocidadMaxima(){
             cursor.valueAsNumber = velocidadMaximaTimeStamp;
-            idPedido = 0;
+            /*idPedido = 0;
 
             polylineas.forEach( (polylineaCiclo)=>{
                 polylineaCiclo.setMap(null);
@@ -505,7 +520,7 @@
             marcadores = [];
 
             infowindowMarver.setContent('<p class="infoWindow" ></p>');
-            infowindowMarver.close();
+            infowindowMarver.close();*/
             actualizar_todo();
         }
 
