@@ -687,6 +687,8 @@
 
 <script>
 
+    let perderFocus = true;
+
     window.addEventListener('load', ()=>{
         if(window.innerWidth >= 1000){
             document.querySelector(".barraRutas").classList.remove("ocultarBarra");
@@ -697,12 +699,7 @@
         });
 
         document.querySelector(".barraRutas").addEventListener('blur', ()=>{
-            if( document.activeElement == document.querySelector("#icono_ver_rutas") ){
-                return;
-            }
             document.querySelector(".barraRutas").classList.add("ocultarBarra");
-            console.log("se perdio el focus");
-            console.log(document.activeElement);
         });
 
         document.querySelector(".barraRutas").focus();
@@ -710,12 +707,14 @@
 
     function verRutas(){
         if(document.querySelector(".barraRutas").classList.contains("ocultarBarra")){
+            if(perderFocus){
+                perderFocus = false;
+                return;
+            }
             document.querySelector(".barraRutas").classList.remove("ocultarBarra");
             document.querySelector(".barraRutas").focus();
-            console.log("le quite el oculto");
         }else{
             document.querySelector(".barraRutas").classList.add("ocultarBarra");
-            console.log("lo hé ocultado");
         }        
     }
 
