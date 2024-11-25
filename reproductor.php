@@ -702,6 +702,7 @@
             }
             document.querySelector(".barraRutas").classList.add("ocultarBarra");
             console.log("se perdio el focus");
+            console.log(document.activeElement);
         });
 
         document.querySelector(".barraRutas").focus();
