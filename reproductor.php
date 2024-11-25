@@ -225,8 +225,8 @@
                 <label for="cursor" class="form-label mb-0 d-block" id="txtFecha" >Fecha</label>
                 <input type="range" onchange="actualizar_todo();" style="max-width: 390px;" class="form-range d-block m-auto" id="cursor">
 
-                <button onclick="verRutas();" class="btn btn-primary"><i class="fa-solid fa-eye" id="icono_ver_rutas" ></i> Ver Rutas</button>
-                
+                <button onclick="verRutas();" class="btn btn-primary mb-3 mt-2"><i class="fa-solid fa-eye" id="icono_ver_rutas" ></i> Ver Rutas</button>
+
                 <div class="d-flex justify-content-center gap-2" >
                     <button onclick="pausar();" class="btn btn-primary"><i class="fa-solid fa-play" id="icono_pausar" ></i></button>
                     <button onclick="retroceder();" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-left"></i></button>
@@ -235,7 +235,7 @@
                 </div>
 
                 <a class="btn btn-primary mt-3" href="https://www.marverrefacciones.mx/mapa" target="_blank" >Rastreo</a>
-                <a class="btn btn-primary mt-3" href="https://www.marverrefacciones.mx/repartidores" target="_blank" >Repartidores</a>
+                <a class="btn btn-primary mt-3 ms-1 me-1" href="https://www.marverrefacciones.mx/repartidores" target="_blank" >Repartidores</a>
                 <a class="btn btn-primary mt-3" href="https://www.marverrefacciones.mx/excesos" target="_blank"  >Excesos</a>
             </div>
         </div>
