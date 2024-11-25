@@ -191,7 +191,7 @@
             position: fixed;
             width: 250px;
             height: 100%;
-            background: #E72F2D;;
+            background: #E72F2D;
             z-index: 1000;
             top: 0;
             left: 0;
