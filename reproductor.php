@@ -727,7 +727,7 @@
 
             pedidos.forEach(pedido=>{
                 document.querySelector(".barraRutas").innerHTML +=
-                `<div onclick="cursor.valueAsNumber = new Date('`+pedido['fechaInicio']+`').getTime(); actualizar_todo();" >
+                `<div onclick="cursor.valueAsNumber = new Date('`+pedido['fechaInicio']+`').getTime(); actualizar_todo(); if(window.innerWidth < 1000){ document.querySelector(".barraRutas").classList.add("ocultarBarra"); }" >
                     <p class="infoWindow">
                     <strong>Inicio: </strong> `+ convertirFormato(pedido['fechaInicio']).slice(10) +`<br>
                     <strong>LLegada: </strong> `+ convertirFormato(pedido['fechaFin']).slice(10) +`<br>
