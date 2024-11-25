@@ -698,6 +698,7 @@
 
         document.querySelector(".barraRutas").addEventListener('blur', ()=>{
             document.querySelector(".barraRutas").classList.add("ocultarBarra");
+            console.log("se perdio el focus");
         });
 
         document.querySelector(".barraRutas").focus();
@@ -707,8 +708,10 @@
         if(document.querySelector(".barraRutas").classList.contains("ocultarBarra")){
             document.querySelector(".barraRutas").classList.remove("ocultarBarra");
             document.querySelector(".barraRutas").focus();
+            console.log("le quite el oculto");
         }else{
             document.querySelector(".barraRutas").classList.add("ocultarBarra");
+            console.log("lo hé ocultado");
         }        
     }
 
