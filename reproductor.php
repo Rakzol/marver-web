@@ -196,6 +196,8 @@
             top: 0;
             left: 0;
             transition: left 0.5s ease;
+
+            box-shadow: 4px 0 8px rgba(0, 0, 0, 0.3); /* Caja de sombra */
         }
 
         .ocultarBarra{
