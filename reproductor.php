@@ -207,7 +207,20 @@
 <body class="h-100">
 
         <div class="barraRutas ocultarBarra" >
-
+            <div>
+                <p class="infoWindow">
+                <strong>Inicio: </strong> 2024-11-20 10:21:32 AM<br>
+                <strong>Llegada Estimada: </strong> 2024-11-20 10:46:58 AM<br>
+                <strong>LLegada: </strong> 2024-11-20 11:11:32 AM<br>
+                <strong>Eficiencia: </strong> 00:24:34</p>
+            </div>
+            <div>
+                <p class="infoWindow">
+                <strong>Inicio: </strong> 2024-11-20 10:21:32 AM<br>
+                <strong>Llegada Estimada: </strong> 2024-11-20 10:46:58 AM<br>
+                <strong>LLegada: </strong> 2024-11-20 11:11:32 AM<br>
+                <strong>Eficiencia: </strong> 00:24:34</p>
+            </div>
         </div>
 
     <div class="d-flex h-100 flex-column">
@@ -322,6 +335,9 @@
             let pedido = pedidoActual();
             if(pedido){
 
+                //POSIBLE BUG, A VECES EL REPARTIDOR SIGUE CON EL MISMO PEDIDO PORQUE NO ENTREGO TODO Y SE RE-ASIGNA LO QUE AGREGUE AL ASUCURSLA AL MISMO PEDIDO
+                //ENTONCES TENDRA NUEVOS MARCADORES EN EL MAPA Y NO SE REMOVERAN LOS NUEVOS PORQUE ES EL MISMO PEDIDO
+                //TAMBIEN HAY BUGS DE SI SE RECORRE PARA ADELANTE O ATRAS LOS MARCADORES VIEJOS NO SE BORRAN POR LO MISMO
                 if(pedido["id"] != idPedido){
                     idPedido = pedido["id"];
 
@@ -686,8 +702,6 @@
     </script>
 
 <script>
-
-    let perderFocus = true;
 
     window.addEventListener('load', ()=>{
         if(window.innerWidth >= 1000){
