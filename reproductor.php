@@ -213,9 +213,9 @@
             cursor: pointer;
         }
 
-        .rutaSeleccionada{
-            background-color: #e0f7fa; /* Azul claro o cualquier color suave */
-            color: #004d40; /* Texto en un tono oscuro que contraste */
+        .rutaSeleccionada, .rutaSeleccionada p{
+            background-color: #1e88e5; /* Azul claro o cualquier color suave */
+            color: white; /* Texto en un tono oscuro que contraste */
         }
     </style>
 </head>
