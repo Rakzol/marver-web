@@ -697,6 +697,9 @@
         });
 
         document.querySelector(".barraRutas").addEventListener('blur', ()=>{
+            if( document.activeElement == document.querySelector("#icono_ver_rutas") ){
+                return;
+            }
             document.querySelector(".barraRutas").classList.add("ocultarBarra");
             console.log("se perdio el focus");
         });
