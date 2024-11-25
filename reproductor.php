@@ -699,6 +699,8 @@
         document.querySelector(".barraRutas").addEventListener('blur', ()=>{
             document.querySelector(".barraRutas").classList.add("ocultarBarra");
         });
+
+        document.querySelector(".barraRutas").focus();
     });
 
     function verRutas(){
