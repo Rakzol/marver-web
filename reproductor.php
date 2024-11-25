@@ -185,9 +185,18 @@
             content: '$ ';
         }
     </style>
+
+    <style>
+        .barraRutas{
+        }
+    </style>
 </head>
 
 <body class="h-100">
+
+        <div class="barraRutas" >
+
+        </div>
 
     <div class="d-flex h-100 flex-column">
 
