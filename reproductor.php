@@ -195,7 +195,7 @@
             z-index: 1000;
             top: 0;
             left: 0;
-            transition: left 0.3s ease;
+            transition: left 0.5s ease;
         }
 
         .ocultarBarra{
