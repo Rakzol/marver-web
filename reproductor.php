@@ -203,6 +203,10 @@
         .ocultarBarra{
             left: -250px;
         }
+
+        .barraRutas div{
+            background: white;
+        }
     </style>
 </head>
 
