@@ -144,6 +144,7 @@
                 curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
     
                 $respuesta = curl_exec($curl);
+                echo $respuesta;
                 curl_close($curl);
     
                 $respuestaJSON = json_decode( $respuesta, true);
