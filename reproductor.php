@@ -130,10 +130,14 @@
                 return $fechaPosicion >= $fechaInicio && $fechaPosicion <= $fechaFin;
             });
 
-            $pedidos[$c]["rutaRealizada"] = [];
-            for( $x = 0; $x < count($rutaRealizada); $x++ ){
-                $pedidos[$c]["rutaRealizada"][] = ["lat" => $rutaRealizada[$x]["latitud"],"lng" => $rutaRealizada[$x]["longitud"]];
-            }
+            $pedidos[$c]["rutaRealizada"] = $rutaRealizada;
+            // for( $x = 0; $x < count($rutaRealizada); $x++ ){
+            //     $pedidos[$c]["rutaRealizada"][] = ["lat" => $rutaRealizada[$x]["latitud"],"lng" => $rutaRealizada[$x]["longitud"]];
+            // }
+
+            // foreach ($rutaRealizada as $clave => $valor) {
+            //     echo "Clave: $clave, Valor: $valor <br>";
+            // }
 
             //$pedidos[$c]["rutaRealizada"];
         }
