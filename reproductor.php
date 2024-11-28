@@ -138,12 +138,6 @@
             $pedidos[$c]["rutaRealizada"] = [];
             for($x = 0; $x < count($rutaRealizadaNor) - 1; $x++ ){
                 $curl = curl_init("http://10.10.10.130:8082/ors/v2/directions/driving-car?start=".$rutaRealizadaNor[$x]["lng"].",".$rutaRealizadaNor[$x]["lat"]."&end=".$rutaRealizadaNor[$x+1]["lng"].",".$rutaRealizadaNor[$x+1]["lat"]);
-                $cabecera = array(
-                    'Content-Type: application/json'
-                );
-                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                // curl_setopt($curl, CURLOPT_POST, true);
-                // curl_setopt($curl, CURLOPT_HTTPHEADER, $cabecera);
                 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
     
