@@ -10,7 +10,7 @@
         $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
-        $preparada = $conexion->prepare("SELECT fecha, latitud, longitud, velocidad FROM posiciones WHERE fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) AND usuario = :repartidor ORDER BY fecha ASC");
+        $preparada = $conexion->prepare("SELECT 45, fecha, latitud, longitud, velocidad FROM posiciones WHERE fecha >= :dia_inicial AND fecha < DATEADD(DAY, 1, :dia_final) AND usuario = :repartidor ORDER BY fecha ASC");
         $preparada->bindValue(':dia_inicial', $_GET['fecha']);
         $preparada->bindValue(':dia_final', $_GET['fecha']);
         $preparada->bindValue(':repartidor', $_GET['id']);
