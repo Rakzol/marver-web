@@ -130,10 +130,30 @@
                 return $fechaPosicion >= $fechaInicio && $fechaPosicion <= $fechaFin;
             });
 
-            $pedidos[$c]["rutaRealizada"] = [];
+            $rutaRealizadaNor = [];
             foreach ($rutaRealizada as $clave => $posicion) {
-                $pedidos[$c]["rutaRealizada"][] = ["lat" => $posicion["latitud"],"lng" => $posicion["longitud"]];
+                $rutaRealizadaNor[] = ["lat" => $posicion["latitud"],"lng" => $posicion["longitud"]];
             }
+
+            $pedidos[$c]["rutaRealizada"] = [];
+            for($x = 0; $x < count($rutaRealizadaNor) - 1; $x++ ){
+                $curl = curl_init("http://10.10.10.130:8082/ors/v2/directions/driving-car?start=".$rutaRealizadaNor[$x]["lng"].",".$rutaRealizadaNor[$x]["lat"]."&end=".$rutaRealizadaNor[$x+1]["lng"].",".$rutaRealizadaNor[$x+1]["lat"]);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($curl, CURLOPT_POST, true);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    
+                $respuesta = curl_exec($curl);
+                curl_close($curl);
+    
+                $respuestaJSON = json_decode( $respuesta, true);
+                $orsCoords = $respuestaJSON["features"]["geometry"]["coordinates"];
+
+                for($j = 0; $j < count($orsCoords); $j++ ){
+                    $pedidos[$c]["rutaRealizada"][] = [ "lat" => $orsCoords[$j][1], "lng" => $orsCoords[$j][0] ];
+                }
+            }
+            
         }
 
         echo '<script>';
