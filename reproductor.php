@@ -144,6 +144,7 @@
                 curl_close($curl);
     
                 $respuestaJSON = json_decode( $respuesta, true);
+                var_dump($respuestaJSON);
                 $orsCoords = $respuestaJSON["features"]["geometry"]["coordinates"];
                 var_dump($orsCoords);
 
