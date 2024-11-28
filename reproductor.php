@@ -142,10 +142,10 @@
                 curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
     
                 $respuesta = curl_exec($curl);
-                echo $respuesta;
                 curl_close($curl);
     
                 $respuestaJSON = json_decode( $respuesta, true);
+                var_dump($respuestaJSON);
                 $orsCoords = $respuestaJSON["features"]["geometry"]["coordinates"];
 
                 for($j = 0; $j < count($orsCoords); $j++ ){
