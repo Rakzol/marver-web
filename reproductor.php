@@ -409,7 +409,6 @@
                     polylineaRutaRealizada.setMap(mapa);
                     polylineas.push(polylineaRutaRealizada);
 
-
                     let indice = 1;
                     pedido["entregas"].forEach(entrega => {
                         polylinea = new Polylinea({
