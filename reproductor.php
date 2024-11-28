@@ -596,7 +596,7 @@
                 return;
             }
 
-            cursor.valueAsNumber += 1000;
+            cursor.valueAsNumber += 10000;
             actualizar_todo();
         }
 
