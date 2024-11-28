@@ -399,7 +399,7 @@
                     polylineas.push(polylinea);
 
                     let polylineaRutaRealizada = new Polylinea({
-                        path: decodePolyline(pedido["rutaRealizada"]),
+                        path: pedido["rutaRealizada"],
                         geodesic: true,
                         strokeColor: "#ADD8E6",
                         strokeOpacity: 1.0,
