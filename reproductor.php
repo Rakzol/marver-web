@@ -16,9 +16,11 @@
         $preparada->bindValue(':repartidor', $_GET['id']);
         $preparada->execute();
 
+        $posiciones = $preparada->fetchAll(PDO::FETCH_ASSOC);
+
         echo '<script>';
         echo 'let fechaConsulta = "' . $_GET['fecha'] . ' 00:00:00.000";';
-        echo 'let posiciones = ' . json_encode($preparada->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE) . ';';
+        echo 'let posiciones = ' . json_encode($posiciones, JSON_UNESCAPED_UNICODE) . ';';
         echo '</script>';
 
         $preparada = $conexion->prepare("SELECT
@@ -119,6 +121,14 @@
             $preparada->execute();
 
             $pedidos[$c]["entregas"] = $preparada->fetchAll(PDO::FETCH_ASSOC);
+
+            $pedidos[$c]["rutaRealizada"] = array_filter($posiciones, function($posicion) use ($pedidos, $c) {
+                $fechaPosicion = new DateTime($posicion["fecha"]);
+                $fechaInicio = new DateTime($pedidos[$c]["fechaInicio"]);
+                $fechaFin = new DateTime($pedidos[$c]["fechaFin"]);
+            
+                return $fechaPosicion >= $fechaInicio && $fechaPosicion <= $fechaFin;
+            });
         }
 
         echo '<script>';
