@@ -144,9 +144,7 @@
                 curl_close($curl);
     
                 $respuestaJSON = json_decode( $respuesta, true);
-                var_dump($respuestaJSON);
-                $orsCoords = $respuestaJSON["features"]["geometry"]["coordinates"];
-                var_dump($orsCoords);
+                $orsCoords = $respuestaJSON["features"][0]["geometry"]["coordinates"];
 
                 for($j = 0; $j < count($orsCoords); $j++ ){
                     $pedidos[$c]["rutaRealizada"][] = [ "lat" => $orsCoords[$j][1], "lng" => $orsCoords[$j][0] ];
