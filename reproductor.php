@@ -132,7 +132,7 @@
 
             $pedidos[$c]["rutaRealizada"] = [];
             for( $x = 0; $x < count($rutaRealizada); $x++ ){
-                $pedidos[$c]["rutaRealizada"][] = ["lat" => $rutaRealizada["latitud"],"lng" => $rutaRealizada["longitud"]];
+                $pedidos[$c]["rutaRealizada"][] = ["lat" => $rutaRealizada[$x]["latitud"],"lng" => $rutaRealizada[$x]["longitud"]];
             }
 
             //$pedidos[$c]["rutaRealizada"];
