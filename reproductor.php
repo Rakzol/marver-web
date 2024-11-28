@@ -398,6 +398,18 @@
                     polylinea.setMap(mapa);
                     polylineas.push(polylinea);
 
+                    let polylineaRutaRealizada = new Polylinea({
+                        path: decodePolyline(pedido["rutaRealizada"]),
+                        geodesic: true,
+                        strokeColor: "#ADD8E6",
+                        strokeOpacity: 1.0,
+                        strokeWeight: 3,
+                        zIndex: 1
+                    });
+                    polylineaRutaRealizada.setMap(mapa);
+                    polylineas.push(polylineaRutaRealizada);
+
+
                     let indice = 1;
                     pedido["entregas"].forEach(entrega => {
                         polylinea = new Polylinea({
