@@ -139,13 +139,12 @@
             for($x = 0; $x < count($rutaRealizadaNor) - 1; $x++ ){
                 $curl = curl_init("http://10.10.10.130:8082/ors/v2/directions/driving-car?start=".$rutaRealizadaNor[$x]["lng"].",".$rutaRealizadaNor[$x]["lat"]."&end=".$rutaRealizadaNor[$x+1]["lng"].",".$rutaRealizadaNor[$x+1]["lat"]);
 
-    
                 $respuesta = curl_exec($curl);
                 curl_close($curl);
     
                 $respuestaJSON = json_decode( $respuesta, true);
-                var_dump($respuestaJSON);
                 $orsCoords = $respuestaJSON["features"]["geometry"]["coordinates"];
+                var_dump($orsCoords);
 
                 for($j = 0; $j < count($orsCoords); $j++ ){
                     $pedidos[$c]["rutaRealizada"][] = [ "lat" => $orsCoords[$j][1], "lng" => $orsCoords[$j][0] ];
