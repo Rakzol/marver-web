@@ -2,6 +2,10 @@
     try{
         session_start();
 
+        require_once 'geometria/SphericalUtil.php';
+        require_once 'geometria/PolyUtil.php';
+        require_once 'geometria/MathUtil.php';
+
         if(!isset($_SESSION['usuario_mapa'])){
             header("Location: https://www.marverrefacciones.mx/login_mapa.php");
             exit();
@@ -18,8 +22,43 @@
 
         $posiciones = $preparada->fetchAll(PDO::FETCH_ASSOC);
 
+        $posicionesIlegales = [];
+        $posicioneIlegal = null;
+        $tiempoIlegal = 0;
+        for($c = 0; $c < count($posiciones); $c++ ){
+            //Si esta fuera de marver lo contaremos como ilegal
+            if(\GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => 25.794285, 'lng' => -108.985924], ['lat' => $posiciones[$c]['latitud'], 'lng' => $posiciones[$c]['longitud']]) > 50 ){
+                if($posicioneIlegal){
+                    //Tiene que estar dentro de la primera area ilegal que es el ancla por 100 metros para que cuenta
+                    if(\GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => $posicioneIlegal['latitud'], 'lng' => $posicioneIlegal['longitud']], ['lat' => $posiciones[$c]['latitud'], 'lng' => $posiciones[$c]['longitud']]) <= 100 ){
+                        $tiempoIlegal = (new DateTime($posiciones[$c]["fecha"]))->getTimestamp() - (new DateTime($posicioneIlegal["fecha"]))->getTimestamp();
+                    }else{
+                        if($tiempoIlegal >= 300){
+                            $posicionesIlegales[] = ["posicion" => $posicioneIlegal, "tiempo" => $tiempoIlegal];
+                        }
+
+                        $posicioneIlegal = $posiciones[$c];
+                        $tiempoIlegal = 0;
+                    }
+                }else{
+                    $posicioneIlegal = $posiciones[$c];
+                }
+            }else{
+                if($tiempoIlegal >= 300){
+                    $posicionesIlegales[] = ["posicion" => $posicioneIlegal, "tiempo" => $tiempoIlegal];
+                }
+
+                $posicioneIlegal = null;
+                $tiempoIlegal = 0;
+            }
+        }
+        if($tiempoIlegal >= 300){
+            $posicionesIlegales[] = ["posicion" => $posicioneIlegal, "tiempo" => $tiempoIlegal];
+        }
+
         echo '<script>';
         echo 'let fechaConsulta = "' . $_GET['fecha'] . ' 00:00:00.000";';
+        echo 'let posicionesIlegales = ' . json_encode($posicionesIlegales, JSON_UNESCAPED_UNICODE) . ';';
         echo 'let posiciones = ' . json_encode($posiciones, JSON_UNESCAPED_UNICODE) . ';';
         echo '</script>';
 
