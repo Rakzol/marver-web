@@ -454,6 +454,39 @@
                     polylinea.setMap(mapa);
                     polylineas.push(polylinea);
 
+                    ///////////////////
+
+                    posicionesIlegales.forEach( posicionIlegal=>{
+                        let infowindowIlegal = new VentanaInformacion({
+                                disableAutoPan: true,
+                                content: '<p class="infoWindow" >' + 
+                                "<strong>Llegada: </strong>" + convertirFormato(posicionIlegal["posicion"]["fecha"]) + "<br>" +
+                                "<strong>Eficiencia: </strong>" + formatoTiempo(posicionIlegal["tiempo"])
+                                + '</p>',
+                                zIndex: 3
+                            });
+
+                        let imagenIlegal = document.createElement('img');
+                        imagenIlegal.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/iraPuesDijoElDed.png';
+
+                        let marcadorIlegal = new ElementoMarcadorAvanzado({
+                            content: imagenIlegal,
+                            map: mapa,
+                            position: { lat: parseFloat(posicionIlegal["posicion"]["latitud"]), lng: parseFloat(posicionIlegal["posicion"]["longitud"]) },
+                            zIndex: 3
+                        });
+
+                        marcadorIlegal.addListener("click", () => {
+                            infowindow.open({
+                                anchor: marcadorIlegal,
+                                map: mapa,
+                            });
+                        });
+
+                        marcadores.push(marcadorIlegal);
+                    } );
+
+                    ///////////////////
                     let polylineaRutaRealizada = new Polylinea({
                         path: pedido["rutaRealizada"],
                         geodesic: true,
@@ -464,6 +497,7 @@
                     });
                     polylineaRutaRealizada.setMap(mapa);
                     polylineas.push(polylineaRutaRealizada);
+                    ////////////////////
 
                     let indice = 1;
                     pedido["entregas"].forEach(entrega => {
@@ -507,7 +541,7 @@
                                 zIndex: 3
                             });
                         }else{
-                            let infowindow = new VentanaInformacion({
+                            infowindow = new VentanaInformacion({
                                 disableAutoPan: true,
                                 content: '<p class="infoWindow" >' + 
                                 "<strong>Pedido Especial</strong><br>" + 
