@@ -376,6 +376,8 @@
 
         let idPedido = 0;
 
+        let xd;
+
         function pausar(){
             if(pausado){
                 pausado = false;
@@ -585,7 +587,7 @@
                                 }
                             }else{
                                 let src = '';
-                                var xd = marcadorEntrega;
+                                xd = marcadorEntrega;
                                 console.log(marcadorEntrega);
                                 if(!marcadorEntrega.multiple){
                                     src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_' + indice + '.png';
