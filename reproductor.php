@@ -376,8 +376,6 @@
 
         let idPedido = 0;
 
-        let xd;
-
         function pausar(){
             if(pausado){
                 pausado = false;
@@ -573,8 +571,9 @@
                     pedido["entregas"].forEach(entrega => {
 
                         if(entrega["fechaLlegada"]){
-                            let marcadorEntrega = marcadores.find(marcadorEntregaLoop=>marcadorEntregaLoop["idPedido"] == entrega["pedido"]);
-                            if( new Date(cursor.valueAsNumber) >= new Date(entrega["fechaLlegada"]) ){
+                            let marcadorEntrega = marcadores.find(marcadorEntrega=>marcadorEntrega["idPedido"] == entrega["pedido"]);
+                            if(marcadorEntrega){
+                                if( new Date(cursor.valueAsNumber) >= new Date(entrega["fechaLlegada"]) ){
                                 let src = '';
                                 if(!marcadorEntrega.multiple){
                                     src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/entregado_' + indice + '.png';
@@ -587,8 +586,6 @@
                                 }
                             }else{
                                 let src = '';
-                                xd = marcadorEntrega;
-                                console.log(marcadorEntrega);
                                 if(!marcadorEntrega.multiple){
                                     src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_' + indice + '.png';
                                 }else{
@@ -598,6 +595,7 @@
                                 if(marcadorEntrega.content.src != src){
                                     marcadorEntrega.content.src = src;
                                 }
+                            }
                             }
                         }
                         indice++;
