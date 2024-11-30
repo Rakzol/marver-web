@@ -829,7 +829,7 @@
                         "<strong>Llegada: </strong>" + convertirFormato(posicionIlegal["posicion"]["fecha"]) + "<br>" +
                         "<strong>Eficiencia: </strong>" + formatoTiempo(posicionIlegal["tiempo"])
                         + '</p>',
-                        zIndex: 3
+                        zIndex: -1
                     });
 
                 let imagenIlegal = document.createElement('img');
@@ -839,7 +839,7 @@
                     content: imagenIlegal,
                     map: mapa,
                     position: { lat: parseFloat(posicionIlegal["posicion"]["latitud"]), lng: parseFloat(posicionIlegal["posicion"]["longitud"]) },
-                    zIndex: 3
+                    zIndex: -1
                 });
 
                 marcadorIlegal.addListener("click", () => {
