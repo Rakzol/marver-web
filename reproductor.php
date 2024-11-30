@@ -457,6 +457,7 @@
                     ///////////////////
 
                     posicionesIlegales.forEach( posicionIlegal=>{
+                        console.log(posicionIlegal);
                         let infowindowIlegal = new VentanaInformacion({
                                 disableAutoPan: true,
                                 content: '<p class="infoWindow" >' + 
