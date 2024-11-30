@@ -571,7 +571,7 @@
                     pedido["entregas"].forEach(entrega => {
 
                         if(entrega["fechaLlegada"]){
-                            let marcadorEntrega = marcadores.find(marcadorEntrega=>marcadorEntrega["idPedido"] == entrega["pedido"]);
+                            let marcadorEntrega = marcadores.find(marcadorEntregaLoop=>marcadorEntregaLoop["idPedido"] == entrega["pedido"]);
                             if( new Date(cursor.valueAsNumber) >= new Date(entrega["fechaLlegada"]) ){
                                 let src = '';
                                 if(!marcadorEntrega.multiple){
