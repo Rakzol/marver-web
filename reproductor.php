@@ -843,6 +843,8 @@
                 });
 
                 marcadorIlegal.addListener("click", () => {
+                    cursor.valueAsNumber = new Date(posicionIlegal["posicion"]["fecha"]).getTime();
+                    actualizar_todo();
                     infowindowIlegal.open({
                         anchor: marcadorIlegal,
                         map: mapa,
