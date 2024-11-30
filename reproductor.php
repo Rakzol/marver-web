@@ -477,7 +477,7 @@
                         });
 
                         marcadorIlegal.addListener("click", () => {
-                            infowindow.open({
+                            infowindowIlegal.open({
                                 anchor: marcadorIlegal,
                                 map: mapa,
                             });
