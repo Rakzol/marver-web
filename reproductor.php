@@ -2,9 +2,9 @@
     try{
         session_start();
 
-        require_once 'geometria/SphericalUtil.php';
-        require_once 'geometria/PolyUtil.php';
-        require_once 'geometria/MathUtil.php';
+        require_once 'android/geometria/SphericalUtil.php';
+        require_once 'android/geometria/PolyUtil.php';
+        require_once 'android/geometria/MathUtil.php';
 
         if(!isset($_SESSION['usuario_mapa'])){
             header("Location: https://www.marverrefacciones.mx/login_mapa.php");
