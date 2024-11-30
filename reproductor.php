@@ -550,6 +550,7 @@
                             marcadorEntrega["idPedido"] = entrega["pedido"];
                             marcadorEntrega["infowindow"] = infowindow;
                             marcadorEntrega["multiple"] = false;
+                            console.log("va");
 
                             marcadorEntrega.addListener("click", () => {
                                 infowindow.open({
