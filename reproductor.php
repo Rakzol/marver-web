@@ -454,40 +454,6 @@
                     polylinea.setMap(mapa);
                     polylineas.push(polylinea);
 
-                    ///////////////////
-
-                    posicionesIlegales.forEach( posicionIlegal=>{
-                        console.log(posicionIlegal);
-                        let infowindowIlegal = new VentanaInformacion({
-                                disableAutoPan: true,
-                                content: '<p class="infoWindow" >' + 
-                                "<strong>Llegada: </strong>" + convertirFormato(posicionIlegal["posicion"]["fecha"]) + "<br>" +
-                                "<strong>Eficiencia: </strong>" + formatoTiempo(posicionIlegal["tiempo"])
-                                + '</p>',
-                                zIndex: 3
-                            });
-
-                        let imagenIlegal = document.createElement('img');
-                        imagenIlegal.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/iraPuesDijoElDed.png';
-
-                        let marcadorIlegal = new ElementoMarcadorAvanzado({
-                            content: imagenIlegal,
-                            map: mapa,
-                            position: { lat: parseFloat(posicionIlegal["posicion"]["latitud"]), lng: parseFloat(posicionIlegal["posicion"]["longitud"]) },
-                            zIndex: 3
-                        });
-
-                        marcadorIlegal.addListener("click", () => {
-                            infowindowIlegal.open({
-                                anchor: marcadorIlegal,
-                                map: mapa,
-                            });
-                        });
-
-                        marcadores.push(marcadorIlegal);
-                    } );
-
-                    ///////////////////
                     let polylineaRutaRealizada = new Polylinea({
                         path: pedido["rutaRealizada"],
                         geodesic: true,
@@ -853,6 +819,40 @@
                 </div>`;
             });
 
+            ///////////////////
+
+            posicionesIlegales.forEach( posicionIlegal=>{
+                console.log(posicionIlegal);
+                let infowindowIlegal = new VentanaInformacion({
+                        disableAutoPan: true,
+                        content: '<p class="infoWindow" >' + 
+                        "<strong>Llegada: </strong>" + convertirFormato(posicionIlegal["posicion"]["fecha"]) + "<br>" +
+                        "<strong>Eficiencia: </strong>" + formatoTiempo(posicionIlegal["tiempo"])
+                        + '</p>',
+                        zIndex: 3
+                    });
+
+                let imagenIlegal = document.createElement('img');
+                imagenIlegal.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/iraPuesDijoElDed.png';
+
+                let marcadorIlegal = new ElementoMarcadorAvanzado({
+                    content: imagenIlegal,
+                    map: mapa,
+                    position: { lat: parseFloat(posicionIlegal["posicion"]["latitud"]), lng: parseFloat(posicionIlegal["posicion"]["longitud"]) },
+                    zIndex: 3
+                });
+
+                marcadorIlegal.addListener("click", () => {
+                    infowindowIlegal.open({
+                        anchor: marcadorIlegal,
+                        map: mapa,
+                    });
+                });
+
+                marcadores.push(marcadorIlegal);
+            } );
+
+            ///////////////////
 
             actualizar_todo();
         }
