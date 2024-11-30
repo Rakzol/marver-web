@@ -585,6 +585,7 @@
                                 }
                             }else{
                                 let src = '';
+                                console.log(marcadorEntrega);
                                 if(!marcadorEntrega.multiple){
                                     src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_' + indice + '.png';
                                 }else{
