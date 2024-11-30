@@ -536,7 +536,7 @@
                             marcadorCercano.content.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_multiple.png';
                             marcadorCercano.multiple = true;
 
-                            console.log(marcadorCercano.infowindow);
+                            console.log(marcadorCercano["infowindow"]);
                             marcadorCercano.infowindow.setContent( marcadorCercano.infowindow.getContent() + '<br>' + infowindow.getContent() );
                         }else{
                             let imagen = document.createElement('img');
