@@ -531,25 +531,32 @@
                             });
                         }
 
-                        let imagen = document.createElement('img');
-                        imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_' + indice + '.png';
+                        if( marcadores.some( m => m.position.lat && m.position.lng ) ){
+                            marcadores[0].content.src = '';
+                            marcadorEntrega["multiple"] = true;
+                        }else{
+                            let imagen = document.createElement('img');
+                            imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_' + indice + '.png';
 
-                        let marcadorEntrega = new ElementoMarcadorAvanzado({
-                            content: imagen,
-                            map: mapa,
-                            position: { lat: parseFloat(entrega["latitud"]), lng: parseFloat(entrega["longitud"]) },
-                            zIndex: 3
-                        });
-                        marcadorEntrega["idPedido"] = entrega["pedido"];
-
-                        marcadorEntrega.addListener("click", () => {
-                            infowindow.open({
-                                anchor: marcadorEntrega,
+                            let marcadorEntrega = new ElementoMarcadorAvanzado({
+                                content: imagen,
                                 map: mapa,
+                                position: { lat: parseFloat(entrega["latitud"]), lng: parseFloat(entrega["longitud"]) },
+                                zIndex: 3
                             });
-                        });
+                            marcadorEntrega["idPedido"] = entrega["pedido"];
+                            marcadorEntrega["infoWindow"] = infowindow;
+                            marcadorEntrega["multiple"] = false;
 
-                        marcadores.push(marcadorEntrega);
+                            marcadorEntrega.addListener("click", () => {
+                                infowindow.open({
+                                    anchor: marcadorEntrega,
+                                    map: mapa,
+                                });
+                            });
+
+                            marcadores.push(marcadorEntrega);
+                        }
 
                         indice++;
                     });
