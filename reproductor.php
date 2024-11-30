@@ -531,9 +531,12 @@
                             });
                         }
 
-                        if( marcadores.some( m => m.position.lat && m.position.lng ) ){
-                            marcadores[0].content.src = '';
-                            marcadorEntrega["multiple"] = true;
+                        let marcadorCercano = marcadores.find( m => m.position.lat == parseFloat(entrega["latitud"]) && m.position.lng == parseFloat(entrega["longitud"]) );
+                        if( marcadorCercano ){
+                            marcadorCercano.content.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_multiple.png';
+                            marcadorCercano.multiple = true;
+
+                            marcadorCercano.infowindow.setContent( marcadorCercano.infowindow.getContent() + '<br>' + infowindow.getContent() );
                         }else{
                             let imagen = document.createElement('img');
                             imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_' + indice + '.png';
@@ -569,13 +572,23 @@
                         if(entrega["fechaLlegada"]){
                             let marcadorEntrega = marcadores.find(marcadorEntrega=>marcadorEntrega["idPedido"] == entrega["pedido"]);
                             if( new Date(cursor.valueAsNumber) >= new Date(entrega["fechaLlegada"]) ){
-                                let src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/entregado_' + indice + '.png';
+                                let src = '';
+                                if(!marcadorEntrega.multiple){
+                                    src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/entregado_' + indice + '.png';
+                                }else{
+                                    src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/entregado_multiple.png';;
+                                }
 
                                 if(marcadorEntrega.content.src != src){
                                     marcadorEntrega.content.src = src;
                                 }
                             }else{
-                                let src ='https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_' + indice + '.png';
+                                let src = '';
+                                if(!marcadorEntrega.multiple){
+                                    src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_' + indice + '.png';
+                                }else{
+                                    src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_multiple.png';;
+                                }
 
                                 if(marcadorEntrega.content.src != src){
                                     marcadorEntrega.content.src = src;
