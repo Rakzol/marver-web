@@ -6,7 +6,14 @@ try {
 
     header('Content-Type: application/json');
 
-    $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true', 'MARITE', '2505M$RITE');
+    switch($_POST["sucursal"]){
+        case "Mochis":
+            $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
+            break;
+        case "Guasave":
+            $conexion = new PDO('sqlsrv:Server=12.12.12.254;Database=Guasave;TrustServerCertificate=true','MARITE','2505M$RITE');
+            break;
+    }
     $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
     /* Verificamos que exista el vendedor */

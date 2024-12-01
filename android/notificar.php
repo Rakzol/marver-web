@@ -3,7 +3,14 @@
     try{
         header('Content-Type: application/json');
 
-        $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
+        switch($_POST["sucursal"]){
+            case "Mochis":
+                $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
+                break;
+            case "Guasave":
+                $conexion = new PDO('sqlsrv:Server=12.12.12.254;Database=Guasave;TrustServerCertificate=true','MARITE','2505M$RITE');
+                break;
+        }
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
         /* Verificamos que exista el vendedor */
@@ -64,24 +71,31 @@
         $preparada->execute();
         $repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-        $preparada = $conexion->prepare("SELECT Celular FROM Vendedores WHERE Clave = 3");
-        $preparada->execute();
-        $jesus = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
-
-        $preparada = $conexion->prepare("SELECT Celular FROM Vendedores WHERE Clave = 13");
-        $preparada->execute();
-        $papas = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
-
-        $preparada = $conexion->prepare("SELECT Celular FROM Vendedores WHERE Clave = 32");
-        $preparada->execute();
-        $guillermo = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
-
         notificar($cliente['Celular'], $cliente, $vendedor, $repartidor, true);
         notificar($vendedor['Celular'], $cliente, $vendedor, $repartidor, false);
         notificar($repartidor['Celular'], $cliente, $vendedor, $repartidor, false);
-        notificar($jesus['Celular'], $cliente, $vendedor, $repartidor, false);
-        notificar($papas['Celular'], $cliente, $vendedor, $repartidor, false);
-        notificar($guillermo['Celular'], $cliente, $vendedor, $repartidor, false);
+
+        switch($_POST["sucursal"]){
+            case "Mochis":
+                $preparada = $conexion->prepare("SELECT Celular FROM Vendedores WHERE Clave = 3");
+                $preparada->execute();
+                $jesus = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
+        
+                $preparada = $conexion->prepare("SELECT Celular FROM Vendedores WHERE Clave = 13");
+                $preparada->execute();
+                $papas = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
+        
+                $preparada = $conexion->prepare("SELECT Celular FROM Vendedores WHERE Clave = 32");
+                $preparada->execute();
+                $guillermo = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
+        
+                notificar($jesus['Celular'], $cliente, $vendedor, $repartidor, false);
+                notificar($papas['Celular'], $cliente, $vendedor, $repartidor, false);
+                notificar($guillermo['Celular'], $cliente, $vendedor, $repartidor, false);
+                break;
+            case "Guasave":
+                break;
+        }
 
         $resultado["status"] = 0;
         $resultado["mensaje"] = "Cliente notificado";

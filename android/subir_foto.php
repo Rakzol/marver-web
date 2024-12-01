@@ -2,7 +2,14 @@
     try{
         header('Content-Type: application/json');
 
-        $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
+        switch($_POST["sucursal"]){
+            case "Mochis":
+                $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
+                break;
+            case "Guasave":
+                $conexion = new PDO('sqlsrv:Server=12.12.12.254;Database=Guasave;TrustServerCertificate=true','MARITE','2505M$RITE');
+                break;
+        }
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
         $preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Clave = :clave AND Contraseña = :contrasena');
@@ -24,7 +31,7 @@
         /*$sin_espacios = str_replace(" ", "", $_POST['foto']);
         $sin_salto = str_replace("\n", "", $sin_espacios);
         $sin_reseteo = str_replace("\r", "", $sin_salto);*/
-        if(!file_put_contents( 'fotos/' . $_POST['nombre'] , base64_decode(str_replace(" ", "+", $_POST['foto'])) )){
+        if(!file_put_contents( 'fotos/' . $_POST["sucursal"] . '/' . $_POST['nombre'] , base64_decode(str_replace(" ", "+", $_POST['foto'])) )){
             $resultado["status"] = 4;
             $resultado["mensaje"] = "No se pudo almacenar la foto: " . $nombre;
             echo json_encode($resultado);

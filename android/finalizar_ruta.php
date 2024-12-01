@@ -6,7 +6,18 @@ try {
 
     header('Content-Type: application/json');
 
-    $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true', 'MARITE', '2505M$RITE');
+    switch($_POST["sucursal"]){
+        case "Mochis":
+            $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
+            $latMarver = 25.794285;
+            $lngMarver = -108.985924;
+            break;
+        case "Guasave":
+            $conexion = new PDO('sqlsrv:Server=12.12.12.254;Database=Guasave;TrustServerCertificate=true','MARITE','2505M$RITE');
+            $latMarver = 25.571829;
+            $lngMarver = -108.466726;
+            break;
+    }
     $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
     $preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Clave = :clave AND Contraseña = :contrasena');
@@ -28,8 +39,8 @@ try {
     $preparada->execute();
     $posicion = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-    $distancia_marver = \GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => 25.794285, 'lng' => -108.985924], ['lat' => $posicion['latitud'], 'lng' => $posicion['longitud']]);
-    if ($distancia_marver > 20) {
+    $distancia_marver = \GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => $latMarver, 'lng' => $lngMarver], ['lat' => $posicion['latitud'], 'lng' => $posicion['longitud']]);
+    if ($distancia_marver > 50) {
         $resultado["status"] = 2;
         $resultado["mensaje"] = "No esta dentro de la sucursal";
         echo json_encode($resultado);

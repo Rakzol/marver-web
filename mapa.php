@@ -651,7 +651,7 @@
             });
 
             actualizar();
-            setInterval(()=>{actualizar();},5000);
+            setInterval(()=>{actualizar();},2500);
         }
 
         initMap();

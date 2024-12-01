@@ -6,7 +6,18 @@ try {
 
     header('Content-Type: application/json');
 
-    $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true', 'MARITE', '2505M$RITE');
+    switch($_POST["s"]){
+        case "Mochis":
+            $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
+            $latMarver = 25.794285;
+            $lngMarver = -108.985924;
+            break;
+        case "Guasave":
+            $conexion = new PDO('sqlsrv:Server=12.12.12.254;Database=Guasave;TrustServerCertificate=true','MARITE','2505M$RITE');
+            $latMarver = 25.571829;
+            $lngMarver = -108.466726;
+            break;
+    }
     $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
     $preparada = $conexion->prepare('SELECT Clave FROM Vendedores WHERE Clave = :clave AND Contraseña = :contrasena');
@@ -29,7 +40,7 @@ try {
     $preparada->bindValue(':velocidad', $_POST['v']);
     $preparada->execute();
 
-    $distancia_marver = \GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => 25.794285, 'lng' => -108.985924], ['lat' => $_POST['la'], 'lng' => $_POST['ln']]);
+    $distancia_marver = \GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => $latMarver, 'lng' => $lngMarver], ['lat' => $_POST['la'], 'lng' => $_POST['ln']]);
     /* Verificamos si esta en el perimetro de marver para finalizar la ruta, siempre que tenga todo en status valido para la entrega */
     if ($distancia_marver <= 20) {
         /* Verificamos que no tenga pedidos sin llegar a una resolicion de entrega */
