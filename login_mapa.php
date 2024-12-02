@@ -1,8 +1,7 @@
 <?php
-    if(isset($_SESSION['usuario_mapa'])){
-        header("Location: https://www.marverrefacciones.mx/mapa.php");
-        exit();
-    }
+    session_start();
+
+    unset($_SESSION['usuario_mapa']);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -539,6 +538,13 @@
                                             <div class="invalid-feedback">
                                                 La contraseña es incorrecta.
                                             </div>
+                                        </div>
+
+                                        <div class="form-outline" style="margin-bottom: 2rem;">
+                                            <select class="form-select" aria-label="Seleccionar ciudad">
+                                                <option value="Mochis">Mochis</option>
+                                                <option value="Guasave">Guasave</option>
+                                            </select>
                                         </div>
 
                                         <div class="text-center pt-1 mb-5 pb-1">
