@@ -61,6 +61,7 @@
         $_SESSION['usuario_mapa'] = $_POST['usuario'];
         $_SESSION['contraseña_mapa'] = $_POST['contraseña'];
         $_SESSION['perfil_mapa'] = $registros[0]['Perfil'];
+        $_SESSION['sucursal_mapa'] = $_POST['sucursal'];
 
         $resultado['usuario'] = true;
         $resultado['contraseña'] = true;

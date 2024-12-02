@@ -541,7 +541,7 @@
                                         </div>
 
                                         <div class="form-outline" style="margin-bottom: 2rem;">
-                                            <select class="form-select" aria-label="Seleccionar sucursal">
+                                            <select id="sucursal" class="form-select" aria-label="Seleccionar sucursal">
                                                 <option selected value="Mochis">Mochis</option>
                                                 <option value="Guasave">Guasave</option>
                                             </select>
@@ -596,11 +596,13 @@
     <script>
         let correo = document.getElementById('correo');
         let contraseña = document.getElementById('contraseña');
+        let sucursal = document.getElementById('sucursal');
 
         function iniciar_sesion() {
             let datos = new FormData();
             datos.append('usuario', correo.value);
             datos.append('contraseña', contraseña.value);
+            datos.append('sucursal', sucursal.value);
 
             fetch('android/iniciar_sesion_web', {
                 method: 'POST',

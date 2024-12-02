@@ -272,6 +272,7 @@
             datosEnviar.append('repartidor', repartidorSeguido);
             datosEnviar.append('id', idRuta);
             datosEnviar.append('fechaActualizacion', fechaActualizacion);
+            datosEnviar.append('sucursal', '<?= $_SESSION['sucursal_mapa'] ?>');
 
             fetch('android/rutas_repartidores', {
                 method: 'POST',
