@@ -36,7 +36,7 @@
             return $distance;
         }
 
-        switch($_SESSION["sucursal"]){
+        switch($_SESSION["sucursal_mapa"]){
             case "Mochis":
                 $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
                 break;
