@@ -541,8 +541,8 @@
                                         </div>
 
                                         <div class="form-outline" style="margin-bottom: 2rem;">
-                                            <select class="form-select" aria-label="Seleccionar ciudad">
-                                                <option value="Mochis">Mochis</option>
+                                            <select class="form-select" aria-label="Seleccionar sucursal">
+                                                <option selected value="Mochis">Mochis</option>
                                                 <option value="Guasave">Guasave</option>
                                             </select>
                                         </div>
