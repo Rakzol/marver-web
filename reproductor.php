@@ -540,7 +540,7 @@
 
                         let marcadorCercano = marcadores.find( m => m.position.lat == parseFloat(entrega["latitud"]) && m.position.lng == parseFloat(entrega["longitud"]) );
                         if( marcadorCercano ){
-                            marcadorCercano.content.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_multiple.png';
+                            //marcadorCercano.content.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/pendiente_multiple.png';
                             marcadorCercano.multiple = true;
 
                             marcadorCercano.infowindow.setContent( marcadorCercano.infowindow.getContent() + '<br>' + infowindow.getContent() );
@@ -566,9 +566,11 @@
                             });
 
                             marcadores.push(marcadorEntrega);
+
+                            indice++;
                         }
 
-                        indice++;
+                        //indice++;
                     });
 
                     actualizar_todo();
