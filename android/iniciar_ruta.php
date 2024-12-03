@@ -166,7 +166,7 @@
                 $segundos_estimados_sumatoria += $segundos_estimados;
                 $fecha_llegada_estimada = DateTime::createFromFormat('Y-m-d H:i:s.u', $fecha_inicio);
                 $fecha_llegada_estimada->modify('+' . $segundos_estimados_sumatoria . ' seconds');
-                $metros_estimados = $rutas['routes'][0]['legs'][$indice_leg]['distanceMeters'];
+                $metros_estimados = isset($rutas['routes'][0]['legs'][$indice_leg]['distanceMeters']) ? $rutas['routes'][0]['legs'][$indice_leg]['distanceMeters'] : 0;
                 $metros_estimados_sumatoria += $metros_estimados;
 
                 $preparada = $conexion->prepare('
@@ -197,7 +197,7 @@
             $segundos_estimados_sumatoria += $segundos_estimados;
             $fecha_llegada_estimada = DateTime::createFromFormat('Y-m-d H:i:s.u', $fecha_inicio);
             $fecha_llegada_estimada->modify('+' . $segundos_estimados_sumatoria . ' seconds');
-            $metros_estimados = $rutas['routes'][0]['legs'][$indice_leg]['distanceMeters'];
+            $metros_estimados = isset($rutas['routes'][0]['legs'][$indice_leg]['distanceMeters']) ? $rutas['routes'][0]['legs'][$indice_leg]['distanceMeters'] : 0;
             $metros_estimados_sumatoria += $metros_estimados;
 
             $preparada = $conexion->prepare('
