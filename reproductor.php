@@ -670,7 +670,7 @@
                 return;
             }
 
-            cursor.valueAsNumber += 15000;
+            cursor.valueAsNumber += 4000;
             actualizar_todo();
         }
 
