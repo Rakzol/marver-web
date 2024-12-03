@@ -422,6 +422,7 @@
                                 '<strong>Llegada Estimada: </strong> ' + convertirFormato(json_api['marver']['fechaLlegadaEstimada'])
                             + '</p>');
 
+                        let indice = 1;
                         let entregaActualEncontrada = false;
                         for(let c = 0; c < json_api['pedidos'].length; c++){
 
@@ -444,19 +445,9 @@
                                 entregaActualEncontrada = true;
                             }
 
+                            let infowindow;
                             if(pedido['tipoComprobante'] != 3){
-
-                                let imagen = document.createElement('img');
-                                imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/' + tipo + "_" + ( pedido["indice"] + 1 ) + '.png';
-
-                                let marcador = new ElementoMarcadorAvanzado({
-                                    content: imagen,
-                                    map: mapa,
-                                    position: { lat: pedido["latitud"], lng: pedido["longitud"] },
-                                    zIndex: 2
-                                });
-
-                                let infowindow = new VentanaInformacion({
+                                infowindow = new VentanaInformacion({
                                     disableAutoPan: true,
                                     content: '<p class="infoWindow" >' + 
                                     "<strong>Pedido Normal</strong><br>" + 
@@ -482,29 +473,8 @@
                                     + '</p>',
                                     zIndex: 3
                                 });
-
-                                marcador.addListener("click", () => {
-                                    infowindow.open({
-                                        anchor: marcador,
-                                        map: mapa,
-                                    });
-                                });
-
-                                marcadores.push(marcador);
-
                             }else{
-
-                                let imagen = document.createElement('img');
-                                imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/' + tipo + "_" + ( pedido["indice"] + 1 ) + '.png';
-
-                                let marcador = new ElementoMarcadorAvanzado({
-                                    content: imagen,
-                                    map: mapa,
-                                    position: { lat: pedido["latitud"], lng: pedido["longitud"] },
-                                    zIndex: 2
-                                });
-
-                                let infowindow = new VentanaInformacion({
+                                infowindow = new VentanaInformacion({
                                     disableAutoPan: true,
                                     content: '<p class="infoWindow" >' + 
                                     "<strong>Pedido Especial</strong><br>" + 
@@ -525,6 +495,23 @@
                                     + '</p>',
                                     zIndex: 3
                                 });
+                            }
+
+                            let marcadorCercano = marcadores.find( m => m.position.lat == parseFloat(pedido["latitud"]) && m.position.lng == parseFloat(pedido["longitud"]) );
+                            if( marcadorCercano ){
+                                marcadorCercano.infowindow.setContent( marcadorCercano.infowindow.getContent() + '<br>' + infowindow.getContent() );
+                            }else{
+                                let imagen = document.createElement('img');
+                                imagen.src = 'https://www.marverrefacciones.mx/android/marcadores_ruta/' + tipo + "_" + indice + '.png';
+
+                                let marcador = new ElementoMarcadorAvanzado({
+                                    content: imagen,
+                                    map: mapa,
+                                    position: { lat: pedido["latitud"], lng: pedido["longitud"] },
+                                    zIndex: 2
+                                });
+
+                                marcador["infowindow"] = infowindow;
 
                                 marcador.addListener("click", () => {
                                     infowindow.open({
@@ -535,6 +522,7 @@
 
                                 marcadores.push(marcador);
 
+                                indice++;
                             }
 
                             let polylinea = new Polylinea({
