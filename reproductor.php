@@ -82,7 +82,7 @@
                fecha_llegada_eficiencia AS fechaLlegadaEficiencia,
                polylinea_codificada AS polylineaCodificada,
                segundos_estimados_sumatoria AS segundosEstimadosSumatoria,
-               metros_estimados_sumatoria AS metrosEstimadosSumatoria,
+               metros_estimados_sumatoria AS metrosEstimadosSumatoria
            FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio >= :fecha_inicial AND fecha_inicio < DATEADD(DAY, 1, :fecha_final) AND fecha_fin IS NOT NULL
            ORDER BY fecha_inicio ASC;
         ");
