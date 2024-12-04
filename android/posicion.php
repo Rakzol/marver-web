@@ -7,15 +7,15 @@ try {
     header('Content-Type: application/json');
 
     switch($_POST["s"]){
-        case "Mochis":
+        case "M":
             $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
-            $latMarver = 25.794285;
-            $lngMarver = -108.985924;
+            $latMarver = 25.794334;
+            $lngMarver = -108.985983;
             break;
-        case "Guasave":
+        case "G":
             $conexion = new PDO('sqlsrv:Server=12.12.12.254;Database=Guasave;TrustServerCertificate=true','MARITE','2505M$RITE');
-            $latMarver = 25.571829;
-            $lngMarver = -108.466726;
+            $latMarver = 25.571846;
+            $lngMarver = -108.466774;
             break;
     }
     $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
@@ -95,8 +95,8 @@ try {
             $json_envio['origin'] = array(
                 'location' => array(
                     'latLng' => array(
-                        'latitude' => 25.7941814,
-                        'longitude' => -108.9858957
+                        'latitude' => $latMarver,
+                        'longitude' => $lngMarver
                     )
                 )
             );
@@ -120,8 +120,8 @@ try {
             $json_envio['destination'] = array(
                 'location' => array(
                     'latLng' => array(
-                        'latitude' => 25.7941814,
-                        'longitude' => -108.9858957
+                        'latitude' => $latMarver,
+                        'longitude' => $lngMarver
                     )
                 )
             );

@@ -9,9 +9,13 @@
         switch($_POST["sucursal"]){
             case "Mochis":
                 $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
+                $latMarver = 25.794334;
+                $lngMarver = -108.985983;
                 break;
             case "Guasave":
                 $conexion = new PDO('sqlsrv:Server=12.12.12.254;Database=Guasave;TrustServerCertificate=true','MARITE','2505M$RITE');
+                $latMarver = 25.571846;
+                $lngMarver = -108.466774;
                 break;
         }
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
@@ -45,8 +49,8 @@
                     polylinea_codificada AS polylineaCodificada,
                     segundos_estimados_sumatoria AS segundosEstimadosSumatoria,
                     metros_estimados_sumatoria AS metrosEstimadosSumatoria,
-                    25.7941814 AS latitud,
-                    -108.9858957 AS longitud
+                    '. $latMarver .' AS latitud,
+                    '. $lngMarver .' AS longitud
                 FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio IS NOT NULL AND fecha_fin IS NULL
                 ORDER BY fecha_inicio DESC
             ');

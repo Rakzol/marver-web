@@ -9,13 +9,13 @@ try {
     switch($_POST["sucursal"]){
         case "Mochis":
             $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
-            $latMarver = 25.794285;
-            $lngMarver = -108.985924;
+            $latMarver = 25.794334;
+            $lngMarver = -108.985983;
             break;
         case "Guasave":
             $conexion = new PDO('sqlsrv:Server=12.12.12.254;Database=Guasave;TrustServerCertificate=true','MARITE','2505M$RITE');
-            $latMarver = 25.571829;
-            $lngMarver = -108.466726;
+            $latMarver = 25.571846;
+            $lngMarver = -108.466774;
             break;
     }
     $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);

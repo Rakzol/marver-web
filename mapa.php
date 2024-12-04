@@ -5,6 +5,17 @@
         header("Location: https://www.marverrefacciones.mx/login_mapa.php");
         exit();
     }
+
+    switch($_SESSION["sucursal_mapa"]){
+        case "Mochis":
+            $latMarver = 25.794334;
+            $lngMarver = -108.985983;
+            break;
+        case "Guasave":
+            $latMarver = 25.571846;
+            $lngMarver = -108.466774;
+            break;
+    }
 ?>
 <!DOCTYPE html>
 <html class="h-100" lang="es">
@@ -306,13 +317,13 @@
                             content: imagen,
                             map: mapa,
                             position: { lat: repartidor['latitud'], lng: repartidor['longitud'] },
-                            zIndex: 1
+                            zIndex: 3
                         });
 
                         let infowindow = new VentanaInformacion({
                             disableAutoPan: true,
                             content: '<p class="infoWindow" ><strong>' + repartidor['id'] + ' </strong> ' + repartidor['nombre'] + '</p>',
-                            zIndex: 1
+                            zIndex: 3
                         });
 
                         marcador.addListener("click", () => {
@@ -322,7 +333,7 @@
                             infowindow.open({
                                 anchor: marcador,
                                 map: mapa,
-                                zIndex: -2
+                                zIndex: 3
                             });
 
                             repartidorSeguido = repartidor['id'];
@@ -365,7 +376,7 @@
                             infowindow.open({
                                 anchor: marcador,
                                 map: mapa,
-                                zIndex: -2
+                                zIndex: 3
                             });
 
                             repartidorSeguido = repartidor['id'];
@@ -471,7 +482,7 @@
                                     "<strong>Total: </strong>" + pedido["total"] + "<br>" +
                                     "<strong>Observaciones: </strong>" + pedido["observacionesPedido"]
                                     + '</p>',
-                                    zIndex: 3
+                                    zIndex: 4
                                 });
                             }else{
                                 infowindow = new VentanaInformacion({
@@ -493,7 +504,7 @@
 
                                     "<strong>Observaciones: </strong>" + pedido["observacionesPedido"]
                                     + '</p>',
-                                    zIndex: 3
+                                    zIndex: 4
                                 });
                             }
 
@@ -508,7 +519,7 @@
                                     content: imagen,
                                     map: mapa,
                                     position: { lat: pedido["latitud"], lng: pedido["longitud"] },
-                                    zIndex: 2
+                                    zIndex: 4
                                 });
 
                                 marcador["infowindow"] = infowindow;
@@ -517,6 +528,7 @@
                                     infowindow.open({
                                         anchor: marcador,
                                         map: mapa,
+                                        zIndex: 4
                                     });
                                 });
 
@@ -609,7 +621,7 @@
             Polylinea = Polyline;
 
             mapa = new Map(document.getElementById("mapa"), {
-                center: { lat: 25.7951169, lng: -108.99698492 },
+                center: { lat: <?= $latMarver ?>, lng: <?= $lngMarver ?> },
                 zoom: 13.36,
                 mapId: '7845e7dffe8cea37'
             });
@@ -620,8 +632,8 @@
             marcadorMarver = new ElementoMarcadorAvanzado({
                 content: imagen,
                 map: mapa,
-                position: { lat: 25.7943047, lng: -108.9859510 },
-                zIndex: 3
+                position: { lat: <?= $latMarver ?>, lng: <?= $lngMarver ?> },
+                zIndex: 2
             });
 
             infowindowMarver = new VentanaInformacion({
@@ -634,6 +646,7 @@
                 infowindowMarver.open({
                     anchor: marcadorMarver,
                     map: mapa,
+                    zIndex: 2
                 });
             });
 

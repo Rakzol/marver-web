@@ -14,9 +14,13 @@
         switch($_SESSION["sucursal_mapa"]){
             case "Mochis":
                 $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
+                $latMarver = 25.794334;
+                $lngMarver = -108.985983;
                 break;
             case "Guasave":
                 $conexion = new PDO('sqlsrv:Server=12.12.12.254;Database=Guasave;TrustServerCertificate=true','MARITE','2505M$RITE');
+                $latMarver = 25.571846;
+                $lngMarver = -108.466774;
                 break;
         }
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
@@ -34,7 +38,7 @@
         $tiempoIlegal = 0;
         for($c = 0; $c < count($posiciones); $c++ ){
             //Si esta fuera de marver lo contaremos como ilegal
-            if(\GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => 25.794285, 'lng' => -108.985924], ['lat' => $posiciones[$c]['latitud'], 'lng' => $posiciones[$c]['longitud']]) > 50 ){
+            if(\GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => $latMarver, 'lng' => $lngMarver], ['lat' => $posiciones[$c]['latitud'], 'lng' => $posiciones[$c]['longitud']]) > 50 ){
                 if($posicioneIlegal){
                     //Tiene que estar dentro de la primera area ilegal que es el ancla por 100 metros para que cuenta
                     if(\GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => $posicioneIlegal['latitud'], 'lng' => $posicioneIlegal['longitud']], ['lat' => $posiciones[$c]['latitud'], 'lng' => $posiciones[$c]['longitud']]) <= 100 ){
@@ -79,8 +83,6 @@
                polylinea_codificada AS polylineaCodificada,
                segundos_estimados_sumatoria AS segundosEstimadosSumatoria,
                metros_estimados_sumatoria AS metrosEstimadosSumatoria,
-               25.7941814 AS latitud,
-               -108.9858957 AS longitud
            FROM rutas_repartidores WHERE repartidor = :repartidor AND fecha_inicio >= :fecha_inicial AND fecha_inicio < DATEADD(DAY, 1, :fecha_final) AND fecha_fin IS NOT NULL
            ORDER BY fecha_inicio ASC;
         ");
@@ -467,7 +469,7 @@
                         strokeColor: "#90EE90",
                         strokeOpacity: 1.0,
                         strokeWeight: 3,
-                        zIndex: 1
+                        zIndex: 0
                     });
                     polylineaRutaRealizada.setMap(mapa);
                     polylineas.push(polylineaRutaRealizada);
@@ -512,7 +514,7 @@
                                 "<strong>Total: </strong>" + entrega["total"] + "<br>" +
                                 "<strong>Observaciones: </strong>" + entrega["observacionesPedido"]
                                 + '</p>',
-                                zIndex: 3
+                                zIndex: 5
                             });
                         }else{
                             infowindow = new VentanaInformacion({
@@ -534,7 +536,7 @@
 
                                 "<strong>Observaciones: </strong>" + entrega["observacionesPedido"]
                                 + '</p>',
-                                zIndex: 3
+                                zIndex: 5
                             });
                         }
 
@@ -552,7 +554,7 @@
                                 content: imagen,
                                 map: mapa,
                                 position: { lat: parseFloat(entrega["latitud"]), lng: parseFloat(entrega["longitud"]) },
-                                zIndex: 3
+                                zIndex: 5
                             });
                             marcadorEntrega["idPedido"] = entrega["pedido"];
                             marcadorEntrega["infowindow"] = infowindow;
@@ -562,6 +564,7 @@
                                 infowindow.open({
                                     anchor: marcadorEntrega,
                                     map: mapa,
+                                    zIndex: 5
                                 });
                             });
 
@@ -795,8 +798,8 @@
             marcadorMarver = new ElementoMarcadorAvanzado({
                 content: imagenMarver,
                 map: mapa,
-                position: { lat: 25.7943047, lng: -108.9859510 },
-                zIndex: 3
+                position: { lat: <?= $latMarver ?>, lng: <?= $lngMarver ?> },
+                zIndex: 2
             });
 
             infowindowMarver = new VentanaInformacion({
@@ -809,6 +812,7 @@
                 infowindowMarver.open({
                     anchor: marcadorMarver,
                     map: mapa,
+                    zIndex: 2
                 });
             });
 
@@ -818,11 +822,13 @@
             marcadorRepartidor = new ElementoMarcadorAvanzado({
                 content: imagen,
                 map: mapa,
-                position: { lat: posicionActual()['latitud'], lng: posicionActual()['longitud'] }
+                position: { lat: posicionActual()['latitud'], lng: posicionActual()['longitud'] },
+                zIndex: 4
             });
 
             let infowindow = new VentanaInformacion({
-                content: '<p style="margin: 0;" ><strong><?= $_GET['id']; ?> </strong><?= $_GET['nombre']; ?></p>'
+                content: '<p style="margin: 0;" ><strong><?= $_GET['id']; ?> </strong><?= $_GET['nombre']; ?></p>',
+                zIndex: 4
             });
 
             marcadorRepartidor.addListener("click", () => {
@@ -832,6 +838,7 @@
                 infowindow.open({
                     anchor: marcadorRepartidor,
                     map: mapa,
+                    zIndex: 4
                 });
             });
 
@@ -863,7 +870,7 @@
                         "<strong>Llegada: </strong>" + convertirFormato(posicionIlegal["posicion"]["fecha"]) + "<br>" +
                         "<strong>Eficiencia: </strong>" + formatoTiempo(posicionIlegal["tiempo"])
                         + '</p>',
-                        zIndex: -1
+                        zIndex: 3
                     });
 
                 let imagenIlegal = document.createElement('img');
@@ -873,7 +880,7 @@
                     content: imagenIlegal,
                     map: mapa,
                     position: { lat: parseFloat(posicionIlegal["posicion"]["latitud"]), lng: parseFloat(posicionIlegal["posicion"]["longitud"]) },
-                    zIndex: -1
+                    zIndex: 3
                 });
 
                 marcadorIlegal.addListener("click", () => {
@@ -882,6 +889,7 @@
                     infowindowIlegal.open({
                         anchor: marcadorIlegal,
                         map: mapa,
+                        zIndex: 3
                     });
                 });
             } );
