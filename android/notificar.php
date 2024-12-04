@@ -39,7 +39,7 @@
             WHERE
                 EnvioPedidoCliente.Responsable = :responsable AND
                 EnvioPedidoCliente.Pedido = :pedido AND
-                EnvioPedidoCliente.Extra2 LIKE '%-FINALIZADO%';
+                (EnvioPedidoCliente.Extra2 LIKE 'ENTREGADO' OR EnvioPedidoCliente.Extra2 LIKE '%-FINALIZADO%');
         ");
         $preparada->bindValue(':pedido', $_POST['pedido']);
         $preparada->bindValue(':responsable', $_POST['clave']);
