@@ -36,20 +36,18 @@
                 PedidosCliente
                 INNER JOIN EnvioPedidoCliente
                     ON EnvioPedidoCliente.Pedido = PedidosCliente.Folio
-                    AND EnvioPedidoCliente.Extra2 = 'ENTREGADO'
-                    AND EnvioPedidoCliente.Responsable = :responsable
             WHERE
-                PedidosCliente.FolioComprobante = :folio AND
-                PedidosCliente.Tipocomprobante = :comprobante;
+                EnvioPedidoCliente.Responsable = :responsable AND
+                EnvioPedidoCliente.Pedido = :pedido AND
+                EnvioPedidoCliente.Extra2 LIKE '%-FINALIZADO%';
         ");
-        $preparada->bindValue(':folio', $_POST['folio']);
-        $preparada->bindValue(':comprobante', $_POST['comprobante']);
+        $preparada->bindValue(':pedido', $_POST['pedido']);
         $preparada->bindValue(':responsable', $_POST['clave']);
         $preparada->execute();
 
         $pedido = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-        if( $_POST['comprobante'] > 0 ){
+        if( $_POST['comprobante'] != 3 ){
             $preparada = $conexion->prepare("SELECT Razon_Social AS Nombre, Celular FROM Clientes WHERE Clave = :cliente");
             $preparada->bindValue(':cliente', $pedido['Cliente']);
             $preparada->execute();
