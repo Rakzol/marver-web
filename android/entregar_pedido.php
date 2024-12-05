@@ -138,6 +138,6 @@ try {
     // header('HTTP/1.1 500 ' . $exception->getMessage());
 
     $resultado["status"] = 4;
-    $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " no es valido";
+    $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . $exception->getMessage() . " no es valido";
     echo json_encode($resultado);
 }
