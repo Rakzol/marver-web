@@ -106,131 +106,140 @@
     }
 
     function notificar($celular, $cliente, $vendedor, $repartidor, $validar, $clienteClave, $vendedorClave, $sqlConexion){
-        if( !$celular ){
-            if($validar){
-                $resultado["status"] = 4;
-                $resultado["mensaje"] = "Error al notificar, el Cliente no tiene numero celular";
-                echo json_encode($resultado);
-                exit();
+        try{
+            if( !$celular ){
+                if($validar){
+                    $resultado["status"] = 4;
+                    $resultado["mensaje"] = "Error al notificar, el Cliente no tiene numero celular";
+                    echo json_encode($resultado);
+                    exit();
+                }
+                return;
             }
-            return;
-        }
-
-        $Bearer = "EAAVE5rJaMKwBO980nYpnZCI4PiJVcssTkhplxFLNvvyUVdFvwqd5m5JMPbLZCA6XxWpNANrd9QoRNPsk6WhQZBhfvcFsps5a1Bp7PHWSkhycZCwb31GH2BkupUPySiyi0ZA1gE9mdL0SZBPWEJonpZAVkoZCjPg2XZCgU6dLZAzgP1UcGKaiUelN8s9jCDoZBi0FtKq";
-        //URL A DONDE SE MANDARA EL MENSAJE
-        $url = 'https://graph.facebook.com/v20.0/426242453898687/messages';
-
-        //CONFIGURACION DEL MENSAJE
-        $mensaje =
-                '{
-                "messaging_product": "whatsapp", 
-                "to": "52'. $celular .'", 
-                "type": "template", 
-                "template": 
-                {
-                    "name": "envio_camion_administrador",
-                    "language":{ "code": "es_MX" } ,
-                    "components": [
-                            {
-                                "type": "body",
-                                "parameters": [
+    
+            $Bearer = "EAAVE5rJaMKwBO980nYpnZCI4PiJVcssTkhplxFLNvvyUVdFvwqd5m5JMPbLZCA6XxWpNANrd9QoRNPsk6WhQZBhfvcFsps5a1Bp7PHWSkhycZCwb31GH2BkupUPySiyi0ZA1gE9mdL0SZBPWEJonpZAVkoZCjPg2XZCgU6dLZAzgP1UcGKaiUelN8s9jCDoZBi0FtKq";
+            //URL A DONDE SE MANDARA EL MENSAJE
+            $url = 'https://graph.facebook.com/v20.0/426242453898687/messages';
+    
+            //CONFIGURACION DEL MENSAJE
+            $mensaje =
+                    '{
+                    "messaging_product": "whatsapp", 
+                    "to": "52'. $celular .'", 
+                    "type": "template", 
+                    "template": 
+                    {
+                        "name": "envio_camion_administrador",
+                        "language":{ "code": "es_MX" } ,
+                        "components": [
                                 {
-                                    "type": "text",
-                                    "text": "' . $cliente['Nombre'] . '"
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "' . $_POST['llegada'] . '"
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "' . $_POST['camion'] . '"
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "' . $_POST['folio'] . '"
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "' . ( $_POST['comprobante'] == 1 ? 'Factura' : ( $_POST['comprobante'] == 2 ? 'Recibo' : ( $_POST['comprobante'] == 5 ? 'Preventa' : 'Especial' ) ) ) . '"
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "' . $vendedor['Clave'] . '"
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "' . $vendedor['Nombre'] . '"
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "' . $repartidor['Clave'] . '"
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "' . $repartidor['Nombre'] . '"
+                                    "type": "body",
+                                    "parameters": [
+                                    {
+                                        "type": "text",
+                                        "text": "' . $cliente['Nombre'] . '"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": "' . $_POST['llegada'] . '"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": "' . $_POST['camion'] . '"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": "' . $_POST['folio'] . '"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": "' . ( $_POST['comprobante'] == 1 ? 'Factura' : ( $_POST['comprobante'] == 2 ? 'Recibo' : ( $_POST['comprobante'] == 5 ? 'Preventa' : 'Especial' ) ) ) . '"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": "' . $vendedor['Clave'] . '"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": "' . $vendedor['Nombre'] . '"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": "' . $repartidor['Clave'] . '"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": "' . $repartidor['Nombre'] . '"
+                                    }]
                                 }]
-                            }]
-                    } 
-                }';
-
-
-        $header = array("Authorization: Bearer " . $Bearer, "Content-Type: application/json");
-
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-
-        $response = curl_exec($curl);
-
-        if($validar){
-            $preparada = $sqlConexion->prepare("INSERT INTO notificacionesEnviadas VALUES (:folio, GETDATE(), :cliente, :vendedor, :celular, :curl, :mensaje, :llegada, :camion)");
-            $preparada->bindValue(':folio', $_POST['folio']);
-            $preparada->bindValue(':cliente', $clienteClave);
-            $preparada->bindValue(':vendedor', $vendedorClave);
-            $preparada->bindValue(':celular', $celular);
-            $preparada->bindValue(':curl', $response);
-            $preparada->bindValue(':mensaje', $mensaje);
-            $preparada->bindValue(':llegada', $_POST['llegada']);
-            $preparada->bindValue(':camion', $_POST['camion']);
-            $preparada->execute();
-        }
-
-        if (curl_errno($curl)) {
+                        } 
+                    }';
+    
+    
+            $header = array("Authorization: Bearer " . $Bearer, "Content-Type: application/json");
+    
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    
+            $response = curl_exec($curl);
+    
+            if($validar){
+                $preparada = $sqlConexion->prepare("INSERT INTO notificacionesEnviadas VALUES (:folio, GETDATE(), :cliente, :vendedor, :celular, :curl, :mensaje, :llegada, :camion)");
+                $preparada->bindValue(':folio', $_POST['folio']);
+                $preparada->bindValue(':cliente', $clienteClave);
+                $preparada->bindValue(':vendedor', $vendedorClave);
+                $preparada->bindValue(':celular', $celular);
+                $preparada->bindValue(':curl', $response);
+                $preparada->bindValue(':mensaje', $mensaje);
+                $preparada->bindValue(':llegada', $_POST['llegada']);
+                $preparada->bindValue(':camion', $_POST['camion']);
+                $preparada->execute();
+            }
+    
+            if (curl_errno($curl)) {
+                if($validar){
+                    $resultado["status"] = 6;
+                    $resultado["mensaje"] = "Error al notificar " . curl_error($curl);
+                    echo json_encode($resultado);
+                    exit();
+                }
+                return;
+            }
+    
+            if( !$response ){
+                if($validar){
+                    $resultado["status"] = 6;
+                    $resultado["mensaje"] = "Error al notificar " . curl_error($curl);
+                    echo json_encode($resultado);
+                    exit();
+                }
+                return;
+            }
+    
+            $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            if( $status_code != 200 ){
+                if($validar){
+                    $resultado["status"] = 6;
+                    $resultado["mensaje"] = "Error al notificar " . curl_error($curl);
+                    echo json_encode($resultado);
+                    exit();
+                }
+                return;
+            }
+    
+            curl_close($curl);
+        }catch(Exception $exe){
             if($validar){
                 $resultado["status"] = 6;
-                $resultado["mensaje"] = "Error al notificar " . curl_error($curl);
+                $resultado["mensaje"] = "Error al notificar " . $exe->getMessage();
                 echo json_encode($resultado);
                 exit();
             }
-            return;
         }
-
-        if( !$response ){
-            if($validar){
-                $resultado["status"] = 6;
-                $resultado["mensaje"] = "Error al notificar " . curl_error($curl);
-                echo json_encode($resultado);
-                exit();
-            }
-            return;
-        }
-
-        $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        if( $status_code != 200 ){
-            if($validar){
-                $resultado["status"] = 6;
-                $resultado["mensaje"] = "Error al notificar " . curl_error($curl);
-                echo json_encode($resultado);
-                exit();
-            }
-            return;
-        }
-
-        curl_close($curl);
     }
 ?>
