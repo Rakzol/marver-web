@@ -99,7 +99,7 @@ try {
     $EnvioPedidoCliente = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
     //HOT FIX Extra3 = 1
-    $preparada = $conexion->prepare("UPDATE EnvioPedidoCliente SET Extra3 = 1, Extra2 = 'NO ENTREGADO' WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 = 'EN RUTA'");
+    $preparada = $conexion->prepare("UPDATE EnvioPedidoCliente SET Extra2 = 'NO ENTREGADO' WHERE Pedido = :pedido AND Responsable = :repartidor AND Extra2 = 'EN RUTA'");
     $preparada->bindValue(':pedido', $_POST['folio']);
     $preparada->bindValue(':repartidor', $_POST['clave']);
     $preparada->execute();
