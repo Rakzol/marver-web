@@ -69,9 +69,9 @@
         $preparada->execute();
         $repartidor = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
 
-        notificar($cliente['Celular'], $cliente, $vendedor, $repartidor, true);
-        notificar($vendedor['Celular'], $cliente, $vendedor, $repartidor, false);
-        notificar($repartidor['Celular'], $cliente, $vendedor, $repartidor, false);
+        notificar($cliente['Celular'], $cliente, $vendedor, $repartidor, true, $pedido['Cliente'], $pedido['Vendedor'], $conexion);
+        notificar($vendedor['Celular'], $cliente, $vendedor, $repartidor, false, $pedido['Cliente'], $pedido['Vendedor'], $conexion);
+        notificar($repartidor['Celular'], $cliente, $vendedor, $repartidor, false, $pedido['Cliente'], $pedido['Vendedor'], $conexion);
 
         switch($_POST["sucursal"]){
             case "Mochis":
@@ -87,9 +87,9 @@
                 $preparada->execute();
                 $guillermo = $preparada->fetchAll(PDO::FETCH_ASSOC)[0];
         
-                notificar($jesus['Celular'], $cliente, $vendedor, $repartidor, false);
-                notificar($papas['Celular'], $cliente, $vendedor, $repartidor, false);
-                notificar($guillermo['Celular'], $cliente, $vendedor, $repartidor, false);
+                notificar($jesus['Celular'], $cliente, $vendedor, $repartidor, false, $pedido['Cliente'], $pedido['Vendedor'], $conexion);
+                notificar($papas['Celular'], $cliente, $vendedor, $repartidor, false, $pedido['Cliente'], $pedido['Vendedor'], $conexion);
+                notificar($guillermo['Celular'], $cliente, $vendedor, $repartidor, false, $pedido['Cliente'], $pedido['Vendedor'], $conexion);
                 break;
             case "Guasave":
                 break;
@@ -105,7 +105,7 @@
         echo json_encode($resultado);
     }
 
-    function notificar($celular, $cliente, $vendedor, $repartidor, $validar){
+    function notificar($celular, $cliente, $vendedor, $repartidor, $validar, $clienteClave, $vendedorClave, $sqlConexion){
         if( !$celular ){
             if($validar){
                 $resultado["status"] = 4;
@@ -186,6 +186,19 @@
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
 
         $response = curl_exec($curl);
+
+        if($validar){
+            $preparada = $sqlConexion->prepare("INSERT INTO notificacionesEnviadas VALUES (:folio, GETDATE(), :cliente, :vendedor, :celular, :curl, :mensaje, :llegada, :camion)");
+            $preparada->bindValue(':folio', $_POST['folio']);
+            $preparada->bindValue(':cliente', $clienteClave);
+            $preparada->bindValue(':vendedor', $vendedorClave);
+            $preparada->bindValue(':celular', $celular);
+            $preparada->bindValue(':curl', $response);
+            $preparada->bindValue(':mensaje', $mensaje);
+            $preparada->bindValue(':llegada', $_POST['llegada']);
+            $preparada->bindValue(':camion', $_POST['camion']);
+            $preparada->execute();
+        }
 
         if (curl_errno($curl)) {
             if($validar){
