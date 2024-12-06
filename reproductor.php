@@ -848,7 +848,7 @@
                         disableAutoPan: true,
                         content: '<p class="infoWindow" >' + 
                         "<strong>Llegada: </strong>" + convertirFormato(posicionIlegal["posicion"]["fecha"]) + "<br>" +
-                        "<strong>Eficiencia: </strong>" + formatoTiempo(posicionIlegal["tiempo"])
+                        "<strong>Tiempo: </strong>" + formatoTiempo(posicionIlegal["tiempo"])
                         + '</p>',
                         zIndex: 3
                     });
