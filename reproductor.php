@@ -197,7 +197,7 @@
                     $respuestaJSON = json_decode( $respuesta, true);
                     $orsCoords = $respuestaJSON["features"][0]["geometry"]["coordinates"];
     
-                    for($j = 1; $j < count($orsCoords); $j++ ){
+                    for($j = 1; $j < count($orsCoords) - 1; $j++ ){
                         $pedidos[$c]["rutaRealizada"][] = [ "lat" => $orsCoords[$j][1], "lng" => $orsCoords[$j][0] ];
                     }
                 //}
