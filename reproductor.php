@@ -186,7 +186,7 @@
             $pedidos[$c]["rutaRealizada"] = [];
             for($x = 0; $x < count($rutaRealizadaNor) - 1; $x++ ){
 
-                if(\GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => $rutaRealizadaNor[$x]["lat"], 'lng' => $rutaRealizadaNor[$x]["lng"]], ['lat' => $rutaRealizadaNor[$x+1]["lat"], 'lng' => $rutaRealizadaNor[$x+1]["lng"]]) >= 60 ){
+                //if(\GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => $rutaRealizadaNor[$x]["lat"], 'lng' => $rutaRealizadaNor[$x]["lng"]], ['lat' => $rutaRealizadaNor[$x+1]["lat"], 'lng' => $rutaRealizadaNor[$x+1]["lng"]]) >= 60 ){
                     $curl = curl_init("http://10.10.10.130:8082/ors/v2/directions/driving-car?start=".$rutaRealizadaNor[$x]["lng"].",".$rutaRealizadaNor[$x]["lat"]."&end=".$rutaRealizadaNor[$x+1]["lng"].",".$rutaRealizadaNor[$x+1]["lat"]);
                     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     
@@ -200,7 +200,7 @@
                         echo $j . ' - ';
                         $pedidos[$c]["rutaRealizada"][] = [ "lat" => $orsCoords[$j][1], "lng" => $orsCoords[$j][0] ];
                     }
-                }
+                //}
 
             }
             
