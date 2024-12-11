@@ -470,8 +470,7 @@
                     let polylineaRutaRealizada = new Polylinea({
                         path: pedido["rutaRealizada"],
                         geodesic: true,
-                        //strokeColor: "#90EE90",
-                        strokeColor: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
+                        strokeColor: "#90EE90",
                         strokeOpacity: 1.0,
                         strokeWeight: 3,
                         zIndex: 0
