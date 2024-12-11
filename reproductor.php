@@ -189,7 +189,7 @@
             }
             for($x = 1; $x < count($rutaRealizadaNor); $x++ ){
 
-                if(\GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => $pedidos[$c]["rutaRealizada"][count($pedidos[$c]["rutaRealizada"])-1]["lat"], 'lng' => $pedidos[$c]["rutaRealizada"][count($pedidos[$c]["rutaRealizada"])-1]["lng"]], ['lat' => $rutaRealizadaNor[$x]["lat"], 'lng' => $rutaRealizadaNor[$x]["lng"]]) >= 60 ){
+                if(\GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => $pedidos[$c]["rutaRealizada"][count($pedidos[$c]["rutaRealizada"])-1]["lat"], 'lng' => $pedidos[$c]["rutaRealizada"][count($pedidos[$c]["rutaRealizada"])-1]["lng"]], ['lat' => $rutaRealizadaNor[$x]["lat"], 'lng' => $rutaRealizadaNor[$x]["lng"]]) >= 70 ){
                     $curl = curl_init("http://10.10.10.130:8082/ors/v2/directions/driving-car?start=".$pedidos[$c]["rutaRealizada"][count($pedidos[$c]["rutaRealizada"])-1]["lng"].",".$pedidos[$c]["rutaRealizada"][count($pedidos[$c]["rutaRealizada"])-1]["lat"]."&end=".$rutaRealizadaNor[$x]["lng"].",".$rutaRealizadaNor[$x]["lat"]);
                     //$curl = curl_init("http://10.10.10.130:8082/ors/v2/directions/driving-car?start=-108.97092714265861,25.798724605179547&end=-108.98301640736422,25.793071127573885");
                     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
