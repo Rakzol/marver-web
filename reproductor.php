@@ -188,7 +188,7 @@
 
                 //if(\GeometryLibrary\SphericalUtil::computeDistanceBetween(['lat' => $rutaRealizadaNor[$x]["lat"], 'lng' => $rutaRealizadaNor[$x]["lng"]], ['lat' => $rutaRealizadaNor[$x+1]["lat"], 'lng' => $rutaRealizadaNor[$x+1]["lng"]]) >= 60 ){
                     //$curl = curl_init("http://10.10.10.130:8082/ors/v2/directions/driving-car?start=".$rutaRealizadaNor[$x]["lng"].",".$rutaRealizadaNor[$x]["lat"]."&end=".$rutaRealizadaNor[$x+1]["lng"].",".$rutaRealizadaNor[$x+1]["lat"]);
-                    $curl = curl_init("http://10.10.10.130:8082/ors/v2/directions/driving-car?start=-108.97092714265861,25.798724605179547&end=-108.98301640736422,25.793071127573885&geometry=true");
+                    $curl = curl_init("http://10.10.10.130:8082/ors/v2/directions/driving-car?start=-108.97092714265861,25.798724605179547&end=-108.98301640736422,25.793071127573885");
                     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     
                     $respuesta = curl_exec($curl);
