@@ -194,7 +194,7 @@
                     curl_close($curl);
         
                     $respuestaJSON = json_decode( $respuesta, true);
-                    echo $respuestaJSON;
+                    echo var_dump($respuestaJSON);
                     $orsCoords = $respuestaJSON["features"][0]["geometry"]["coordinates"];
     
                     for($j = 0; $j < count($orsCoords); $j++ ){
