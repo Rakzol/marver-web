@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Scroll Animation</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    canvas {
+      display: block; /* Asegura que el lienzo ocupe toda la pantalla */
+    }
+
+    .spacer {
+      height: 200vh; /* Espacio suficiente para desplazarse */
+      background: linear-gradient(to bottom, #fff, #ddd);
+    }
+  </style>
+</head>
+<body>
+  <div class="spacer"></div> <!-- Para permitir el desplazamiento -->
+
+  <!-- Incluye las bibliotecas necesarias -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/146/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <script>
+    // Configuración básica de Three.js
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Luz en la escena
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(5, 5, 5).normalize();
+    scene.add(light);
+
+    // Crear un cubo
+    const geometry = new THREE.BoxGeometry();
+    const material = new THREE.MeshStandardMaterial({ color: 0x0077ff });
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    camera.position.z = 5; // Posición inicial de la cámara
+
+    // Ajustar tamaño del renderizador cuando se cambia el tamaño de la ventana
+    window.addEventListener('resize', () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    });
+
+    // Animaciones vinculadas al scroll con GSAP
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Rotación del cubo en función del scroll
+    gsap.to(cube.rotation, {
+      x: Math.PI * 2,
+      scrollTrigger: {
+        trigger: document.body,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: true, // Animación fluida vinculada al scroll
+      }
+    });
+
+    // Movimiento del cubo en el eje Y
+    gsap.to(cube.position, {
+      y: 2,
+      scrollTrigger: {
+        trigger: document.body,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: true,
+      }
+    });
+
+    // Cambiar la escala del cubo
+    gsap.to(cube.scale, {
+      x: 2,
+      y: 0.5,
+      z: 1.5,
+      scrollTrigger: {
+        trigger: document.body,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: true,
+      }
+    });
+
+    // Renderizado continuo
+    function animate() {
+      requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+</body>
+</html>
