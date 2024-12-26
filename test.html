@@ -96,7 +96,7 @@
       return program;
     }
 
-    // Crear programa
+    // Crear el programa
     const program = createShaderProgram(gl, vertexShaderSource, fragmentShaderSource);
     gl.useProgram(program);
 
@@ -226,18 +226,6 @@
       return [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
     }
 
-    function cross(a, b) {
-      return [
-        a[1] * b[2] - a[2] * b[1],
-        a[2] * b[0] - a[0] * b[2],
-        a[0] * b[1] - a[1] * b[0]
-      ];
-    }
-
-    function dot(a, b) {
-      return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
-    }
-
     // Matriz de proyección
     function perspective(fovy, aspect, near, far) {
       const top = Math.tan(fovy * 0.5) * near;
@@ -253,26 +241,27 @@
       return m;
     }
 
-    // Configurar matrices
-    const cameraPosition = [0, 2, 5];
-    const targetPosition = [0, 0, 0];
-    const upDirection = [0, 1, 0];
+    // Configuración de matrices
     const fovy = Math.PI / 4;
     const aspect = canvas.width / canvas.height;
     const near = 0.1;
     const far = 100.0;
 
+    const cameraPosition = [0, 2, 5];
+    const targetPosition = [0, 0, 0];
+    const upDirection = [0, 1, 0];
+
     const projection = perspective(fovy, aspect, near, far);
     const view = lookAt(cameraPosition, targetPosition, upDirection);
 
-    // Animación del modelo
+    // Animación y renderizado
     function animate(time) {
       time *= 0.001;
 
       // Rotar el modelo
       rotateY(modelMatrix, 0.01);
 
-      // Pasar matrices a los shaders
+      // Pasar las matrices a los shaders
       gl.uniformMatrix4fv(uModelMatrix, false, modelMatrix);
       gl.uniformMatrix4fv(uViewMatrix, false, view);
       gl.uniformMatrix4fv(uProjectionMatrix, false, projection);
@@ -288,6 +277,10 @@
       requestAnimationFrame(animate);
     }
 
+    // Habilitar el buffer de profundidad
+    gl.enable(gl.DEPTH_TEST);
+
+    // Iniciar la animación
     animate(0);
   </script>
 </body>
