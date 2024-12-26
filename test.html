@@ -49,16 +49,16 @@
       }
     `;
 
-    // Fragment Shader (define el color)
+    // Fragment Shader (define el color y la iluminación)
     const fragmentShaderSource = `
       precision mediump float;
 
       varying vec3 vNormal;
 
       void main() {
-        vec3 lightDir = normalize(vec3(0.5, 1.0, 0.5));
-        float diff = max(dot(vNormal, lightDir), 0.0);
-        gl_FragColor = vec4(vec3(0.2, 0.7, 1.0) * diff, 1.0);
+        vec3 lightDir = normalize(vec3(0.5, 1.0, 0.5)); // Dirección de la luz
+        float diff = max(dot(vNormal, lightDir), 0.0);  // Cálculo del producto punto
+        gl_FragColor = vec4(vec3(0.2, 0.7, 1.0) * diff, 1.0); // Color final
       }
     `;
 
@@ -158,14 +158,6 @@
       ]);
     }
 
-    function translate(matrix, x, y, z) {
-      const m = identityMatrix();
-      m[12] = x;
-      m[13] = y;
-      m[14] = z;
-      return multiplyMatrices(matrix, m);
-    }
-
     function rotateY(matrix, angle) {
       const m = identityMatrix();
       const cosAngle = Math.cos(angle);
@@ -199,21 +191,6 @@
       ];
     }
 
-    function dot(a, b) {
-      return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
-    }
-
-    // Función para normalizar un vector
-    function normalize(v) {
-      const len = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
-      return [v[0] / len, v[1] / len, v[2] / len];
-    }
-
-    // Función para restar dos vectores
-    function subtract(a, b) {
-      return [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
-    }
-
     // Crear la matriz de vista
     function lookAt(eye, target, up) {
       const zaxis = normalize(subtract(eye, target));  // Dirección de la cámara
@@ -239,10 +216,21 @@
       return m;
     }
 
+    function normalize(v) {
+      const length = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+      return [v[0] / length, v[1] / length, v[2] / length];
+    }
+
+    function subtract(a, b) {
+      return [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+    }
+
+    function dot(a, b) {
+      return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+    }
+
     // Función de animación
     let angle = 0;
-    const modelMatrix = identityMatrix(); // Definir la matriz de modelo
-
     function animate() {
       // Limpiar el canvas
       gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -251,9 +239,10 @@
 
       // Rotar el modelo
       angle += 0.01;
-      const modelMatrixRotated = rotateY(modelMatrix, angle);
+      const modelMatrix = identityMatrix();
+      const rotatedModelMatrix = rotateY(modelMatrix, angle);
 
-      // Matrices de transformación
+      // Matriz de proyección
       const projectionMatrix = new Float32Array([
         2 / canvas.width, 0, 0, 0,
         0, 2 / canvas.height, 0, 0,
@@ -261,10 +250,11 @@
         0, 0, -(100 + 0.1) / (100 - 0.1), 1
       ]);
 
+      // Matriz de vista
       const viewMatrix = lookAt([0, 0, 5], [0, 0, 0], [0, 1, 0]);
 
       // Enviar las matrices al shader
-      gl.uniformMatrix4fv(uModelMatrix, false, modelMatrixRotated);
+      gl.uniformMatrix4fv(uModelMatrix, false, rotatedModelMatrix);
       gl.uniformMatrix4fv(uViewMatrix, false, viewMatrix);
       gl.uniformMatrix4fv(uProjectionMatrix, false, projectionMatrix);
 
