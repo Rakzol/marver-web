@@ -190,16 +190,35 @@
       return result;
     }
 
-    // Crear matrices
-    const modelMatrix = identityMatrix();
-    const viewMatrix = identityMatrix();
-    const projectionMatrix = identityMatrix();
+    // Funciones para vectores
+    function cross(a, b) {
+      return [
+        a[1] * b[2] - a[2] * b[1],
+        a[2] * b[0] - a[0] * b[2],
+        a[0] * b[1] - a[1] * b[0]
+      ];
+    }
 
-    // Configurar cámara
+    function dot(a, b) {
+      return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+    }
+
+    // Función para normalizar un vector
+    function normalize(v) {
+      const len = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+      return [v[0] / len, v[1] / len, v[2] / len];
+    }
+
+    // Función para restar dos vectores
+    function subtract(a, b) {
+      return [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+    }
+
+    // Crear la matriz de vista
     function lookAt(eye, target, up) {
-      const zaxis = normalize(subtract(eye, target));
-      const xaxis = normalize(cross(up, zaxis));
-      const yaxis = cross(zaxis, xaxis);
+      const zaxis = normalize(subtract(eye, target));  // Dirección de la cámara
+      const xaxis = normalize(cross(up, zaxis));       // Eje X
+      const yaxis = cross(zaxis, xaxis);                // Eje Y
 
       const m = identityMatrix();
       m[0] = xaxis[0];
@@ -211,27 +230,17 @@
       m[8] = -zaxis[0];
       m[9] = -zaxis[1];
       m[10] = -zaxis[2];
-      m[12] = -dot(xaxis, eye);
-      m[13] = -dot(yaxis, eye);
-      m[14] = dot(zaxis, eye);
-      return m;
+
+      return translate(m, -eye[0], -eye[1], -eye[2]);
     }
 
-    function normalize(v) {
-      const len = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
-      return [v[0] / len, v[1] / len, v[2] / len];
-    }
-
-    function subtract(a, b) {
-      return [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
-    }
-
-    // Matriz de proyección
+    // Función de proyección
     function perspective(fovy, aspect, near, far) {
       const top = Math.tan(fovy * 0.5) * near;
       const bottom = -top;
       const left = bottom * aspect;
       const right = top * aspect;
+
       const m = new Float32Array(16);
       m[0] = (2 * near) / (right - left);
       m[5] = (2 * near) / (top - bottom);
@@ -241,7 +250,7 @@
       return m;
     }
 
-    // Configuración de matrices
+    // Matrices de cámara
     const fovy = Math.PI / 4;
     const aspect = canvas.width / canvas.height;
     const near = 0.1;
