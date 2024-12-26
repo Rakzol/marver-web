@@ -231,66 +231,52 @@
       m[9] = -zaxis[1];
       m[10] = -zaxis[2];
 
-      return translate(m, -eye[0], -eye[1], -eye[2]);
-    }
+      const eyeVec = [-dot(xaxis, eye), -dot(yaxis, eye), dot(zaxis, eye)];
+      m[12] = eyeVec[0];
+      m[13] = eyeVec[1];
+      m[14] = eyeVec[2];
 
-    // Función de proyección
-    function perspective(fovy, aspect, near, far) {
-      const top = Math.tan(fovy * 0.5) * near;
-      const bottom = -top;
-      const left = bottom * aspect;
-      const right = top * aspect;
-
-      const m = new Float32Array(16);
-      m[0] = (2 * near) / (right - left);
-      m[5] = (2 * near) / (top - bottom);
-      m[10] = -(far + near) / (far - near);
-      m[11] = -1;
-      m[14] = -(2 * far * near) / (far - near);
       return m;
     }
 
-    // Matrices de cámara
-    const fovy = Math.PI / 4;
-    const aspect = canvas.width / canvas.height;
-    const near = 0.1;
-    const far = 100.0;
+    // Función de animación
+    let angle = 0;
+    const modelMatrix = identityMatrix(); // Definir la matriz de modelo
 
-    const cameraPosition = [0, 2, 5];
-    const targetPosition = [0, 0, 0];
-    const upDirection = [0, 1, 0];
-
-    const projection = perspective(fovy, aspect, near, far);
-    const view = lookAt(cameraPosition, targetPosition, upDirection);
-
-    // Animación y renderizado
-    function animate(time) {
-      time *= 0.001;
+    function animate() {
+      // Limpiar el canvas
+      gl.clearColor(0.0, 0.0, 0.0, 1.0);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      gl.enable(gl.DEPTH_TEST);
 
       // Rotar el modelo
-      rotateY(modelMatrix, 0.01);
+      angle += 0.01;
+      const modelMatrixRotated = rotateY(modelMatrix, angle);
 
-      // Pasar las matrices a los shaders
-      gl.uniformMatrix4fv(uModelMatrix, false, modelMatrix);
-      gl.uniformMatrix4fv(uViewMatrix, false, view);
-      gl.uniformMatrix4fv(uProjectionMatrix, false, projection);
+      // Matrices de transformación
+      const projectionMatrix = new Float32Array([
+        2 / canvas.width, 0, 0, 0,
+        0, 2 / canvas.height, 0, 0,
+        0, 0, -2 / (100 - 0.1), 0,
+        0, 0, -(100 + 0.1) / (100 - 0.1), 1
+      ]);
 
-      // Limpiar pantalla
-      gl.clearColor(0.1, 0.1, 0.1, 1.0);
-      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      const viewMatrix = lookAt([0, 0, 5], [0, 0, 0], [0, 1, 0]);
 
-      // Dibujar
-      gl.bindVertexArray(vao);
+      // Enviar las matrices al shader
+      gl.uniformMatrix4fv(uModelMatrix, false, modelMatrixRotated);
+      gl.uniformMatrix4fv(uViewMatrix, false, viewMatrix);
+      gl.uniformMatrix4fv(uProjectionMatrix, false, projectionMatrix);
+
+      // Dibujar el modelo
       gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
 
+      // Llamar a la siguiente iteración de la animación
       requestAnimationFrame(animate);
     }
 
-    // Habilitar el buffer de profundidad
-    gl.enable(gl.DEPTH_TEST);
-
     // Iniciar la animación
-    animate(0);
+    animate();
   </script>
 </body>
 </html>
