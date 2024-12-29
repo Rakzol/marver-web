@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejemplo 3D con Three.js y GLTF</title>
+    <title>Ejemplo 3D con Navegación</title>
     <style>
         body { margin: 0; }
         canvas { display: block; }
@@ -11,6 +11,7 @@
 </head>
 <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
     <script>
         // Crear la escena
@@ -18,7 +19,7 @@
 
         // Crear la cámara (perspectiva)
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 5;
+        camera.position.set(0, 2, 5); // Posición inicial de la cámara
 
         // Crear el renderizador y añadirlo al cuerpo del documento
         const renderer = new THREE.WebGLRenderer();
@@ -32,6 +33,15 @@
 
         const ambientLight = new THREE.AmbientLight(0x404040); // Luz ambiental
         scene.add(ambientLight);
+
+        // Controles de navegación
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true; // Habilitar amortiguación para movimientos suaves
+        controls.dampingFactor = 0.1;
+        controls.screenSpacePanning = false; // No permitir movimiento vertical
+        controls.maxPolarAngle = Math.PI / 2; // Limitar la rotación hacia abajo
+        controls.minDistance = 1; // Distancia mínima de zoom
+        controls.maxDistance = 50; // Distancia máxima de zoom
 
         // Cargar el modelo GLB
         const loader = new THREE.GLTFLoader();
@@ -56,6 +66,9 @@
         // Función de animación
         function animate() {
             requestAnimationFrame(animate);
+
+            // Actualizar los controles
+            controls.update();
 
             // Renderizar la escena
             renderer.render(scene, camera);
