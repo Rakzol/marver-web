@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejemplo 3D con Iluminación Mejorada</title>
+    <title>Modelo 3D con Skybox y Iluminación</title>
     <style>
         body { margin: 0; }
         canvas { display: block; }
@@ -13,7 +13,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/RGBELoader.js"></script>
     <script>
         // Crear la escena
         const scene = new THREE.Scene();
@@ -25,86 +24,57 @@
         // Crear el renderizador
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true; // Habilitar sombras
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Sombras suaves
-        renderer.toneMapping = THREE.ACESFilmicToneMapping; // Mejorando el mapeo tonal
-        renderer.toneMappingExposure = 1.5; // Aumentar la exposición para hacer la escena más luminosa
         document.body.appendChild(renderer.domElement);
 
-        // Establecer un fondo claro para la escena
-        scene.background = new THREE.Color(0xeeeeee); // Fondo gris muy claro
-
-        // Controles de cámara
+        // Controlador de la cámara
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.1;
+        controls.screenSpacePanning = false;
+        controls.maxPolarAngle = Math.PI / 2;
 
-        // Añadir un suelo
-        const planeGeometry = new THREE.PlaneGeometry(10, 10);
-        const planeMaterial = new THREE.MeshStandardMaterial({ color: 0x808080, roughness: 0.8 });
-        const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-        plane.rotation.x = -Math.PI / 2;
-        plane.receiveShadow = true;
-        scene.add(plane);
-
-        // Luces para iluminación realista
-        const pointLight = new THREE.PointLight(0xffffff, 2.5, 100); // Luz puntual más brillante
-        pointLight.position.set(5, 5, 5);
-        pointLight.castShadow = true;
-        pointLight.shadow.mapSize.width = 4096; // Aumentar resolución del mapa de sombras
-        pointLight.shadow.mapSize.height = 4096;
-        scene.add(pointLight);
-
-        const ambientLight = new THREE.AmbientLight(0xaaaaaa, 1); // Luz ambiental más brillante (aumento la intensidad)
+        // Configuración de la iluminación
+        const ambientLight = new THREE.AmbientLight(0x404040, 1); // Luz ambiental suave
         scene.add(ambientLight);
 
-        // Luz direccional (como un sol)
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 2); // Aumentar intensidad de la luz direccional
-        directionalLight.position.set(-5, 10, -5);
-        directionalLight.castShadow = true;
-        directionalLight.shadow.mapSize.width = 4096;
-        directionalLight.shadow.mapSize.height = 4096;
-        directionalLight.shadow.camera.top = 10;
-        directionalLight.shadow.camera.bottom = -10;
-        directionalLight.shadow.camera.left = -10;
-        directionalLight.shadow.camera.right = 10;
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5); // Luz direccional
+        directionalLight.position.set(5, 10, 5);
         scene.add(directionalLight);
 
-        // Cargar entorno HDR para reflejos realistas
-        const rgbeLoader = new THREE.RGBELoader();
-        rgbeLoader.load(
-            'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/equirectangular/royal_esplanade_2k.hdr', // HDR de mayor resolución
-            function (texture) {
-                texture.mapping = THREE.EquirectangularReflectionMapping;
-                scene.environment = texture; // Configurar como mapa de entorno
+        // Cargar el skybox (fondo 3D)
+        const loader = new THREE.CubeTextureLoader();
+        const skybox = loader.load([
+            'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/cube/skybox/px.jpg', // derecha
+            'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/cube/skybox/nx.jpg', // izquierda
+            'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/cube/skybox/py.jpg', // arriba
+            'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/cube/skybox/ny.jpg', // abajo
+            'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/cube/skybox/pz.jpg', // adelante
+            'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/cube/skybox/nz.jpg'  // atrás
+        ]);
+        scene.background = skybox;
 
-                // Aumentar la intensidad de los reflejos
-                scene.environment.intensity = 3.0; // Aumentar más la intensidad de los reflejos
-            }
-        );
-
-        // Cargar el modelo GLB
-        const loader = new THREE.GLTFLoader();
-        loader.load(
+        // Cargar el modelo 3D (lata11.glb)
+        const gltfLoader = new THREE.GLTFLoader();
+        gltfLoader.load(
             'lata11.glb', // Ruta al archivo GLB
             function (gltf) {
                 const model = gltf.scene;
-                model.traverse(function (node) {
-                    if (node.isMesh) {
-                        node.castShadow = true; // Habilitar sombras para los objetos
-                        node.receiveShadow = true; // Asegurarse de que el modelo reciba sombras también
-                    }
-                });
+                model.scale.set(1, 1, 1); // Escalar el modelo
+                model.position.set(0, 0, 0); // Posicionar el modelo
                 scene.add(model);
 
-                // Escalar y posicionar el modelo
-                model.scale.set(1, 1, 1);
-                model.position.set(0, 0, 0);
+                // Habilitar sombras para el modelo
+                model.traverse((node) => {
+                    if (node.isMesh) {
+                        node.castShadow = true;
+                        node.receiveShadow = true;
+                    }
+                });
             },
-            function (xhr) {
+            (xhr) => {
                 console.log(`Cargando: ${(xhr.loaded / xhr.total * 100).toFixed(2)}% completado`);
             },
-            function (error) {
+            (error) => {
                 console.error('Error al cargar el modelo:', error);
             }
         );
@@ -112,7 +82,7 @@
         // Animación
         function animate() {
             requestAnimationFrame(animate);
-            controls.update();
+            controls.update(); // Necesario para la animación de la cámara
             renderer.render(scene, camera);
         }
 
