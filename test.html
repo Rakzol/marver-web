@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejemplo 3D con Iluminación Realista</title>
+    <title>Ejemplo 3D con Iluminación Realista y Reflejos Mejorados</title>
     <style>
         body { margin: 0; }
         canvas { display: block; }
@@ -27,7 +27,12 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.shadowMap.enabled = true; // Habilitar sombras
         renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Sombras suaves
+        renderer.toneMapping = THREE.ACESFilmicToneMapping; // Mejorando el mapeo tonal
+        renderer.toneMappingExposure = 1.0; // Controlar la exposición
         document.body.appendChild(renderer.domElement);
+
+        // Establecer un fondo claro para la escena
+        scene.background = new THREE.Color(0xaaaaaa); // Fondo gris claro
 
         // Controles de cámara
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -68,10 +73,13 @@
         // Cargar entorno HDR para reflejos realistas
         const rgbeLoader = new THREE.RGBELoader();
         rgbeLoader.load(
-            'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/equirectangular/royal_esplanade_1k.hdr',
+            'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/equirectangular/royal_esplanade_1k.hdr', // Puedes cambiar la textura HDR por otra de mayor calidad si la prefieres
             function (texture) {
                 texture.mapping = THREE.EquirectangularReflectionMapping;
                 scene.environment = texture; // Configurar como mapa de entorno
+
+                // Para mejorar los reflejos, ajustamos la intensidad del entorno
+                scene.environment.intensity = 1.5; // Aumentar la intensidad de los reflejos
             }
         );
 
@@ -84,6 +92,7 @@
                 model.traverse(function (node) {
                     if (node.isMesh) {
                         node.castShadow = true; // Habilitar sombras para los objetos
+                        node.receiveShadow = true; // Asegurarse de que el modelo reciba sombras también
                     }
                 });
                 scene.add(model);
