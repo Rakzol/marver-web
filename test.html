@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejemplo 3D con Iluminación Realista y Reflejos Mejorados</title>
+    <title>Ejemplo 3D con Iluminación Mejorada</title>
     <style>
         body { margin: 0; }
         canvas { display: block; }
@@ -28,7 +28,7 @@
         renderer.shadowMap.enabled = true; // Habilitar sombras
         renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Sombras suaves
         renderer.toneMapping = THREE.ACESFilmicToneMapping; // Mejorando el mapeo tonal
-        renderer.toneMappingExposure = 1.0; // Controlar la exposición
+        renderer.toneMappingExposure = 1.5; // Aumentar la exposición para hacer la escena más luminosa
         document.body.appendChild(renderer.domElement);
 
         // Establecer un fondo claro para la escena
@@ -55,11 +55,11 @@
         pointLight.shadow.mapSize.height = 4096;
         scene.add(pointLight);
 
-        const ambientLight = new THREE.AmbientLight(0xaaaaaa, 0.75); // Luz ambiental más brillante
+        const ambientLight = new THREE.AmbientLight(0xaaaaaa, 1); // Luz ambiental más brillante (aumento la intensidad)
         scene.add(ambientLight);
 
         // Luz direccional (como un sol)
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 2); // Aumentar intensidad de la luz direccional
         directionalLight.position.set(-5, 10, -5);
         directionalLight.castShadow = true;
         directionalLight.shadow.mapSize.width = 4096;
@@ -79,7 +79,7 @@
                 scene.environment = texture; // Configurar como mapa de entorno
 
                 // Aumentar la intensidad de los reflejos
-                scene.environment.intensity = 2.0; // Aumentar la intensidad
+                scene.environment.intensity = 3.0; // Aumentar más la intensidad de los reflejos
             }
         );
 
