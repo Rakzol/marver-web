@@ -32,7 +32,7 @@
         document.body.appendChild(renderer.domElement);
 
         // Establecer un fondo claro para la escena
-        scene.background = new THREE.Color(0xaaaaaa); // Fondo gris claro
+        scene.background = new THREE.Color(0xeeeeee); // Fondo gris muy claro
 
         // Controles de cámara
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -48,22 +48,22 @@
         scene.add(plane);
 
         // Luces para iluminación realista
-        const pointLight = new THREE.PointLight(0xffffff, 1.5, 100); // Luz puntual
+        const pointLight = new THREE.PointLight(0xffffff, 2.5, 100); // Luz puntual más brillante
         pointLight.position.set(5, 5, 5);
         pointLight.castShadow = true;
-        pointLight.shadow.mapSize.width = 2048; // Tamaño del mapa de sombras
-        pointLight.shadow.mapSize.height = 2048;
+        pointLight.shadow.mapSize.width = 4096; // Aumentar resolución del mapa de sombras
+        pointLight.shadow.mapSize.height = 4096;
         scene.add(pointLight);
 
-        const ambientLight = new THREE.AmbientLight(0x404040, 0.5); // Luz ambiental tenue
+        const ambientLight = new THREE.AmbientLight(0xaaaaaa, 0.75); // Luz ambiental más brillante
         scene.add(ambientLight);
 
         // Luz direccional (como un sol)
         const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
         directionalLight.position.set(-5, 10, -5);
         directionalLight.castShadow = true;
-        directionalLight.shadow.mapSize.width = 2048;
-        directionalLight.shadow.mapSize.height = 2048;
+        directionalLight.shadow.mapSize.width = 4096;
+        directionalLight.shadow.mapSize.height = 4096;
         directionalLight.shadow.camera.top = 10;
         directionalLight.shadow.camera.bottom = -10;
         directionalLight.shadow.camera.left = -10;
@@ -73,13 +73,13 @@
         // Cargar entorno HDR para reflejos realistas
         const rgbeLoader = new THREE.RGBELoader();
         rgbeLoader.load(
-            'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/equirectangular/royal_esplanade_1k.hdr', // Puedes cambiar la textura HDR por otra de mayor calidad si la prefieres
+            'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/equirectangular/royal_esplanade_2k.hdr', // HDR de mayor resolución
             function (texture) {
                 texture.mapping = THREE.EquirectangularReflectionMapping;
                 scene.environment = texture; // Configurar como mapa de entorno
 
-                // Para mejorar los reflejos, ajustamos la intensidad del entorno
-                scene.environment.intensity = 1.5; // Aumentar la intensidad de los reflejos
+                // Aumentar la intensidad de los reflejos
+                scene.environment.intensity = 2.0; // Aumentar la intensidad
             }
         );
 
