@@ -36,12 +36,12 @@
 
         // Controles de navegación
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true; // Habilitar amortiguación para movimientos suaves
-        controls.dampingFactor = 0.1;
-        controls.screenSpacePanning = false; // No permitir movimiento vertical
-        controls.maxPolarAngle = Math.PI / 2; // Limitar la rotación hacia abajo
-        controls.minDistance = 1; // Distancia mínima de zoom
-        controls.maxDistance = 50; // Distancia máxima de zoom
+        //controls.enableDamping = true; // Habilitar amortiguación para movimientos suaves
+        //controls.dampingFactor = 0.1;
+        //controls.screenSpacePanning = true; // No permitir movimiento vertical
+        //controls.maxPolarAngle = Math.PI / 2; // Limitar la rotación hacia abajo
+        //controls.minDistance = 1; // Distancia mínima de zoom
+        //controls.maxDistance = 50; // Distancia máxima de zoom
 
         // Cargar el modelo GLB
         const loader = new THREE.GLTFLoader();
