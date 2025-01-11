@@ -60,6 +60,10 @@ try {
     $preparada->bindValue(':repartidor', $_POST['clave']);
     $preparada->execute();
 
+    $preparada = $conexion->prepare("UPDATE PedidosCliente SET Status = 'R' WHERE Pedido = :pedido");
+    $preparada->bindValue(':pedido', $_POST['folio']);
+    $preparada->execute();
+
     $resultado["status"] = 0;
     $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " se finalizo correctamente";
     echo json_encode($resultado);
