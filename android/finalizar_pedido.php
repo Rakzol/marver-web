@@ -60,7 +60,7 @@ try {
     $preparada->bindValue(':repartidor', $_POST['clave']);
     $preparada->execute();
 
-    $preparada = $conexion->prepare("UPDATE PedidosCliente SET Status = 'R' WHERE Pedido = :pedido");
+    $preparada = $conexion->prepare("UPDATE PedidosCliente SET Status = 'R' WHERE Folio = :pedido");
     $preparada->bindValue(':pedido', $_POST['folio']);
     $preparada->execute();
 
