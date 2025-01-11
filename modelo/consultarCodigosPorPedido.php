@@ -15,7 +15,7 @@
 
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
-        $preparada = $conexion->prepare("SELECT Codigo FROM PedidoDetalle WHERE Folio = :folio GROUP BY Codigo ORDER BY Codigo ASC");
+        $preparada = $conexion->prepare("SELECT Producto.* FROM PedidoDetalle INNER JOIN Producto ON Producto.Codigo = PedidoDetalle.Codigo WHERE Folio = :folio ORDER BY Codigo ASC");
         $preparada->bindValue(":folio", $_GET["folio"]);
         $preparada->execute();
 
