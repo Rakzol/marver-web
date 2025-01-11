@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta Pedidos</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 800px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        table th,
+        table td {
+            text-align: left;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="buscarForm">
+        <input type="text" id="codigo" name="codigo" placeholder="Ej. GCAS5W30SIN" required>
+        <button type="submit">Buscar</button>
+    </form>
+
+    <div id="tabla-container" class="hidden">
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <th>Folio</th>
+                    <th>Codigo</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <p id="error-message" class="error hidden"></p>
+
+    <script>
+        // Función para generar las filas de la tabla
+        function actualizarTabla(datosFiltrados) {
+            const tbody = document.querySelector('#tabla tbody');
+            tbody.innerHTML = ''; // Limpiar las filas existentes
+
+            if (datosFiltrados.length > 0) {
+                datosFiltrados.forEach(dato => {
+                    const fila = document.createElement('tr');
+                    for (const clave in dato) {
+                        const celda = document.createElement('td');
+                        celda.textContent = dato[clave];
+                        fila.appendChild(celda);
+                    }
+                    tbody.appendChild(fila);
+                });
+            } else {
+                const fila = document.createElement('tr');
+                const celda = document.createElement('td');
+                celda.colSpan = 5;
+                celda.textContent = 'No se encontraron resultados.';
+                celda.style.textAlign = 'center';
+                fila.appendChild(celda);
+                tbody.appendChild(fila);
+            }
+        }
+
+        // Manejar el evento de envío del formulario
+        document.getElementById('buscarForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Prevenir recarga de la página
+
+            const codigo = document.getElementById('codigo').value;
+            const url = `https://www.marverrefacciones.mx/modelo/consultarPedidosPorCodigo?sucursal=mochis&codigo=${codigo}`;
+
+            // Mostrar el contenedor de la tabla
+            const tablaContainer = document.getElementById('tabla-container');
+            const errorMessage = document.getElementById('error-message');
+            tablaContainer.classList.add('hidden');
+            errorMessage.classList.add('hidden');
+
+            try {
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error(`Error del servidor: ${response.status}`);
+                }
+
+                const datos = await response.json();
+
+                if (Array.isArray(datos) && datos.length > 0) {
+                    actualizarTabla(datos);
+                    tablaContainer.classList.remove('hidden');
+                } else {
+                    throw new Error('No se encontraron resultados.');
+                }
+            } catch (error) {
+                if (error.message === 'Failed to fetch') {
+                    errorMessage.textContent = 'Error: No se pudo conectar con el servidor. Verifica tu conexión o el CORS.';
+                } else {
+                    errorMessage.textContent = `Error: ${error.message}`;
+                }
+                errorMessage.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>
