@@ -40,8 +40,8 @@
             $contraseña = $datos['contraseña'] ?? '';
     
             $preparada = $conexion->prepare("SELECT TOP 1 Clave, Perfil FROM Usuarios WHERE Clave = :clave AND Contraseña = :contraseña");
-            $preparada->bindValue(":clave", $datos["clave"]);
-            $preparada->bindValue(":contraseña", $datos["contraseña"]);
+            $preparada->bindValue(":clave", $clave);
+            $preparada->bindValue(":contraseña", $contraseña);
             $preparada->execute();
 
             $usuario = $preparada->fetch(PDO::FETCH_ASSOC);
