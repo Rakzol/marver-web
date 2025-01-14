@@ -37,6 +37,15 @@ function generarJWT($payload) {
     return "$headerEncoded.$payloadEncoded.$signatureEncoded";
 }
 
+function obtenerJWT(){
+    $headers = getallheaders();
+    $token = '';
+    if (isset($headers['Authorization'])) {
+        return str_replace('Bearer ', '', $headers['Authorization']);
+    }
+    return $token;
+}
+
 // Validar un JWT
 function validarJWT($jwt) {
     global $secretKey;
@@ -53,7 +62,7 @@ function validarJWT($jwt) {
     $signatureVerified = hash_hmac('sha256', "$headerEncoded.$payloadEncoded", $secretKey, true);
     $signatureVerifiedEncoded = base64UrlEncode($signatureVerified);
 
-    if ($signatureVerifiedEncoded !== $signatureProvided) {
+    if ($signatureVerifiedEncoded != $signatureProvided) {
         return false; // Firma inválida
     }
 

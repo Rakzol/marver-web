@@ -63,10 +63,21 @@
                 echo json_encode(["error" => "Credenciales invalidas"], JSON_UNESCAPED_UNICODE);
             }
         }
-        else{
-            http_response_code(404);
-            echo json_encode(["error" => "Ruta no encontrada"], JSON_UNESCAPED_UNICODE);
+        else if($accion == "validar"){
+            $token = obtenerJWT();
+            $payload = validarJWT($token);
+            
+            if($payload){
+                echo json_encode(["payload" => $payload], JSON_UNESCAPED_UNICODE);
+                exit();
+            }
+
+            http_response_code(401);
+            echo json_encode(["token" => $token, "error" => "Token invalido"], JSON_UNESCAPED_UNICODE);
         }
+
+        http_response_code(404);
+        echo json_encode(["error" => "Ruta no encontrada"], JSON_UNESCAPED_UNICODE);
         
     }catch( Exception $exception ) {
         http_response_code(500);
