@@ -4,12 +4,6 @@
     try{
 
         require_once 'JWTHelper.php';
-
-        if( $_SERVER['REQUEST_METHOD'] != 'POST' ){
-            http_response_code(400);
-            echo json_encode(["error" => "Metodo de consulta invalido"], JSON_UNESCAPED_UNICODE);
-            exit();
-        }
         
         $datos = json_decode(file_get_contents('php://input'), true);
         $sucursal = $datos['sucursal'] ?? '';
@@ -35,7 +29,7 @@
 
         $accion = $_GET['accion'] ?? '';
 
-        if($accion == 'login' ){
+        if($accion == 'login' && $_SERVER['REQUEST_METHOD'] == 'POST' ){
             $clave = $datos['clave'] ?? '';
             $contraseña = $datos['contraseña'] ?? '';
     
@@ -63,7 +57,7 @@
 
             echo json_encode(["token" => $token], JSON_UNESCAPED_UNICODE);
         }
-        else if($accion == "validar"){
+        else if($accion == "validar" && $_SERVER['REQUEST_METHOD'] == 'POST' ){
             $token = obtenerJWT();
             $payload = validarJWT($token);
 
