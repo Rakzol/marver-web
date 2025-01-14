@@ -51,6 +51,12 @@ try {
     $preparada->bindValue(':id', $EnvioPedidoCliente['Extra1']);
     $preparada->execute();
 
+    /* ????? */
+    $preparada = $conexion->prepare("UPDATE PedidosCliente SET Status = 'F' WHERE Folio = :pedido");
+    $preparada->bindValue(':pedido', $_POST['folio']);
+    $preparada->execute();
+    /* ?????? */
+
     $resultado["status"] = 0;
     $resultado["mensaje"] = "El pedido con el folio: " . $_POST['folio'] . " se elimino correctamente";
     echo json_encode($resultado);
