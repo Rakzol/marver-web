@@ -4,9 +4,11 @@
         switch( $_GET['sucursal'] ){
             case 'mochis':
                 $conexion = new PDO('sqlsrv:Server=10.10.10.130;Database=Mochis;TrustServerCertificate=true','MARITE','2505M$RITE');
+                break;
             break;
             case 'guasave':
                 $conexion = new PDO('sqlsrv:Server=12.12.12.254;Database=Guasave;TrustServerCertificate=true','MARITE','2505M$RITE');
+                break;
             break;
             case 'higuera':
                 $conexion = new PDO('sqlsrv:Server=11.11.11.52;Database=Higuera;TrustServerCertificate=true','MARITE','2505M$RITE');

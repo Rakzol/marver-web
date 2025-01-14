@@ -17,9 +17,11 @@
         switch( $sucursal ){
             case 'mochis':
                 $conexion = new PDO($arregloConexionMochis[0], $arregloConexionMochis[1], $arregloConexionMochis[2]);
+                break;
             break;
             case 'guasave':
                 $conexion = new PDO($arregloConexionGuasave[0], $arregloConexionGuasave[1], $arregloConexionGuasave[2]);
+                break;
             break;
             case 'higuera':
                 $conexion = new PDO($arregloConexionHiguera[0], $arregloConexionHiguera[1], $arregloConexionHiguera[2]);
