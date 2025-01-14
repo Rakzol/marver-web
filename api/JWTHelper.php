@@ -1,4 +1,7 @@
 <?php
+// Variables de JWT
+require_once 'credenciales.php';
+
 // Funciones para trabajar con JWT
 
 // Función para codificar en Base64 URL-safe
@@ -13,7 +16,9 @@ function base64UrlDecode($data) {
 }
 
 // Generar un JWT
-function generarJWT($payload, $secretKey) {
+function generarJWT($payload) {
+    global $secretKey;
+
     // Header
     $header = [
         "alg" => "HS256", // Algoritmo
@@ -21,8 +26,8 @@ function generarJWT($payload, $secretKey) {
     ];
 
     // Codificar Header y Payload
-    $headerEncoded = base64UrlEncode(json_encode($header));
-    $payloadEncoded = base64UrlEncode(json_encode($payload));
+    $headerEncoded = base64UrlEncode(json_encode($header, JSON_UNESCAPED_UNICODE));
+    $payloadEncoded = base64UrlEncode(json_encode($payload, JSON_UNESCAPED_UNICODE));
 
     // Crear la firma
     $signature = hash_hmac('sha256', "$headerEncoded.$payloadEncoded", $secretKey, true);
@@ -33,7 +38,9 @@ function generarJWT($payload, $secretKey) {
 }
 
 // Validar un JWT
-function validarJWT($jwt, $secretKey) {
+function validarJWT($jwt) {
+    global $secretKey;
+
     // Separar las partes del token
     $parts = explode('.', $jwt);
     if (count($parts) !== 3) {
