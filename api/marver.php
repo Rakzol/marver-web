@@ -5,7 +5,7 @@
 
         require_once 'JWTHelper.php';
 
-        if( $_SERVER['REQUEST_METHOD'] !== 'POST' ){
+        if( $_SERVER['REQUEST_METHOD'] != 'POST' ){
             http_response_code(400);
             echo json_encode(["error" => "Metodo de consulta invalido"], JSON_UNESCAPED_UNICODE);
             exit();
@@ -35,7 +35,7 @@
 
         $accion = $_GET['accion'] ?? '';
 
-        if($accion === 'login' ){
+        if($accion == 'login' ){
             $clave = $datos['clave'] ?? '';
             $contraseña = $datos['contraseña'] ?? '';
     
