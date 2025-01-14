@@ -17,11 +17,9 @@
         switch( $sucursal ){
             case 'mochis':
                 $conexion = new PDO($arregloConexionMochis[0], $arregloConexionMochis[1], $arregloConexionMochis[2]);
-                break;
             break;
             case 'guasave':
                 $conexion = new PDO($arregloConexionGuasave[0], $arregloConexionGuasave[1], $arregloConexionGuasave[2]);
-                break;
             break;
             case 'higuera':
                 $conexion = new PDO($arregloConexionHiguera[0], $arregloConexionHiguera[1], $arregloConexionHiguera[2]);
@@ -30,7 +28,7 @@
                 http_response_code(400);
                 echo json_encode(["error" => "Sucursal invalida"], JSON_UNESCAPED_UNICODE);
                 exit();
-                break;
+            break;
         }        
 
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
