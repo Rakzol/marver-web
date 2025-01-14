@@ -43,7 +43,7 @@ function validarJWT($jwt) {
 
     // Separar las partes del token
     $parts = explode('.', $jwt);
-    if (count($parts) !== 3) {
+    if (count($parts) != 3) {
         return false; // Token inválido
     }
 
