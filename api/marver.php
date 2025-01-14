@@ -46,34 +46,34 @@
 
             $usuario = $preparada->fetch(PDO::FETCH_ASSOC);
 
-            if($usuario){
-
-                $payload = [
-                    "clave" => $usuario['Clave'],
-                    "perfil" => $usuario['Perfil'],
-                    "iat" => time(),
-                    "exp" => time() + (60 * 60 * 24 *30)
-                ];
-
-                $token = generarJWT($payload);
-
-                echo json_encode(["token" => $token], JSON_UNESCAPED_UNICODE);
-            }else{
+            if(!$usuario){
                 http_response_code(401);
                 echo json_encode(["error" => "Credenciales invalidas"], JSON_UNESCAPED_UNICODE);
+                exit();
             }
+            
+            $payload = [
+                "clave" => $usuario['Clave'],
+                "perfil" => $usuario['Perfil'],
+                "iat" => time(),
+                "exp" => time() + (60 * 60 * 24 *30)
+            ];
+
+            $token = generarJWT($payload);
+
+            echo json_encode(["token" => $token], JSON_UNESCAPED_UNICODE);
         }
         else if($accion == "validar"){
             $token = obtenerJWT();
             $payload = validarJWT($token);
 
-            if($payload){
-                echo json_encode(["payload" => $payload], JSON_UNESCAPED_UNICODE);
+            if(!$payload){
+                http_response_code(401);
+                echo json_encode(["token" => $token, "error" => "Token invalido"], JSON_UNESCAPED_UNICODE);
                 exit();
             }
 
-            http_response_code(401);
-            echo json_encode(["token" => $token, "error" => "Token invalido"], JSON_UNESCAPED_UNICODE);
+            echo json_encode(["payload" => $payload], JSON_UNESCAPED_UNICODE);
         }
         else{
             http_response_code(404);
