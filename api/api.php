@@ -27,14 +27,19 @@
 
         $method = $_SERVER['REQUEST_METHOD'];
         print_r($method);
+        echo '<br>';
         $requestUri = $_SERVER['REQUEST_URI'];
         print_r($requestUri);
+        echo '<br>';
         $scriptName = dirname($_SERVER['SCRIPT_NAME']);
         print_r($scriptName);
+        echo '<br>';
         $path = trim(str_replace($scriptName, '', $requestUri), '/');
         print_r($path);
+        echo '<br>';
         $parts = explode('/', $path);
         print_r($parts);
+        echo '<br>';
 
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
