@@ -1,87 +1,23 @@
-import os
-import json
-import mido
+import qrcode
+from PIL import Image
 
-def find_gh3_songs(base_path):
-    """
-    Busca la carpeta de canciones de Guitar Hero 3.
-    """
-    songs_path = os.path.join(base_path, "songs")
-    if not os.path.exists(songs_path):
-        raise FileNotFoundError("No se encontró la carpeta de canciones en la ruta proporcionada.")
+# Define el texto largo que quieres incluir en el QR
+texto_largo = """data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAcJJREFUSEvFljtOxDAQhp2GvQIPIR6ChgpauAIVEnAKoIFTsM3CKQCJiitACxUNiIcQjyssjdE/a5uJY8eTxKudZmOvM5//32M7hZpQFC242nunTQ7V9CU9mF4ocY9+3m27Ua4mgwl6+P2mzmYWK0aZCYjziQcqpbTW/y53hUvB/rqSYt929Emtl4Ar62p9BiQEZxOI5peAkYcUW6t/Hy7V1Poe8YtilCJSdJ3BhqsJNLy/UL2NfZoIJoFAm08gVWxSxUnw0vax+vr84NVem1sK1lAZC0ARrzd9rn58YAAtjD8b2zuDqbBm5+YdBG2rkitla510MjnA2Ovgvt1WMS8wM6azYs4KrrWtaAnQJpMqLsFDRWb3cWobtQXTKXa+vKsOXq4c329L4E0VV8CAIvhEcoMJiqQrm6N9y4OD0Z+CN1Hs7uPVrRPHfLo9pWf/mswFprsY5zR+Q2D0WdX4WECYCyQoTqrYgUM2A/J813e3l6vc0c2VB4xMIfi4wODR6SVVXGdz1IbQAcH6NIdDqW3jmUXWI5OUx8AWaiaQDRz84KtxJwtY76z1Sozrx6Hy+/gA/B+r6CZrPDGwq+pE4YmL6w8nwtsfYMKjMAAAAABJRU5ErkJggg=="""
 
-    songs = []
-    for root, dirs, files in os.walk(songs_path):
-        for file in files:
-            if file.endswith(".mid") or file.endswith(".chart"):
-                songs.append(os.path.join(root, file))
-    return songs
+# Crea el objeto QR con la versión más alta (para más capacidad de almacenamiento)
+qr = qrcode.QRCode(
+    version=1,  # Establece la versión más alta (para máximo almacenamiento)
+    error_correction=qrcode.constants.ERROR_CORRECT_L,  # Mínimo nivel de corrección de errores
+    box_size=5,  # El tamaño de cada celda del QR
+    border=4,  # Ancho del borde del QR
+)
 
-def parse_midi_file(midi_path):
-    """
-    Analiza un archivo MIDI y devuelve eventos de notas y BPM.
-    """
-    mid = mido.MidiFile(midi_path)
-    bpm = 120.0  # Valor predeterminado de BPM
-    notes = []
+# Añade el texto al QR
+qr.add_data(texto_largo)
+qr.make(fit=True)
 
-    for track in mid.tracks:
-        time = 0
-        for msg in track:
-            time += msg.time
-            if msg.type == 'set_tempo':
-                bpm = mido.tempo2bpm(msg.tempo)
-            if msg.type == 'note_on' and msg.velocity > 0:
-                notes.append({
-                    "_time": time / mid.ticks_per_beat * (bpm / 60),
-                    "_lineIndex": msg.note % 4,  # Simplificación para línea
-                    "_lineLayer": (msg.note // 4) % 3,  # Simplificación para capa
-                    "_type": 0,  # 0 para izquierda, 1 para derecha
-                    "_cutDirection": 8  # Dirección predeterminada
-                })
-    return notes, bpm
+# Crea una imagen a partir del código QR
+img = qr.make_image(fill='black', back_color='white')
 
-def create_beat_saber_map(song_path, output_folder):
-    """
-    Genera un archivo JSON inicial para una pista de Beat Saber.
-    """
-    song_name = os.path.basename(song_path).split('.')[0]
-    notes, bpm = parse_midi_file(song_path)
-
-    map_data = {
-        "_version": "2.0.0",
-        "_events": [],
-        "_notes": notes,
-        "_obstacles": [],
-        "_customData": {
-            "_songFilename": f"{song_name}.ogg",
-            "_bpm": bpm,
-        }
-    }
-
-    output_path = os.path.join(output_folder, f"{song_name}.dat")
-    with open(output_path, "w") as f:
-        json.dump(map_data, f, indent=4)
-
-    print(f"Pista de Beat Saber generada: {output_path}")
-
-def main():
-    gh3_path = input("Introduce la ruta de instalación de Guitar Hero 3: ")
-    output_folder = input("Introduce la carpeta de salida para las pistas de Beat Saber: ")
-
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
-
-    try:
-        songs = find_gh3_songs(gh3_path)
-        print(f"Se encontraron {len(songs)} canciones.")
-
-        for song_path in songs:
-            if song_path.endswith(".mid"):
-                create_beat_saber_map(song_path, output_folder)
-
-    except Exception as e:
-        print(f"Error: {e}")
-
-if __name__ == "__main__":
-    main()
+# Muestra la imagen
+img.show()
