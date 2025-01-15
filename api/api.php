@@ -50,8 +50,8 @@
         if($recurso == 'login'){
             switch($metodo){
                 case 'POST':
-                    $clave = $datos['clave'] ?? '';
-                    $contraseña = $datos['contraseña'] ?? '';
+                    $clave = $datos['clave'] ?? null;
+                    $contraseña = $datos['contraseña'] ?? null;
             
                     $preparada = $conexion->prepare("SELECT TOP 1 Clave, Perfil FROM Usuarios WHERE Clave = :clave AND Contraseña = :contrasena");
                     $preparada->bindValue(":clave", $clave);
