@@ -25,55 +25,18 @@
             break;
         }        
 
-        $method = $_SERVER['REQUEST_METHOD'];
-        print_r($method);
-        echo '<br>';
-        $requestUri = $_SERVER['REQUEST_URI'];
-        print_r($requestUri);
-        echo '<br>';
-        $scriptName = dirname($_SERVER['SCRIPT_NAME']);
-        print_r($scriptName);
-        echo '<br>';
-        $path = trim(str_replace($scriptName, '', $requestUri), '/');
-        print_r($path);
-        echo '<br>';
-        $parts = explode('/', $path);
-        print_r($parts);
-        echo '<br>';
-
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
-        $accion = $_GET['accion'] ?? '';
+        $metodo = $_SERVER['REQUEST_METHOD'];
+        $requestUri = $_SERVER['REQUEST_URI'];
+        $scriptName = dirname($_SERVER['SCRIPT_NAME']);
+        $path = trim(str_replace($scriptName, '', $requestUri), '/');
+        $partes = explode('/', $path);
 
-        if($accion == 'login' && $_SERVER['REQUEST_METHOD'] == 'POST' ){
-            $clave = $datos['clave'] ?? '';
-            $contraseña = $datos['contraseña'] ?? '';
-    
-            $preparada = $conexion->prepare("SELECT TOP 1 Clave, Perfil FROM Usuarios WHERE Clave = :clave AND Contraseña = :contrasena");
-            $preparada->bindValue(":clave", $clave);
-            $preparada->bindValue(":contrasena", $contraseña);
-            $preparada->execute();
+        $recurso = $partes[0] ?? null;
+        $id = $partes[1] ?? null;
 
-            $usuario = $preparada->fetch(PDO::FETCH_ASSOC);
-
-            if(!$usuario){
-                http_response_code(401);
-                echo json_encode(["error" => "Credenciales invalidas"], JSON_UNESCAPED_UNICODE);
-                exit();
-            }
-            
-            $payload = [
-                "clave" => $usuario['Clave'],
-                "perfil" => $usuario['Perfil'],
-                "iat" => time(),
-                "exp" => time() + (60 * 60 * 24 *30)
-            ];
-
-            $token = generarJWT($payload);
-
-            echo json_encode(["token" => $token], JSON_UNESCAPED_UNICODE);
-        }
-        else if($accion == "validar" && $_SERVER['REQUEST_METHOD'] == 'POST' ){
+        if($recurso != 'login'){
             $token = obtenerJWT();
             $payload = validarJWT($token);
 
@@ -82,8 +45,54 @@
                 echo json_encode(["token" => $token, "error" => "Token invalido"], JSON_UNESCAPED_UNICODE);
                 exit();
             }
+        }
 
-            echo json_encode(["payload" => $payload], JSON_UNESCAPED_UNICODE);
+        if($recurso == 'login'){
+            switch($metodo){
+                case 'POST':
+                    $clave = $datos['clave'] ?? '';
+                    $contraseña = $datos['contraseña'] ?? '';
+            
+                    $preparada = $conexion->prepare("SELECT TOP 1 Clave, Perfil FROM Usuarios WHERE Clave = :clave AND Contraseña = :contrasena");
+                    $preparada->bindValue(":clave", $clave);
+                    $preparada->bindValue(":contrasena", $contraseña);
+                    $preparada->execute();
+        
+                    $usuario = $preparada->fetch(PDO::FETCH_ASSOC);
+        
+                    if(!$usuario){
+                        http_response_code(401);
+                        echo json_encode(["error" => "Credenciales invalidas"], JSON_UNESCAPED_UNICODE);
+                        exit();
+                    }
+                    
+                    $payload = [
+                        "clave" => $usuario['Clave'],
+                        "perfil" => $usuario['Perfil'],
+                        "iat" => time(),
+                        "exp" => time() + (60 * 60 * 24 *30)
+                    ];
+        
+                    $token = generarJWT($payload);
+        
+                    echo json_encode(["token" => $token], JSON_UNESCAPED_UNICODE);
+                break;
+                default:
+                    http_response_code(405);
+                    echo json_encode(["error" => "Metodo no permitido"], JSON_UNESCAPED_UNICODE);
+                break;
+            }
+        }
+        else if($recurso == 'payload'){
+            switch($metodo){
+                case 'GET':
+                    echo json_encode(["token" => $token], JSON_UNESCAPED_UNICODE);
+                break;
+                default:
+                    http_response_code(405);
+                    echo json_encode(["error" => "Metodo no permitido"], JSON_UNESCAPED_UNICODE);
+                break;
+            }
         }
         else{
             http_response_code(404);
