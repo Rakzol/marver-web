@@ -53,6 +53,12 @@
                     $clave = $datos['clave'] ?? null;
                     $contraseña = $datos['contraseña'] ?? null;
             
+                    if( filter_var($clave, FILTER_VALIDATE_INT) == false || filter_var($contraseña, FILTER_VALIDATE_INT) == false ){
+                        http_response_code(400);
+                        echo json_encode(["error" => "La clave y contraseña tienen que ser enteros"], JSON_UNESCAPED_UNICODE);
+                        exit();
+                    }
+
                     $preparada = $conexion->prepare("SELECT TOP 1 Clave, Perfil FROM Usuarios WHERE Clave = :clave AND Contraseña = :contrasena");
                     $preparada->bindValue(":clave", $clave);
                     $preparada->bindValue(":contrasena", $contraseña);
