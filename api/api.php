@@ -68,7 +68,7 @@
                         exit();
                     }
 
-                    $preparada = $conexion->prepare("SELECT TOP 1 Clave, Nombre, NombreCompleto, Perfil FROM Usuarios WHERE Clave = :clave AND Contraseña = :contrasena");
+                    $preparada = $conexion->prepare("SELECT TOP 1 Clave, Nombre, Perfil FROM Usuarios WHERE Clave = :clave AND Contraseña = :contrasena");
                     $preparada->bindValue(":clave", $clave);
                     $preparada->bindValue(":contrasena", $contraseña);
                     $preparada->execute();
@@ -84,7 +84,6 @@
                     $payload = [
                         "clave" => $usuario['Clave'],
                         "nombre" => $usuario['Nombre'],
-                        "nombreCompleto" => $usuario['NombreCompleto'],
                         "perfil" => $usuario['Perfil'],
                         "iat" => time(),
                         "exp" => time() + (60 * 60 * 24 *30)
