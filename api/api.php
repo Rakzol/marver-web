@@ -25,6 +25,17 @@
             break;
         }        
 
+        $method = $_SERVER['REQUEST_METHOD'];
+        print_r($method);
+        $requestUri = $_SERVER['REQUEST_URI'];
+        print_r($requestUri);
+        $scriptName = dirname($_SERVER['SCRIPT_NAME']);
+        print_r($scriptName);
+        $path = trim(str_replace($scriptName, '', $requestUri), '/');
+        print_r($path);
+        $parts = explode('/', $path);
+        print_r($parts);
+
         $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
         $accion = $_GET['accion'] ?? '';
