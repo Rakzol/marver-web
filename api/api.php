@@ -6,7 +6,7 @@
         require_once 'JWTHelper.php';
         
         $datos = json_decode(file_get_contents('php://input'), true);
-        $sucursal = $datos['sucursal'] ?? '';
+        $sucursal = $datos['sucursal'] ?? null;
 
         switch( $sucursal ){
             case 'mochis':
