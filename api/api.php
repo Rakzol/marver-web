@@ -100,7 +100,7 @@
         }
         else if($recurso == 'payload'){
             switch($metodo){
-                case 'GET':
+                case 'POST':
                     echo json_encode(["payload" => $payload], JSON_UNESCAPED_UNICODE);
                 break;
                 default:
