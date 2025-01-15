@@ -86,7 +86,7 @@
         else if($recurso == 'payload'){
             switch($metodo){
                 case 'GET':
-                    echo json_encode(["token" => $token], JSON_UNESCAPED_UNICODE);
+                    echo json_encode(["payload" => $payload], JSON_UNESCAPED_UNICODE);
                 break;
                 default:
                     http_response_code(405);
