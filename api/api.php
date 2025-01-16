@@ -84,6 +84,7 @@
                     $payload = [
                         "clave" => $usuario['Clave'],
                         "nombre" => $usuario['Nombre'],
+                        "sucursal" => $sucursal,
                         "perfil" => $usuario['Perfil'],
                         "iat" => time(),
                         "exp" => time() + (60 * 60 * 24 *30)
