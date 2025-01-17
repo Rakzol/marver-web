@@ -88,9 +88,8 @@
                     http_response_code(405);
                     echo json_encode(["error" => "Metodo no permitido"], JSON_UNESCAPED_UNICODE);
                 break;
-                
-                exit();
             }
+            exit();
         }else{
             $token = obtenerJWT();
             $payload = validarJWT($token);
