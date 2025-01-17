@@ -172,7 +172,6 @@
                     echo json_encode(["paqueterias" => $paqueterias], JSON_UNESCAPED_UNICODE);
                 break;
                 case 'DELETE':
-
                     $preparada = $conexion->prepare("DELETE FROM paqueterias WHERE id = :id");
                     $preparada->bindValue(":id", $id);
                     $preparada->execute();
@@ -180,6 +179,22 @@
                     if(!$preparada->rowCount()){
                         http_response_code(404);
                         echo json_encode(["error" => "No se elimino ninguna paqueteria"], JSON_UNESCAPED_UNICODE);
+                        exit();
+                    }
+
+                    http_response_code(204);
+                break;
+                case 'PUT':
+                    $nombre = $datos['nombre'] ?? null;
+
+                    $preparada = $conexion->prepare("UPDATE paqueterias SET nombre = :nombre WHERE id = :id");
+                    $preparada->bindValue(":nombre", $nombre);
+                    $preparada->bindValue(":id", $id);
+                    $preparada->execute();
+        
+                    if(!$preparada->rowCount()){
+                        http_response_code(404);
+                        echo json_encode(["error" => "No se actualizo ninguna paqueteria"], JSON_UNESCAPED_UNICODE);
                         exit();
                     }
 
