@@ -171,6 +171,20 @@
 
                     echo json_encode(["paqueterias" => $paqueterias], JSON_UNESCAPED_UNICODE);
                 break;
+                case 'DELETE':
+
+                    $preparada = $conexion->prepare("DELETE FROM paqueterias WHERE id = :id");
+                    $preparada->bindValue(":id", $id);
+                    $preparada->execute();
+        
+                    if(!$preparada->rowCount()){
+                        http_response_code(404);
+                        echo json_encode(["error" => "No se elimino ninguna paqueteria"], JSON_UNESCAPED_UNICODE);
+                        exit();
+                    }
+
+                    http_response_code(204);
+                break;
                 default:
                     http_response_code(405);
                     echo json_encode(["error" => "Metodo no permitido"], JSON_UNESCAPED_UNICODE);
