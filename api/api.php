@@ -206,6 +206,93 @@
                 break;
             }
         }
+        else if($recurso == 'bitacoras'){
+            switch($metodo){
+                case 'POST':
+                    $usuario = $datos['usuario'] ?? null;
+                    $fecha = $datos['fecha'] ?? null;
+                    $proveedor = $datos['proveedor'] ?? null;
+                    $numeroDeCajas = $datos['numeroDeCajas'] ?? null;
+                    $paqueteria = $datos['paqueteria'] ?? null;
+                    $observacion = $datos['observacion'] ?? null;
+
+                    $preparada = $conexion->prepare("INSERT INTO bitacoras VALUES( :usuario, :fecha, :proveedor, :numeroDeCajas, :paqueteria, :observacion)");
+                    $preparada->bindValue(":usuario", $usuario);
+                    $preparada->bindValue(":fecha", $fecha);
+                    $preparada->bindValue(":proveedor", $proveedor);
+                    $preparada->bindValue(":numeroDeCajas", $numeroDeCajas);
+                    $preparada->bindValue(":paqueteria", $paqueteria);
+                    $preparada->bindValue(":observacion", $observacion);
+                    $preparada->execute();
+
+                    http_response_code(201);
+                    echo json_encode(["id" => $conexion->lastInsertId()], JSON_UNESCAPED_UNICODE);
+                break;
+                case 'GET':
+
+                    if($id){
+                        $preparada = $conexion->prepare("SELECT * FROM bitacoras WHERE id = :id");
+                        $preparada->bindValue(":id", $id);
+                    }else{
+                        $preparada = $conexion->prepare("SELECT * FROM bitacoras");
+                    }
+                    $preparada->execute();
+
+                    $bitacoras = $preparada->fetchAll(PDO::FETCH_ASSOC);
+        
+                    if(!$bitacoras){
+                        http_response_code(404);
+                        echo json_encode(["error" => "No hay bitacoras que coincidan"], JSON_UNESCAPED_UNICODE);
+                        exit();
+                    }
+
+                    echo json_encode(["bitacoras" => $bitacoras], JSON_UNESCAPED_UNICODE);
+                break;
+                case 'DELETE':
+                    $preparada = $conexion->prepare("DELETE FROM bitacoras WHERE id = :id");
+                    $preparada->bindValue(":id", $id);
+                    $preparada->execute();
+        
+                    if(!$preparada->rowCount()){
+                        http_response_code(404);
+                        echo json_encode(["error" => "No se elimino ninguna bitacora"], JSON_UNESCAPED_UNICODE);
+                        exit();
+                    }
+
+                    http_response_code(204);
+                break;
+                case 'PUT':
+                    $usuario = $datos['usuario'] ?? null;
+                    $fecha = $datos['fecha'] ?? null;
+                    $proveedor = $datos['proveedor'] ?? null;
+                    $numeroDeCajas = $datos['numeroDeCajas'] ?? null;
+                    $paqueteria = $datos['paqueteria'] ?? null;
+                    $observacion = $datos['observacion'] ?? null;
+
+                    $preparada = $conexion->prepare("UPDATE bitacoras SET usuario = :usuario, fecha = :fecha, proveedor = :proveedor, numeroDeCajas = :numeroDeCajas, paqueteria = :paqueteria, observacion = :observacion WHERE id = :id");
+                    $preparada->bindValue(":usuario", $usuario);
+                    $preparada->bindValue(":fecha", $fecha);
+                    $preparada->bindValue(":proveedor", $proveedor);
+                    $preparada->bindValue(":numeroDeCajas", $numeroDeCajas);
+                    $preparada->bindValue(":paqueteria", $paqueteria);
+                    $preparada->bindValue(":observacion", $observacion);
+                    $preparada->bindValue(":id", $id);
+                    $preparada->execute();
+        
+                    if(!$preparada->rowCount()){
+                        http_response_code(404);
+                        echo json_encode(["error" => "No se actualizo ninguna bitacora"], JSON_UNESCAPED_UNICODE);
+                        exit();
+                    }
+
+                    http_response_code(204);
+                break;
+                default:
+                    http_response_code(405);
+                    echo json_encode(["error" => "Metodo no permitido"], JSON_UNESCAPED_UNICODE);
+                break;
+            }
+        }
         else{
             http_response_code(404);
             echo json_encode(["error" => "Ruta no encontrada"], JSON_UNESCAPED_UNICODE);
