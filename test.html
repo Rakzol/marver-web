@@ -29,13 +29,13 @@
     function fetchData() {
       const url = "https://www.marverrefacciones.mx/api/bitacoras";
 
-      fetch(url,{
+      let XD = fetch(url,{
         headers: {
             'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGF2ZSI6NDUsIm5vbWJyZSI6IkdJTEJFUlRPIiwic3VjdXJzYWwiOiJtb2NoaXMiLCJwZXJmaWwiOiJBRE1JTklTVFJBRE9SIiwiaWF0IjoxNzM3MTU0MDY5LCJleHAiOjE3Mzk3NDYwNjl9.AQgrVvcFFYilDBB6GSv3ns6sRr7RCDY0NIAJL13PE9c',
             'Content-Type': 'application/json',
         }
-      })
-        .then(response => {
+      });
+      XD.then(response => {
           if (!response.ok) {
             throw new Error(`Error en la solicitud: ${response.status}`);
           }
