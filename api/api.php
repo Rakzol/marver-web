@@ -90,37 +90,37 @@
                 break;
             }
             exit();
-        }else{
-            $token = obtenerJWT();
-            $payload = validarJWT($token);
-
-            if(!$payload){
-                http_response_code(401);
-                echo json_encode(["token" => $token, "error" => "Token invalido"], JSON_UNESCAPED_UNICODE);
-                exit();
-            }
-
-            $sucursal = $payload['sucursal'];
-
-            switch( $sucursal ){
-                case 'mochis':
-                    $conexion = new PDO($arregloConexionMochis[0], $arregloConexionMochis[1], $arregloConexionMochis[2]);
-                break;
-                case 'guasave':
-                    $conexion = new PDO($arregloConexionGuasave[0], $arregloConexionGuasave[1], $arregloConexionGuasave[2]);
-                break;
-                case 'higuera':
-                    $conexion = new PDO($arregloConexionHiguera[0], $arregloConexionHiguera[1], $arregloConexionHiguera[2]);
-                    break;
-                default:
-                    http_response_code(400);
-                    echo json_encode(["error" => "Sucursal invalida"], JSON_UNESCAPED_UNICODE);
-                    exit();
-                break;
-            }        
-    
-            $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
         }
+
+        $token = obtenerJWT();
+        $payload = validarJWT($token);
+
+        if(!$payload){
+            http_response_code(401);
+            echo json_encode(["token" => $token, "error" => "Token invalido"], JSON_UNESCAPED_UNICODE);
+            exit();
+        }
+
+        $sucursal = $payload['sucursal'];
+
+        switch( $sucursal ){
+            case 'mochis':
+                $conexion = new PDO($arregloConexionMochis[0], $arregloConexionMochis[1], $arregloConexionMochis[2]);
+            break;
+            case 'guasave':
+                $conexion = new PDO($arregloConexionGuasave[0], $arregloConexionGuasave[1], $arregloConexionGuasave[2]);
+            break;
+            case 'higuera':
+                $conexion = new PDO($arregloConexionHiguera[0], $arregloConexionHiguera[1], $arregloConexionHiguera[2]);
+                break;
+            default:
+                http_response_code(400);
+                echo json_encode(["error" => "Sucursal invalida"], JSON_UNESCAPED_UNICODE);
+                exit();
+            break;
+        }        
+
+        $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
         if($recurso == 'payload'){
             switch($metodo){
