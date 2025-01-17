@@ -284,19 +284,19 @@
                                 "id" => $bitacora["bi.id"],
                                 "fecha" => $bitacora["bi.fecha"],
                                 "numeroCajas" => $bitacora["bi.numeroCajas"],
-                                "observacion" => $bitacora["biobservacion"]
+                                "observacion" => $bitacora["bi.observacion"]
                             ],
                             "usuario" => [
                                 "id" => $bitacora["us.id"],
-                                "nombre" => $bitacora["usnombre"]
+                                "nombre" => $bitacora["us.nombre"]
                             ],
                             "proveedor" => [
                                 "id" => $bitacora["pr.id"],
-                                "nombre" => $bitacora["prnombre"]
+                                "nombre" => $bitacora["pr.nombre"]
                             ],
                             "paqueteria" => [
                                 "id" => $bitacora["pa.id"],
-                                "nombre" => $bitacora["panombre"]
+                                "nombre" => $bitacora["pa.nombre"]
                             ],
                         ];
                     }
