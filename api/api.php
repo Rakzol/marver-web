@@ -210,15 +210,15 @@
             switch($metodo){
                 case 'POST':
                     $usuario = $datos['usuario'] ?? null;
-                    $fecha = $datos['fecha'] ?? null;
+                    //$fecha = $datos['fecha'] ?? null;
                     $proveedor = $datos['proveedor'] ?? null;
                     $numeroDeCajas = $datos['numeroDeCajas'] ?? null;
                     $paqueteria = $datos['paqueteria'] ?? null;
                     $observacion = $datos['observacion'] ?? null;
 
-                    $preparada = $conexion->prepare("INSERT INTO bitacoras VALUES( :usuario, :fecha, :proveedor, :numeroDeCajas, :paqueteria, :observacion)");
+                    $preparada = $conexion->prepare("INSERT INTO bitacoras VALUES( :usuario, GETDATE(), :proveedor, :numeroDeCajas, :paqueteria, :observacion)");
                     $preparada->bindValue(":usuario", $usuario);
-                    $preparada->bindValue(":fecha", $fecha);
+                    //$preparada->bindValue(":fecha", $fecha);
                     $preparada->bindValue(":proveedor", $proveedor);
                     $preparada->bindValue(":numeroDeCajas", $numeroDeCajas);
                     $preparada->bindValue(":paqueteria", $paqueteria);
