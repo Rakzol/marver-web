@@ -62,11 +62,11 @@
                     $clave = $datos['clave'] ?? null;
                     $contraseña = $datos['contraseña'] ?? null;
             
-                    if( filter_var($clave, FILTER_VALIDATE_INT) == false || filter_var($contraseña, FILTER_VALIDATE_INT) == false ){
-                        http_response_code(400);
-                        echo json_encode(["error" => "La clave y contraseña tienen que ser enteros"], JSON_UNESCAPED_UNICODE);
-                        exit();
-                    }
+                    // if( filter_var($clave, FILTER_VALIDATE_INT) == false || filter_var($contraseña, FILTER_VALIDATE_INT) == false ){
+                    //     http_response_code(400);
+                    //     echo json_encode(["error" => "La clave y contraseña tienen que ser enteros"], JSON_UNESCAPED_UNICODE);
+                    //     exit();
+                    // }
 
                     $preparada = $conexion->prepare("SELECT TOP 1 Clave, Nombre, Perfil FROM Usuarios WHERE Clave = :clave AND Contraseña = :contrasena");
                     $preparada->bindValue(":clave", $clave);
@@ -104,6 +104,50 @@
             switch($metodo){
                 case 'POST':
                     echo json_encode(["payload" => $payload], JSON_UNESCAPED_UNICODE);
+                break;
+                default:
+                    http_response_code(405);
+                    echo json_encode(["error" => "Metodo no permitido"], JSON_UNESCAPED_UNICODE);
+                break;
+            }
+        }
+        else if($recurso == 'paqueterias'){
+            switch($metodo){
+                case 'POST':
+                    $nombre = $datos['nombre'] ?? null;
+
+                    // if( !$nombre ){
+                    //     http_response_code(400);
+                    //     echo json_encode(["error" => "El nombre debe ser una cadena"], JSON_UNESCAPED_UNICODE);
+                    //     exit();
+                    // }
+
+                    $preparada = $conexion->prepare("INSERT INTO paqueterias VALUES(:nombre)");
+                    $preparada->bindValue(":nombre", $nombre);
+                    $preparada->execute();
+
+                    http_response_code(201);
+                    echo json_encode(["id" => $conexio->lastInsertId()], JSON_UNESCAPED_UNICODE);
+                break;
+                case 'GET':
+
+                    if($id){
+                        $preparada = $conexion->prepare("SELECT * FROM paqueterias WHERE id = :id");
+                        $preparada->bindValue(":id", $id);
+                    }else{
+                        $preparada = $conexion->prepare("SELECT * FROM paqueterias");
+                    }
+                    $preparada->execute();
+
+                    $paqueterias = $preparada->fetchAll(PDO::FETCH_ASSOC);
+        
+                    if(!$paqueterias){
+                        http_response_code(404);
+                        echo json_encode(["error" => "No hay paqueterias que coincidan"], JSON_UNESCAPED_UNICODE);
+                        exit();
+                    }
+
+                    echo json_encode(["paqueterias" => $paqueterias], JSON_UNESCAPED_UNICODE);
                 break;
                 default:
                     http_response_code(405);
