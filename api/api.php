@@ -250,7 +250,6 @@
                             INNER JOIN Proveedores pr ON pr.Clave = bi.proveedor
                             INNER JOIN paqueterias pa ON pa.id = bi.paqueteria
                             WHERE bi.id = :id
-                            ORDER BY bi.fecha DESC
                         ");
                         $preparada->bindValue(":id", $id);
                     }else{
@@ -341,6 +340,38 @@
                     }
 
                     http_response_code(204);
+                break;
+                default:
+                    http_response_code(405);
+                    echo json_encode(["error" => "Metodo no permitido"], JSON_UNESCAPED_UNICODE);
+                break;
+            }
+        }
+        else if($recurso == 'proveedores'){
+            switch($metodo){
+                case 'GET':
+                    
+                    if($id){
+                        $preparada = $conexion->prepare("
+                            SELECT Clave AS id, Nombre as nombre FROM Proveedores WHERE Clave = :id
+                        ");
+                        $preparada->bindValue(":id", $id);
+                    }else{
+                        $preparada = $conexion->prepare("
+                            SELECT Clave AS id, Nombre as nombre FROM Proveedores ORDER BY Nombre DESC
+                        ");
+                    }
+                    $preparada->execute();
+
+                    $proveedores = $preparada->fetchAll(PDO::FETCH_ASSOC);
+        
+                    if(!$proveedores){
+                        http_response_code(404);
+                        echo json_encode(["error" => "No hay proveedores que coincidan"], JSON_UNESCAPED_UNICODE);
+                        exit();
+                    }
+
+                    echo json_encode(["proveedores" => $proveedores], JSON_UNESCAPED_UNICODE);
                 break;
                 default:
                     http_response_code(405);
