@@ -149,7 +149,7 @@
                     $preparada->execute();
 
                     http_response_code(201);
-                    echo json_encode(["id" => $conexio->lastInsertId()], JSON_UNESCAPED_UNICODE);
+                    echo json_encode(["id" => $conexion->lastInsertId()], JSON_UNESCAPED_UNICODE);
                 break;
                 case 'GET':
 
