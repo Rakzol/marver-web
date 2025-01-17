@@ -1,99 +1,57 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modelo 3D con Skybox y Iluminación</title>
-    <style>
-        body { margin: 0; }
-        canvas { display: block; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fetch API Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    #output {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+    }
+  </style>
 </head>
-<body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
-    <script>
-        // Crear la escena
-        const scene = new THREE.Scene();
+<body onload="fetchData()">
+  <h1>Ejemplo de Fetch API</h1>
+  <p>Los datos se obtendrán automáticamente al cargar la página.</p>
+  <div id="output">
+    <strong>Datos obtenidos:</strong>
+    <pre id="data"></pre>
+  </div>
 
-        // Crear la cámara
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 2, 5);
+  <script>
+    function fetchData() {
+      const url = "https://www.marverrefacciones.mx/api/bitacoras";
 
-        // Crear el renderizador
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-
-        // Controlador de la cámara
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.1;
-        controls.screenSpacePanning = false;
-        controls.maxPolarAngle = Math.PI / 2;
-
-        // Configuración de la iluminación
-        const ambientLight = new THREE.AmbientLight(0x404040, 1); // Luz ambiental suave
-        scene.add(ambientLight);
-
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5); // Luz direccional
-        directionalLight.position.set(5, 10, 5);
-        scene.add(directionalLight);
-
-        // Cargar el skybox (fondo 3D)
-        const loader = new THREE.CubeTextureLoader();
-        const skybox = loader.load([
-            'https://threejs.org/examples/textures/cube/skybox/px.jpg', // derecha
-            'https://threejs.org/examples/textures/cube/skybox/nx.jpg', // izquierda
-            'https://threejs.org/examples/textures/cube/skybox/py.jpg', // arriba
-            'https://threejs.org/examples/textures/cube/skybox/ny.jpg', // abajo
-            'https://threejs.org/examples/textures/cube/skybox/pz.jpg', // adelante
-            'https://threejs.org/examples/textures/cube/skybox/nz.jpg'  // atrás
-        ]);
-        scene.background = skybox;
-
-        // Cargar el modelo 3D (lata11.glb)
-        const gltfLoader = new THREE.GLTFLoader();
-        gltfLoader.load(
-            'lata11.glb', // Ruta al archivo GLB
-            function (gltf) {
-                const model = gltf.scene;
-                model.scale.set(1, 1, 1); // Escalar el modelo
-                model.position.set(0, 0, 0); // Posicionar el modelo
-                scene.add(model);
-
-                // Habilitar sombras para el modelo
-                model.traverse((node) => {
-                    if (node.isMesh) {
-                        node.castShadow = true;
-                        node.receiveShadow = true;
-                    }
-                });
-            },
-            (xhr) => {
-                console.log(`Cargando: ${(xhr.loaded / xhr.total * 100).toFixed(2)}% completado`);
-            },
-            (error) => {
-                console.error('Error al cargar el modelo:', error);
-            }
-        );
-
-        // Animación
-        function animate() {
-            requestAnimationFrame(animate);
-            controls.update(); // Necesario para la animación de la cámara
-            renderer.render(scene, camera);
+      fetch(url,{
+        headers: {
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGF2ZSI6NDUsIm5vbWJyZSI6IkdJTEJFUlRPIiwic3VjdXJzYWwiOiJtb2NoaXMiLCJwZXJmaWwiOiJBRE1JTklTVFJBRE9SIiwiaWF0IjoxNzM3MTU0MDY5LCJleHAiOjE3Mzk3NDYwNjl9.AQgrVvcFFYilDBB6GSv3ns6sRr7RCDY0NIAJL13PE9c',
+            'Content-Type': 'application/json',
         }
-
-        animate();
-
-        // Redimensionar al cambiar el tamaño de la ventana
-        window.addEventListener('resize', () => {
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Error en la solicitud: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Muestra los datos en el div con id "data"
+          document.getElementById('data').textContent = JSON.stringify(data, null, 2);
+          console.log("Datos obtenidos:", data); // También los muestra en la consola
+        })
+        .catch(error => {
+          // Muestra el error en la consola y en la página
+          document.getElementById('data').textContent = `Error: ${error.message}`;
+          console.error("Error:", error);
         });
-    </script>
+    }
+  </script>
 </body>
 </html>
