@@ -157,7 +157,7 @@
                         $preparada = $conexion->prepare("SELECT * FROM paqueterias WHERE id = :id");
                         $preparada->bindValue(":id", $id);
                     }else{
-                        $preparada = $conexion->prepare("SELECT * FROM paqueterias");
+                        $preparada = $conexion->prepare("SELECT * FROM paqueterias ORDER BY nombre");
                     }
                     $preparada->execute();
 
@@ -230,11 +230,42 @@
                 break;
                 case 'GET':
 
+                    $usuario = $_GET['usuario'] ?? null;
+                    $fechaInicio = $_GET['fechaInicio'] ?? null;
+                    $fechaFin = $_GET['fechaFin'] ?? null;
+                    $proveedor = $_GET['proveedor'] ?? null;
+                    $numeroDeCajas = $_GET['numeroDeCajas'] ?? null;
+                    $paqueteria = $_GET['paqueteria'] ?? null;
+                    $observacion = $_GET['observacion'] ?? null;
+
                     if($id){
-                        $preparada = $conexion->prepare("SELECT * FROM bitacoras WHERE id = :id");
+                        $preparada = $conexion->prepare("
+                            SELECT
+                            bi.id AS 'bi.id', bi.fecha AS 'bi.fecha', bi.numeroDeCajas AS 'bi.numeroDeCajas', bi.observacion AS 'bi.observacion',
+                            us.Clave AS 'us.id', us.Nombre AS 'us.nombre',
+                            pr.Clave AS 'pr.id', pr.Nombre AS 'pr.nombre',
+                            pa.id AS 'pa.id', pa.nombre AS 'pa.nombre'
+                            FROM bitacoras bi
+                            INNER JOIN Usuarios us ON us.Clave = bi.usuario
+                            INNER JOIN Proveedores pr ON pr.Clave = bi.proveedor
+                            INNER JOIN paqueterias pa ON pa.id = bi.paqueteria
+                            WHERE bi.id = :id
+                            ORDER BY bi.fecha DESC
+                        ");
                         $preparada->bindValue(":id", $id);
                     }else{
-                        $preparada = $conexion->prepare("SELECT * FROM bitacoras");
+                        $preparada = $conexion->prepare("
+                            SELECT
+                            bi.id AS 'bi.id', bi.fecha AS 'bi.fecha', bi.numeroDeCajas AS 'bi.numeroDeCajas', bi.observacion AS 'bi.observacion',
+                            us.Clave AS 'us.id', us.Nombre AS 'us.nombre',
+                            pr.Clave AS 'pr.id', pr.Nombre AS 'pr.nombre',
+                            pa.id AS 'pa.id', pa.nombre AS 'pa.nombre'
+                            FROM bitacoras bi
+                            INNER JOIN Usuarios us ON us.Clave = bi.usuario
+                            INNER JOIN Proveedores pr ON pr.Clave = bi.proveedor
+                            INNER JOIN paqueterias pa ON pa.id = bi.paqueteria
+                            ORDER BY bi.fecha DESC
+                        ");
                     }
                     $preparada->execute();
 
@@ -246,7 +277,31 @@
                         exit();
                     }
 
-                    echo json_encode(["bitacoras" => $bitacoras], JSON_UNESCAPED_UNICODE);
+                    $resultado = [];
+                    foreach($bitacoras as $bitacora){
+                        $resultado[] = [
+                            "bitacora" => [
+                                "id" => $bitacora["bi.id"],
+                                "fecha" => $bitacora["bi.fecha"],
+                                "numeroCajas" => $bitacora["bi.numeroCajas"],
+                                "observacion" => $bitacora["biobservacion"]
+                            ],
+                            "usuario" => [
+                                "id" => $bitacora["us.id"],
+                                "nombre" => $bitacora["usnombre"]
+                            ],
+                            "proveedor" => [
+                                "id" => $bitacora["pr.id"],
+                                "nombre" => $bitacora["prnombre"]
+                            ],
+                            "paqueteria" => [
+                                "id" => $bitacora["pa.id"],
+                                "nombre" => $bitacora["panombre"]
+                            ],
+                        ];
+                    }
+
+                    echo json_encode(["bitacoras" => $resultado], JSON_UNESCAPED_UNICODE);
                 break;
                 case 'DELETE':
                     $preparada = $conexion->prepare("DELETE FROM bitacoras WHERE id = :id");
