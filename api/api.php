@@ -15,26 +15,6 @@
         }
 
         $datos = json_decode(file_get_contents('php://input'), true);
-        $sucursal = $datos['sucursal'] ?? null;
-
-        switch( $sucursal ){
-            case 'mochis':
-                $conexion = new PDO($arregloConexionMochis[0], $arregloConexionMochis[1], $arregloConexionMochis[2]);
-            break;
-            case 'guasave':
-                $conexion = new PDO($arregloConexionGuasave[0], $arregloConexionGuasave[1], $arregloConexionGuasave[2]);
-            break;
-            case 'higuera':
-                $conexion = new PDO($arregloConexionHiguera[0], $arregloConexionHiguera[1], $arregloConexionHiguera[2]);
-                break;
-            default:
-                http_response_code(400);
-                echo json_encode(["error" => "Sucursal invalida"], JSON_UNESCAPED_UNICODE);
-                exit();
-            break;
-        }        
-
-        $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
 
         $metodo = $_SERVER['REQUEST_METHOD'];
         $requestUri = $_SERVER['REQUEST_URI'];
@@ -45,20 +25,30 @@
         $recurso = $partes[0] ?? null;
         $id = $partes[1] ?? null;
 
-        if($recurso != 'login'){
-            $token = obtenerJWT();
-            $payload = validarJWT($token);
-
-            if(!$payload){
-                http_response_code(401);
-                echo json_encode(["token" => $token, "error" => "Token invalido"], JSON_UNESCAPED_UNICODE);
-                exit();
-            }
-        }
-
         if($recurso == 'login'){
             switch($metodo){
                 case 'POST':
+                    $sucursal = $datos['sucursal'] ?? null;
+
+                    switch( $sucursal ){
+                        case 'mochis':
+                            $conexion = new PDO($arregloConexionMochis[0], $arregloConexionMochis[1], $arregloConexionMochis[2]);
+                        break;
+                        case 'guasave':
+                            $conexion = new PDO($arregloConexionGuasave[0], $arregloConexionGuasave[1], $arregloConexionGuasave[2]);
+                        break;
+                        case 'higuera':
+                            $conexion = new PDO($arregloConexionHiguera[0], $arregloConexionHiguera[1], $arregloConexionHiguera[2]);
+                            break;
+                        default:
+                            http_response_code(400);
+                            echo json_encode(["error" => "Sucursal invalida"], JSON_UNESCAPED_UNICODE);
+                            exit();
+                        break;
+                    }        
+            
+                    $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
+
                     $clave = $datos['clave'] ?? null;
                     $contraseña = $datos['contraseña'] ?? null;
             
@@ -99,8 +89,39 @@
                     echo json_encode(["error" => "Metodo no permitido"], JSON_UNESCAPED_UNICODE);
                 break;
             }
+        }else{
+            $token = obtenerJWT();
+            $payload = validarJWT($token);
+
+            if(!$payload){
+                http_response_code(401);
+                echo json_encode(["token" => $token, "error" => "Token invalido"], JSON_UNESCAPED_UNICODE);
+                exit();
+            }
+
+            $sucursal = $payload['sucursal'];
+
+            switch( $sucursal ){
+                case 'mochis':
+                    $conexion = new PDO($arregloConexionMochis[0], $arregloConexionMochis[1], $arregloConexionMochis[2]);
+                break;
+                case 'guasave':
+                    $conexion = new PDO($arregloConexionGuasave[0], $arregloConexionGuasave[1], $arregloConexionGuasave[2]);
+                break;
+                case 'higuera':
+                    $conexion = new PDO($arregloConexionHiguera[0], $arregloConexionHiguera[1], $arregloConexionHiguera[2]);
+                    break;
+                default:
+                    http_response_code(400);
+                    echo json_encode(["error" => "Sucursal invalida"], JSON_UNESCAPED_UNICODE);
+                    exit();
+                break;
+            }        
+    
+            $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
         }
-        else if($recurso == 'payload'){
+
+        if($recurso == 'payload'){
             switch($metodo){
                 case 'POST':
                     echo json_encode(["payload" => $payload], JSON_UNESCAPED_UNICODE);
