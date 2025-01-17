@@ -283,7 +283,7 @@
                             "bitacora" => [
                                 "id" => $bitacora["bi.id"],
                                 "fecha" => $bitacora["bi.fecha"],
-                                "numeroCajas" => $bitacora["bi.numeroCajas"],
+                                "numeroDeCajas" => $bitacora["bi.numeroDeCajas"],
                                 "observacion" => $bitacora["bi.observacion"]
                             ],
                             "usuario" => [
