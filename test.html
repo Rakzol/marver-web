@@ -35,6 +35,9 @@
             'Content-Type': 'application/json',
         }
       });
+
+      console.log(XD);
+
       XD.then(response => {
           if (!response.ok) {
             throw new Error(`Error en la solicitud: ${response.status}`);
