@@ -24,31 +24,31 @@ while (true) {
     }
 
     // Consultar la tabla de auditoría
-    $conn = new PDO("sqlsrv:Server=localhost;Database=your_database", "username", "password");
+    /*$conn = new PDO("sqlsrv:Server=localhost;Database=your_database", "username", "password");
     $stmt = $conn->query("SELECT * FROM products_audit WHERE action_sent = 0");
-    $changes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $changes = $stmt->fetchAll(PDO::FETCH_ASSOC);*/
 
-    foreach ($changes as $change) {
-        $message = json_encode($change);
+    //foreach ($changes as $change) {
+        $message = json_encode(["saludo"=>"hola"]);
         
         // Enviar el cambio a todos los clientes conectados
         foreach ($clients as $client) {
-            @socket_write($client, $message);
+            socket_write($client, $message);
         }
 
         // Marcar el registro como enviado
-        $conn->query("UPDATE products_audit SET action_sent = 1 WHERE id = {$change['id']}");
-    }
+        //$conn->query("UPDATE products_audit SET action_sent = 1 WHERE id = {$change['id']}");
+    //}
 
     // Leer mensajes de los clientes conectados
     foreach ($read as $client) {
-        $data = @socket_read($client, 1024, PHP_BINARY_READ);
-        if ($data === false || $data === "") {
+        $data = socket_read($client, 1024, PHP_BINARY_READ);
+        if (!$data) {
             unset($clients[array_search($client, $clients)]);
             socket_close($client);
             echo "Cliente desconectado.\n";
         }
     }
 
-    sleep(1); // Intervalo para verificar nuevos cambios
+    //sleep(1); // Intervalo para verificar nuevos cambios
 }
