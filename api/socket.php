@@ -1,7 +1,7 @@
 <?php
 
 $host = '127.0.0.1';
-$port = 8080;
+$port = 6969;
 
 $server = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 socket_bind($server, $host, $port);
