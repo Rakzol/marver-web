@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cliente WebSocket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        #messages {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cliente WebSocket</h1>
+
+    <input type="text" id="messageInput" placeholder="Escribe un mensaje...">
+    <button onclick="sendMessage()">Enviar</button>
+
+    <div id="messages"></div>
+
+    <script>
+        // Crear una conexión WebSocket al servidor en ws://127.0.0.1:8080
+        const socket = new WebSocket('ws://10.10.10.130:8080');
+
+        // Cuando la conexión se abre, mostrar en consola y permitir enviar mensaje
+        socket.onopen = function(event) {
+            console.log("Conectado al servidor WebSocket");
+            appendMessage("Conectado al servidor WebSocket");
+        };
+
+        // Cuando recibimos un mensaje del servidor, mostrarlo en el área de mensajes
+        socket.onmessage = function(event) {
+            console.log("Mensaje recibido del servidor: ", event.data);
+            appendMessage("Servidor: " + event.data);
+        };
+
+        // Si ocurre un error, mostrarlo en consola
+        socket.onerror = function(error) {
+            console.error("Error en la conexión WebSocket: ", error);
+            appendMessage("Error en la conexión WebSocket.");
+        };
+
+        // Si la conexión se cierra, mostrarlo en consola
+        socket.onclose = function(event) {
+            console.log("Conexión WebSocket cerrada");
+            appendMessage("Conexión cerrada.");
+        };
+
+        // Función para enviar un mensaje al servidor WebSocket
+        function sendMessage() {
+            const message = document.getElementById('messageInput').value;
+            if (message.trim() !== "") {
+                socket.send(message);
+                console.log("Mensaje enviado al servidor: ", message);
+                appendMessage("Tú: " + message);
+                document.getElementById('messageInput').value = ''; // Limpiar el campo de entrada
+            }
+        }
+
+        // Función para agregar el mensaje al área de mensajes
+        function appendMessage(message) {
+            const messagesDiv = document.getElementById('messages');
+            const messageElement = document.createElement('div');
+            messageElement.textContent = message;
+            messagesDiv.appendChild(messageElement);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Desplazar hacia abajo automáticamente
+        }
+    </script>
+</body>
+</html>
