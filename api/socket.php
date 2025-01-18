@@ -3,6 +3,35 @@
 $host = '127.0.0.1';
 $port = 6969;
 
+/**/
+// Ruta a los archivos SSL
+$sslCertFile = 'path_to_your_certificate.crt'; // Certificado público
+$sslKeyFile = 'path_to_your_private.pem'; // Clave privada
+//$sslCAFile = 'path_to_your_ca_chain.crt'; // (Opcional) archivo de la cadena de certificados de la CA
+
+// Crea un servidor SSL
+$context = stream_context_create([
+    'ssl' => [
+        'local_cert' => $sslCertFile,
+        'local_pk' => $sslKeyFile,
+        //'cafile' => $sslCAFile,
+        'verify_peer' => false,  // Esto se puede ajustar según tus necesidades de seguridad
+        'verify_peer_name' => false, // Esto se puede ajustar según tus necesidades de seguridad
+        'allow_self_signed' => true, // Si estás usando un certificado auto-firmado
+    ]
+]);
+
+// Crea el servidor con stream
+$server = stream_socket_server("ssl://$host:$port", $errno, $errstr, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $context);
+
+if (!$server) {
+    echo "Error: $errstr ($errno)\n";
+    exit(1);
+}
+
+echo "Servidor WebSocket seguro (WSS) iniciado en wss://$host:$port\n";
+/**/
+
 $server = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 socket_bind($server, $host, $port);
 socket_listen($server);
