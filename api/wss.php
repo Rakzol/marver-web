@@ -1,27 +1,45 @@
 <?php
 
-$host = '127.0.0.1';
-$port = 6969;
+$host = '0.0.0.0';
+$port = 8888;
 
-$server = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-socket_bind($server, $host, $port);
-socket_listen($server);
+// Ruta al archivo de certificado SSL y clave
+$certFile = 'pem2.pem';
+$keyFile = 'key.pem';
+
+// Crear un servidor SSL (HTTPS)
+$context = stream_context_create([
+    'ssl' => [
+        'local_cert'  => $certFile,
+        'local_pk'    => $keyFile,
+        'verify_peer' => false,
+        'verify_peer_name' => false,
+        'allow_self_signed' => false,   // Set to true if using self-signed cert
+    ]
+]);
+
+// Crear servidor WebSocket sobre SSL
+$server = stream_socket_server("ssl://$host:$port", $errno, $errstr, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $context);
+if (!$server) {
+    echo "Error al iniciar servidor: $errstr ($errno)\n";
+    exit(1);
+}
 
 $clients = [];
-echo "Servidor WebSocket iniciado en ws://$host:$port\n";
+echo "Servidor WebSocket iniciado en wss://$host:$port\n";
 
 while (true) {
     // Monitorear nuevos clientes
     $read = $clients;
     $read[] = $server;
-    socket_select($read, $write, $except, 0, 10);
+    stream_select($read, $write, $except, 0, 10);
 
     if (in_array($server, $read)) {
         echo "Intento usuarios\n";
-        $newClient = socket_accept($server);
-        
+        $newClient = stream_socket_accept($server);
+
         // Realizar el handshake WebSocket
-        $request = socket_read($newClient, 1024);
+        $request = fread($newClient, 1024);
         $headers = parse_headers($request);
         
         // Si es un WebSocket, responder al handshake
@@ -31,7 +49,7 @@ while (true) {
                         "Upgrade: websocket\r\n" .
                         "Connection: Upgrade\r\n" .
                         "Sec-WebSocket-Accept: $acceptKey\r\n\r\n";
-            socket_write($newClient, $response);
+            fwrite($newClient, $response);
             $clients[] = $newClient;
             echo "Nuevo cliente conectado.\n";
         }
@@ -42,7 +60,7 @@ while (true) {
     // Leer mensajes de los clientes conectados
     foreach ($read as $client) {
         if ($client != $server) {  // Evitar leer del servidor mismo
-            $data = socket_read($client, 1024, PHP_BINARY_READ);
+            $data = fread($client, 1024);
             if ($data) {
                 // Decodificar el mensaje recibido
                 $decodedMessage = decodeMessage($data);
@@ -54,9 +72,9 @@ while (true) {
                         sendMessage($otherClient, $decodedMessage);
                     }
                 }
-            }else {
+            } else {
                 unset($clients[array_search($client, $clients)]);
-                socket_close($client);
+                fclose($client);
                 echo "Cliente desconectado.\n";
             }
         }
@@ -81,7 +99,7 @@ function parse_headers($request) {
 function sendMessage($client, $message) {
     // Codificar el mensaje en formato WebSocket (frame)
     $frame = chr(0x81) . chr(strlen($message)) . $message;
-    socket_write($client, $frame);
+    fwrite($client, $frame);
 }
 
 // Función para decodificar un mensaje WebSocket recibido
