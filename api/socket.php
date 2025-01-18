@@ -1,7 +1,7 @@
 <?php
 // Dirección y puerto del servidor
 $host = '127.0.0.1';
-$port = 8080;
+$port = 6969;
 
 // Crear un socket TCP/IP
 $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
