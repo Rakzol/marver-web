@@ -5,8 +5,8 @@ $port = 6969;
 
 /**/
 // Ruta a los archivos SSL
-$sslCertFile = 'path_to_your_certificate.crt'; // Certificado público
-$sslKeyFile = 'path_to_your_private.pem'; // Clave privada
+$sslCertFile = 'crt.crt'; // Certificado público
+$sslKeyFile = 'pem.pem'; // Clave privada
 //$sslCAFile = 'path_to_your_ca_chain.crt'; // (Opcional) archivo de la cadena de certificados de la CA
 
 // Crea un servidor SSL
