@@ -18,12 +18,13 @@ $context = stream_context_create([
     ]
 ]);
 
-// Crear servidor WebSocket sobre SSL
-$server = stream_socket_server("tls://$host:$port", $errno, $errstr, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $context);
+// Crear el servidor en el puerto 8888
+$server = stream_socket_server("tls://0.0.0.0:8888", $errno, $errstr, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $context);
+
 if (!$server) {
-    echo "Error al iniciar servidor: $errstr ($errno)\n";
-    exit(1);
+    die("Error al iniciar el servidor: $errstr ($errno)\n");
 }
+
 // Configurar el socket del servidor como no bloqueante
 stream_set_blocking($server, false);
 
@@ -42,10 +43,8 @@ while (true) {
     if (stream_select($read, $write, $except, 0, 10)) {
         // Manejar nuevas conexiones
         if (in_array($server, $read)) {
-            $newClient = @stream_socket_accept($server, 0); // No bloquear
+            $newClient = stream_socket_accept($server);
             if ($newClient) {
-                // Configurar el nuevo cliente como no bloqueante
-                stream_set_blocking($newClient, false);
                 $clients[] = $newClient;
                 echo "Nuevo cliente conectado\n";
             }
@@ -54,8 +53,8 @@ while (true) {
 
         // Leer mensajes de los clientes
         foreach ($read as $client) {
-            $data = @fread($client, 1024); // Usar @ para evitar warnings en clientes no listos
-            if ($data === false || $data === '') {
+            $data = fread($client, 1024);
+            if (!$data) {
                 // Desconectar al cliente si no hay datos
                 fclose($client);
                 unset($clients[array_search($client, $clients)]);
@@ -93,8 +92,6 @@ while (true) {
             }
         }
     }
-
-    usleep(100000);
 }
 
 // Función para desenmarcar la carga útil de WebSocket

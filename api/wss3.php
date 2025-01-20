@@ -1,5 +1,6 @@
 <?php
 
+
 $host = '0.0.0.0';
 $port = 8888;
 
@@ -24,15 +25,16 @@ if (!$server) {
     echo "Error al iniciar servidor: $errstr ($errno)\n";
     exit(1);
 }
-// Configurar el socket del servidor como no bloqueante
+
+// Configurar el servidor como no bloqueante
 stream_set_blocking($server, false);
 
 echo "Servidor WSS escuchando en tls://0.0.0.0:8888\n";
 
 $clients = []; // Lista de clientes conectados
+$handshakes = []; // Estado de handshake por cliente
 
 while (true) {
-    // Crear un conjunto de flujos para monitorear
     $read = $clients;
     $read[] = $server; // Incluir el servidor para detectar nuevas conexiones
     $write = null;
@@ -42,59 +44,69 @@ while (true) {
     if (stream_select($read, $write, $except, 0, 10)) {
         // Manejar nuevas conexiones
         if (in_array($server, $read)) {
-            $newClient = @stream_socket_accept($server, 0); // No bloquear
+            $newClient = @stream_socket_accept($server, 0);
             if ($newClient) {
-                // Configurar el nuevo cliente como no bloqueante
                 stream_set_blocking($newClient, false);
                 $clients[] = $newClient;
+                $handshakes[(int)$newClient] = false; // Marcar como no conectado
                 echo "Nuevo cliente conectado\n";
             }
             unset($read[array_search($server, $read)]);
         }
 
-        // Leer mensajes de los clientes
+        // Leer datos de los clientes conectados
         foreach ($read as $client) {
-            $data = @fread($client, 1024); // Usar @ para evitar warnings en clientes no listos
+            $data = @fread($client, 1024);
+
             if ($data === false || $data === '') {
-                // Desconectar al cliente si no hay datos
+                // Si no hay datos, cerrar la conexión
                 fclose($client);
                 unset($clients[array_search($client, $clients)]);
+                unset($handshakes[(int)$client]);
                 echo "Cliente desconectado\n";
                 continue;
             }
 
-            // Realizar el "handshake" si es necesario
-            if (strpos($data, 'Sec-WebSocket-Key:') !== false) {
-                $key = '';
-                if (preg_match("/Sec-WebSocket-Key: (.*)\r\n/", $data, $matches)) {
-                    $key = trim($matches[1]);
-                }
-                $acceptKey = base64_encode(pack('H*', sha1($key . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11')));
+            // Verificar si el cliente ya completó el handshake
+            if (!$handshakes[(int)$client]) {
+                if (strpos($data, 'Sec-WebSocket-Key:') !== false) {
+                    // Procesar el handshake
+                    if (preg_match("/Sec-WebSocket-Key: (.*)\r\n/", $data, $matches)) {
+                        $key = trim($matches[1]);
+                        $acceptKey = base64_encode(pack('H*', sha1($key . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11')));
 
-                $response = "HTTP/1.1 101 Switching Protocols\r\n" .
-                            "Upgrade: websocket\r\n" .
-                            "Connection: Upgrade\r\n" .
-                            "Sec-WebSocket-Accept: $acceptKey\r\n\r\n";
+                        $response = "HTTP/1.1 101 Switching Protocols\r\n" .
+                                    "Upgrade: websocket\r\n" .
+                                    "Connection: Upgrade\r\n" .
+                                    "Sec-WebSocket-Accept: $acceptKey\r\n\r\n";
 
-                fwrite($client, $response);
-                echo "Handshake completado con un cliente\n";
-            } else {
-                // Procesar y retransmitir el mensaje a todos los clientes conectados
-                $message = unmaskWebSocketPayload($data);
-                echo "Mensaje recibido: $message\n";
-
-                // Enviar el mensaje a todos los clientes
-                $response = maskWebSocketPayload("Cliente dice: $message");
-                foreach ($clients as $otherClient) {
-                    if ($otherClient !== $client) {
-                        fwrite($otherClient, $response);
+                        fwrite($client, $response);
+                        $handshakes[(int)$client] = true; // Handshake completo
+                        echo "Handshake completado con un cliente\n";
                     }
+                } else {
+                    // Si no hay handshake, cerrar el cliente
+                    //fclose($client);
+                    //unset($clients[array_search($client, $clients)]);
+                    //unset($handshakes[(int)$client]);
+                    //echo "Handshake fallido, cliente desconectado\n";
+                }
+                continue; // No procesar más datos en este ciclo
+            }
+
+            // Si el handshake está completo, procesar los mensajes
+            $message = unmaskWebSocketPayload($data);
+            echo "Mensaje recibido: $message\n";
+
+            // Retransmitir a todos los demás clientes
+            $response = maskWebSocketPayload("Cliente dice: $message");
+            foreach ($clients as $otherClient) {
+                if ($otherClient !== $client) {
+                    fwrite($otherClient, $response);
                 }
             }
         }
     }
-
-    usleep(100000);
 }
 
 // Función para desenmarcar la carga útil de WebSocket
