@@ -1,10 +1,12 @@
 <?php
 
+require_once 'JWTHelper.php';
+
 $host = '0.0.0.0';
 $port = 8888;
 
 // Ruta al archivo de certificado SSL y clave
-$certFile = 'pem2.pem';
+$certFile = 'crt.crt';
 $keyFile = 'key.pem';
 
 // Crear un servidor SSL (HTTPS)
@@ -19,7 +21,7 @@ $context = stream_context_create([
 ]);
 
 // Crear servidor WebSocket sobre SSL
-$server = stream_socket_server("ssl://$host:$port", $errno, $errstr, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $context);
+$server = stream_socket_server("tls://$host:$port", $errno, $errstr, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $context);
 if (!$server) {
     echo "Error al iniciar servidor: $errstr ($errno)\n";
     exit(1);
@@ -57,30 +59,27 @@ while (true) {
         unset($read[array_search($server, $read)]);
     }
 
-    // Leer mensajes de los clientes conectados
-    foreach ($read as $client) {
-        if ($client != $server) {  // Evitar leer del servidor mismo
-            $data = fread($client, 1024);
-            if ($data) {
-                // Decodificar el mensaje recibido
-                $decodedMessage = decodeMessage($data);
-                echo $decodedMessage;
-                
-                // Reenviar el mensaje a todos los demás clientes
-                foreach ($clients as $otherClient) {
-                    if ($otherClient != $client) {
-                        sendMessage($otherClient, $decodedMessage);
-                    }
-                }
-            } else {
-                unset($clients[array_search($client, $clients)]);
-                fclose($client);
-                echo "Cliente desconectado.\n";
-            }
+    /* SQL */
+
+    $conexion = new PDO($arregloConexionMochis[0], $arregloConexionMochis[1], $arregloConexionMochis[2]);
+    $conexion->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, True);
+
+    $preparada = $conexion->prepare("SELECT * FROM bitacoras_backup");
+    $preparada->execute();
+    $bitacoras = $preparada->fetchAll(PDO::FETCH_ASSOC);
+
+    if($bitacoras){
+        foreach ($clients as $otherClient) {
+            sendMessage($otherClient, json_encode(["bitacoras" => $bitacoras], JSON_UNESCAPED_UNICODE));
         }
     }
 
-    //sleep(1); // Intervalo para verificar nuevos cambios
+    $preparada = $conexion->prepare("DELETE bitacoras_backup");
+    $preparada->execute();
+
+    /* SQL */
+
+    sleep(1); // Intervalo para verificar nuevos cambios
 }
 
 // Función para analizar los encabezados HTTP
