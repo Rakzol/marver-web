@@ -4,7 +4,7 @@ $host = '0.0.0.0';
 $port = 8888;
 
 // Ruta al archivo de certificado SSL y clave
-$certFile = 'pem2.pem';
+$certFile = 'crt.crt';
 $keyFile = 'key.pem';
 
 // Crear un servidor SSL (HTTPS)
@@ -19,133 +19,118 @@ $context = stream_context_create([
 ]);
 
 // Crear servidor WebSocket sobre SSL
-$server = stream_socket_server("ssl://$host:$port", $errno, $errstr, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $context);
+$server = stream_socket_server("tls://$host:$port", $errno, $errstr, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $context);
 if (!$server) {
     echo "Error al iniciar servidor: $errstr ($errno)\n";
     exit(1);
 }
+// Configurar el socket del servidor como no bloqueante
+stream_set_blocking($server, false);
 
-$clients = [];
-echo "Servidor WebSocket iniciado en wss://$host:$port\n";
+echo "Servidor WSS escuchando en tls://0.0.0.0:8888\n";
+
+$clients = []; // Lista de clientes conectados
 
 while (true) {
-    // Monitorear nuevos clientes
+    // Crear un conjunto de flujos para monitorear
     $read = $clients;
-    $read[] = $server;
-    stream_select($read, $write, $except, 0, 10);
+    $read[] = $server; // Incluir el servidor para detectar nuevas conexiones
+    $write = null;
+    $except = null;
 
-    if (in_array($server, $read)) {
-        echo "Intento usuarios\n";
-        $newClient = stream_socket_accept($server);
-
-        // Realizar el handshake WebSocket
-        $request = fread($newClient, 1024);
-        $headers = parse_headers($request);
-        
-        // Si es un WebSocket, responder al handshake
-        if (isset($headers['Sec-WebSocket-Key'])) {
-            $acceptKey = base64_encode(sha1($headers['Sec-WebSocket-Key'] . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
-            $response = "HTTP/1.1 101 Switching Protocols\r\n" .
-                        "Upgrade: websocket\r\n" .
-                        "Connection: Upgrade\r\n" .
-                        "Sec-WebSocket-Accept: $acceptKey\r\n\r\n";
-            fwrite($newClient, $response);
-            $clients[] = $newClient;
-            echo "Nuevo cliente conectado.\n";
+    // Usar stream_select para manejar múltiples conexiones
+    if (stream_select($read, $write, $except, 0, 10)) {
+        // Manejar nuevas conexiones
+        if (in_array($server, $read)) {
+            $newClient = @stream_socket_accept($server, 0); // No bloquear
+            if ($newClient) {
+                // Configurar el nuevo cliente como no bloqueante
+                stream_set_blocking($newClient, false);
+                $clients[] = $newClient;
+                echo "Nuevo cliente conectado\n";
+            }
+            unset($read[array_search($server, $read)]);
         }
-        
-        unset($read[array_search($server, $read)]);
-    }
 
-    // Leer mensajes de los clientes conectados
-    foreach ($read as $client) {
-        if ($client != $server) {  // Evitar leer del servidor mismo
-            $data = fread($client, 1024);
-            if ($data) {
-                // Decodificar el mensaje recibido
-                $decodedMessage = decodeMessage($data);
-                echo $decodedMessage;
-                
-                // Reenviar el mensaje a todos los demás clientes
+        // Leer mensajes de los clientes
+        foreach ($read as $client) {
+            $data = @fread($client, 1024); // Usar @ para evitar warnings en clientes no listos
+            if ($data === false || $data === '') {
+                // Desconectar al cliente si no hay datos
+                fclose($client);
+                unset($clients[array_search($client, $clients)]);
+                echo "Cliente desconectado\n";
+                continue;
+            }
+
+            // Realizar el "handshake" si es necesario
+            if (strpos($data, 'Sec-WebSocket-Key:') !== false) {
+                $key = '';
+                if (preg_match("/Sec-WebSocket-Key: (.*)\r\n/", $data, $matches)) {
+                    $key = trim($matches[1]);
+                }
+                $acceptKey = base64_encode(pack('H*', sha1($key . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11')));
+
+                $response = "HTTP/1.1 101 Switching Protocols\r\n" .
+                            "Upgrade: websocket\r\n" .
+                            "Connection: Upgrade\r\n" .
+                            "Sec-WebSocket-Accept: $acceptKey\r\n\r\n";
+
+                fwrite($client, $response);
+                echo "Handshake completado con un cliente\n";
+            } else {
+                // Procesar y retransmitir el mensaje a todos los clientes conectados
+                $message = unmaskWebSocketPayload($data);
+                echo "Mensaje recibido: $message\n";
+
+                // Enviar el mensaje a todos los clientes
+                $response = maskWebSocketPayload("Cliente dice: $message");
                 foreach ($clients as $otherClient) {
-                    if ($otherClient != $client) {
-                        sendMessage($otherClient, $decodedMessage);
+                    if ($otherClient !== $client) {
+                        fwrite($otherClient, $response);
                     }
                 }
-            } else {
-                unset($clients[array_search($client, $clients)]);
-                fclose($client);
-                echo "Cliente desconectado.\n";
             }
         }
     }
-
-    //sleep(1); // Intervalo para verificar nuevos cambios
 }
 
-// Función para analizar los encabezados HTTP
-function parse_headers($request) {
-    $headers = [];
-    $lines = explode("\r\n", $request);
-    foreach ($lines as $line) {
-        if (preg_match('/^([^:]+): (.+)$/', $line, $matches)) {
-            $headers[$matches[1]] = $matches[2];
-        }
-    }
-    return $headers;
-}
+// Función para desenmarcar la carga útil de WebSocket
+function unmaskWebSocketPayload($payload) {
+    $length = ord($payload[1]) & 127;
 
-// Función para enviar mensajes a los clientes WebSocket
-function sendMessage($client, $message) {
-    // Convertir el mensaje en un string de bytes (UTF-8 o JSON)
-    $message = (string)$message;
-    $messageLength = strlen($message);
-    
-    // Determinar el encabezado para el WebSocket según el tamaño del mensaje
-    $header = chr(0x81);  // 0x81 indica un mensaje de texto
-
-    if ($messageLength <= 125) {
-        // Si el mensaje es corto (<= 125 bytes), solo agregamos la longitud directamente
-        $header .= chr($messageLength);
-    } elseif ($messageLength > 125 && $messageLength <= 65535) {
-        // Si el mensaje es más largo, usamos un encabezado de 2 bytes para la longitud
-        $header .= chr(126) . pack('n', $messageLength);  // 126 significa longitud de 2 bytes
-    } else {
-        // Si el mensaje es aún más largo (mayor a 65535), usamos 8 bytes para la longitud
-        $header .= chr(127) . pack('J', $messageLength);  // 127 significa longitud de 8 bytes
-    }
-    
-    // Enviar el mensaje
-    fwrite($client, $header . $message);
-}
-
-// Función para decodificar un mensaje WebSocket recibido
-function decodeMessage($data) {
-    // Obtener la longitud de los datos
-    $length = ord($data[1]) & 127; // Extraer longitud de datos (segundo byte)
-
-    // Si la longitud es 126, leer 2 bytes adicionales para la longitud
     if ($length === 126) {
-        $length = unpack('n', substr($data, 2, 2))[1];
-        $data = substr($data, 4); // Eliminar los 2 bytes de longitud extendida
-    }
-    // Si la longitud es 127, leer 8 bytes adicionales para la longitud
-    elseif ($length === 127) {
-        $length = unpack('J', substr($data, 2, 8))[1];
-        $data = substr($data, 10); // Eliminar los 8 bytes de longitud extendida
+        $masks = substr($payload, 4, 4);
+        $data = substr($payload, 8);
+    } elseif ($length === 127) {
+        $masks = substr($payload, 10, 4);
+        $data = substr($payload, 14);
     } else {
-        $data = substr($data, 2); // Eliminar el primer byte (opcod) y el byte de longitud
+        $masks = substr($payload, 2, 4);
+        $data = substr($payload, 6);
     }
 
-    // Leer la máscara
-    $mask = substr($data, 0, 4);
-    $data = substr($data, 4); // Eliminar los primeros 4 bytes de la máscara
-
-    // Desenmascarar los datos
-    $message = '';
-    for ($i = 0; $i < $length; $i++) {
-        $message .= $data[$i] ^ $mask[$i % 4]; // Desenmascarar byte a byte
+    $decoded = '';
+    for ($i = 0; $i < strlen($data); $i++) {
+        $decoded .= $data[$i] ^ $masks[$i % 4];
     }
 
-    return $message;
+    return $decoded;
+}
+
+// Función para enmarcar la carga útil de WebSocket
+function maskWebSocketPayload($data) {
+    $frame = chr(129); // 10000001 (FIN + texto)
+    $length = strlen($data);
+
+    if ($length <= 125) {
+        $frame .= chr($length);
+    } elseif ($length <= 65535) {
+        $frame .= chr(126) . pack('n', $length);
+    } else {
+        $frame .= chr(127) . pack('Q', $length);
+    }
+
+    $frame .= $data;
+    return $frame;
 }
