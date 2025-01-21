@@ -83,6 +83,7 @@
         $MEntregas['MOTO'] = 'MOTO';
         $MEntregas['CAMIONETA'] = 'CAMIONETA';
         $MEntregas['PERSONAL'] = 'PERSONAL';
+        $MEntregas['CAMION'] = 'CAMION';
 
         if(!array_key_exists($_POST['forma_de_pago'], $formas_de_pago) ||
             !array_key_exists($_POST['tipo_de_comprobante'], $tipos_de_comprobante) ||
