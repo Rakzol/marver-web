@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+</head>
+
+<body>
+  <label>Clave</label>
+  <input type="number" id="clave" onkeypress="if(event.key === 'Enter') iniciarSesion(this)">
+  <label>Contraseña</label>
+  <input type="password" id="contraseña" onkeypress="if(event.key === 'Enter') iniciarSesion(this)">
+  <button onclick="iniciarSesion();">Iniciar Sesión</button>
+
+  <script>
+    const ws = new WebSocket('wss://10.10.10.130:8888/');
+
+    ws.onmessage = (event) => {
+      const datos = JSON.parse(event.data);
+
+      if(!datos['error']){
+        const fecha = new Date();
+        fecha.setTime(fecha.getTime() + (1000 * 60 * 60 * 24 * 30));
+        const expiracion = "expires=" + fecha.toUTCString();
+        document.cookie = `token=${datos['token']}; ${expiracion}; path=/`;
+
+        window.location.href = "/pedidosClientes.html";
+      }
+
+      alert(datos['error']);
+    };
+
+    function iniciarSesion() {
+      ws.send(JSON.stringify({
+        "ruta": "login",
+        "clave": document.querySelector('#clave').value,
+        "contraseña": document.querySelector('#contraseña').value
+      }));
+    }
+  </script>
+</body>
+
+</html>

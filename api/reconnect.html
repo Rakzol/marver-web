@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cliente WebSocket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        #messages {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cliente WebSocket</h1>
+
+    <input type="text" id="messageInput" placeholder="Escribe un mensaje...">
+    <button onclick="sendMessage()">Enviar</button>
+
+    <div id="messages"></div>
+
+    <script>
+        // Función para crear la conexión WebSocket
+        function createWebSocket() {
+            let socket = new WebSocket('wss://www.marverrefacciones.mx:8888/');
+
+            socket.onopen = function(event) {
+                console.log("Conectado al servidor WebSocket"); 
+                appendMessage("Conectado al servidor WebSocket");
+            };
+
+            socket.onmessage = function(event) {
+                console.log("Mensaje recibido del servidor: ", event.data);
+                appendMessage("Servidor: " + event.data);
+            };
+
+            socket.onerror = function(error) {
+                console.error("Error en la conexión WebSocket: ", error);
+                appendMessage("Error en la conexión WebSocket.");
+            };
+
+            socket.onclose = function(event) {
+                console.log("Conexión WebSocket cerrada");
+                appendMessage("Conexión cerrada.");
+                reconnectWebSocket();  // Intentar reconectar
+            };
+
+            return socket;
+        }
+
+        // Intentar reconectar
+        function reconnectWebSocket() {
+            setTimeout(function() {
+                socket = createWebSocket();  // Reconectar después de un tiempo
+            }, 3000); // Esperar 3 segundos antes de reconectar
+        }
+
+        // Crear la conexión WebSocket inicialmente
+        let socket = createWebSocket();
+
+        // Función para calcular el tamaño en bytes de una cadena
+        function getByteSize(str) {
+            return new TextEncoder().encode(str).length;
+        }
+
+        // Función para enviar un mensaje al servidor WebSocket
+        function sendMessage() {
+            const message = document.getElementById('messageInput').value;
+            if (message.trim() !== "") {
+                const byteSize = getByteSize(message); // Calcular tamaño en bytes
+                
+                if (socket.readyState === WebSocket.OPEN) {
+                    // Enviar primero el tamaño del mensaje
+                    socket.send(`bytes:${byteSize}`);
+                    appendMessage(`Bytes enviados al servidor: ${byteSize}`);
+
+                    // Luego enviar el mensaje
+                    socket.send(message);
+                    console.log("Mensaje enviado al servidor: ", message);
+                } else {
+                    appendMessage("No se puede enviar el mensaje, WebSocket no está conectado.");
+                }
+                document.getElementById('messageInput').value = ''; // Limpiar el campo de entrada
+            }
+        }
+
+        // Función para agregar el mensaje al área de mensajes
+        function appendMessage(message) {
+            const messagesDiv = document.getElementById('messages');
+            const messageElement = document.createElement('div');
+            messageElement.textContent = message;
+            messagesDiv.appendChild(messageElement);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Desplazar hacia abajo automáticamente
+        }
+    </script>
+</body>
+</html>
