@@ -4,38 +4,97 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <title>Tablas Estilizadas</title>
 </head>
 
 <body>
 
-  <h3>Capturados</h3>
+  <div class="table-container">
+    <div class="table-wrapper">
+      <h3>Capturados</h3>
+      <table>
+        <tr>
+          <th>Folio</th>
+        </tr>
+        <tbody id="idC">
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-wrapper">
+      <h3>Surtiendo</h3>
+      <table>
+        <tr>
+          <th>Folio</th>
+        </tr>
+        <tbody id="idZ">
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-wrapper">
+      <h3>Surtidos</h3>
+      <table>
+        <tr>
+          <th>Folio</th>
+        </tr>
+        <tbody id="idS">
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-wrapper">
+      <h3>Facturados</h3>
+      <table>
+        <tr>
+          <th>Folio</th>
+        </tr>
+        <tbody id="idF">
+        </tbody>
+      </table>
+    </div>
+  </div>
 
   <script>
     const ws = new WebSocket('wss://10.10.10.130:8888/');
+    let jwt;
+
+    for (let cookie of document.cookie.split("; ")) {
+      const [clave, valor] = cookie.split("=");
+      if (clave === 'jwt') {
+        jwt = valor;
+        break;
+      }
+    }
 
     ws.onmessage = (event) => {
       const datos = JSON.parse(event.data);
 
-      if(!datos['error']){
-        const fecha = new Date();
-        fecha.setTime(fecha.getTime() + (1000 * 60 * 60 * 24 * 30));
-        const expiracion = "expires=" + fecha.toUTCString();
-        document.cookie = `token=${datos['token']}; ${expiracion}; path=/`;
-
-        window.location.href = "/pedidosClientes.html";
+      if (datos.error) {
+        alert(datos.error);
+        return;
       }
 
-      alert(datos['error']);
+      datos.forEach(pedido => {
+        document.querySelectorAll(`#${pedido.Tipo}${pedido.Folio}`).forEach(pedido => pedido.remove());
+
+        const tr = document.createElement('tr');
+        tr.id = `${pedido.Tipo}${pedido.Folio}`;
+        const tdFolio = document.createElement('td');
+        tdFolio.innerText = pedido.Folio;
+        tr.append(tdFolio);
+
+        if (['C', 'Z', 'S', 'F'].includes(pedido.Status)) {
+          document.querySelector(`#id${pedido.Status}`).append(tr);
+        }
+
+      });
     };
 
-    function iniciarSesion() {
-      ws.send(JSON.stringify({
-        "ruta": "login",
-        "clave": document.querySelector('#clave').value,
-        "contraseña": document.querySelector('#contraseña').value
-      }));
-    }
+    ws.onopen = (event) => {
+      ws.send(JSON.stringify({ "ruta": "jwt", "jwt": jwt }));
+      ws.send(JSON.stringify({ "ruta": "pedidos", "jwt": jwt }));
+    };
   </script>
 </body>
 

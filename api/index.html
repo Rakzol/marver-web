@@ -5,38 +5,204 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
+  <!-- Agregar CDN de Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    /* Mantén el estilo previo */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .login-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      flex-direction: column;
+      background-image: linear-gradient(to top right, black, #E72E2D);
+    }
+
+    .contPass {
+      position: relative;
+      width: 100%;
+    }
+
+    .contPass > span {
+      position: absolute;
+      right: 5px;
+      top: 18px;
+      cursor: pointer;
+    }
+
+    .contPass > input {
+      margin-top: 10px;
+      font-family: Inter, sans-serif;
+      font-weight: 400;
+      font-size: 0.875rem;
+      line-height: 1.4375em;
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #f31260;
+      box-shadow: 0 0 5px #f31260;
+      transition: border 120ms ease-in;
+      height: 2.5rem;
+    }
+
+    .loginFrom img {
+      max-width: 150px;
+    }
+
+    .loginFrom {
+      padding: 3rem;
+      border-radius: 22px;
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+      border: 3px solid black;
+      box-shadow: 0 0 10px black;
+      align-items: center;
+      min-width: 300px;
+      position: relative;
+    }
+    
+
+    .loginFrom > input {
+      margin-top: 10px;
+      font-family: Inter, sans-serif;
+      font-weight: 400;
+      font-size: 0.875rem;
+      line-height: 1.4375em;
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #f31260;
+      box-shadow: 0 0 5px #f31260;
+      transition: border 120ms ease-in;
+      height: 2.5rem;
+    }
+
+    .loginFrom > button {
+      margin-top: 10px;
+      font-family: Inter, sans-serif;
+      font-size: 0.875rem;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 10px;
+      color: #ffffff;
+      background-color: #F31260;
+      cursor: pointer;
+      text-align: center;
+      transition: 0.3s;
+    }
+
+    .loginFrom > button:hover {
+      color: #F31260;
+      background-color: #ffffff;
+      border: 2px solid #F31260;
+    }
+
+    .alert {
+      width: 70%;
+      padding: 0.45rem 0.75rem;
+      font-size: 1rem;
+      background-color: #e1921294;
+      border: 1px solid #97610a;
+      border-radius: .75rem;
+      color: #b36e00;
+      opacity: .8;
+      position: absolute;
+      bottom: -12px;
+      visibility: hidden;
+    }
+    @media (max-width: 480px) {
+      .loginFrom {
+        width: 80%;
+        padding: 2rem 1rem 3rem 1rem;
+      }
+
+      .loginFrom img {
+        max-width: 70px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <label>Clave</label>
-  <input type="number" id="clave" onkeypress="if(event.key === 'Enter') iniciarSesion(this)">
-  <label>Contraseña</label>
-  <input type="password" id="contraseña" onkeypress="if(event.key === 'Enter') iniciarSesion(this)">
-  <button onclick="iniciarSesion();">Iniciar Sesión</button>
+  <div class="login-container">
+    <form class="loginFrom" onsubmit="event.preventDefault(); iniciarSesion();">
+      <img src="img/logo_marver.png" alt="Logo Marver" />
+      
+      <input type="text" id="clave" placeholder="Almacén" />
+      <span id="claveError" style="display: none; color: red;">Usuario requerido.</span>
+
+      <div class="contPass">
+        <input type="password" id="contraseña" placeholder="Contraseña" />
+        <span id="togglePassword" onclick="togglePassword()">
+          <span class="material-icons">visibility</span>
+        </span>
+      </div>
+      <span id="passwordError" style="display: none; color: red;">Contraseña requerida.</span>
+
+      <button type="submit">Inicia sesión</button>
+      <blockquote id="errorAlert" class="alert">Usuario no registrado.</blockquote>
+    </form>
+  </div>
 
   <script>
-    const ws = new WebSocket('wss://10.10.10.130:8888/');
+    const ws = new WebSocket('wss://www.marverrefacciones.mx:8888/');
+    let isPasswordVisible = false;
 
     ws.onmessage = (event) => {
       const datos = JSON.parse(event.data);
 
-      if(!datos['error']){
+      if (datos.error) {
+        document.getElementById('errorAlert').style.visibility = 'visible';
+      } else {
         const fecha = new Date();
         fecha.setTime(fecha.getTime() + (1000 * 60 * 60 * 24 * 30));
         const expiracion = "expires=" + fecha.toUTCString();
-        document.cookie = `token=${datos['token']}; ${expiracion}; path=/`;
 
+        document.cookie = `jwt=${datos.jwt}; ${expiracion}; path=/`;
         window.location.href = "/pedidosClientes.html";
       }
-
-      alert(datos['error']);
     };
 
+    function togglePassword() {
+      const passwordField = document.getElementById('contraseña');
+      passwordField.type = isPasswordVisible ? 'password' : 'text';
+      isPasswordVisible = !isPasswordVisible;
+    }
+
     function iniciarSesion() {
+      const clave = document.getElementById('clave').value.trim();
+      const contraseña = document.getElementById('contraseña').value.trim();
+
+      const claveError = document.getElementById('claveError');
+      const passwordError = document.getElementById('passwordError');
+
+      claveError.style.display = clave ? 'none' : 'block';
+      passwordError.style.display = contraseña ? 'none' : 'block';
+
+      if (!clave && !contraseña) return;
+
       ws.send(JSON.stringify({
-        "ruta": "login",
-        "clave": document.querySelector('#clave').value,
-        "contraseña": document.querySelector('#contraseña').value
+        ruta: "login",
+        clave,
+        contraseña
       }));
     }
   </script>

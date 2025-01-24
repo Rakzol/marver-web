@@ -19,26 +19,38 @@ const sqlConfig = {
 };
 
 const sslOptions = {
-  cert: fs.readFileSync('api/crt.crt'),
-  key: fs.readFileSync('api/key.pem')
+  cert: fs.readFileSync('crt.crt'),
+  key: fs.readFileSync('key.pem')
 };
 
 const server = https.createServer(sslOptions, async (req, res) => {
   // Servir archivos estáticos
-  const filePath = req.url === '/' ? 'api/index.html' : `api${req.url}`;
+  const filePath = req.url === '/' ? 'index.html' : `${req.url.substring(1)}`;
 
   fs.readFile(filePath, (err, data) => {
+
     if (err) {
       res.writeHead(404, { 'Content-Type': 'text/plain' });
       res.end('404 Not Found');
       return;
     }
     const ext = filePath.split('.').pop();
-    const contentType = {
+
+    // Mapear extensiones a content types
+    const contentTypeMap = {
       html: 'text/html',
       css: 'text/css',
-      js: 'application/javascript'
+      js: 'application/javascript',
+      png: 'image/png',
+      jpg: 'image/jpeg',
+      jpeg: 'image/jpeg',
+      gif: 'image/gif',
+      svg: 'image/svg+xml',
+      ico: 'image/x-icon',
+      json: 'application/json'
     };
+
+    const contentType = contentTypeMap[ext] || 'application/octet-stream'; // Por defecto a binario genérico
 
     res.writeHead(200, { 'Content-Type': contentType });
     res.end(data);
@@ -48,7 +60,7 @@ const server = https.createServer(sslOptions, async (req, res) => {
 const wss = new WebSocket.WebSocketServer({ server });
 
 // Store all connected clients in an array
-const clients = [];
+let clients = [];
 
 // Conexión a la base de datos
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -58,20 +70,31 @@ async function fetchDataAndSend() {
     // Conectar a la base de datos
     pool = await mssql.connect(sqlConfig);
 
-    const result = await pool.query('SELECT * FROM bitacoras_backup');
+    const result = await pool.query('SELECT * FROM PedidosNotificacion ORDER BY Folio');
 
     if (result.recordset.length > 0) {
       // Enviar los registros a todos los clientes conectados
-      const data = JSON.stringify(result.recordset);
-
       clients.forEach(client => {
-        if (client.readyState === WebSocket.OPEN) {
-          client.send(data);
+        try {
+          const credenciales = jwt.verify(client.jwt, secretKey);
+
+          if (client.ws.readyState === WebSocket.OPEN) {
+
+            const pedidosFiltrados = result.recordset.filter(pedido =>
+              (pedido.Status == 'C') ||
+              (pedido.Status == 'Z' && pedido.AlSurtiendo == credenciales.clave) ||
+              (pedido.Status == 'S' && pedido.ALSurtir == credenciales.clave) ||
+              (pedido.Status == 'F' && pedido.Alfacturar == credenciales.clave));
+
+            client.ws.send(JSON.stringify(pedidosFiltrados));
+          }
+        } catch (err) {
+          console.error(err);
         }
       });
 
       // Eliminar los datos de la tabla después de enviarlos
-      await pool.query('DELETE bitacoras_backup'); // Asegúrate de eliminar solo los registros enviados
+      await pool.query('DELETE PedidosNotificacion'); // Asegúrate de eliminar solo los registros enviados
     }
   } catch (error) {
     console.error('Erro con la base de datos: ', error);
@@ -83,6 +106,11 @@ async function fetchDataAndSend() {
 }
 
 // Ejecutar la consulta cada segundo
+
+/*
+CAMBIARLO POR setTimeout en el finally
+*/
+
 setInterval(fetchDataAndSend, 1000); // 1000 ms = 1 segundo
 
 // When a client connects to the WebSocket server
@@ -90,7 +118,7 @@ wss.on('connection', async (ws) => {
   console.log('Cliente conectado');
 
   // Add the new WebSocket connection to the clients array
-  clients.push(ws);
+  clients.push({ "ws": ws });
 
   // When the WebSocket receives a message
   let pool;
@@ -99,13 +127,18 @@ wss.on('connection', async (ws) => {
 
       const datos = JSON.parse(message.toString());
 
-      switch (datos['ruta']) {
+      /*
+      * CAMBIAR LOS POOL POR UN UNICO POOL
+      * ESTAR SEGURO DE CUANDO SI Y CUANO NO USAR async/await
+      */
+
+      switch (datos.ruta) {
         case 'login':
 
           pool = await mssql.connect(sqlConfig);
           const request = pool.request();
-          request.input('clave', mssql.Int, datos['clave']);
-          request.input('contraseña', mssql.VarChar(50), datos['contraseña']);
+          request.input('clave', mssql.Int, datos.clave);
+          request.input('contraseña', mssql.VarChar(50), datos.contraseña);
 
           const result = await request.query('SELECT Clave, Nombre, Perfil FROM Usuarios WHERE Clave = @clave AND Contraseña = @contraseña');
 
@@ -115,21 +148,52 @@ wss.on('connection', async (ws) => {
           }
 
           const payload = {
-            clave: result.recordset[0]['Clave'],
-            nombre: result.recordset[0]['Nombre'],
-            perfil: result.recordset[0]['Perfil']
+            clave: result.recordset[0].Clave,
+            nombre: result.recordset[0].Nombre,
+            perfil: result.recordset[0].Perfil
           };
 
-          // Opciones del token (opcional)
+          // Opciones del jwt (opcional)
           const options = {
-            expiresIn: '30d' // El token expirará en 1 hora
+            expiresIn: '30d' // El jwt expirará en 1 hora
           };
 
-          ws.send(JSON.stringify({ "token": jwt.sign(payload, secretKey, options) }));
+          ws.send(JSON.stringify({ "jwt": jwt.sign(payload, secretKey, options) }));
 
           break;
+        case 'jwt':
+          jwt.verify(datos.jwt, secretKey);
+          const clienteEncontrado = clients.find(cliente => cliente.ws == ws);
+          clienteEncontrado.jwt = datos.jwt;
+          break;
         case 'validar':
-          ws.send(JSON.stringify({ "validacion": jwt.verify(datos['token'], secretKey) }));
+          ws.send(JSON.stringify({ "validacion": jwt.verify(datos.jwt, secretKey) }));
+          break;
+        case 'pedidos':
+          const credenciales = jwt.verify(datos.jwt, secretKey);
+
+          pool = await mssql.connect(sqlConfig);
+          const solicitud = pool.request();
+
+          solicitud.input('clave', mssql.VarChar(20), credenciales.clave.toString());
+
+          const resultado = await solicitud.query(`
+            SELECT Folio, Status, 'pedido' AS Tipo FROM PedidosCliente WHERE
+            ( Status = 'C' ) OR
+            ( Status = 'Z' AND AlSurtiendo = @clave ) OR
+            ( Status = 'S' AND ALSurtir = @clave ) OR
+            ( Status = 'F' AND Alfacturar = @clave )
+            UNION ALL
+            SELECT Folio, Status, 'mostrador' AS Tipo FROM PedidosMostrador WHERE
+            ( Status = 'C' ) OR
+            ( Status = 'Z' AND AlSurtiendo = @clave ) OR
+            ( Status = 'S' AND ALSurtir = @clave ) OR
+            ( Status = 'F' AND Alfacturar = @clave )
+            ORDER BY Folio`);
+
+          if (resultado.recordset.length > 0) {
+            ws.send(JSON.stringify(resultado.recordset))
+          }
           break;
         case '🐱':
           ws.send(JSON.stringify({ "gatos": "🐱 🐈 😺 😸 😹 😻 😼 😽 🙀 😿 😾 🐾" }));
@@ -140,6 +204,7 @@ wss.on('connection', async (ws) => {
       }
 
     } catch (error) {
+      console.error(error);
       ws.send(JSON.stringify({ "error": error.message }));
     } finally {
       if (pool) {
@@ -153,11 +218,7 @@ wss.on('connection', async (ws) => {
   ws.on('close', async () => {
     console.log('Client desconectado');
 
-    // Remove the client from the list of connected clients
-    const index = clients.indexOf(ws);
-    if (index !== -1) {
-      clients.splice(index, 1);
-    }
+    clients = clients.filter(cliente => cliente.ws != ws);
   });
 
   // Send a welcome message to the new client
