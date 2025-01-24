@@ -58,17 +58,21 @@
   <script>
     const ws = new WebSocket('wss://10.10.10.130:8888/');
     let jwt;
+    let credenciales;
 
     for (let cookie of document.cookie.split("; ")) {
       const [clave, valor] = cookie.split("=");
       if (clave === 'jwt') {
         jwt = valor;
+        credenciales = JSON.parse(atob(jwt.split('.')[1]));
         break;
       }
     }
 
     ws.onmessage = (event) => {
       const datos = JSON.parse(event.data);
+
+      console.log(datos);
 
       if (datos.error) {
         alert(datos.error);
@@ -78,16 +82,22 @@
       datos.forEach(pedido => {
         document.querySelectorAll(`#${pedido.Tipo}${pedido.Folio}`).forEach(pedido => pedido.remove());
 
+        if (
+          !(pedido.Status == 'C') &&
+          !(pedido.Status == 'Z' && pedido.AlSurtiendo == credenciales.clave) &&
+          !(pedido.Status == 'S' && pedido.ALSurtir == credenciales.clave) &&
+          !(pedido.Status == 'F' && pedido.Alfacturar == credenciales.clave)) {
+          console.log('ñao');
+          return;
+        }
+
         const tr = document.createElement('tr');
         tr.id = `${pedido.Tipo}${pedido.Folio}`;
         const tdFolio = document.createElement('td');
         tdFolio.innerText = pedido.Folio;
         tr.append(tdFolio);
 
-        if (['C', 'Z', 'S', 'F'].includes(pedido.Status)) {
-          document.querySelector(`#id${pedido.Status}`).append(tr);
-        }
-
+        document.querySelector(`#id${pedido.Status}`).append(tr);
       });
     };
 

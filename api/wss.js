@@ -76,17 +76,9 @@ async function fetchDataAndSend() {
       // Enviar los registros a todos los clientes conectados
       clients.forEach(client => {
         try {
-          const credenciales = jwt.verify(client.jwt, secretKey);
-
           if (client.ws.readyState === WebSocket.OPEN) {
-
-            const pedidosFiltrados = result.recordset.filter(pedido =>
-              (pedido.Status == 'C') ||
-              (pedido.Status == 'Z' && pedido.AlSurtiendo == credenciales.clave) ||
-              (pedido.Status == 'S' && pedido.ALSurtir == credenciales.clave) ||
-              (pedido.Status == 'F' && pedido.Alfacturar == credenciales.clave));
-
-            client.ws.send(JSON.stringify(pedidosFiltrados));
+            jwt.verify(client.jwt, secretKey);
+            client.ws.send(JSON.stringify(result.recordset));
           }
         } catch (err) {
           console.error(err);
@@ -178,13 +170,13 @@ wss.on('connection', async (ws) => {
           solicitud.input('clave', mssql.VarChar(20), credenciales.clave.toString());
 
           const resultado = await solicitud.query(`
-            SELECT Folio, Status, 'pedido' AS Tipo FROM PedidosCliente WHERE
+            SELECT Folio, Status, 'pedido' AS Tipo, AlSurtiendo, ALSurtir, Alfacturar FROM PedidosCliente WHERE
             ( Status = 'C' ) OR
             ( Status = 'Z' AND AlSurtiendo = @clave ) OR
             ( Status = 'S' AND ALSurtir = @clave ) OR
             ( Status = 'F' AND Alfacturar = @clave )
             UNION ALL
-            SELECT Folio, Status, 'mostrador' AS Tipo FROM PedidosMostrador WHERE
+            SELECT Folio, Status, 'mostrador' AS Tipo, AlSurtiendo, ALSurtir, Alfacturar FROM PedidosMostrador WHERE
             ( Status = 'C' ) OR
             ( Status = 'Z' AND AlSurtiendo = @clave ) OR
             ( Status = 'S' AND ALSurtir = @clave ) OR
