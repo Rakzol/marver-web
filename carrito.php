@@ -617,10 +617,10 @@ if (!isset($_SESSION['usuario'])) {
                             <div class="card-header py-3">
                                 <h5 class="mb-2">Entrega</h5>
                                 <select class="form-select" aria-label="Default select example" id="MEntrega">
-                                    <option value="MOTO" <?= $_SESSION['usuario'] != 78 && $_SESSION['usuario'] != 79 && $_SESSION['usuario'] != 87 ? 'selected' : '' ?> >Moto</option>
+                                    <option value="MOTO" <?= $_SESSION['usuario'] != 78 && $_SESSION['usuario'] != 79 && $_SESSION['usuario'] != 87 && $_SESSION['usuario'] != 116 ? 'selected' : '' ?> >Moto</option>
                                     <option value="CAMIONETA">Camioneta</option>
                                     <option value="CAMION">Camión</option>
-                                    <option value="PERSONAL" <?= $_SESSION['usuario'] == 78 || $_SESSION['usuario'] == 79 || $_SESSION['usuario'] == 87 ? 'selected' : '' ?> >Personal</option>
+                                    <option value="PERSONAL" <?= $_SESSION['usuario'] == 78 || $_SESSION['usuario'] == 79 || $_SESSION['usuario'] == 87 || $_SESSION['usuario'] == 116 ? 'selected' : '' ?> >Personal</option>
                                 </select>
                             </div>
 
