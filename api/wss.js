@@ -141,7 +141,7 @@ wss.on('connection', async (ws) => {
           request.input('clave', mssql.Int, datos.clave);
           request.input('contraseña', mssql.VarChar, datos.contraseña);
 
-          const result = await request.query('SELECT Clave, Nombre, Perfil FROM Usuarios WHERE Clave = @clave AND Contraseña = @contraseña');
+          const result = await request.query('SELECT Clave, Nombre, Extra1 FROM Vendedores WHERE Clave = @clave AND Contraseña = @contraseña');
 
           if (!result.recordset[0]) {
             ws.send(JSON.stringify({ "error": "Credenciales invalidas" }));
@@ -151,7 +151,7 @@ wss.on('connection', async (ws) => {
           const payload = {
             clave: result.recordset[0].Clave,
             nombre: result.recordset[0].Nombre,
-            perfil: result.recordset[0].Perfil
+            perfil: result.recordset[0].Extra1
           };
 
           // Opciones del jwt (opcional)
