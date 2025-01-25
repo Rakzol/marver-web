@@ -6,59 +6,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tablas Estilizadas</title>
 
-<style>
-  *{
-    user-select: none;
-  }
-</style>
+  <style>
+    * {
+      user-select: none;
+    }
+  </style>
 
   <style>
     /* Estilos para el combobox */
     .tablas-selector {
-        max-width: 600px;
-        margin: 1rem auto;
-        padding: 0 0.5rem;
+      max-width: 600px;
+      margin: 1rem auto;
+      padding: 0 0.5rem;
     }
 
     .estilo-combobox {
-        width: 100%;
-        padding: 0.8rem 1.2rem;
-        border: 2px solid #3498db;
-        border-radius: 30px;
-        background: white;
-        font-family: 'Inter', sans-serif;
-        font-size: 1rem;
-        color: #2c3e50;
-        appearance: none;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 5px rgba(52, 152, 219, 0.1);
-        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233498db'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-        background-repeat: no-repeat;
-        background-position: right 1rem center;
-        background-size: 1.2em;
+      width: 100%;
+      padding: 0.8rem 1.2rem;
+      border: 2px solid #3498db;
+      border-radius: 30px;
+      background: white;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      color: #2c3e50;
+      appearance: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px rgba(52, 152, 219, 0.1);
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233498db'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1.2em;
     }
 
     .estilo-combobox:hover {
-        border-color: #2980b9;
-        box-shadow: 0 3px 8px rgba(52, 152, 219, 0.2);
-        transform: translateY(-1px);
+      border-color: #2980b9;
+      box-shadow: 0 3px 8px rgba(52, 152, 219, 0.2);
+      transform: translateY(-1px);
     }
 
     .estilo-combobox:focus {
-        outline: none;
-        border-color: #27ae60;
-        box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
+      outline: none;
+      border-color: #27ae60;
+      box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
     }
 
     /* Añadir esto al media query para móviles */
     @media (max-width: 600px) {
-        .estilo-combobox {
-            font-size: 0.9rem;
-            padding: 0.7rem 1rem;
-        }
+      .estilo-combobox {
+        font-size: 0.9rem;
+        padding: 0.7rem 1rem;
+      }
     }
-</style>
+  </style>
 
   <style>
     /* Importar fuente Inter de Google */
@@ -66,180 +66,184 @@
 
     /* Estilos base */
     body {
-        font-family: 'Inter', sans-serif;
-        margin: 0;
-        padding: 0.5rem;
-        background: #f5f6fa;
-        line-height: 1.5;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0.5rem;
+      background: #f5f6fa;
+      line-height: 1.5;
     }
 
     /* Tablas principales */
     table {
-        width: 100%;
-        max-width: 600px;
-        margin: 0.8rem auto;
-        border-collapse: collapse;
-        background: white;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        transition: all 0.4s ease-out;
+      width: 100%;
+      max-width: 600px;
+      margin: 0.8rem auto;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      transition: all 0.4s ease-out;
     }
 
     caption {
-        font-size: 1.1rem;
-        font-weight: 600;
-        padding: 0.8rem;
-        background: #2c3e50;
-        color: white;
-        border-radius: 8px 8px 0 0;
-        letter-spacing: 0.3px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      padding: 0.8rem;
+      background: #2c3e50;
+      color: white;
+      border-radius: 8px 8px 0 0;
+      letter-spacing: 0.3px;
     }
 
-    th, td {
-        padding: 0.8rem;
-        text-align: left;
-        border-bottom: 1px solid #ecf0f1;
+    th,
+    td {
+      padding: 0.8rem;
+      text-align: left;
+      border-bottom: 1px solid #ecf0f1;
     }
 
     th {
-        background: #3498db;
-        color: white;
-        font-weight: 600;
-        transition: background 0.3s ease;
+      background: #3498db;
+      color: white;
+      font-weight: 600;
+      transition: background 0.3s ease;
     }
 
     /* Animaciones y transiciones */
     tr {
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        background: white;
-        will-change: transform;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      background: white;
+      will-change: transform;
     }
 
     tr:nth-child(even) {
-        background: #f8f9fa;
+      background: #f8f9fa;
     }
 
     tr:hover {
-        background: #f1f5f9;
-        transform: translateX(5px);
-        transition: transform 0.3s ease-in-out;
+      background: #f1f5f9;
+      transform: translateX(5px);
+      transition: transform 0.3s ease-in-out;
     }
 
     /* Filas desplegables */
     .codigos {
-        overflow: hidden;
-        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        max-height: 0;
-        opacity: 0;
-        display: table-row;
-        will-change: max-height, opacity;
+      overflow: hidden;
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      max-height: 0;
+      opacity: 0;
+      display: table-row;
+      will-change: max-height, opacity;
     }
 
     .codigos.invisible {
-        max-height: 0 !important;
-        opacity: 0 !important;
+      max-height: 0 !important;
+      opacity: 0 !important;
     }
 
     .codigos:not(.invisible) {
-        max-height: 1000px;
-        opacity: 1;
+      max-height: 1000px;
+      opacity: 1;
     }
 
     /* Animación de entrada */
     @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-15px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+      from {
+        opacity: 0;
+        transform: translateY(-15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     tr:not(.codigos) {
-        animation: fadeIn 0.6s ease-out;
+      animation: fadeIn 0.6s ease-out;
     }
 
     /* Botones */
     button {
-        background: #27ae60;
-        color: white;
-        border: none;
-        padding: 0.8rem 1.5rem;
-        border-radius: 25px;
-        font-size: 1.0rem;
-        cursor: pointer;
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        margin: 0.5rem;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        display: inline-block;
+      background: #27ae60;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 25px;
+      font-size: 1.0rem;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      margin: 0.5rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      display: inline-block;
     }
 
     button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        background: #219a52;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      background: #219a52;
     }
 
     /* Botones de cancelar */
     button[onclick*="Cancelar"],
     button:contains("Cancelar") {
-        background: #e74c3c;
+      background: #e74c3c;
     }
 
     button[onclick*="Cancelar"]:hover,
     button:contains("Cancelar"):hover {
-        background: #c0392b;
+      background: #c0392b;
     }
 
     /* Sub-tablas */
     table table {
-        background: #f8f9fa;
-        box-shadow: none;
-        margin: 0.5rem 0;
-        font-size: 0.9em;
-        width: 95%;
-        margin-left: auto;
-        margin-right: auto;
+      background: #f8f9fa;
+      box-shadow: none;
+      margin: 0.5rem 0;
+      font-size: 0.9em;
+      width: 95%;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     table table th {
-        background: #95a5a6;
-        padding: 0.6rem;
-        font-weight: 500;
+      background: #95a5a6;
+      padding: 0.6rem;
+      font-weight: 500;
     }
 
     table table td {
-        padding: 0.6rem;
-        transition: background 0.3s ease;
+      padding: 0.6rem;
+      transition: background 0.3s ease;
     }
 
     /* Responsive Design */
     @media (max-width: 600px) {
-        th, td {
-            padding: 0.7rem;
-            font-size: 1.0em;
-        }
-        
-        button {
-            width: calc(100% - 1rem);
-            margin: 0.4rem 0.5rem;
-            padding: 0.7rem 1.2rem;
-        }
-        
-        caption {
-            padding: 0.7rem;
-            font-size: 1rem;
-        }
-        
-        table table {
-            font-size: 0.85em;
-        }
+
+      th,
+      td {
+        padding: 0.7rem;
+        font-size: 1.0em;
+      }
+
+      button {
+        width: calc(100% - 1rem);
+        margin: 0.4rem 0.5rem;
+        padding: 0.7rem 1.2rem;
+      }
+
+      caption {
+        padding: 0.7rem;
+        font-size: 1rem;
+      }
+
+      table table {
+        font-size: 0.85em;
+      }
     }
-</style>
-  
+  </style>
+
   <style>
     .invisible {
       display: none;
@@ -259,7 +263,7 @@
     </select>
   </div>
 
-  <table id="tabla-capturados" class="tabla-contenido" >
+  <table id="tabla-capturados" class="tabla-contenido">
     <caption>Capturados</caption>
     <thead>
       <tr>
@@ -295,7 +299,7 @@
     </tbody>
   </table>
 
-  <table id="tabla-facturados" class="tabla-contenido" style="display: none;" >
+  <table id="tabla-facturados" class="tabla-contenido" style="display: none;">
     <caption>Facturados</caption>
     <thead>
       <tr>
@@ -308,7 +312,6 @@
   </table>
 
   <script>
-    const ws = new WebSocket('wss://10.10.10.130:8888/');
     let jwt;
     let credenciales;
 
@@ -321,165 +324,187 @@
       }
     }
 
-    ws.onmessage = (event) => {
-      const datos = JSON.parse(event.data);
+    function crearSocket() {
+      console.log('creando socket');
 
-      console.log(datos);
+      let ws = new WebSocket('wss://10.10.10.130:8888/');
 
-      if (datos.error) {
-        alert(datos.error);
-        return;
-      }
+      ws.onmessage = (event) => {
+        const datos = JSON.parse(event.data);
 
-      switch (datos.ruta) {
-        case 'pedidos': {
-          datos.pedidos.forEach(pedido => {
-            document.querySelectorAll(`#${pedido.Tipo}-${pedido.Folio}`).forEach(pedido => pedido.remove());
-            document.querySelectorAll(`#codigos-${pedido.Tipo}-${pedido.Folio}`).forEach(pedido => pedido.remove());
+        console.log(datos);
 
-            if (
-              !(pedido.Status == 'C') &&
-              !(pedido.Status == 'Z' && pedido.AlSurtiendo == credenciales.clave) &&
-              !(pedido.Status == 'S' && pedido.ALSurtir == credenciales.clave) &&
-              !(pedido.Status == 'F' && pedido.Alfacturar == credenciales.clave)) {
-              return;
-            }
+        if (datos.error) {
+          alert(datos.error);
+          return;
+        }
 
-            const tr = document.createElement('tr');
-            tr.id = `${pedido.Tipo}-${pedido.Folio}`;
-            const tdFolio = document.createElement('td');
-            tdFolio.innerText = pedido.Folio;
-            const tdVendedor = document.createElement('td');
-            tdVendedor.innerText = `${pedido.Vendedor} ${pedido.Nombre}`;
-            tr.addEventListener('click', () => {
-              const trCodigos = document.querySelector(`#codigos-${pedido.Tipo}-${pedido.Folio}`);
-              if(trCodigos.classList.contains('invisible')){
-                ws.send(JSON.stringify({ "ruta": "pedidoDetalle", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
-              }else{
-                trCodigos.classList.add('invisible');
+        switch (datos.ruta) {
+          case 'pedidos': {
+            datos.pedidos.forEach(pedido => {
+              document.querySelectorAll(`#${pedido.Tipo}-${pedido.Folio}`).forEach(pedido => pedido.remove());
+              document.querySelectorAll(`#codigos-${pedido.Tipo}-${pedido.Folio}`).forEach(pedido => pedido.remove());
+
+              if (
+                !(pedido.Status == 'C') &&
+                !(pedido.Status == 'Z' && pedido.AlSurtiendo == credenciales.clave) &&
+                !(pedido.Status == 'S' && pedido.ALSurtir == credenciales.clave) &&
+                !(pedido.Status == 'F' && pedido.Alfacturar == credenciales.clave)) {
+                return;
               }
+
+              const tr = document.createElement('tr');
+              tr.id = `${pedido.Tipo}-${pedido.Folio}`;
+              const tdFolio = document.createElement('td');
+              tdFolio.innerText = pedido.Folio;
+              const tdVendedor = document.createElement('td');
+              tdVendedor.innerText = `${pedido.Vendedor} ${pedido.Nombre}`;
+              tr.addEventListener('click', () => {
+                const trCodigos = document.querySelector(`#codigos-${pedido.Tipo}-${pedido.Folio}`);
+                if (trCodigos.classList.contains('invisible')) {
+                  ws.send(JSON.stringify({ "ruta": "pedidoDetalle", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
+                } else {
+                  trCodigos.classList.add('invisible');
+                }
+              });
+              tr.append(tdFolio);
+              tr.append(tdVendedor);
+
+              document.querySelector(`#id-${pedido.Status}`).append(tr);
+
+              const trCodigos = document.createElement('tr');
+              trCodigos.id = `codigos-${pedido.Tipo}-${pedido.Folio}`;
+              trCodigos.classList.add('codigos');
+              trCodigos.classList.add('invisible');
+              const tdCodigos = document.createElement('td');
+              tdCodigos.setAttribute("colspan", "2");
+              const divCodigos = document.createElement('div');
+              const tablaCodigos = document.createElement('table');
+              const cabeceraTabla = document.createElement('thead');
+              const cuerpoTabla = document.createElement('tbody');
+              const cabeceraCodigo = document.createElement('th');
+              cabeceraCodigo.innerText = 'Codigo';
+              const cabeceraLocalizacion = document.createElement('th');
+              cabeceraLocalizacion.innerText = 'Estante';
+              /*const cabeceraCantidad = document.createElement('th');
+              cabeceraCantidad.innerText = 'Pedido';*/
+              const cabeceraSurtidos = document.createElement('th');
+              cabeceraSurtidos.innerText = 'Surtido';
+
+              cabeceraTabla.append(cabeceraCodigo);
+              cabeceraTabla.append(cabeceraLocalizacion);
+              //cabeceraTabla.append(cabeceraCantidad);
+              cabeceraTabla.append(cabeceraSurtidos);
+              tablaCodigos.append(cabeceraTabla);
+              tablaCodigos.append(cuerpoTabla);
+              divCodigos.append(tablaCodigos);
+              switch (pedido.Status) {
+                case 'C': {
+                  const botonSurtirPedido = document.createElement('button');
+                  botonSurtirPedido.addEventListener('click', () => {
+                    ws.send(JSON.stringify({ "ruta": "statusSurtiendo", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
+                  });
+                  botonSurtirPedido.innerText = 'Surtir Pedido';
+                  divCodigos.append(botonSurtirPedido);
+                  break;
+                }
+                case 'Z': {
+                  const botonCancelarSurtido = document.createElement('button');
+                  botonCancelarSurtido.addEventListener('click', () => {
+                    ws.send(JSON.stringify({ "ruta": "statusCapturado", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
+                  });
+                  botonCancelarSurtido.innerText = 'Cancelar Surtido';
+                  const botonFacturarPedido = document.createElement('button');
+                  botonFacturarPedido.addEventListener('click', () => {
+                    ws.send(JSON.stringify({ "ruta": "statusFacturado", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
+                  });
+                  botonFacturarPedido.innerText = 'Facturar Pedido';
+                  divCodigos.append(botonCancelarSurtido);
+                  divCodigos.append(botonFacturarPedido);
+                  break;
+                }
+                case 'F': {
+                  const botonCancelarFacturacion = document.createElement('button');
+                  botonCancelarFacturacion.addEventListener('click', () => {
+                    ws.send(JSON.stringify({ "ruta": "statusSurtiendo", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
+                  });
+                  botonCancelarFacturacion.innerText = 'Cancelar Facturacion';
+                  divCodigos.append(botonCancelarFacturacion);
+                  break;
+                }
+              }
+              tdCodigos.append(divCodigos);
+              trCodigos.append(tdCodigos);
+
+              document.querySelector(`#id-${pedido.Status}`).append(trCodigos);
             });
-            tr.append(tdFolio);
-            tr.append(tdVendedor);
+            break;
+          }
+          case 'pedidoDetalle': {
+            const tr = document.querySelector(`#codigos-${datos.tipo}-${datos.folio}`);
+            document.querySelectorAll(`.codigos`).forEach(codigos => codigos.classList.add('invisible'));
+            tr.classList.remove('invisible');
 
-            document.querySelector(`#id-${pedido.Status}`).append(tr);
+            const cuerpoTabla = tr.querySelector('tbody');
+            cuerpoTabla.replaceChildren();
 
-            const trCodigos = document.createElement('tr');
-            trCodigos.id = `codigos-${pedido.Tipo}-${pedido.Folio}`;
-            trCodigos.classList.add('codigos');
-            trCodigos.classList.add('invisible');
-            const tdCodigos = document.createElement('td');
-            tdCodigos.setAttribute("colspan", "2");
-            const divCodigos = document.createElement('div');
-            const tablaCodigos = document.createElement('table');
-            const cabeceraTabla = document.createElement('thead');
-            const cuerpoTabla = document.createElement('tbody');
-            const cabeceraCodigo = document.createElement('th');
-            cabeceraCodigo.innerText = 'Codigo';
-            const cabeceraLocalizacion = document.createElement('th');
-            cabeceraLocalizacion.innerText = 'Estante';
-            /*const cabeceraCantidad = document.createElement('th');
-            cabeceraCantidad.innerText = 'Pedido';*/
-            const cabeceraSurtidos = document.createElement('th');
-            cabeceraSurtidos.innerText = 'Surtido';
+            datos.pedido.forEach(pedido => {
+              const trPedido = document.createElement('tr');
+              trPedido.addEventListener('click', () => {
+                ws.send(JSON.stringify({ "ruta": "restarSurtido", "jwt": jwt, "codigo": pedido.CodigoArticulo, "tipo": datos.tipo, "folio": datos.folio }));
+              });
+              const tdCodigo = document.createElement('td');
+              tdCodigo.innerText = pedido.CodigoArticulo;
+              const tdLocalizacion = document.createElement('td');
+              tdLocalizacion.innerText = pedido.Localizacion;
+              /*const tdCantidadPedida = document.createElement('td');
+              tdCantidadPedida.innerText = pedido.CantidadPedida;*/
+              const tdCantidadSurtida = document.createElement('td');
+              tdCantidadSurtida.id = `surtido-${pedido.CodigoArticulo}-${datos.tipo}-${datos.folio}`;
+              tdCantidadSurtida.innerText = `${pedido.CantidadSurtida} de ${pedido.CantidadPedida}`;
+              /*const tdResta = document.createElement('td');
+              const buttonResta = document.createElement('button');
+              buttonResta.innerText = '-';*/
 
-            cabeceraTabla.append(cabeceraCodigo);
-            cabeceraTabla.append(cabeceraLocalizacion);
-            //cabeceraTabla.append(cabeceraCantidad);
-            cabeceraTabla.append(cabeceraSurtidos);
-            tablaCodigos.append(cabeceraTabla);
-            tablaCodigos.append(cuerpoTabla);
-            divCodigos.append(tablaCodigos);
-            switch (pedido.Status) {
-              case 'C': {
-                const botonSurtirPedido = document.createElement('button');
-                botonSurtirPedido.addEventListener('click', () =>{
-                  ws.send(JSON.stringify({ "ruta": "statusSurtiendo", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
-                });
-                botonSurtirPedido.innerText = 'Surtir Pedido';
-                divCodigos.append(botonSurtirPedido);
-                break;
-              }
-              case 'Z': {
-                const botonCancelarSurtido = document.createElement('button');
-                botonCancelarSurtido.addEventListener('click', () =>{
-                  ws.send(JSON.stringify({ "ruta": "statusCapturado", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
-                });
-                botonCancelarSurtido.innerText = 'Cancelar Surtido';
-                const botonFacturarPedido = document.createElement('button');
-                botonFacturarPedido.addEventListener('click', () =>{
-                  ws.send(JSON.stringify({ "ruta": "statusFacturado", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
-                });
-                botonFacturarPedido.innerText = 'Facturar Pedido';
-                divCodigos.append(botonCancelarSurtido);
-                divCodigos.append(botonFacturarPedido);
-                break;
-              }
-              case 'F': {
-                const botonCancelarFacturacion = document.createElement('button');
-                botonCancelarFacturacion.addEventListener('click', () =>{
-                  ws.send(JSON.stringify({ "ruta": "statusSurtiendo", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
-                });
-                botonCancelarFacturacion.innerText = 'Cancelar Facturacion';
-                divCodigos.append(botonCancelarFacturacion);
-                break;
-              }
-            }
-            tdCodigos.append(divCodigos);
-            trCodigos.append(tdCodigos);
-
-            document.querySelector(`#id-${pedido.Status}`).append(trCodigos);
-          });
-          break;
-        }
-        case 'pedidoDetalle': {
-          const tr = document.querySelector(`#codigos-${datos.tipo}-${datos.folio}`);
-          document.querySelectorAll(`.codigos`).forEach(codigos => codigos.classList.add('invisible'));
-          tr.classList.remove('invisible');
-
-          const cuerpoTabla = tr.querySelector('tbody');
-          cuerpoTabla.replaceChildren();
-
-          datos.pedido.forEach(pedido => {
-            const trPedido = document.createElement('tr');
-            trPedido.addEventListener('click', ()=>{
-              ws.send(JSON.stringify({ "ruta": "restarSurtido", "jwt": jwt, "codigo": pedido.CodigoArticulo, "tipo": datos.tipo, "folio": datos.folio }));
+              //tdResta.append(buttonResta);
+              trPedido.append(tdCodigo);
+              trPedido.append(tdLocalizacion);
+              //trPedido.append(tdCantidadPedida);
+              trPedido.append(tdCantidadSurtida);
+              //trPedido.append(tdResta);
+              cuerpoTabla.append(trPedido);
             });
-            const tdCodigo = document.createElement('td');
-            tdCodigo.innerText = pedido.CodigoArticulo;
-            const tdLocalizacion = document.createElement('td');
-            tdLocalizacion.innerText = pedido.Localizacion;
-            /*const tdCantidadPedida = document.createElement('td');
-            tdCantidadPedida.innerText = pedido.CantidadPedida;*/
-            const tdCantidadSurtida = document.createElement('td');
-            tdCantidadSurtida.id = `surtido-${pedido.CodigoArticulo}-${datos.tipo}-${datos.folio}`;
-            tdCantidadSurtida.innerText = `${pedido.CantidadSurtida} de ${pedido.CantidadPedida}`;
-            /*const tdResta = document.createElement('td');
-            const buttonResta = document.createElement('button');
-            buttonResta.innerText = '-';*/
 
-            //tdResta.append(buttonResta);
-            trPedido.append(tdCodigo);
-            trPedido.append(tdLocalizacion);
-            //trPedido.append(tdCantidadPedida);
-            trPedido.append(tdCantidadSurtida);
-            //trPedido.append(tdResta);
-            cuerpoTabla.append(trPedido);
-          });
-
-          break;
+            break;
+          }
+          case 'actualizarSurtido': {
+            document.querySelector(`#surtido-${datos.codigo}-${datos.tipo}-${datos.folio}`).innerText = `${datos.cantidadSurtida} de ${datos.cantidadPedida}`;
+            break;
+          }
         }
-        case 'actualizarSurtido': {
-          document.querySelector(`#surtido-${datos.codigo}-${datos.tipo}-${datos.folio}`).innerText = `${datos.cantidadSurtida} de ${datos.cantidadPedida}`;
-          break;
-        }
-      }
-    };
+      };
 
-    ws.onopen = (event) => {
-      ws.send(JSON.stringify({ "ruta": "jwt", "jwt": jwt }));
-      ws.send(JSON.stringify({ "ruta": "pedidos", "jwt": jwt }));
-    };
+      ws.onopen = (event) => {
+        document.querySelectorAll('[id^="pedido-"], [id^="codigos-"]').forEach( elemento => elemento.remove() );
+        ws.send(JSON.stringify({ "ruta": "jwt", "jwt": jwt }));
+        ws.send(JSON.stringify({ "ruta": "pedidos", "jwt": jwt }));
+      };
+
+      ws.onclose = function (event) {
+        console.log("Conexión WebSocket cerrada");
+        reconectarSocket();
+      };
+
+      return ws;
+    }
+
+    function reconectarSocket() {
+      setTimeout(function () {
+        socket = crearSocket();  // Reconectar después de un tiempo
+      }, 3000); // Esperar 3 segundos antes de reconectar
+    }
+
+    let ws = crearSocket();
 
     let codigoLeido = '';
     document.addEventListener('keydown', (keyEvent) => {
@@ -492,7 +517,7 @@
       if (keyEvent.key == 'Enter') {
         const pedido = document.querySelector(".codigos:not(.invisible)");
 
-        if(!pedido){
+        if (!pedido) {
           codigoLeido = '';
           return;
         }
@@ -511,24 +536,24 @@
     });
   </script>
 
-<script>
-  // Agrega este script al final del body
-  document.getElementById('selectorTablas').addEventListener('change', function() {
+  <script>
+    // Agrega este script al final del body
+    document.getElementById('selectorTablas').addEventListener('change', function () {
       const valor = this.value;
-      
+
       // Ocultar todas las tablas
       document.querySelectorAll('.tabla-contenido').forEach(tabla => {
-          tabla.style.display = 'none';
+        tabla.style.display = 'none';
       });
-      
+
       // Mostrar solo la tabla seleccionada con animación
       const tablaSeleccionada = document.getElementById(`tabla-${valor}`);
-      if(tablaSeleccionada) {
-          tablaSeleccionada.style.display = 'table';
-          tablaSeleccionada.style.animation = 'fadeIn 0.6s ease-out';
+      if (tablaSeleccionada) {
+        tablaSeleccionada.style.display = 'table';
+        tablaSeleccionada.style.animation = 'fadeIn 0.6s ease-out';
       }
-  });
-</script>
+    });
+  </script>
 
 </body>
 

@@ -74,7 +74,7 @@ let clients = [];
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 async function fetchDataAndSend() {
   try {
-    if(!pool){
+    if (!pool) {
       pool = await mssql.connect(sqlConfig);
       console.log('Base de datos abierta');
     }
@@ -234,11 +234,11 @@ wss.on('connection', async (ws) => {
           solicitud.input('folio', mssql.Int, datos.folio);
 
           let res = await solicitud.query(datos.tipo == "pedido" ?
-          `SELECT Status
+            `SELECT Status
             FROM PedidosCliente
             WHERE Folio = @folio`
-          :
-          `SELECT Status
+            :
+            `SELECT Status
           FROM PedidosMostrador
           WHERE Folio = @folio`);
 
@@ -261,7 +261,7 @@ wss.on('connection', async (ws) => {
             return;
           }
 
-          if( res.recordset[0].CantidadSurtida - 1 < 0 ){
+          if (res.recordset[0].CantidadSurtida - 1 < 0) {
             return;
           }
 
@@ -272,7 +272,7 @@ wss.on('connection', async (ws) => {
             `UPDATE PedidoMostradorDetalle SET CantidadSurtida = CantidadSurtida - 1
             WHERE Folio = @folio AND CodigoArticulo = @codigo`);
 
-            ws.send(JSON.stringify({ "ruta": "actualizarSurtido", "tipo": datos.tipo, "folio": datos.folio, "codigo": datos.codigo, "cantidadSurtida": res.recordset[0].CantidadSurtida - 1, "cantidadPedida": res.recordset[0].CantidadPedida }));
+          ws.send(JSON.stringify({ "ruta": "actualizarSurtido", "tipo": datos.tipo, "folio": datos.folio, "codigo": datos.codigo, "cantidadSurtida": res.recordset[0].CantidadSurtida - 1, "cantidadPedida": res.recordset[0].CantidadPedida }));
           break;
         }
         case 'sumarSurtido': {
@@ -283,11 +283,11 @@ wss.on('connection', async (ws) => {
           solicitud.input('folio', mssql.Int, datos.folio);
 
           let res = await solicitud.query(datos.tipo == "pedido" ?
-          `SELECT Status
+            `SELECT Status
             FROM PedidosCliente
             WHERE Folio = @folio`
-          :
-          `SELECT Status
+            :
+            `SELECT Status
           FROM PedidosMostrador
           WHERE Folio = @folio`);
 
@@ -306,10 +306,10 @@ wss.on('connection', async (ws) => {
             FROM PedidoMostradorDetalle pmd INNER JOIN Producto pro ON pro.Codigo = pmd.CodigoArticulo
             WHERE pmd.Folio = @folio AND pro.Alterno2 = @barra`);
 
-            if (!res.recordset[0]) {
-              console.log("Codigo de barras incorrecto");
-              return;
-            }
+          if (!res.recordset[0]) {
+            console.log("Codigo de barras incorrecto");
+            return;
+          }
 
           const codigo = res.recordset[0].CodigoArticulo;
 
@@ -328,7 +328,7 @@ wss.on('connection', async (ws) => {
             return;
           }
 
-          if( res.recordset[0].CantidadSurtida + 1 > res.recordset[0].CantidadPedida ){
+          if (res.recordset[0].CantidadSurtida + 1 > res.recordset[0].CantidadPedida) {
             return;
           }
 
@@ -339,7 +339,7 @@ wss.on('connection', async (ws) => {
             `UPDATE PedidoMostradorDetalle SET CantidadSurtida = CantidadSurtida + 1
             WHERE Folio = @folio AND CodigoArticulo = @codigo`);
 
-            ws.send(JSON.stringify({ "ruta": "actualizarSurtido", "tipo": datos.tipo, "folio": datos.folio, "codigo": codigo, "cantidadSurtida": res.recordset[0].CantidadSurtida + 1, "cantidadPedida": res.recordset[0].CantidadPedida }));
+          ws.send(JSON.stringify({ "ruta": "actualizarSurtido", "tipo": datos.tipo, "folio": datos.folio, "codigo": codigo, "cantidadSurtida": res.recordset[0].CantidadSurtida + 1, "cantidadPedida": res.recordset[0].CantidadPedida }));
           break;
         }
         case 'statusSurtiendo': {
@@ -348,14 +348,24 @@ wss.on('connection', async (ws) => {
           const solicitud = pool.request();
 
           solicitud.input('folio', mssql.Int, datos.folio);
+
+          const res = await solicitud.query(datos.tipo == "pedido" ?
+            `SELECT Folio FROM PedidosCliente WHERE Status = 'Z' AND Folio = @folio`
+            :
+            `SELECT Folio FROM PedidosMostrador WHERE Status = 'Z' AND Folio = @folio`);
+
+          if (res.res.recordset[0]) {
+            return;
+          }
+
           solicitud.input('clave', mssql.VarChar, credencial.clave.toString());
           solicitud.input('hora', mssql.VarChar, horaActual());
 
           await solicitud.query(datos.tipo == "pedido" ?
-          `UPDATE PedidosCliente SET Status = 'Z', AlSurtiendo = @clave, HoraSurtiendo = @hora WHERE Folio = @folio`
-          :
-          `UPDATE PedidosMostrador SET Status = 'Z', AlSurtiendo = @clave, HoraSurtiendo = @hora WHERE Folio = @folio`);
-          
+            `UPDATE PedidosCliente SET Status = 'Z', AlSurtiendo = @clave, HoraSurtiendo = @hora WHERE Folio = @folio`
+            :
+            `UPDATE PedidosMostrador SET Status = 'Z', AlSurtiendo = @clave, HoraSurtiendo = @hora WHERE Folio = @folio`);
+
           break;
         }
         case 'statusCapturado': {
@@ -365,15 +375,24 @@ wss.on('connection', async (ws) => {
 
           solicitud.input('folio', mssql.Int, datos.folio);
 
+          const res = await solicitud.query(datos.tipo == "pedido" ?
+            `SELECT Folio FROM PedidosCliente WHERE Status = 'C' AND Folio = @folio`
+            :
+            `SELECT Folio FROM PedidosMostrador WHERE Status = 'C' AND Folio = @folio`);
+
+          if (res.res.recordset[0]) {
+            return;
+          }
+
           await solicitud.query(datos.tipo == "pedido" ?
-          `UPDATE PedidosCliente SET Status = 'C' WHERE Folio = @folio`
-          :
-          `UPDATE PedidosMostrador SET Status = 'C' WHERE Folio = @folio`);
-          
+            `UPDATE PedidosCliente SET Status = 'C' WHERE Folio = @folio`
+            :
+            `UPDATE PedidosMostrador SET Status = 'C' WHERE Folio = @folio`);
+
           await solicitud.query(datos.tipo == "pedido" ?
-          `UPDATE PedidoClientesDetalle SET CantidadSurtida = 0 WHERE Folio = @folio`
-          :
-          `UPDATE PedidoMostradorDetalle SET CantidadSurtida = 0 WHERE Folio = @folio`);
+            `UPDATE PedidoClientesDetalle SET CantidadSurtida = 0 WHERE Folio = @folio`
+            :
+            `UPDATE PedidoMostradorDetalle SET CantidadSurtida = 0 WHERE Folio = @folio`);
 
           break;
         }
@@ -383,18 +402,28 @@ wss.on('connection', async (ws) => {
           const solicitud = pool.request();
 
           solicitud.input('folio', mssql.Int, datos.folio);
+
+          const res = await solicitud.query(datos.tipo == "pedido" ?
+            `SELECT Folio FROM PedidosCliente WHERE Status = 'F' AND Folio = @folio`
+            :
+            `SELECT Folio FROM PedidosMostrador WHERE Status = 'F' AND Folio = @folio`);
+
+          if (res.res.recordset[0]) {
+            return;
+          }
+
           solicitud.input('clave', mssql.VarChar, credencial.clave.toString());
           solicitud.input('hora', mssql.VarChar, horaActual());
 
           await solicitud.query(datos.tipo == "pedido" ?
-          `UPDATE PedidosCliente SET Status = 'F', ALSurtir = @clave, FechaSurtido = GETDATE(), HoraSurtido = @hora, Alfacturar = @clave, FechaFacturado = GETDATE(), HoraFacturado = @hora WHERE Folio = @folio`
-          :
-          `UPDATE PedidosMostrador SET Status = 'F', ALSurtir = @clave, FechaSurtido = GETDATE(), HoraSurtido = @hora, Alfacturar = @clave, FechaFacturado = GETDATE(), HoraFacturado = @hora WHERE Folio = @folio`);
-          
+            `UPDATE PedidosCliente SET Status = 'F', ALSurtir = @clave, FechaSurtido = GETDATE(), HoraSurtido = @hora, Alfacturar = @clave, FechaFacturado = GETDATE(), HoraFacturado = @hora WHERE Folio = @folio`
+            :
+            `UPDATE PedidosMostrador SET Status = 'F', ALSurtir = @clave, FechaSurtido = GETDATE(), HoraSurtido = @hora, Alfacturar = @clave, FechaFacturado = GETDATE(), HoraFacturado = @hora WHERE Folio = @folio`);
+
           await solicitud.query(datos.tipo == "pedido" ?
-          `UPDATE PedidoClientesDetalle SET CantidadFacturada = CantidadSurtida WHERE Folio = @folio`
-          :
-          `UPDATE PedidoMostradorDetalle SET CantidadFacturada = CantidadSurtida WHERE Folio = @folio`);
+            `UPDATE PedidoClientesDetalle SET CantidadFacturada = CantidadSurtida WHERE Folio = @folio`
+            :
+            `UPDATE PedidoMostradorDetalle SET CantidadFacturada = CantidadSurtida WHERE Folio = @folio`);
 
           break;
         }
@@ -432,19 +461,19 @@ wss.on('connection', async (ws) => {
 
 function horaActual() {
   const ahora = new Date();
-  
+
   // Obtener componentes de la hora
   let horas = ahora.getHours();
   const minutos = ahora.getMinutes().toString().padStart(2, '0');
   const segundos = ahora.getSeconds().toString().padStart(2, '0');
-  
+
   // Determinar AM/PM
   const ampm = horas >= 12 ? 'p. m.' : 'a. m.';
-  
+
   // Convertir a formato de 12 horas
   horas = horas % 12;
   horas = horas || 12; // Ajustar 0 a 12
-  
+
   // Formatear la cadena final
   return `${horas}:${minutos}:${segundos} ${ampm}`;
 }
