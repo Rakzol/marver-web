@@ -12,6 +12,12 @@ const sqlConfig = {
   password: '2505M$RITE', // Reemplaza con tu contraseña
   server: '127.0.0.1',       // Reemplaza con tu servidor SQL
   database: 'Mochis', // Reemplaza con el nombre de tu base de datos
+  pool: {
+    max: 200,          // Conexiones máximas simultáneas
+    min: 50,           // Conexiones mínimas siempre activas
+    idleTimeoutMillis: 30000, // Tiempo máximo de inactividad
+    acquireTimeoutMillis: 60000 // Tiempo de espera para obtener conexión
+  },
   options: {
     encrypt: false,           // Si usas cifrado
     trustServerCertificate: true // Si necesitas confiar en el certificado del servidor
@@ -59,16 +65,20 @@ const server = https.createServer(sslOptions, async (req, res) => {
 
 const wss = new WebSocket.WebSocketServer({ server });
 
+let pool;
+
 // Store all connected clients in an array
 let clients = [];
 
 // Conexión a la base de datos
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 async function fetchDataAndSend() {
-  let pool;
   try {
+    if(!pool){
+      pool = await mssql.connect(sqlConfig);
+      console.log('Base de datos abierta');
+    }
     // Conectar a la base de datos
-    pool = await mssql.connect(sqlConfig);
 
     const result = await pool.query('SELECT * FROM PedidosNotificacion ORDER BY Folio');
 
@@ -78,7 +88,7 @@ async function fetchDataAndSend() {
         try {
           if (client.ws.readyState === WebSocket.OPEN) {
             jwt.verify(client.jwt, secretKey);
-            client.ws.send(JSON.stringify(result.recordset));
+            client.ws.send(JSON.stringify({ "ruta": "pedidos", "pedidos": result.recordset }));
           }
         } catch (err) {
           console.error(err);
@@ -91,9 +101,10 @@ async function fetchDataAndSend() {
   } catch (error) {
     console.error('Erro con la base de datos: ', error);
   } finally {
-    if (pool) {
+    setTimeout(fetchDataAndSend, 500);
+    /*if (pool) {
       await pool.close();
-    }
+    }*/
   }
 }
 
@@ -103,7 +114,7 @@ async function fetchDataAndSend() {
 CAMBIARLO POR setTimeout en el finally
 */
 
-setInterval(fetchDataAndSend, 1000); // 1000 ms = 1 segundo
+setTimeout(fetchDataAndSend, 500); // 1000 ms = 1 segundo
 
 // When a client connects to the WebSocket server
 wss.on('connection', async (ws) => {
@@ -113,7 +124,6 @@ wss.on('connection', async (ws) => {
   clients.push({ "ws": ws });
 
   // When the WebSocket receives a message
-  let pool;
   ws.on('message', async (message) => {
     try {
 
@@ -125,12 +135,11 @@ wss.on('connection', async (ws) => {
       */
 
       switch (datos.ruta) {
-        case 'login':
+        case 'login': {
 
-          pool = await mssql.connect(sqlConfig);
           const request = pool.request();
           request.input('clave', mssql.Int, datos.clave);
-          request.input('contraseña', mssql.VarChar(50), datos.contraseña);
+          request.input('contraseña', mssql.VarChar, datos.contraseña);
 
           const result = await request.query('SELECT Clave, Nombre, Perfil FROM Usuarios WHERE Clave = @clave AND Contraseña = @contraseña');
 
@@ -153,30 +162,38 @@ wss.on('connection', async (ws) => {
           ws.send(JSON.stringify({ "jwt": jwt.sign(payload, secretKey, options) }));
 
           break;
-        case 'jwt':
+        }
+        case 'jwt': {
           jwt.verify(datos.jwt, secretKey);
           const clienteEncontrado = clients.find(cliente => cliente.ws == ws);
           clienteEncontrado.jwt = datos.jwt;
           break;
-        case 'validar':
+        }
+        case 'validar': {
           ws.send(JSON.stringify({ "validacion": jwt.verify(datos.jwt, secretKey) }));
           break;
-        case 'pedidos':
+        }
+        case 'pedidos': {
           const credenciales = jwt.verify(datos.jwt, secretKey);
 
-          pool = await mssql.connect(sqlConfig);
           const solicitud = pool.request();
 
-          solicitud.input('clave', mssql.VarChar(20), credenciales.clave.toString());
+          solicitud.input('clave', mssql.VarChar, credenciales.clave.toString());
 
           const resultado = await solicitud.query(`
-            SELECT Folio, Status, 'pedido' AS Tipo, AlSurtiendo, ALSurtir, Alfacturar FROM PedidosCliente WHERE
+            SELECT Folio, Status, 'pedido' AS Tipo, AlSurtiendo, ALSurtir, Alfacturar, Vendedor, Nombre
+            FROM PedidosCliente
+            LEFT JOIN Vendedores ON Vendedores.Clave = Vendedor
+            WHERE
             ( Status = 'C' ) OR
             ( Status = 'Z' AND AlSurtiendo = @clave ) OR
             ( Status = 'S' AND ALSurtir = @clave ) OR
             ( Status = 'F' AND Alfacturar = @clave )
             UNION ALL
-            SELECT Folio, Status, 'mostrador' AS Tipo, AlSurtiendo, ALSurtir, Alfacturar FROM PedidosMostrador WHERE
+            SELECT Folio, Status, 'mostrador' AS Tipo, AlSurtiendo, ALSurtir, Alfacturar, Vendedor, Nombre
+            FROM PedidosMostrador
+            LEFT JOIN Vendedores ON Vendedores.Clave = Vendedor
+            WHERE
             ( Status = 'C' ) OR
             ( Status = 'Z' AND AlSurtiendo = @clave ) OR
             ( Status = 'S' AND ALSurtir = @clave ) OR
@@ -184,24 +201,220 @@ wss.on('connection', async (ws) => {
             ORDER BY Folio`);
 
           if (resultado.recordset.length > 0) {
-            ws.send(JSON.stringify(resultado.recordset))
+            ws.send(JSON.stringify({ "ruta": "pedidos", "pedidos": resultado.recordset }));
           }
           break;
-        case '🐱':
+        }
+        case 'pedidoDetalle': {
+          const credencial = jwt.verify(datos.jwt, secretKey);
+
+          const solicit = pool.request();
+
+          solicit.input('folio', mssql.Int, datos.folio);
+
+          const res = await solicit.query(datos.tipo == "pedido" ?
+            `SELECT pcd.CodigoArticulo, pro.Localizacion, pcd.CantidadPedida, pcd.CantidadSurtida, pcd.CantidadFacturada
+              FROM PedidoClientesDetalle pcd LEFT JOIN Producto pro ON pro.Codigo = pcd.CodigoArticulo
+              WHERE pcd.Folio = @folio ORDER BY pro.Localizacion`
+            :
+            `SELECT pmd.CodigoArticulo, pro.Localizacion, pmd.CantidadPedida, pmd.CantidadSurtida, pmd.CantidadFacturada
+            FROM PedidoMostradorDetalle pmd LEFT JOIN Producto pro ON pro.Codigo = pmd.CodigoArticulo
+            WHERE pmd.Folio = @folio ORDER BY pro.Localizacion`);
+
+          if (res.recordset.length > 0) {
+            ws.send(JSON.stringify({ "ruta": "pedidoDetalle", "pedido": res.recordset, "tipo": datos.tipo, "folio": datos.folio, "status": datos.status }));
+          }
+          break;
+        }
+        case 'restarSurtido': {
+          const credencial = jwt.verify(datos.jwt, secretKey);
+
+          const solicitud = pool.request();
+
+          solicitud.input('folio', mssql.Int, datos.folio);
+
+          let res = await solicitud.query(datos.tipo == "pedido" ?
+          `SELECT Status
+            FROM PedidosCliente
+            WHERE Folio = @folio`
+          :
+          `SELECT Status
+          FROM PedidosMostrador
+          WHERE Folio = @folio`);
+
+          if (res.recordset[0].Status != 'Z' && res.recordset[0].Status != 'S') {
+            return;
+          }
+
+          solicitud.input('codigo', mssql.VarChar, datos.codigo);
+
+          res = await solicitud.query(datos.tipo == "pedido" ?
+            `SELECT CantidadPedida, CantidadSurtida
+              FROM PedidoClientesDetalle
+              WHERE Folio = @folio AND CodigoArticulo = @codigo`
+            :
+            `SELECT CantidadPedida, CantidadSurtida
+            FROM PedidoMostradorDetalle
+            WHERE Folio = @folio AND CodigoArticulo = @codigo`);
+
+          if (!res.recordset[0]) {
+            return;
+          }
+
+          if( res.recordset[0].CantidadSurtida - 1 < 0 ){
+            return;
+          }
+
+          await solicitud.query(datos.tipo == "pedido" ?
+            `UPDATE PedidoClientesDetalle SET CantidadSurtida = CantidadSurtida - 1
+              WHERE Folio = @folio AND CodigoArticulo = @codigo`
+            :
+            `UPDATE PedidoMostradorDetalle SET CantidadSurtida = CantidadSurtida - 1
+            WHERE Folio = @folio AND CodigoArticulo = @codigo`);
+
+            ws.send(JSON.stringify({ "ruta": "actualizarSurtido", "tipo": datos.tipo, "folio": datos.folio, "codigo": datos.codigo, "cantidadSurtida": res.recordset[0].CantidadSurtida - 1, "cantidadPedida": res.recordset[0].CantidadPedida }));
+          break;
+        }
+        case 'sumarSurtido': {
+          const credencial = jwt.verify(datos.jwt, secretKey);
+
+          const solicitud = pool.request();
+
+          solicitud.input('folio', mssql.Int, datos.folio);
+
+          let res = await solicitud.query(datos.tipo == "pedido" ?
+          `SELECT Status
+            FROM PedidosCliente
+            WHERE Folio = @folio`
+          :
+          `SELECT Status
+          FROM PedidosMostrador
+          WHERE Folio = @folio`);
+
+          if (res.recordset[0].Status != 'Z' && res.recordset[0].Status != 'S') {
+            return;
+          }
+
+          solicitud.input('barra', mssql.VarChar, datos.barra);
+
+          res = await solicitud.query(datos.tipo == "pedido" ?
+            `SELECT pcd.CodigoArticulo
+              FROM PedidoClientesDetalle pcd INNER JOIN Producto pro ON pro.Codigo = pcd.CodigoArticulo
+              WHERE pcd.Folio = @folio AND pro.Alterno2 = @barra`
+            :
+            `SELECT pmd.CodigoArticulo
+            FROM PedidoMostradorDetalle pmd INNER JOIN Producto pro ON pro.Codigo = pmd.CodigoArticulo
+            WHERE pmd.Folio = @folio AND pro.Alterno2 = @barra`);
+
+            if (!res.recordset[0]) {
+              console.log("Codigo de barras incorrecto");
+              return;
+            }
+
+          const codigo = res.recordset[0].CodigoArticulo;
+
+          solicitud.input('codigo', mssql.VarChar, codigo);
+
+          res = await solicitud.query(datos.tipo == "pedido" ?
+            `SELECT CantidadPedida, CantidadSurtida
+              FROM PedidoClientesDetalle
+              WHERE Folio = @folio AND CodigoArticulo = @codigo`
+            :
+            `SELECT CantidadPedida, CantidadSurtida
+            FROM PedidoMostradorDetalle
+            WHERE Folio = @folio AND CodigoArticulo = @codigo`);
+
+          if (!res.recordset[0]) {
+            return;
+          }
+
+          if( res.recordset[0].CantidadSurtida + 1 > res.recordset[0].CantidadPedida ){
+            return;
+          }
+
+          await solicitud.query(datos.tipo == "pedido" ?
+            `UPDATE PedidoClientesDetalle SET CantidadSurtida = CantidadSurtida + 1
+              WHERE Folio = @folio AND CodigoArticulo = @codigo`
+            :
+            `UPDATE PedidoMostradorDetalle SET CantidadSurtida = CantidadSurtida + 1
+            WHERE Folio = @folio AND CodigoArticulo = @codigo`);
+
+            ws.send(JSON.stringify({ "ruta": "actualizarSurtido", "tipo": datos.tipo, "folio": datos.folio, "codigo": codigo, "cantidadSurtida": res.recordset[0].CantidadSurtida + 1, "cantidadPedida": res.recordset[0].CantidadPedida }));
+          break;
+        }
+        case 'statusSurtiendo': {
+          const credencial = jwt.verify(datos.jwt, secretKey);
+
+          const solicitud = pool.request();
+
+          solicitud.input('folio', mssql.Int, datos.folio);
+          solicitud.input('clave', mssql.VarChar, credencial.clave.toString());
+          solicitud.input('hora', mssql.VarChar, horaActual());
+
+          await solicitud.query(datos.tipo == "pedido" ?
+          `UPDATE PedidosCliente SET Status = 'Z', AlSurtiendo = @clave, HoraSurtiendo = @hora WHERE Folio = @folio`
+          :
+          `UPDATE PedidosMostrador SET Status = 'Z', AlSurtiendo = @clave, HoraSurtiendo = @hora WHERE Folio = @folio`);
+          
+          break;
+        }
+        case 'statusCapturado': {
+          const credencial = jwt.verify(datos.jwt, secretKey);
+
+          const solicitud = pool.request();
+
+          solicitud.input('folio', mssql.Int, datos.folio);
+
+          await solicitud.query(datos.tipo == "pedido" ?
+          `UPDATE PedidosCliente SET Status = 'C' WHERE Folio = @folio`
+          :
+          `UPDATE PedidosMostrador SET Status = 'C' WHERE Folio = @folio`);
+          
+          await solicitud.query(datos.tipo == "pedido" ?
+          `UPDATE PedidoClientesDetalle SET CantidadSurtida = 0 WHERE Folio = @folio`
+          :
+          `UPDATE PedidoMostradorDetalle SET CantidadSurtida = 0 WHERE Folio = @folio`);
+
+          break;
+        }
+        case 'statusFacturado': {
+          const credencial = jwt.verify(datos.jwt, secretKey);
+
+          const solicitud = pool.request();
+
+          solicitud.input('folio', mssql.Int, datos.folio);
+          solicitud.input('clave', mssql.VarChar, credencial.clave.toString());
+          solicitud.input('hora', mssql.VarChar, horaActual());
+
+          await solicitud.query(datos.tipo == "pedido" ?
+          `UPDATE PedidosCliente SET Status = 'F', ALSurtir = @clave, FechaSurtido = GETDATE(), HoraSurtido = @hora, Alfacturar = @clave, FechaFacturado = GETDATE(), HoraFacturado = @hora WHERE Folio = @folio`
+          :
+          `UPDATE PedidosMostrador SET Status = 'F', ALSurtir = @clave, FechaSurtido = GETDATE(), HoraSurtido = @hora, Alfacturar = @clave, FechaFacturado = GETDATE(), HoraFacturado = @hora WHERE Folio = @folio`);
+          
+          await solicitud.query(datos.tipo == "pedido" ?
+          `UPDATE PedidoClientesDetalle SET CantidadFacturada = CantidadSurtida WHERE Folio = @folio`
+          :
+          `UPDATE PedidoMostradorDetalle SET CantidadFacturada = CantidadSurtida WHERE Folio = @folio`);
+
+          break;
+        }
+        case '🐱': {
           ws.send(JSON.stringify({ "gatos": "🐱 🐈 😺 😸 😹 😻 😼 😽 🙀 😿 😾 🐾" }));
           break;
-        default:
+        }
+        default: {
           ws.send(JSON.stringify({ "error": "Ruta no econtrada" }));
           break;
+        }
       }
 
     } catch (error) {
       console.error(error);
       ws.send(JSON.stringify({ "error": error.message }));
     } finally {
-      if (pool) {
+      /*if (pool) {
         await pool.close();
-      }
+      }*/
     }
 
   });
@@ -217,5 +430,26 @@ wss.on('connection', async (ws) => {
   //ws.send('Welcome to the chat!');
 });
 
+function horaActual() {
+  const ahora = new Date();
+  
+  // Obtener componentes de la hora
+  let horas = ahora.getHours();
+  const minutos = ahora.getMinutes().toString().padStart(2, '0');
+  const segundos = ahora.getSeconds().toString().padStart(2, '0');
+  
+  // Determinar AM/PM
+  const ampm = horas >= 12 ? 'p. m.' : 'a. m.';
+  
+  // Convertir a formato de 12 horas
+  horas = horas % 12;
+  horas = horas || 12; // Ajustar 0 a 12
+  
+  // Formatear la cadena final
+  return `${horas}:${minutos}:${segundos} ${ampm}`;
+}
+
 // Start the server on port 8888
-server.listen(8888);
+server.listen(8888, () => {
+  console.log('Servidor abierto');
+});
