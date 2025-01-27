@@ -80,7 +80,7 @@ async function fetchDataAndSend() {
     }
     // Conectar a la base de datos
 
-    const result = await pool.query('SELECT * FROM PedidosNotificacion ORDER BY Folio');
+    const result = await pool.query('SELECT PedidosNotificacion.*, Vendedores.Nombre FROM PedidosNotificacion LEFT JOIN Vendedores ON Vendedores.Clave = PedidosNotificacion.Vendedor ORDER BY Folio');
 
     if (result.recordset.length > 0) {
       // Enviar los registros a todos los clientes conectados
@@ -115,6 +115,10 @@ CAMBIARLO POR setTimeout en el finally
 */
 
 setTimeout(fetchDataAndSend, 500); // 1000 ms = 1 segundo
+
+function r(n) {
+  return Math.round(n * 100) / 100;
+}
 
 // When a client connects to the WebSocket server
 wss.on('connection', async (ws) => {
@@ -181,7 +185,7 @@ wss.on('connection', async (ws) => {
           solicitud.input('clave', mssql.VarChar, credenciales.clave.toString());
 
           const resultado = await solicitud.query(`
-            SELECT Folio, Status, 'pedido' AS Tipo, AlSurtiendo, ALSurtir, Alfacturar, Vendedor, Nombre
+            SELECT Folio, Status, 'pedido' AS Tipo, AlSurtiendo, ALSurtir, Alfacturar, Vendedor, Nombre, Cliente, NombreCliente
             FROM PedidosCliente
             LEFT JOIN Vendedores ON Vendedores.Clave = Vendedor
             WHERE
@@ -190,7 +194,7 @@ wss.on('connection', async (ws) => {
             ( Status = 'S' AND ALSurtir = @clave ) OR
             ( Status = 'F' AND Alfacturar = @clave )
             UNION ALL
-            SELECT Folio, Status, 'mostrador' AS Tipo, AlSurtiendo, ALSurtir, Alfacturar, Vendedor, Nombre
+            SELECT Folio, Status, 'mostrador' AS Tipo, AlSurtiendo, ALSurtir, Alfacturar, Vendedor, Nombre, Cliente, NombreCliente
             FROM PedidosMostrador
             LEFT JOIN Vendedores ON Vendedores.Clave = Vendedor
             WHERE
@@ -213,11 +217,11 @@ wss.on('connection', async (ws) => {
           solicit.input('folio', mssql.Int, datos.folio);
 
           const res = await solicit.query(datos.tipo == "pedido" ?
-            `SELECT pcd.CodigoArticulo, pro.Localizacion, pcd.CantidadPedida, pcd.CantidadSurtida, pcd.CantidadFacturada
+            `SELECT pcd.CodigoArticulo, pro.Localizacion, pro.Descripcion, pcd.CantidadPedida, pcd.CantidadSurtida, pcd.CantidadFacturada
               FROM PedidoClientesDetalle pcd LEFT JOIN Producto pro ON pro.Codigo = pcd.CodigoArticulo
               WHERE pcd.Folio = @folio ORDER BY pro.Localizacion`
             :
-            `SELECT pmd.CodigoArticulo, pro.Localizacion, pmd.CantidadPedida, pmd.CantidadSurtida, pmd.CantidadFacturada
+            `SELECT pmd.CodigoArticulo, pro.Localizacion, pro.Descripcion, pmd.CantidadPedida, pmd.CantidadSurtida, pmd.CantidadFacturada
             FROM PedidoMostradorDetalle pmd LEFT JOIN Producto pro ON pro.Codigo = pmd.CodigoArticulo
             WHERE pmd.Folio = @folio ORDER BY pro.Localizacion`);
 
@@ -226,7 +230,7 @@ wss.on('connection', async (ws) => {
           }
           break;
         }
-        case 'restarSurtido': {
+        case 'restarSurtidoCodigo': {
           const credencial = jwt.verify(datos.jwt, secretKey);
 
           const solicitud = pool.request();
@@ -275,7 +279,52 @@ wss.on('connection', async (ws) => {
           ws.send(JSON.stringify({ "ruta": "actualizarSurtido", "tipo": datos.tipo, "folio": datos.folio, "codigo": datos.codigo, "cantidadSurtida": res.recordset[0].CantidadSurtida - 1, "cantidadPedida": res.recordset[0].CantidadPedida }));
           break;
         }
-        case 'sumarSurtido': {
+        case 'sumarSurtidoCodigo': {
+          const credencial = jwt.verify(datos.jwt, secretKey);
+
+          const solicitud = pool.request();
+
+          solicitud.input('folio', mssql.Int, datos.folio);
+
+          let res = await solicitud.query(datos.tipo == "pedido" ?
+            `SELECT Status
+            FROM PedidosCliente
+            WHERE Folio = @folio`
+            :
+            `SELECT Status
+          FROM PedidosMostrador
+          WHERE Folio = @folio`);
+
+          if (res.recordset[0].Status != 'Z' && res.recordset[0].Status != 'S') {
+            return;
+          }
+
+          solicitud.input('codigo', mssql.VarChar, datos.codigo);
+
+          res = await solicitud.query(datos.tipo == "pedido" ?
+            `SELECT CantidadPedida, CantidadSurtida
+              FROM PedidoClientesDetalle
+              WHERE Folio = @folio AND CodigoArticulo = @codigo`
+            :
+            `SELECT CantidadPedida, CantidadSurtida
+            FROM PedidoMostradorDetalle
+            WHERE Folio = @folio AND CodigoArticulo = @codigo`);
+
+          if (!res.recordset[0]) {
+            return;
+          }
+
+          await solicitud.query(datos.tipo == "pedido" ?
+            `UPDATE PedidoClientesDetalle SET CantidadSurtida = CantidadSurtida + 1
+              WHERE Folio = @folio AND CodigoArticulo = @codigo`
+            :
+            `UPDATE PedidoMostradorDetalle SET CantidadSurtida = CantidadSurtida + 1
+            WHERE Folio = @folio AND CodigoArticulo = @codigo`);
+
+          ws.send(JSON.stringify({ "ruta": "actualizarSurtido", "tipo": datos.tipo, "folio": datos.folio, "codigo": datos.codigo, "cantidadSurtida": res.recordset[0].CantidadSurtida + 1, "cantidadPedida": res.recordset[0].CantidadPedida }));
+          break;
+        }
+        case 'sumarSurtidoBarra': {
           const credencial = jwt.verify(datos.jwt, secretKey);
 
           const solicitud = pool.request();
@@ -328,10 +377,6 @@ wss.on('connection', async (ws) => {
             return;
           }
 
-          if (res.recordset[0].CantidadSurtida + 1 > res.recordset[0].CantidadPedida) {
-            return;
-          }
-
           await solicitud.query(datos.tipo == "pedido" ?
             `UPDATE PedidoClientesDetalle SET CantidadSurtida = CantidadSurtida + 1
               WHERE Folio = @folio AND CodigoArticulo = @codigo`
@@ -345,42 +390,155 @@ wss.on('connection', async (ws) => {
         case 'statusSurtiendo': {
           const credencial = jwt.verify(datos.jwt, secretKey);
 
-          const solicitud = pool.request();
-
+          let solicitud = pool.request();
           solicitud.input('folio', mssql.Int, datos.folio);
-
-          const res = await solicitud.query(datos.tipo == "pedido" ?
-            `SELECT Folio FROM PedidosCliente WHERE Status = 'Z' AND Folio = @folio`
-            :
-            `SELECT Folio FROM PedidosMostrador WHERE Status = 'Z' AND Folio = @folio`);
-
-          if (res.res.recordset[0]) {
-            return;
-          }
-
           solicitud.input('clave', mssql.VarChar, credencial.clave.toString());
           solicitud.input('hora', mssql.VarChar, horaActual());
 
-          await solicitud.query(datos.tipo == "pedido" ?
-            `UPDATE PedidosCliente SET Status = 'Z', AlSurtiendo = @clave, HoraSurtiendo = @hora WHERE Folio = @folio`
+          const pedido = (await solicitud.query(datos.tipo == "pedido" ?
+            `SELECT * FROM PedidosCliente WHERE Folio = @folio`
             :
-            `UPDATE PedidosMostrador SET Status = 'Z', AlSurtiendo = @clave, HoraSurtiendo = @hora WHERE Folio = @folio`);
+            `SELECT * FROM PedidosMostrador WHERE Folio = @folio`)).recordset[0];
+
+          //por si dos le dan al mismo tiempo
+          if (pedido.Status == 'Z') {
+            return;
+          }
+
+          await solicitud.query(datos.tipo == "pedido" ?
+            `UPDATE PedidosCliente SET Status = 'Z', HoraSurtiendo = @hora, AlSurtiendo = @clave WHERE Folio = @folio`
+            :
+            `UPDATE PedidosMostrador SET Status = 'Z', HoraSurtiendo = @hora, AlSurtiendo = @clave WHERE Folio = @folio`);
+
+          break;
+        }
+        case 'statusSurtido': {
+          const credencial = jwt.verify(datos.jwt, secretKey);
+
+          let solicitud = pool.request();
+          solicitud.input('folio', mssql.Int, datos.folio);
+
+          const pedido = (await solicitud.query(datos.tipo == "pedido" ?
+            `SELECT * FROM PedidosCliente WHERE Folio = @folio`
+            :
+            `SELECT * FROM PedidosMostrador WHERE Folio = @folio`)).recordset[0];
+
+          //por si dos le dan al mismo tiempo
+          if (pedido.Status == 'S') {
+            return;
+          }
+
+          solicitud.input('cliente', mssql.Int, pedido.Cliente);
+          const descuentoUtilidad = (await solicitud.query(`SELECT DescuentoUniversal, Utilidad FROM Clientes WHERE Clave = @cliente`)).recordset;
+
+          const pedidoDetalle = (await solicitud.query(datos.tipo == "pedido" ?
+            `SELECT * FROM PedidoClientesDetalle WHERE Folio = @folio`
+            :
+            `SELECT * FROM PedidoMostradorDetalle WHERE Folio = @folio`)).recordset;
+
+          let CodigosSurtido = 0;
+          let UnidadesSurtido = 0;
+          let DescuentosSurtido = 0;
+          let SubtotalSurtido = 0;
+          let IvaSurtido = 0;
+          let TotalSurtido = 0;
+          let Costototal = 0;
+
+          let importeSurtido = 0;
+          for (const producto of pedidoDetalle) {
+            if (producto.CantidadSurtida > 0) {
+              CodigosSurtido++;
+              UnidadesSurtido += producto.CantidadSurtida;
+            }
+
+            const ImporteSurtida = r(producto.PrecioPedido * producto.CantidadSurtida);
+            if (producto.DescuentoPedida > 0) {
+              DescuentosSurtido += r(r(producto.DescuentoPedida * 0.01) * ImporteSurtida);
+            }
+            importeSurtido += ImporteSurtida;
+
+            Costototal += r(producto.CostoPedida * producto.CantidadSurtida);
+
+            solicitud = pool.request();
+            solicitud.input('folio', mssql.Int, datos.folio);
+            solicitud.input('CodigoArticulo', mssql.VarChar, producto.CodigoArticulo);
+            solicitud.input('ImporteSurtida', mssql.Float, ImporteSurtida);
+            await solicitud.query(datos.tipo == "pedido" ?
+              `UPDATE PedidoClientesDetalle SET
+            PrecioSurtida = PrecioPedido,
+            ImporteSurtida = @ImporteSurtida,
+            DescuentoSurtida = DescuentoPedida,
+            CostoSurtida = CostoPedida
+            WHERE Folio = @folio AND CodigoArticulo = @CodigoArticulo`
+              :
+              `UPDATE PedidoMostradorDetalle SET
+            PrecioSurtida = PrecioPedido,
+            ImporteSurtida = @ImporteSurtida,
+            DescuentoSurtida = DescuentoPedida,
+            CostoSurtida = CostoPedida
+            WHERE Folio = @folio AND CodigoArticulo = @CodigoArticulo`);
+
+          };
+
+          SubtotalSurtido = importeSurtido - DescuentosSurtido;
+          IvaSurtido = r(SubtotalSurtido * 0.16);
+          TotalSurtido = SubtotalSurtido + IvaSurtido;
+
+          solicitud = pool.request();
+          solicitud.input('folio', mssql.Int, datos.folio);
+          solicitud.input('HoraSurtido', mssql.VarChar, horaActual());
+          solicitud.input('CodigosSurtido', mssql.Int, CodigosSurtido);
+          solicitud.input('UnidadesSurtido', mssql.Float, UnidadesSurtido);
+          solicitud.input('DescuentosSurtido', mssql.Float, DescuentosSurtido);
+          solicitud.input('SubtotalSurtido', mssql.Float, SubtotalSurtido);
+          solicitud.input('IvaSurtido', mssql.Float, IvaSurtido);
+          solicitud.input('TotalSurtido', mssql.Float, TotalSurtido);
+          solicitud.input('Costototal', mssql.Float, Costototal);
+          solicitud.input('ALSurtir', mssql.VarChar, credencial.clave.toString());
+          await solicitud.query(datos.tipo == "pedido" ?
+            `UPDATE PedidosCliente SET
+            Status = 'S',
+            FechaSurtido = GETDATE(),
+            HoraSurtido = @HoraSurtido,
+            CodigosSurtido = @CodigosSurtido,
+            UnidadesSurtido = @UnidadesSurtido,
+            DescuentosSurtido = @DescuentosSurtido,
+            SubtotalSurtido = @SubtotalSurtido,
+            IvaSurtido = @IvaSurtido,
+            TotalSurtido = @TotalSurtido,
+            Costototal = @Costototal,
+            ALSurtir = @ALSurtir
+            WHERE Folio = @folio`
+            :
+            `UPDATE PedidosMostrador SET
+            Status = 'S',
+            FechaSurtido = GETDATE(),
+            HoraSurtido = @HoraSurtido,
+            CodigosSurtido = @CodigosSurtido,
+            UnidadesSurtido = @UnidadesSurtido,
+            DescuentosSurtido = @DescuentosSurtido,
+            SubtotalSurtido = @SubtotalSurtido,
+            IvaSurtido = @IvaSurtido,
+            TotalSurtido = @TotalSurtido,
+            Costototal = @Costototal,
+            ALSurtir = @ALSurtir
+            WHERE Folio = @folio`);
 
           break;
         }
         case 'statusCapturado': {
           const credencial = jwt.verify(datos.jwt, secretKey);
 
-          const solicitud = pool.request();
-
+          let solicitud = pool.request();
           solicitud.input('folio', mssql.Int, datos.folio);
 
-          const res = await solicitud.query(datos.tipo == "pedido" ?
-            `SELECT Folio FROM PedidosCliente WHERE Status = 'C' AND Folio = @folio`
+          const pedido = (await solicitud.query(datos.tipo == "pedido" ?
+            `SELECT * FROM PedidosCliente WHERE Folio = @folio`
             :
-            `SELECT Folio FROM PedidosMostrador WHERE Status = 'C' AND Folio = @folio`);
+            `SELECT * FROM PedidosMostrador WHERE Folio = @folio`)).recordset[0];
 
-          if (res.res.recordset[0]) {
+          //por si dos le dan al mismo tiempo
+          if (pedido.Status == 'C') {
             return;
           }
 
@@ -389,42 +547,32 @@ wss.on('connection', async (ws) => {
             :
             `UPDATE PedidosMostrador SET Status = 'C' WHERE Folio = @folio`);
 
-          await solicitud.query(datos.tipo == "pedido" ?
-            `UPDATE PedidoClientesDetalle SET CantidadSurtida = 0 WHERE Folio = @folio`
+          break;
+        }
+        case 'statusCancelado': {
+          const credencial = jwt.verify(datos.jwt, secretKey);
+
+          let solicitud = pool.request();
+          solicitud.input('folio', mssql.Int, datos.folio);
+
+          const pedido = (await solicitud.query(datos.tipo == "pedido" ?
+            `SELECT * FROM PedidosCliente WHERE Folio = @folio`
             :
-            `UPDATE PedidoMostradorDetalle SET CantidadSurtida = 0 WHERE Folio = @folio`);
+            `SELECT * FROM PedidosMostrador WHERE Folio = @folio`)).recordset[0];
+
+          //por si dos le dan al mismo tiempo
+          if (pedido.Status != 'C' && pedido.Status != 'Z' && pedido.Status != 'S') {
+            return;
+          }
+
+          await solicitud.query(datos.tipo == "pedido" ?
+            `UPDATE PedidosCliente SET Status = 'CA' WHERE Folio = @folio`
+            :
+            `UPDATE PedidosMostrador SET Status = 'CA' WHERE Folio = @folio`);
 
           break;
         }
         case 'statusFacturado': {
-          const credencial = jwt.verify(datos.jwt, secretKey);
-
-          const solicitud = pool.request();
-
-          solicitud.input('folio', mssql.Int, datos.folio);
-
-          const res = await solicitud.query(datos.tipo == "pedido" ?
-            `SELECT Folio FROM PedidosCliente WHERE Status = 'F' AND Folio = @folio`
-            :
-            `SELECT Folio FROM PedidosMostrador WHERE Status = 'F' AND Folio = @folio`);
-
-          if (res.res.recordset[0]) {
-            return;
-          }
-
-          solicitud.input('clave', mssql.VarChar, credencial.clave.toString());
-          solicitud.input('hora', mssql.VarChar, horaActual());
-
-          await solicitud.query(datos.tipo == "pedido" ?
-            `UPDATE PedidosCliente SET Status = 'F', ALSurtir = @clave, FechaSurtido = GETDATE(), HoraSurtido = @hora, Alfacturar = @clave, FechaFacturado = GETDATE(), HoraFacturado = @hora WHERE Folio = @folio`
-            :
-            `UPDATE PedidosMostrador SET Status = 'F', ALSurtir = @clave, FechaSurtido = GETDATE(), HoraSurtido = @hora, Alfacturar = @clave, FechaFacturado = GETDATE(), HoraFacturado = @hora WHERE Folio = @folio`);
-
-          await solicitud.query(datos.tipo == "pedido" ?
-            `UPDATE PedidoClientesDetalle SET CantidadFacturada = CantidadSurtida WHERE Folio = @folio`
-            :
-            `UPDATE PedidoMostradorDetalle SET CantidadFacturada = CantidadSurtida WHERE Folio = @folio`);
-
           break;
         }
         case '🐱': {

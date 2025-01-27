@@ -64,6 +64,78 @@
     /* Importar fuente Inter de Google */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
+    /* Estilos para el header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background-color: #3498db;
+      color: white;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .menu {
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+      position: absolute;
+      top: 100%;
+      right: 1rem;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      padding: 1rem;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .menu a {
+      text-decoration: none;
+      color: #3498db;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .menu a:hover {
+      text-decoration: underline;
+    }
+
+    .hamburguer {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 24px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .hamburguer div {
+      width: 100%;
+      height: 3px;
+      background: white;
+      border-radius: 2px;
+    }
+
+    /* Mostrar el menú en dispositivos móviles */
+    @media (max-width: 600px) {
+      .hamburguer {
+        display: flex;
+      }
+
+      .menu {
+        display: none;
+      }
+
+      .menu.open {
+        display: flex;
+      }
+    }
+
     /* Estilos base */
     body {
       font-family: 'Inter', sans-serif;
@@ -164,15 +236,15 @@
 
     /* Botones */
     button {
-      background: #27ae60;
+      margin: 0.4rem 0.5rem;
+      padding: 0.7rem 1.2rem;
+      background: #3498db;
       color: white;
       border: none;
-      padding: 0.8rem 1.5rem;
       border-radius: 25px;
       font-size: 1.0rem;
       cursor: pointer;
       transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      margin: 0.5rem;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       font-weight: 600;
       letter-spacing: 0.5px;
@@ -182,18 +254,6 @@
     button:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      background: #219a52;
-    }
-
-    /* Botones de cancelar */
-    button[onclick*="Cancelar"],
-    button:contains("Cancelar") {
-      background: #e74c3c;
-    }
-
-    button[onclick*="Cancelar"]:hover,
-    button:contains("Cancelar"):hover {
-      background: #c0392b;
     }
 
     /* Sub-tablas */
@@ -227,14 +287,8 @@
         font-size: 1.0em;
       }
 
-      button {
-        width: calc(100% - 1rem);
-        margin: 0.4rem 0.5rem;
-        padding: 0.7rem 1.2rem;
-      }
-
       caption {
-        padding: 0.7rem;
+        margin: 0.4rem 0.5rem;
         font-size: 1rem;
       }
 
@@ -248,17 +302,49 @@
     .invisible {
       display: none;
     }
+
+    .centrarTexto {
+      text-align: center;
+    }
+
+    .botonPositivo {
+      background: #27ae60;
+      padding: 0.4rem 1rem;
+      font-size: 2rem;
+    }
+
+    .botonNegativo {
+      background: #e74c3c;
+      padding: 0.4rem 1.2rem;
+      font-size: 2rem;
+      margin-left: 1rem;
+    }
+
+    .cancelar {
+      background: #e74c3c;
+    }
   </style>
 
 </head>
 
 <body>
+  <header>
+    <div>Seguimiento Pedidos</div>
+    <div class="hamburguer" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="menu" id="menu">
+      <a href="#" onclick="logout()">Cerrar sesión</a>
+    </div>
+  </header>
 
   <div class="tablas-selector">
     <select id="selectorTablas" class="estilo-combobox">
       <option value="capturados">Capturados</option>
       <option value="surtiendo">Surtiendo</option>
-      <!-- <option value="surtidos">Surtidos</option> -->
+      <option value="surtidos">Surtidos</option>
       <option value="facturados">Facturados</option>
     </select>
   </div>
@@ -269,6 +355,7 @@
       <tr>
         <th>Folio</th>
         <th>Vendedor</th>
+        <th>Cliente</th>
       </tr>
     </thead>
     <tbody id="id-C">
@@ -281,6 +368,7 @@
       <tr>
         <th>Folio</th>
         <th>Vendedor</th>
+        <th>Cliente</th>
       </tr>
     </thead>
     <tbody id="id-Z">
@@ -293,6 +381,7 @@
       <tr>
         <th>Folio</th>
         <th>Vendedor</th>
+        <th>Cliente</th>
       </tr>
     </thead>
     <tbody id="id-S">
@@ -305,6 +394,7 @@
       <tr>
         <th>Folio</th>
         <th>Vendedor</th>
+        <th>Cliente</th>
       </tr>
     </thead>
     <tbody id="id-F">
@@ -314,6 +404,29 @@
   <script>
     let jwt;
     let credenciales;
+    let menuOpen = false;
+
+    function toggleMenu() {
+      menuOpen = !menuOpen;
+      const menu = document.getElementById('menu');
+      if (menuOpen) {
+        menu.style.display = 'block';
+      } else {
+        menu.style.display = 'none';
+      }
+    }
+
+    function logout() {
+      // Limpia todas las cookies estableciendo una fecha de expiración pasada
+      const cookies = document.cookie.split("; ");
+      for (let cookie of cookies) {
+        const eqPos = cookie.indexOf("=");
+        const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+      }
+      window.location.href = '/';
+      menuOpen = false;
+    }
 
     for (let cookie of document.cookie.split("; ")) {
       const [clave, valor] = cookie.split("=");
@@ -327,7 +440,7 @@
     function crearSocket() {
       console.log('creando socket');
 
-      let ws = new WebSocket('wss://10.10.10.130:8888/');
+      let ws = new WebSocket('wss://www.marverrefacciones.mx:8888/');
 
       ws.onmessage = (event) => {
         const datos = JSON.parse(event.data);
@@ -359,16 +472,19 @@
               tdFolio.innerText = pedido.Folio;
               const tdVendedor = document.createElement('td');
               tdVendedor.innerText = `${pedido.Vendedor} ${pedido.Nombre}`;
+              const tdCliente = document.createElement('td');
+              tdCliente.innerText = `${pedido.Cliente} ${pedido.NombreCliente}`;
               tr.addEventListener('click', () => {
                 const trCodigos = document.querySelector(`#codigos-${pedido.Tipo}-${pedido.Folio}`);
                 if (trCodigos.classList.contains('invisible')) {
-                  ws.send(JSON.stringify({ "ruta": "pedidoDetalle", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
+                  ws.send(JSON.stringify({ "ruta": "pedidoDetalle", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo, "status": pedido.Status }));
                 } else {
                   trCodigos.classList.add('invisible');
                 }
               });
               tr.append(tdFolio);
               tr.append(tdVendedor);
+              tr.append(tdCliente);
 
               document.querySelector(`#id-${pedido.Status}`).append(tr);
 
@@ -377,8 +493,9 @@
               trCodigos.classList.add('codigos');
               trCodigos.classList.add('invisible');
               const tdCodigos = document.createElement('td');
-              tdCodigos.setAttribute("colspan", "2");
+              tdCodigos.setAttribute("colspan", "3");
               const divCodigos = document.createElement('div');
+              divCodigos.classList.add('centrarTexto');
               const tablaCodigos = document.createElement('table');
               const cabeceraTabla = document.createElement('thead');
               const cuerpoTabla = document.createElement('tbody');
@@ -386,50 +503,74 @@
               cabeceraCodigo.innerText = 'Codigo';
               const cabeceraLocalizacion = document.createElement('th');
               cabeceraLocalizacion.innerText = 'Estante';
-              /*const cabeceraCantidad = document.createElement('th');
-              cabeceraCantidad.innerText = 'Pedido';*/
               const cabeceraSurtidos = document.createElement('th');
               cabeceraSurtidos.innerText = 'Surtido';
 
               cabeceraTabla.append(cabeceraCodigo);
               cabeceraTabla.append(cabeceraLocalizacion);
-              //cabeceraTabla.append(cabeceraCantidad);
               cabeceraTabla.append(cabeceraSurtidos);
               tablaCodigos.append(cabeceraTabla);
               tablaCodigos.append(cuerpoTabla);
               divCodigos.append(tablaCodigos);
               switch (pedido.Status) {
                 case 'C': {
+                  const botonCancelarPedido = document.createElement('button');
+                  botonCancelarPedido.classList.add('cancelar');
+                  botonCancelarPedido.addEventListener('click', () => {
+                    ws.send(JSON.stringify({ "ruta": "statusCancelado", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
+                  });
+                  botonCancelarPedido.innerText = 'Cancelar';
+                  divCodigos.append(botonCancelarPedido);
+
                   const botonSurtirPedido = document.createElement('button');
                   botonSurtirPedido.addEventListener('click', () => {
                     ws.send(JSON.stringify({ "ruta": "statusSurtiendo", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
                   });
-                  botonSurtirPedido.innerText = 'Surtir Pedido';
+                  botonSurtirPedido.innerText = 'Surtir';
                   divCodigos.append(botonSurtirPedido);
                   break;
                 }
                 case 'Z': {
                   const botonCancelarSurtido = document.createElement('button');
+                  botonCancelarSurtido.classList.add('cancelar');
                   botonCancelarSurtido.addEventListener('click', () => {
                     ws.send(JSON.stringify({ "ruta": "statusCapturado", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
                   });
-                  botonCancelarSurtido.innerText = 'Cancelar Surtido';
+                  botonCancelarSurtido.innerText = 'Devolver';
+                  divCodigos.append(botonCancelarSurtido);
+
+                  /*const botonSurtidoPedido = document.createElement('button');
+                  botonSurtidoPedido.addEventListener('click', () => {
+                    ws.send(JSON.stringify({ "ruta": "statusSurtido", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
+                  });
+                  botonSurtidoPedido.innerText = 'Surtir';
+                  divCodigos.append(botonSurtidoPedido);*/
+
+                  const botonFacturarPedido = document.createElement('button');
+                  botonFacturarPedido.addEventListener('click', () => {
+                    //ws.send(JSON.stringify({ "ruta": "statusSurtidoFacturado", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
+                    ws.send(JSON.stringify({ "ruta": "statusSurtido", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
+                  });
+                  //botonFacturarPedido.innerText = 'Facturar';
+                  botonFacturarPedido.innerText = 'Surtir';
+                  divCodigos.append(botonFacturarPedido);
+                  break;
+                }
+                case 'S': {
+                  const botonCancelarSurtido = document.createElement('button');
+                  botonCancelarSurtido.classList.add('cancelar');
+                  botonCancelarSurtido.addEventListener('click', () => {
+                    ws.send(JSON.stringify({ "ruta": "statusSurtiendo", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
+                  });
+                  botonCancelarSurtido.innerText = 'Devolver';
+                  divCodigos.append(botonCancelarSurtido);
+
                   const botonFacturarPedido = document.createElement('button');
                   botonFacturarPedido.addEventListener('click', () => {
                     ws.send(JSON.stringify({ "ruta": "statusFacturado", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
                   });
-                  botonFacturarPedido.innerText = 'Facturar Pedido';
-                  divCodigos.append(botonCancelarSurtido);
+                  botonFacturarPedido.innerText = 'Facturar';
                   divCodigos.append(botonFacturarPedido);
-                  break;
-                }
-                case 'F': {
-                  const botonCancelarFacturacion = document.createElement('button');
-                  botonCancelarFacturacion.addEventListener('click', () => {
-                    ws.send(JSON.stringify({ "ruta": "statusSurtiendo", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
-                  });
-                  botonCancelarFacturacion.innerText = 'Cancelar Facturacion';
-                  divCodigos.append(botonCancelarFacturacion);
                   break;
                 }
               }
@@ -450,29 +591,55 @@
 
             datos.pedido.forEach(pedido => {
               const trPedido = document.createElement('tr');
-              trPedido.addEventListener('click', () => {
-                ws.send(JSON.stringify({ "ruta": "restarSurtido", "jwt": jwt, "codigo": pedido.CodigoArticulo, "tipo": datos.tipo, "folio": datos.folio }));
-              });
               const tdCodigo = document.createElement('td');
               tdCodigo.innerText = pedido.CodigoArticulo;
               const tdLocalizacion = document.createElement('td');
               tdLocalizacion.innerText = pedido.Localizacion;
-              /*const tdCantidadPedida = document.createElement('td');
-              tdCantidadPedida.innerText = pedido.CantidadPedida;*/
               const tdCantidadSurtida = document.createElement('td');
               tdCantidadSurtida.id = `surtido-${pedido.CodigoArticulo}-${datos.tipo}-${datos.folio}`;
               tdCantidadSurtida.innerText = `${pedido.CantidadSurtida} de ${pedido.CantidadPedida}`;
-              /*const tdResta = document.createElement('td');
-              const buttonResta = document.createElement('button');
-              buttonResta.innerText = '-';*/
 
-              //tdResta.append(buttonResta);
+              const trDescripcion = document.createElement('tr');
+              const tdDescripcion = document.createElement('td');
+              tdDescripcion.classList.add('centrarTexto');
+              tdDescripcion.setAttribute("colspan", "3");
+              tdDescripcion.innerText = pedido.Descripcion;
+              trDescripcion.append(tdDescripcion);
+
               trPedido.append(tdCodigo);
               trPedido.append(tdLocalizacion);
-              //trPedido.append(tdCantidadPedida);
               trPedido.append(tdCantidadSurtida);
-              //trPedido.append(tdResta);
               cuerpoTabla.append(trPedido);
+              cuerpoTabla.append(trDescripcion);
+
+              if (datos.status == 'Z' /*|| datos.status == 'S'*/) {
+                const trAcciones = document.createElement('tr');
+                const tdAcciones = document.createElement('td');
+                tdAcciones.classList.add('centrarTexto');
+                tdAcciones.setAttribute("colspan", "3");
+
+                const botonRestar = document.createElement('button');
+                botonRestar.classList.add('botonNegativo');
+                botonRestar.innerText = '-';
+                botonRestar.addEventListener('click', () => {
+                  ws.send(JSON.stringify({ "ruta": "restarSurtidoCodigo", "jwt": jwt, "codigo": pedido.CodigoArticulo, "tipo": datos.tipo, "folio": datos.folio }));
+                });
+
+                const botonSumar = document.createElement('button');
+                botonSumar.classList.add('botonPositivo');
+                botonSumar.innerText = '+';
+                botonSumar.addEventListener('click', () => {
+                  ws.send(JSON.stringify({ "ruta": "sumarSurtidoCodigo", "jwt": jwt, "codigo": pedido.CodigoArticulo, "tipo": datos.tipo, "folio": datos.folio }));
+                });
+
+                tdAcciones.append(botonRestar);
+                tdAcciones.append(botonSumar);
+
+                trAcciones.append(tdAcciones);
+
+                cuerpoTabla.append(trAcciones);
+              }
+
             });
 
             break;
@@ -485,7 +652,7 @@
       };
 
       ws.onopen = (event) => {
-        document.querySelectorAll('[id^="pedido-"], [id^="codigos-"]').forEach( elemento => elemento.remove() );
+        document.querySelectorAll('[id^="pedido-"], [id^="codigos-"]').forEach(elemento => elemento.remove());
         ws.send(JSON.stringify({ "ruta": "jwt", "jwt": jwt }));
         ws.send(JSON.stringify({ "ruta": "pedidos", "jwt": jwt }));
       };
@@ -525,7 +692,7 @@
         const pedidoDatos = pedido.id.split('-');
         console.log(pedidoDatos);
 
-        ws.send(JSON.stringify({ "ruta": "sumarSurtido", "jwt": jwt, "barra": codigoLeido, "tipo": pedidoDatos[1], "folio": pedidoDatos[2] }));
+        ws.send(JSON.stringify({ "ruta": "sumarSurtidoBarra", "jwt": jwt, "barra": codigoLeido, "tipo": pedidoDatos[1], "folio": pedidoDatos[2] }));
         codigoLeido = '';
         return;
       }
