@@ -246,7 +246,7 @@ wss.on('connection', async (ws) => {
           FROM PedidosMostrador
           WHERE Folio = @folio`);
 
-          if (res.recordset[0].Status != 'Z' && res.recordset[0].Status != 'S') {
+          if (res.recordset[0].Status != 'Z' /*&& res.recordset[0].Status != 'S'*/) {
             return;
           }
 
@@ -295,7 +295,7 @@ wss.on('connection', async (ws) => {
           FROM PedidosMostrador
           WHERE Folio = @folio`);
 
-          if (res.recordset[0].Status != 'Z' && res.recordset[0].Status != 'S') {
+          if (res.recordset[0].Status != 'Z' /*&& res.recordset[0].Status != 'S'*/) {
             return;
           }
 
@@ -340,7 +340,7 @@ wss.on('connection', async (ws) => {
           FROM PedidosMostrador
           WHERE Folio = @folio`);
 
-          if (res.recordset[0].Status != 'Z' && res.recordset[0].Status != 'S') {
+          if (res.recordset[0].Status != 'Z' /*&& res.recordset[0].Status != 'S'*/) {
             return;
           }
 
