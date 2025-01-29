@@ -198,15 +198,15 @@
         
                     $respuestaJSON = json_decode( $respuesta, true);
 
-                    try{
-                        $orsCoords = $respuestaJSON["features"][0]["geometry"]["coordinates"];
-    
-                        for($j = 0; $j < count($orsCoords); $j++ ){
-                            $pedidos[$c]["rutaRealizada"][] = [ "lat" => $orsCoords[$j][1], "lng" => $orsCoords[$j][0] ];
-                        }
-                    }catch(Exception $error){
+                    if(!isset($respuestaJSON["features"])){
+                        continue;
                     }
 
+                    $orsCoords = $respuestaJSON["features"][0]["geometry"]["coordinates"];
+    
+                    for($j = 0; $j < count($orsCoords); $j++ ){
+                        $pedidos[$c]["rutaRealizada"][] = [ "lat" => $orsCoords[$j][1], "lng" => $orsCoords[$j][0] ];
+                    }
                 }
 
             }
