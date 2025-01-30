@@ -7,6 +7,11 @@
   <title>Tablas Estilizadas</title>
 
   <style>
+    body,html{
+      margin: 0;
+      padding: 0;
+    }
+
     * {
       user-select: none;
     }
@@ -140,7 +145,7 @@
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
-      padding: 0.5rem;
+      /*padding: 0.5rem;*/
       background: #f5f6fa;
       line-height: 1.5;
     }
@@ -288,7 +293,7 @@
       }
 
       caption {
-        margin: 0.4rem 0.5rem;
+        /*margin: 0.4rem 0.5rem;*/
         font-size: 1rem;
       }
 
@@ -345,7 +350,6 @@
       <option value="capturados">Capturados</option>
       <option value="surtiendo">Surtiendo</option>
       <option value="surtidos">Surtidos</option>
-      <option value="facturados">Facturados</option>
     </select>
   </div>
 
@@ -388,19 +392,6 @@
     </tbody>
   </table>
 
-  <table id="tabla-facturados" class="tabla-contenido" style="display: none;">
-    <caption>Facturados</caption>
-    <thead>
-      <tr>
-        <th>Folio</th>
-        <th>Vendedor</th>
-        <th>Cliente</th>
-      </tr>
-    </thead>
-    <tbody id="id-F">
-    </tbody>
-  </table>
-
   <script>
     let jwt;
     let credenciales;
@@ -440,7 +431,7 @@
     function crearSocket() {
       console.log('creando socket');
 
-      let ws = new WebSocket('wss://www.marverrefacciones.mx:8888/');
+      let ws = new WebSocket('wss://10.10.10.130:8888/');
 
       ws.onmessage = (event) => {
         const datos = JSON.parse(event.data);
@@ -461,8 +452,7 @@
               if (
                 !(pedido.Status == 'C') &&
                 !(pedido.Status == 'Z' && pedido.AlSurtiendo == credenciales.clave) &&
-                !(pedido.Status == 'S' && pedido.ALSurtir == credenciales.clave) &&
-                !(pedido.Status == 'F' && pedido.Alfacturar == credenciales.clave)) {
+                !(pedido.Status == 'S' && pedido.ALSurtir == credenciales.clave) ) {
                 return;
               }
 
@@ -471,7 +461,7 @@
               const tdFolio = document.createElement('td');
               tdFolio.innerText = pedido.Folio;
               const tdVendedor = document.createElement('td');
-              tdVendedor.innerText = `${pedido.Vendedor} ${pedido.Nombre}`;
+              tdVendedor.innerText = `${pedido.Vendedor} ${pedido.NombreVendedor}`;
               const tdCliente = document.createElement('td');
               tdCliente.innerText = `${pedido.Cliente} ${pedido.NombreCliente}`;
               tr.addEventListener('click', () => {
@@ -539,21 +529,12 @@
                   botonCancelarSurtido.innerText = 'Devolver';
                   divCodigos.append(botonCancelarSurtido);
 
-                  /*const botonSurtidoPedido = document.createElement('button');
-                  botonSurtidoPedido.addEventListener('click', () => {
+                  const botonSurtirPedido = document.createElement('button');
+                  botonSurtirPedido.addEventListener('click', () => {
                     ws.send(JSON.stringify({ "ruta": "statusSurtido", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
                   });
-                  botonSurtidoPedido.innerText = 'Surtir';
-                  divCodigos.append(botonSurtidoPedido);*/
-
-                  const botonFacturarPedido = document.createElement('button');
-                  botonFacturarPedido.addEventListener('click', () => {
-                    //ws.send(JSON.stringify({ "ruta": "statusSurtidoFacturado", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
-                    ws.send(JSON.stringify({ "ruta": "statusSurtido", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
-                  });
-                  //botonFacturarPedido.innerText = 'Facturar';
-                  botonFacturarPedido.innerText = 'Surtir';
-                  divCodigos.append(botonFacturarPedido);
+                  botonSurtirPedido.innerText = 'Surtir';
+                  divCodigos.append(botonSurtirPedido);
                   break;
                 }
                 case 'S': {
@@ -564,13 +545,6 @@
                   });
                   botonCancelarSurtido.innerText = 'Devolver';
                   divCodigos.append(botonCancelarSurtido);
-
-                  const botonFacturarPedido = document.createElement('button');
-                  botonFacturarPedido.addEventListener('click', () => {
-                    ws.send(JSON.stringify({ "ruta": "statusFacturado", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
-                  });
-                  botonFacturarPedido.innerText = 'Facturar';
-                  divCodigos.append(botonFacturarPedido);
                   break;
                 }
               }
@@ -612,7 +586,7 @@
               cuerpoTabla.append(trPedido);
               cuerpoTabla.append(trDescripcion);
 
-              if (datos.status == 'Z' /*|| datos.status == 'S'*/) {
+              if (datos.status == 'Z') {
                 const trAcciones = document.createElement('tr');
                 const tdAcciones = document.createElement('td');
                 tdAcciones.classList.add('centrarTexto');

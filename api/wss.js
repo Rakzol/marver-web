@@ -80,7 +80,12 @@ async function fetchDataAndSend() {
     }
     // Conectar a la base de datos
 
-    const result = await pool.query('SELECT PedidosNotificacion.*, Vendedores.Nombre FROM PedidosNotificacion LEFT JOIN Vendedores ON Vendedores.Clave = PedidosNotificacion.Vendedor ORDER BY Folio');
+    const result = await pool.query(`
+      SELECT PedidosNotificacion.Folio, PedidosNotificacion.Status, 'pedido' AS Tipo, PedidosNotificacion.AlSurtiendo, PedidosNotificacion.ALSurtir, PedidosNotificacion.Vendedor, Vendedores.Nombre AS NombreVendedor, PedidosNotificacion.Cliente, Clientes.Razon_Social AS NombreCliente
+      FROM PedidosNotificacion
+      LEFT JOIN Vendedores ON Vendedores.Clave = PedidosNotificacion.Vendedor
+      LEFT JOIN Clientes ON Clientes.Clave = PedidosNotificacion.Cliente
+      ORDER BY PedidosNotificacion.Folio`);
 
     if (result.recordset.length > 0) {
       // Enviar los registros a todos los clientes conectados
@@ -185,23 +190,23 @@ wss.on('connection', async (ws) => {
           solicitud.input('clave', mssql.VarChar, credenciales.clave.toString());
 
           const resultado = await solicitud.query(`
-            SELECT Folio, Status, 'pedido' AS Tipo, AlSurtiendo, ALSurtir, Alfacturar, Vendedor, Nombre, Cliente, NombreCliente
+            SELECT PedidosCliente.Folio, PedidosCliente.Status, 'pedido' AS Tipo, PedidosCliente.AlSurtiendo, PedidosCliente.ALSurtir, PedidosCliente.Vendedor, Vendedores.Nombre AS NombreVendedor, PedidosCliente.Cliente, Clientes.Razon_Social AS NombreCliente
             FROM PedidosCliente
-            LEFT JOIN Vendedores ON Vendedores.Clave = Vendedor
+            LEFT JOIN Vendedores ON Vendedores.Clave = PedidosCliente.Vendedor
+            LEFT JOIN Clientes ON Clientes.Clave = PedidosCliente.Cliente
             WHERE
-            ( Status = 'C' ) OR
-            ( Status = 'Z' AND AlSurtiendo = @clave ) OR
-            ( Status = 'S' AND ALSurtir = @clave ) OR
-            ( Status = 'F' AND Alfacturar = @clave )
+            ( PedidosCliente.Status = 'C' ) OR
+            ( PedidosCliente.Status = 'Z' AND PedidosCliente.AlSurtiendo = @clave ) OR
+            ( PedidosCliente.Status = 'S' AND PedidosCliente.ALSurtir = @clave )
             UNION ALL
-            SELECT Folio, Status, 'mostrador' AS Tipo, AlSurtiendo, ALSurtir, Alfacturar, Vendedor, Nombre, Cliente, NombreCliente
+            SELECT PedidosMostrador.Folio, PedidosMostrador.Status, 'mostrador' AS Tipo, PedidosMostrador.AlSurtiendo, PedidosMostrador.ALSurtir, PedidosMostrador.Vendedor, Vendedores.Nombre AS NombreVendedor, PedidosMostrador.Cliente, Clientes.Razon_Social AS NombreCliente
             FROM PedidosMostrador
-            LEFT JOIN Vendedores ON Vendedores.Clave = Vendedor
+            LEFT JOIN Vendedores ON Vendedores.Clave = PedidosMostrador.Vendedor
+            LEFT JOIN Clientes ON Clientes.Clave = PedidosMostrador.Cliente
             WHERE
-            ( Status = 'C' ) OR
-            ( Status = 'Z' AND AlSurtiendo = @clave ) OR
-            ( Status = 'S' AND ALSurtir = @clave ) OR
-            ( Status = 'F' AND Alfacturar = @clave )
+            ( PedidosMostrador.Status = 'C' ) OR
+            ( PedidosMostrador.Status = 'Z' AND PedidosMostrador.AlSurtiendo = @clave ) OR
+            ( PedidosMostrador.Status = 'S' AND PedidosMostrador.ALSurtir = @clave )
             ORDER BY Folio`);
 
           if (resultado.recordset.length > 0) {
@@ -217,11 +222,11 @@ wss.on('connection', async (ws) => {
           solicit.input('folio', mssql.Int, datos.folio);
 
           const res = await solicit.query(datos.tipo == "pedido" ?
-            `SELECT pcd.CodigoArticulo, pro.Localizacion, pro.Descripcion, pcd.CantidadPedida, pcd.CantidadSurtida, pcd.CantidadFacturada
+            `SELECT pcd.CodigoArticulo, pro.Localizacion, pro.Descripcion, pcd.CantidadPedida, pcd.CantidadSurtida
               FROM PedidoClientesDetalle pcd LEFT JOIN Producto pro ON pro.Codigo = pcd.CodigoArticulo
               WHERE pcd.Folio = @folio ORDER BY pro.Localizacion`
             :
-            `SELECT pmd.CodigoArticulo, pro.Localizacion, pro.Descripcion, pmd.CantidadPedida, pmd.CantidadSurtida, pmd.CantidadFacturada
+            `SELECT pmd.CodigoArticulo, pro.Localizacion, pro.Descripcion, pmd.CantidadPedida, pmd.CantidadSurtida
             FROM PedidoMostradorDetalle pmd LEFT JOIN Producto pro ON pro.Codigo = pmd.CodigoArticulo
             WHERE pmd.Folio = @folio ORDER BY pro.Localizacion`);
 
@@ -246,7 +251,7 @@ wss.on('connection', async (ws) => {
           FROM PedidosMostrador
           WHERE Folio = @folio`);
 
-          if (res.recordset[0].Status != 'Z' /*&& res.recordset[0].Status != 'S'*/) {
+          if (res.recordset[0].Status != 'Z') {
             return;
           }
 
@@ -295,7 +300,7 @@ wss.on('connection', async (ws) => {
           FROM PedidosMostrador
           WHERE Folio = @folio`);
 
-          if (res.recordset[0].Status != 'Z' /*&& res.recordset[0].Status != 'S'*/) {
+          if (res.recordset[0].Status != 'Z') {
             return;
           }
 
@@ -340,7 +345,7 @@ wss.on('connection', async (ws) => {
           FROM PedidosMostrador
           WHERE Folio = @folio`);
 
-          if (res.recordset[0].Status != 'Z' /*&& res.recordset[0].Status != 'S'*/) {
+          if (res.recordset[0].Status != 'Z') {
             return;
           }
 
@@ -396,9 +401,9 @@ wss.on('connection', async (ws) => {
           solicitud.input('hora', mssql.VarChar, horaActual());
 
           const pedido = (await solicitud.query(datos.tipo == "pedido" ?
-            `SELECT * FROM PedidosCliente WHERE Folio = @folio`
+            `SELECT Status FROM PedidosCliente WHERE Folio = @folio`
             :
-            `SELECT * FROM PedidosMostrador WHERE Folio = @folio`)).recordset[0];
+            `SELECT Status FROM PedidosMostrador WHERE Folio = @folio`)).recordset[0];
 
           //por si dos le dan al mismo tiempo
           if (pedido.Status == 'Z') {
@@ -419,17 +424,14 @@ wss.on('connection', async (ws) => {
           solicitud.input('folio', mssql.Int, datos.folio);
 
           const pedido = (await solicitud.query(datos.tipo == "pedido" ?
-            `SELECT * FROM PedidosCliente WHERE Folio = @folio`
+            `SELECT Status FROM PedidosCliente WHERE Folio = @folio`
             :
-            `SELECT * FROM PedidosMostrador WHERE Folio = @folio`)).recordset[0];
+            `SELECT Status FROM PedidosMostrador WHERE Folio = @folio`)).recordset[0];
 
           //por si dos le dan al mismo tiempo
           if (pedido.Status == 'S') {
             return;
           }
-
-          solicitud.input('cliente', mssql.Int, pedido.Cliente);
-          const descuentoUtilidad = (await solicitud.query(`SELECT DescuentoUniversal, Utilidad FROM Clientes WHERE Clave = @cliente`)).recordset;
 
           const pedidoDetalle = (await solicitud.query(datos.tipo == "pedido" ?
             `SELECT * FROM PedidoClientesDetalle WHERE Folio = @folio`
@@ -533,9 +535,9 @@ wss.on('connection', async (ws) => {
           solicitud.input('folio', mssql.Int, datos.folio);
 
           const pedido = (await solicitud.query(datos.tipo == "pedido" ?
-            `SELECT * FROM PedidosCliente WHERE Folio = @folio`
+            `SELECT Status FROM PedidosCliente WHERE Folio = @folio`
             :
-            `SELECT * FROM PedidosMostrador WHERE Folio = @folio`)).recordset[0];
+            `SELECT Status FROM PedidosMostrador WHERE Folio = @folio`)).recordset[0];
 
           //por si dos le dan al mismo tiempo
           if (pedido.Status == 'C') {
@@ -556,12 +558,12 @@ wss.on('connection', async (ws) => {
           solicitud.input('folio', mssql.Int, datos.folio);
 
           const pedido = (await solicitud.query(datos.tipo == "pedido" ?
-            `SELECT * FROM PedidosCliente WHERE Folio = @folio`
+            `SELECT Status FROM PedidosCliente WHERE Folio = @folio`
             :
-            `SELECT * FROM PedidosMostrador WHERE Folio = @folio`)).recordset[0];
+            `SELECT Status FROM PedidosMostrador WHERE Folio = @folio`)).recordset[0];
 
           //por si dos le dan al mismo tiempo
-          if (pedido.Status != 'C' && pedido.Status != 'Z' && pedido.Status != 'S') {
+          if (pedido.Status != 'C') {
             return;
           }
 
@@ -570,9 +572,6 @@ wss.on('connection', async (ws) => {
             :
             `UPDATE PedidosMostrador SET Status = 'CA' WHERE Folio = @folio`);
 
-          break;
-        }
-        case 'statusFacturado': {
           break;
         }
         case '🐱': {
