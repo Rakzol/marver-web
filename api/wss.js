@@ -3,6 +3,7 @@ const fs = require('fs');
 const WebSocket = require('ws');
 const mssql = require('mssql');
 const jwt = require('jsonwebtoken');
+const net = require("net");
 
 const secretKey = 'Q4V5U6b4l68v31W92N46o49K9P6w6HJ4';
 
@@ -571,6 +572,112 @@ wss.on('connection', async (ws) => {
             `UPDATE PedidosCliente SET Status = 'CA' WHERE Folio = @folio`
             :
             `UPDATE PedidosMostrador SET Status = 'CA' WHERE Folio = @folio`);
+
+          break;
+        }
+        case 'imprimir': {
+          const credencial = jwt.verify(datos.jwt, secretKey);
+
+          let solicitud = pool.request();
+          solicitud.input('folio', mssql.Int, datos.folio);
+
+          const pedido = (await solicitud.query(datos.tipo == "pedido" ?
+            `SELECT Cliente, Vendedor, FechaPedido, HoraPedido, HoraSurtiendo, Alsurtiendo, FechaSurtido, HoraSurtido, ALSurtir, GETDATE() AS FechaImpreso FROM PedidosCliente WHERE Folio = @folio`
+            :
+            `SELECT Cliente, Vendedor, FechaPedido, HoraPedido, HoraSurtiendo, Alsurtiendo, FechaSurtido, HoraSurtido, ALSurtir, GETDATE() AS FechaImpreso FROM PedidosMostrador WHERE Folio = @folio`)).recordset[0];
+
+          const pedidoDetalle = (await solicitud.query(datos.tipo == "pedido" ?
+            `SELECT pc.CodigoArticulo, pr.Localizacion, pc.CantidadSurtida, pr.Descripcion FROM PedidoClientesDetalle pc LEFT JOIN Producto pr ON pr.Codigo = pc.CodigoArticulo WHERE pc.Folio = @folio`
+            :
+            `SELECT pm.CodigoArticulo, pr.Localizacion, pm.CantidadSurtida, pr.Descripcion FROM PedidoMostradorDetalle pm LEFT JOIN Producto pr ON pr.Codigo = pm.CodigoArticulo WHERE pm.Folio = @folio`)).recordset;
+
+          let ticket = "";
+
+          // Comandos ESC/POS
+          const ESC = "\x1B";
+          const GS = "\x1D";
+          const LF = "\x0A";
+
+          ticket += ESC + "@"; // Inicializa la impresora
+          ticket += ESC + "a" + "\x01"; // Centrar texto
+
+          ticket += `Tipo (${pedido.Cliente}): `;
+          ticket += ESC + "E" + "\x01";
+          ticket += datos.tipo + LF;
+          ticket += ESC + "E" + "\x00";
+
+          ticket += LF;
+
+          ticket += ESC + "a" + "\x00"; // Alinear a la izquierda
+
+          ticket += `Pedido (${pedido.Vendedor}): `;
+          ticket += ESC + "E" + "\x01";
+          ticket += pedido.FechaPedido.toISOString().split('T')[0] + " " + pedido.HoraPedido + LF;
+          ticket += ESC + "E" + "\x00";
+
+          ticket += `Surtiendo (${pedido.Alsurtiendo}): `;
+          ticket += ESC + "E" + "\x01";
+          ticket += pedido.FechaPedido.toISOString().split('T')[0] + " " + pedido.HoraSurtiendo + LF;
+          ticket += ESC + "E" + "\x00";
+
+          ticket += `Surtido (${pedido.ALSurtir}): `;
+          ticket += ESC + "E" + "\x01";
+          ticket += pedido.FechaSurtido.toISOString().split('T')[0] + " " + pedido.HoraSurtido + LF;
+          ticket += ESC + "E" + "\x00";
+
+          ticket += `Impreso (${credencial.clave}): `;
+          ticket += ESC + "E" + "\x01";
+          ticket += pedido.FechaImpreso.toISOString().split('T')[0] + " " + horaActual() + LF;
+          ticket += ESC + "E" + "\x00";
+
+          ticket += LF;
+
+          ticket += "CODIGO                 ESTANTE    CANTIDAD" + LF;
+          ticket += "-".repeat(42) + LF;
+
+          pedidoDetalle.forEach((producto) => {
+            ticket += `${producto.CodigoArticulo.padEnd(22)} ${producto.Localizacion.padEnd(10)} ${producto.CantidadSurtida.toString().padStart(8)}` + LF;
+            ticket += ESC + "E" + "\x01";
+            ticket += `${producto.Descripcion}` + LF;
+            ticket += ESC + "E" + "\x00";
+          });
+
+          // Espacio antes del código de barras
+          ticket += LF;
+
+          // Código de barras en formato CODE128 con la estructura que mencionaste
+          ticket += ESC + "a" + "\x01"; // Centrar
+          ticket += datos.folio + LF; // Centrar
+          ticket += GS + "h" + "\x7F"; // Altura del código de barras
+          ticket += GS + "w" + "\xFF"; // Ancho del código de barras
+          ticket += GS + "k" + String.fromCharCode(79); // Especificar tipo de código de barras (Code 128 auto)
+          ticket += String.fromCharCode(datos.folio.toString().length); // Longitud del folio
+          ticket += datos.folio; // Número de folio
+
+          // Cortar papel
+          ticket += LF + LF + LF + LF + LF;
+          ticket += GS + "V" + "\x00";
+
+          const PRINTER_IP = "10.10.10.161";
+          const PRINTER_PORT = 9100; // Puerto de impresión en la TM-T88VII
+
+          const client = new net.Socket();
+
+          client.connect(PRINTER_PORT, PRINTER_IP, () => {
+            console.log("Conectado a la impresora...");
+            client.write(ticket, "binary", () => {
+              console.log("Ticket enviado.");
+              client.destroy(); // Cierra la conexión después de enviar
+            });
+          });
+
+          client.on("error", (err) => {
+            console.error("Error de conexión:", err);
+          });
+
+          client.on("close", () => {
+            console.log("Conexión cerrada.");
+          });
 
           break;
         }

@@ -545,6 +545,13 @@
                   });
                   botonCancelarSurtido.innerText = 'Devolver';
                   divCodigos.append(botonCancelarSurtido);
+
+                  const botonImprimirPedido = document.createElement('button');
+                  botonImprimirPedido.addEventListener('click', () => {
+                    ws.send(JSON.stringify({ "ruta": "imprimir", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
+                  });
+                  botonImprimirPedido.innerText = 'Imprimir';
+                  divCodigos.append(botonImprimirPedido);
                   break;
                 }
               }
