@@ -139,6 +139,10 @@ function obtenerIPImpresora(nombreImpresora) {
   }
 }
 
+function norChar(palabra){
+  return palabra.replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('Á','A').replace('É','E').replace('Í','I').replace('Ó','O').replace('Ú','U').replace('ñ','n').replace('Ñ','N');
+}
+
 setTimeout(fetchDataAndSend, 500); // 1000 ms = 1 segundo
 
 function r(n) {
@@ -597,13 +601,66 @@ wss.on('connection', async (ws) => {
         case 'imprimir': {
           const credencial = jwt.verify(datos.jwt, secretKey);
 
+          const tiposPago = {
+            "1": "CONTADO",
+            "2": "CREDITO"
+          };
+
+          const formasPago = {
+            "01": "EFECTIVO",
+            "02": "CHEQUE NOMINATIVO",
+            "03": "TRANSFERENCIA ELECTRONICA",
+            "04": "TARJETA DE CREDITO",
+            "28": "TARJETA DE DEBITO",
+            "99": "CREDITO"
+          };
+
+          const tiposComprobante = {
+            "1": "FACTURA",
+            "2": "RECIBO",
+            "3": "PREVENTA"
+          };
+
+
           let solicitud = pool.request();
           solicitud.input('folio', mssql.Int, datos.folio);
 
           const pedido = (await solicitud.query(datos.tipo == "pedido" ?
-            `SELECT Cliente, Vendedor, FechaPedido, HoraPedido, HoraSurtiendo, Alsurtiendo, FechaSurtido, HoraSurtido, ALSurtir, GETDATE() AS FechaImpreso FROM PedidosCliente WHERE Folio = @folio`
+            `
+            SELECT
+            pc.Tipocomprobante, cl.Razon_Social, CONCAT(cl.Colonia, ', ', cl.Domicilio, ' #', cl.Num_Exterior ) AS Direccion,
+            pc.Observacion, pc.Cliente, pc.Vendedor, pc.FechaPedido, pc.HoraPedido, pc.HoraSurtiendo, pc.Alsurtiendo, pc.FechaSurtido, pc.HoraSurtido, pc.ALSurtir, GETDATE() AS FechaImpreso,
+            UPPER(CONCAT('PEDIDO ', pc.Extra1)) AS TipoPedido,
+            pc.Extra2 AS TipoPago,
+            ve.Nombre AS NombreVendedor,
+            al.Nombre AS NombreAlmacenista,
+            pc.FormaPago,
+            pc.CodigosSurtido,
+            pc.UnidadesSurtido,
+            pc.MEntrega
+            FROM PedidosCliente pc
+            LEFT JOIN Clientes cl ON cl.Clave = pc.Cliente
+            LEFT JOIN Vendedores ve ON ve.Clave = pc.Vendedor
+            LEFT JOIN Vendedores al ON al.Clave = pc.ALSurtir
+            WHERE Folio = @folio`
             :
-            `SELECT Cliente, Vendedor, FechaPedido, HoraPedido, HoraSurtiendo, Alsurtiendo, FechaSurtido, HoraSurtido, ALSurtir, GETDATE() AS FechaImpreso FROM PedidosMostrador WHERE Folio = @folio`)).recordset[0];
+            `
+            SELECT
+            pm.Tipocomprobante, cl.Razon_Social, CONCAT(cl.Colonia, ', ', cl.Domicilio, ' #', cl.Num_Exterior ) AS Direccion,
+            pm.Observacion, pm.Cliente, pm.Vendedor, pm.FechaPedido, pm.HoraPedido, pm.HoraSurtiendo, pm.Alsurtiendo, pm.FechaSurtido, pm.HoraSurtido, pm.ALSurtir, GETDATE() AS FechaImpreso,
+            UPPER(CONCAT('MOSTRADOR ', pm.Extra1)) AS TipoPedido,
+            pm.Extra2 AS TipoPago,
+            ve.Nombre AS NombreVendedor,
+            al.Nombre AS NombreAlmacenista,
+            pm.FormaPago,
+            pm.CodigosSurtido,
+            pm.UnidadesSurtido,
+            pm.MEntrega
+            FROM PedidosMostrador pm
+            LEFT JOIN Clientes cl ON cl.Clave = pm.Cliente
+            LEFT JOIN Vendedores ve ON ve.Clave = pm.Vendedor
+            LEFT JOIN Vendedores al ON al.Clave = pm.ALSurtir
+            WHERE Folio = @folio`)).recordset[0];
 
           const pedidoDetalle = (await solicitud.query(datos.tipo == "pedido" ?
             `SELECT pc.CodigoArticulo, pr.Localizacion, pc.CantidadSurtida, pr.Descripcion FROM PedidoClientesDetalle pc LEFT JOIN Producto pr ON pr.Codigo = pc.CodigoArticulo WHERE pc.Folio = @folio`
@@ -618,16 +675,57 @@ wss.on('connection', async (ws) => {
           const LF = "\x0A";
 
           ticket += ESC + "@"; // Inicializa la impresora
-          ticket += ESC + "a" + "\x01"; // Centrar texto
 
-          ticket += `Tipo (${pedido.Cliente}): `;
+          ticket += `Tipo: `;
           ticket += ESC + "E" + "\x01";
-          ticket += datos.tipo + LF;
+          ticket += pedido.TipoPedido + " ";
+          ticket += ESC + "E" + "\x00";
+
+          ticket += `Comprobante: `;
+          ticket += ESC + "E" + "\x01";
+          ticket += tiposComprobante[pedido.Tipocomprobante] + LF;
           ticket += ESC + "E" + "\x00";
 
           ticket += LF;
 
-          ticket += ESC + "a" + "\x00"; // Alinear a la izquierda
+          ticket += `Cliente (${pedido.Cliente}): `;
+          ticket += ESC + "E" + "\x01";
+          ticket += norChar(pedido.Razon_Social) + LF;
+          ticket += ESC + "E" + "\x00";
+
+          ticket += `Direccion: `;
+          ticket += ESC + "E" + "\x01";
+          ticket += norChar(pedido.Direccion) + LF;
+          ticket += ESC + "E" + "\x00";
+
+          ticket += `Observacion: `;
+          ticket += ESC + "E" + "\x01";
+          ticket += norChar(pedido.Observacion) + LF;
+          ticket += ESC + "E" + "\x00";
+
+          ticket += `Pago: `;
+          ticket += ESC + "E" + "\x01";
+          ticket += tiposPago[pedido.TipoPago] + " " + formasPago[pedido.FormaPago] + " ";
+          ticket += ESC + "E" + "\x00";
+
+          ticket += `Entrega: `;
+          ticket += ESC + "E" + "\x01";
+          ticket += pedido.MEntrega + LF;
+          ticket += ESC + "E" + "\x00";
+
+          ticket += LF;
+
+          ticket += `Vendedor (${pedido.Vendedor}): `;
+          ticket += ESC + "E" + "\x01";
+          ticket += norChar(pedido.NombreVendedor) + LF;
+          ticket += ESC + "E" + "\x00";
+
+          ticket += `Almacenista (${pedido.ALSurtir}): `;
+          ticket += ESC + "E" + "\x01";
+          ticket += norChar(pedido.NombreAlmacenista) + LF;
+          ticket += ESC + "E" + "\x00";
+
+          ticket += LF;
 
           ticket += `Pedido (${pedido.Vendedor}): `;
           ticket += ESC + "E" + "\x01";
@@ -647,6 +745,18 @@ wss.on('connection', async (ws) => {
           ticket += `Impreso (${credencial.clave}): `;
           ticket += ESC + "E" + "\x01";
           ticket += pedido.FechaImpreso.toISOString().split('T')[0] + " " + horaActual() + LF;
+          ticket += ESC + "E" + "\x00";
+
+          ticket += LF;
+
+          ticket += `Codigos: `;
+          ticket += ESC + "E" + "\x01";
+          ticket += pedido.CodigosSurtido + " ";
+          ticket += ESC + "E" + "\x00";
+
+          ticket += `Piezas: `;
+          ticket += ESC + "E" + "\x01";
+          ticket += pedido.UnidadesSurtido + LF;
           ticket += ESC + "E" + "\x00";
 
           ticket += LF;
@@ -679,8 +789,10 @@ wss.on('connection', async (ws) => {
 
           const client = new net.Socket();
 
-          client.connect(PRINTER_PORT, PRINTER_IP, () => {
+          //client.connect(PRINTER_PORT, PRINTER_IP, () => {
+            client.connect(PRINTER_PORT, PRINTER_IP, () => {
             console.log("Conectado a la impresora...");
+            //client.write(ticket, "binary", () => {
             client.write(ticket, "binary", () => {
               console.log("Ticket enviado.");
               client.destroy(); // Cierra la conexión después de enviar
