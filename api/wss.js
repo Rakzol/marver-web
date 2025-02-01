@@ -4,8 +4,12 @@ const WebSocket = require('ws');
 const mssql = require('mssql');
 const jwt = require('jsonwebtoken');
 const net = require("net");
+const { execSync } = require("child_process");
 
 const secretKey = 'Q4V5U6b4l68v31W92N46o49K9P6w6HJ4';
+
+let PRINTER_IP;
+const PRINTER_PORT = 9100; // Puerto de impresión en la TM-T88VII
 
 // Configuración de la base de datos SQL Server
 const sqlConfig = {
@@ -78,6 +82,10 @@ async function fetchDataAndSend() {
     if (!pool) {
       pool = await mssql.connect(sqlConfig);
       console.log('Base de datos abierta');
+      PRINTER_IP = obtenerIPImpresora(
+        (await pool.query(`SELECT Impresora FROM Impresoras WHERE Opcion = 'PedidoVentas' AND Usuario = 'GILBERTO'`)).recordset[0].Impresora
+      );
+      console.log(PRINTER_IP);
     }
     // Conectar a la base de datos
 
@@ -114,11 +122,22 @@ async function fetchDataAndSend() {
   }
 }
 
-// Ejecutar la consulta cada segundo
+function obtenerIPImpresora(nombreImpresora) {
+  try {
+      const output = execSync(`wmic printer where "Name='${nombreImpresora}'" get PortName`, { encoding: "utf-8" });
+      const lines = output.split(/\r?\n/).filter(line => line.trim() && line.includes(".")); // Filtrar líneas con IP
 
-/*
-CAMBIARLO POR setTimeout en el finally
-*/
+      if (lines.length > 0) {
+          let ipConSufijo = lines[0].trim();
+          let match = ipConSufijo.match(/^(\d+\.\d+\.\d+\.\d+)/); // Extraer solo la IP (formato IPv4)
+          return match ? match[1] : null;
+      }
+      return null;
+  } catch (error) {
+      console.error("Error obteniendo la IP de la impresora:", error);
+      return null;
+  }
+}
 
 setTimeout(fetchDataAndSend, 500); // 1000 ms = 1 segundo
 
@@ -657,9 +676,6 @@ wss.on('connection', async (ws) => {
           // Cortar papel
           ticket += LF + LF + LF + LF + LF;
           ticket += GS + "V" + "\x00";
-
-          const PRINTER_IP = "10.10.10.161";
-          const PRINTER_PORT = 9100; // Puerto de impresión en la TM-T88VII
 
           const client = new net.Socket();
 
