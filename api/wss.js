@@ -378,11 +378,11 @@ wss.on('connection', async (ws) => {
           res = await solicitud.query(datos.tipo == "pedido" ?
             `SELECT pcd.CodigoArticulo
               FROM PedidoClientesDetalle pcd INNER JOIN Producto pro ON pro.Codigo = pcd.CodigoArticulo
-              WHERE pcd.Folio = @folio AND pro.Alterno2 = @barra`
+              WHERE pcd.Folio = @folio AND (pro.CodigoBarra = @barra OR pro.Alterno2 = @barra)`
             :
             `SELECT pmd.CodigoArticulo
             FROM PedidoMostradorDetalle pmd INNER JOIN Producto pro ON pro.Codigo = pmd.CodigoArticulo
-            WHERE pmd.Folio = @folio AND pro.Alterno2 = @barra`);
+            WHERE pmd.Folio = @folio AND (pro.CodigoBarra = @barra OR pro.Alterno2 = @barra)`);
 
           if (!res.recordset[0]) {
             console.log("Codigo de barras incorrecto");
@@ -471,7 +471,18 @@ wss.on('connection', async (ws) => {
           let Costototal = 0;
 
           let importeSurtido = 0;
+
+          let registrarObservacion = false;
           for (const producto of pedidoDetalle) {
+
+            if( producto.CantidadSurtida != producto.CantidadPedida && !datos.observacion ){
+              ws.send(JSON.stringify({ "ruta": "faltaObservacion", "folio": datos.folio, "tipo": datos.tipo }));
+              return;
+            }
+            else if( producto.CantidadSurtida != producto.CantidadPedida ){
+              registrarObservacion = true;
+            }
+
             if (producto.CantidadSurtida > 0) {
               CodigosSurtido++;
               UnidadesSurtido += producto.CantidadSurtida;
@@ -505,6 +516,30 @@ wss.on('connection', async (ws) => {
             WHERE Folio = @folio AND CodigoArticulo = @CodigoArticulo`);
 
           };
+
+          if( CodigosSurtido <= 0 ){
+            ws.send(JSON.stringify({ "ruta": "pedidoSinSurtir", "folio": datos.folio, "tipo": datos.tipo }));
+            return;
+          }
+
+          if( registrarObservacion ){
+            solicitud = pool.request();
+
+            solicitud.input('folio', mssql.Int, datos.folio);
+            solicitud.input('tipo', mssql.VarChar, datos.tipo);
+            solicitud.input('observacion', mssql.VarChar, datos.observacion);
+  
+            await solicitud.query(`
+              MERGE INTO observacionesPedidos AS target
+              USING (VALUES (@tipo, @folio, @observacion)) AS source (Tipo, Folio, Observacion)
+              ON target.Tipo = source.Tipo AND target.Folio = source.Folio
+              WHEN MATCHED THEN 
+                  UPDATE SET Observacion = source.Observacion
+              WHEN NOT MATCHED THEN 
+                  INSERT (Tipo, Folio, Observacion)
+                  VALUES (source.Tipo, source.Folio, source.Observacion);
+            `);
+          }
 
           SubtotalSurtido = importeSurtido - DescuentosSurtido;
           IvaSurtido = r(SubtotalSurtido * 0.16);
