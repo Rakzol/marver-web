@@ -398,16 +398,8 @@
     </div>
   </header>
 
-  <div class="tablas-selector">
-    <select id="selectorTablas" class="estilo-combobox">
-      <!-- <option value="capturados">Capturados</option> -->
-      <option value="surtiendo">Surtiendo</option>
-      <option value="surtidos">Surtidos</option>
-    </select>
-  </div>
-
-  <!-- <table id="tabla-capturados" class="tabla-contenido">
-    <caption>Capturados</caption>
+  <table id="tabla-facturados" class="tabla-contenido">
+    <caption>Facturados</caption>
     <thead>
       <tr>
         <th>Folio</th>
@@ -415,52 +407,26 @@
         <th>Cliente</th>
       </tr>
     </thead>
-    <tbody id="id-C">
-    </tbody>
-  </table> -->
-
-  <table id="tabla-surtiendo" class="tabla-contenido">
-    <caption>Surtiendo</caption>
-    <thead>
-      <tr>
-        <th>Folio</th>
-        <th>Vendedor</th>
-        <th>Cliente</th>
-      </tr>
-    </thead>
-    <tbody id="id-Z">
+    <tbody id="id-F">
     </tbody>
   </table>
 
-  <table id="tabla-surtidos" class="tabla-contenido" style="display: none;">
-    <caption>Surtidos</caption>
-    <thead>
-      <tr>
-        <th>Folio</th>
-        <th>Vendedor</th>
-        <th>Cliente</th>
-      </tr>
-    </thead>
-    <tbody id="id-S">
-    </tbody>
-  </table>
-
-  <div id="modalFaltaObservacion" class="modal">
+  <div id="modalAsignarPedido" class="modal">
     <div class="modal-content">
-      <h2>Pedido incompleto</h2>
-      <textarea placeholder="Escribe tus observaciones..."></textarea>
+      <h2>Repartidores</h2>
+      <!-- ACA UNA LISTA DE LOS REPARTIDORES Y CON EL ONCLICK SE ASIGNAN LLAMANDO A LA FUNCION asignarPedido -->
       <div class="modal-buttons">
-        <button class="btn-cancel" onclick="cerrarModalFaltaObservacion()">Cancelar</button>
-        <button class="btn-accept" onclick="surtidoConObservacion()">Aceptar</button>
+        <button class="btn-cancel" onclick="cerrarModalAsignarPedido()">Cancelar</button>
       </div>
     </div>
   </div>
 
-  <div id="modalPedidoSinSurtir" class="modal">
+  <div id="modalErrorAsignacion" class="modal">
     <div class="modal-content">
-      <h2>No tiene piezas surtidas</h2>
+      <h2>Erro de asignacion</h2>
+      <!-- ACA VA EL ERROR DE ASIGNACION -->
       <div class="modal-buttons">
-        <button class="btn-accept" onclick="cerrarModalPedidoSinSurtir()">Aceptar</button>
+        <button class="btn-accept" onclick="cerrarModalErrorAsignacion()">Aceptar</button>
       </div>
     </div>
   </div>
@@ -473,23 +439,22 @@
     let folioSeleccionado;
     let tipoSeleccionado;
 
-    function surtidoConObservacion() {
-      socket.send(JSON.stringify({ "ruta": "statusSurtido", "jwt": jwt, "folio": folioSeleccionado, "tipo": tipoSeleccionado, "observacion": document.querySelector('textarea').value }));
-      cerrarModalFaltaObservacion();
+    function asignarPedido() {
+      cerrarModalAsignarPedido();
     }
 
-    function abrirModalFaltaObservacion() {
-      document.getElementById("modalFaltaObservacion").style.display = "flex";
+    function abrirModalAsignarPedido() {
+      document.getElementById("modalAsignarPedido").style.display = "flex";
     }
-    function cerrarModalFaltaObservacion() {
-      document.querySelector('textarea').value = '';
-      document.getElementById("modalFaltaObservacion").style.display = "none";
+    function cerrarModalAsignarPedido() {
+      document.getElementById("modalAsignarPedido").style.display = "none";
     }
-    function abrirModalPedidoSinSurtir() {
-      document.getElementById("modalPedidoSinSurtir").style.display = "flex";
+
+    function abrirModalErrorAsignacion() {
+      document.getElementById("modalErrorAsignacion").style.display = "flex";
     }
-    function cerrarModalPedidoSinSurtir() {
-      document.getElementById("modalPedidoSinSurtir").style.display = "none";
+    function cerrarModalErrorAsignacion() {
+      document.getElementById("modalErrorAsignacion").style.display = "none";
     }
 
     function toggleMenu() {
@@ -566,13 +531,11 @@
             }
 
             datos.pedidos.forEach(pedido => {
+
               document.querySelectorAll(`#${pedido.Tipo}-${pedido.Folio}`).forEach(pedido => pedido.remove());
               document.querySelectorAll(`#codigos-${pedido.Tipo}-${pedido.Folio}`).forEach(pedido => pedido.remove());
 
-              if (
-                !(pedido.Status == 'C') &&
-                !(pedido.Status == 'Z' && pedido.AlSurtiendo == credenciales.clave) &&
-                !(pedido.Status == 'S' && pedido.ALSurtir == credenciales.clave)) {
+              if (pedido.Status != 'F' || pedido.Tipo != 'pedido') {
                 return;
               }
 
@@ -594,6 +557,7 @@
                 } else {
                   folioSeleccionado = undefined;
                   tipoSeleccionado = undefined;
+
                   trCodigos.classList.add('invisible');
 
                   const pedidos = document.querySelectorAll(`[id^="pedido"]:not(#${pedido.Tipo}-${pedido.Folio})`);
@@ -633,55 +597,13 @@
               tablaCodigos.append(cuerpoTabla);
               divCodigos.append(tablaCodigos);
               switch (pedido.Status) {
-                case 'C': {
-                  const botonCancelarPedido = document.createElement('button');
-                  botonCancelarPedido.classList.add('cancelar');
-                  botonCancelarPedido.addEventListener('click', () => {
-                    ws.send(JSON.stringify({ "ruta": "statusCancelado", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
+                case 'F': {
+                  const botonAsignarPedido = document.createElement('button');
+                  botonAsignarPedido.addEventListener('click', () => {
+                    abrirModalAsignarPedido();
                   });
-                  botonCancelarPedido.innerText = 'Cancelar';
-                  divCodigos.append(botonCancelarPedido);
-
-                  const botonSurtirPedido = document.createElement('button');
-                  botonSurtirPedido.addEventListener('click', () => {
-                    ws.send(JSON.stringify({ "ruta": "statusSurtiendo", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
-                  });
-                  botonSurtirPedido.innerText = 'Surtir';
-                  divCodigos.append(botonSurtirPedido);
-                  break;
-                }
-                case 'Z': {
-                  const botonCancelarSurtido = document.createElement('button');
-                  botonCancelarSurtido.classList.add('cancelar');
-                  botonCancelarSurtido.addEventListener('click', () => {
-                    ws.send(JSON.stringify({ "ruta": "statusCapturado", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
-                  });
-                  botonCancelarSurtido.innerText = 'Devolver';
-                  divCodigos.append(botonCancelarSurtido);
-
-                  const botonSurtirPedido = document.createElement('button');
-                  botonSurtirPedido.addEventListener('click', () => {
-                    ws.send(JSON.stringify({ "ruta": "statusSurtido", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
-                  });
-                  botonSurtirPedido.innerText = 'Surtir';
-                  divCodigos.append(botonSurtirPedido);
-                  break;
-                }
-                case 'S': {
-                  const botonCancelarSurtido = document.createElement('button');
-                  botonCancelarSurtido.classList.add('cancelar');
-                  botonCancelarSurtido.addEventListener('click', () => {
-                    ws.send(JSON.stringify({ "ruta": "statusSurtiendo", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
-                  });
-                  botonCancelarSurtido.innerText = 'Devolver';
-                  divCodigos.append(botonCancelarSurtido);
-
-                  const botonImprimirPedido = document.createElement('button');
-                  botonImprimirPedido.addEventListener('click', () => {
-                    ws.send(JSON.stringify({ "ruta": "imprimir", "jwt": jwt, "folio": pedido.Folio, "tipo": pedido.Tipo }));
-                  });
-                  botonImprimirPedido.innerText = 'Imprimir';
-                  divCodigos.append(botonImprimirPedido);
+                  botonAsignarPedido.innerText = 'Asignar';
+                  divCodigos.append(botonAsignarPedido);
                   break;
                 }
               }
@@ -733,50 +655,12 @@
               cuerpoTabla.append(trPedido);
               cuerpoTabla.append(trDescripcion);
 
-              if (datos.status == 'Z') {
-                const trAcciones = document.createElement('tr');
-                const tdAcciones = document.createElement('td');
-                tdAcciones.classList.add('centrarTexto');
-                tdAcciones.setAttribute("colspan", "3");
-
-                const botonRestar = document.createElement('button');
-                botonRestar.classList.add('botonNegativo');
-                botonRestar.innerText = '-';
-                botonRestar.addEventListener('click', () => {
-                  ws.send(JSON.stringify({ "ruta": "restarSurtidoCodigo", "jwt": jwt, "codigo": pedido.CodigoArticulo, "tipo": datos.tipo, "folio": datos.folio }));
-                  botonRestar.blur();
-                });
-
-                const botonSumar = document.createElement('button');
-                botonSumar.classList.add('botonPositivo');
-                botonSumar.innerText = '+';
-                botonSumar.addEventListener('click', () => {
-                  ws.send(JSON.stringify({ "ruta": "sumarSurtidoCodigo", "jwt": jwt, "codigo": pedido.CodigoArticulo, "tipo": datos.tipo, "folio": datos.folio }));
-                  botonSumar.blur();
-                });
-
-                tdAcciones.append(botonRestar);
-                tdAcciones.append(botonSumar);
-
-                trAcciones.append(tdAcciones);
-
-                cuerpoTabla.append(trAcciones);
-              }
-
             });
 
             break;
           }
-          case 'actualizarSurtido': {
-            document.querySelector(`#surtido-${datos.codigo}-${datos.tipo}-${datos.folio}`).innerText = `${datos.cantidadSurtida} de ${datos.cantidadPedida}`;
-            break;
-          }
-          case 'faltaObservacion': {
-            abrirModalFaltaObservacion();
-            break;
-          }
-          case 'pedidoSinSurtir': {
-            abrirModalPedidoSinSurtir();
+          case 'errorAsignacion': {
+            abrirModalErrorAsignacion(datos.error);
             break;
           }
         }
@@ -785,7 +669,8 @@
       ws.onopen = (event) => {
         document.querySelectorAll('[id^="pedido-"], [id^="codigos-"]').forEach(elemento => elemento.remove());
         ws.send(JSON.stringify({ "ruta": "jwt", "jwt": jwt }));
-        ws.send(JSON.stringify({ "ruta": "pedidos", "jwt": jwt }));
+        ws.send(JSON.stringify({ "ruta": "pedidosAduana", "jwt": jwt }));
+        ws.send(JSON.stringify({ "ruta": "repartidores", "jwt": jwt }));
       };
 
       ws.onclose = function (event) {
@@ -804,53 +689,6 @@
 
     let socket = crearSocket();
 
-    let codigoLeido = '';
-    document.addEventListener('keydown', (keyEvent) => {
-
-      if (!keyEvent.key) {
-        codigoLeido = '';
-        return;
-      }
-
-      if (keyEvent.key == 'Enter') {
-        const pedido = document.querySelector(".codigos:not(.invisible)");
-
-        if (!pedido) {
-          codigoLeido = '';
-          return;
-        }
-
-        const pedidoDatos = pedido.id.split('-');
-        console.log(pedidoDatos);
-
-        socket.send(JSON.stringify({ "ruta": "sumarSurtidoBarra", "jwt": jwt, "barra": codigoLeido, "tipo": pedidoDatos[1], "folio": pedidoDatos[2] }));
-        codigoLeido = '';
-        return;
-      }
-
-      if (Number.isInteger(Number(keyEvent.key))) {
-        codigoLeido += keyEvent.key;
-      }
-    });
-  </script>
-
-  <script>
-    // Agrega este script al final del body
-    document.getElementById('selectorTablas').addEventListener('change', function () {
-      const valor = this.value;
-
-      // Ocultar todas las tablas
-      document.querySelectorAll('.tabla-contenido').forEach(tabla => {
-        tabla.style.display = 'none';
-      });
-
-      // Mostrar solo la tabla seleccionada con animación
-      const tablaSeleccionada = document.getElementById(`tabla-${valor}`);
-      if (tablaSeleccionada) {
-        tablaSeleccionada.style.display = 'table';
-        tablaSeleccionada.style.animation = 'fadeIn 0.6s ease-out';
-      }
-    });
   </script>
 
 </body>

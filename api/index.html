@@ -160,6 +160,13 @@
 
       <button type="submit">Inicia sesión</button>
       <blockquote id="errorAlert" class="alert">Usuario no registrado.</blockquote>
+
+      <label style="margin-top: 1rem;" for="">Panel</label>
+      <select name="panel" id="panel" style="margin-top: 0.5rem; font-family: sans-serif; font-size: 1rem;" >
+        <option value="pedidos">Pedidos</option>
+        <option value="facturados">Facturados</option>
+      </select>
+
     </form>
   </div>
 
@@ -178,7 +185,12 @@
         const expiracion = "expires=" + fecha.toUTCString();
 
         document.cookie = `jwt=${datos.jwt}; ${expiracion}; path=/`;
-        window.location.href = "/pedidosClientes.html";
+        if(document.getElementById('panel').value == 'pedidos'){
+          window.location.href = "/pedidosClientes.html";
+        }else{
+          window.location.href = "/pedidosAduana.html";
+        }
+        
       }
     };
 

@@ -90,7 +90,7 @@ async function fetchDataAndSend() {
     // Conectar a la base de datos
 
     const result = await pool.query(`
-      SELECT PedidosNotificacion.Folio, PedidosNotificacion.Status, 'pedido' AS Tipo, PedidosNotificacion.AlSurtiendo, PedidosNotificacion.ALSurtir, PedidosNotificacion.Vendedor, Vendedores.Nombre AS NombreVendedor, PedidosNotificacion.Cliente, Clientes.Razon_Social AS NombreCliente
+      SELECT PedidosNotificacion.Folio, PedidosNotificacion.Status, PedidosNotificacion.Tipo, PedidosNotificacion.AlSurtiendo, PedidosNotificacion.ALSurtir, PedidosNotificacion.Vendedor, Vendedores.Nombre AS NombreVendedor, PedidosNotificacion.Cliente, Clientes.Razon_Social AS NombreCliente
       FROM PedidosNotificacion
       LEFT JOIN Vendedores ON Vendedores.Clave = PedidosNotificacion.Vendedor
       LEFT JOIN Clientes ON Clientes.Clave = PedidosNotificacion.Cliente
@@ -238,6 +238,42 @@ wss.on('connection', async (ws) => {
           }
           break;
         }
+        case 'pedidosAduana': {
+          const credencial = jwt.verify(datos.jwt, secretKey);
+
+          if(credencial.clave != 32){
+            return;
+          }
+
+          const solicitud = pool.request();
+
+          const resultado = await solicitud.query(`
+            SELECT PedidosCliente.Folio, PedidosCliente.Status, 'pedido' AS Tipo, PedidosCliente.AlSurtiendo, PedidosCliente.ALSurtir, PedidosCliente.Vendedor, Vendedores.Nombre AS NombreVendedor, PedidosCliente.Cliente, Clientes.Razon_Social AS NombreCliente
+            FROM PedidosCliente
+            LEFT JOIN Vendedores ON Vendedores.Clave = PedidosCliente.Vendedor
+            LEFT JOIN Clientes ON Clientes.Clave = PedidosCliente.Cliente
+            WHERE
+            ( PedidosCliente.Status = 'C' ) OR
+            ( PedidosCliente.Status = 'Z' ) OR
+            ( PedidosCliente.Status = 'S' ) OR
+            ( PedidosCliente.Status = 'F' )
+            UNION ALL
+            SELECT PedidosMostrador.Folio, PedidosMostrador.Status, 'mostrador' AS Tipo, PedidosMostrador.AlSurtiendo, PedidosMostrador.ALSurtir, PedidosMostrador.Vendedor, Vendedores.Nombre AS NombreVendedor, PedidosMostrador.Cliente, Clientes.Razon_Social AS NombreCliente
+            FROM PedidosMostrador
+            LEFT JOIN Vendedores ON Vendedores.Clave = PedidosMostrador.Vendedor
+            LEFT JOIN Clientes ON Clientes.Clave = PedidosMostrador.Cliente
+            WHERE
+            ( PedidosMostrador.Status = 'C' ) OR
+            ( PedidosMostrador.Status = 'Z' ) OR
+            ( PedidosMostrador.Status = 'S' ) OR
+            ( PedidosMostrador.Status = 'F' )
+            ORDER BY Folio`);
+
+          if (resultado.recordset.length > 0) {
+            ws.send(JSON.stringify({ "ruta": "pedidos", "pedidos": resultado.recordset }));
+          }
+          break;
+        }
         case 'pedidoDetalle': {
           const credencial = jwt.verify(datos.jwt, secretKey);
 
@@ -251,6 +287,31 @@ wss.on('connection', async (ws) => {
               WHERE pcd.Folio = @folio ORDER BY pro.Localizacion`
             :
             `SELECT pmd.CodigoArticulo, pro.Localizacion, pro.Descripcion, pmd.CantidadPedida, pmd.CantidadSurtida
+            FROM PedidoMostradorDetalle pmd LEFT JOIN Producto pro ON pro.Codigo = pmd.CodigoArticulo
+            WHERE pmd.Folio = @folio ORDER BY pro.Localizacion`);
+
+          if (res.recordset.length > 0) {
+            ws.send(JSON.stringify({ "ruta": "pedidoDetalle", "pedido": res.recordset, "tipo": datos.tipo, "folio": datos.folio, "status": datos.status }));
+          }
+          break;
+        }
+        case 'pedidoDetalleAduana': {
+          const credencial = jwt.verify(datos.jwt, secretKey);
+
+          if(credencial.clave != 32){
+            return;
+          }
+
+          const solicit = pool.request();
+
+          solicit.input('folio', mssql.Int, datos.folio);
+
+          const res = await solicit.query(datos.tipo == "pedido" ?
+            `SELECT pcd.CodigoArticulo, pro.Localizacion, pro.Descripcion, pcd.CantidadPedida, pcd.CantidadFacturada
+              FROM PedidoClientesDetalle pcd LEFT JOIN Producto pro ON pro.Codigo = pcd.CodigoArticulo
+              WHERE pcd.Folio = @folio ORDER BY pro.Localizacion`
+            :
+            `SELECT pmd.CodigoArticulo, pro.Localizacion, pro.Descripcion, pmd.CantidadPedida, pmd.CantidadFacturada
             FROM PedidoMostradorDetalle pmd LEFT JOIN Producto pro ON pro.Codigo = pmd.CodigoArticulo
             WHERE pmd.Folio = @folio ORDER BY pro.Localizacion`);
 
@@ -476,7 +537,7 @@ wss.on('connection', async (ws) => {
           for (const producto of pedidoDetalle) {
 
             if( producto.CantidadSurtida != producto.CantidadPedida && !datos.observacion ){
-              ws.send(JSON.stringify({ "ruta": "faltaObservacion", "folio": datos.folio, "tipo": datos.tipo }));
+              ws.send(JSON.stringify({ "ruta": "faltaObservacion" }));
               return;
             }
             else if( producto.CantidadSurtida != producto.CantidadPedida ){
@@ -846,6 +907,23 @@ wss.on('connection', async (ws) => {
         }
         case '🐱': {
           ws.send(JSON.stringify({ "gatos": "🐱 🐈 😺 😸 😹 😻 😼 😽 🙀 😿 😾 🐾" }));
+          break;
+        }
+        case 'repartidores': {
+          const credencial = jwt.verify(datos.jwt, secretKey);
+
+          if(credencial.clave != 32){
+            return;
+          }
+
+          const solicit = pool.request();
+
+          const res = await solicit.query(`SELECT * FROM Vendedores WHERE Extra1 = 'REPARTIDOR'`);
+
+          if (res.recordset.length > 0) {
+            ws.send(JSON.stringify({ "ruta": "repartidores", "repartidores": res.recordset }));
+          }
+
           break;
         }
         default: {
