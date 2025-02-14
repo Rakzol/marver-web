@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Lector de Códigos de Barras con Barcode Detection API</title>
+  <style>
+    video {
+      width: 100%;
+      height: auto;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <video id="video" autoplay playsinline></video>
+  <div id="result"></div>
+
+  <script>
+    const video = document.getElementById('video');
+    const resultDiv = document.getElementById('result');
+
+    // Verificar si el navegador soporta la API Barcode Detection
+    if ('BarcodeDetector' in window) {
+      // Puedes especificar los formatos que deseas detectar
+      const barcodeDetector = new BarcodeDetector({
+        formats: ['qr_code', 'ean_13', 'code_128', 'code_39']
+      });
+
+      // Acceder a la cámara trasera
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+        .then(stream => {
+          video.srcObject = stream;
+          video.play();
+          // Iniciar el ciclo de detección
+          requestAnimationFrame(scanFrame);
+        })
+        .catch(err => {
+          console.error('Error al acceder a la cámara:', err);
+          resultDiv.textContent = 'No se pudo acceder a la cámara.';
+        });
+
+      // Función para procesar cada frame
+      function scanFrame() {
+        barcodeDetector.detect(video)
+          .then(barcodes => {
+            if (barcodes.length > 0) {
+              barcodes.forEach(barcode => {
+                console.log('Código detectado:', barcode.rawValue);
+                resultDiv.textContent = `Código detectado: ${barcode.rawValue}`;
+              });
+            }
+            requestAnimationFrame(scanFrame);
+          })
+          .catch(err => {
+            console.error('Error durante la detección:', err);
+            requestAnimationFrame(scanFrame);
+          });
+      }
+    } else {
+      resultDiv.textContent = 'La API Barcode Detection no es soportada en este navegador.';
+    }
+  </script>
+</body>
+</html>

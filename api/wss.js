@@ -918,12 +918,29 @@ wss.on('connection', async (ws) => {
 
           const solicit = pool.request();
 
-          const res = await solicit.query(`SELECT * FROM Vendedores WHERE Extra1 = 'REPARTIDOR'`);
+          const res = await solicit.query(`SELECT Nombre, Clave, Contraseña FROM Vendedores WHERE Extra1 = 'REPARTIDOR' ORDER BY Nombre`);
 
           if (res.recordset.length > 0) {
             ws.send(JSON.stringify({ "ruta": "repartidores", "repartidores": res.recordset }));
           }
 
+          break;
+        }
+        case 'asignarPedido': {
+          const credencial = jwt.verify(datos.jwt, secretKey);
+
+          if(credencial.clave != 32){
+            return;
+          }
+
+          try{
+            const resultado = await asignarPedido(datos.folio, datos.clave, datos.contraseña);
+            if(resultado.status != 0){
+              ws.send(JSON.stringify({ "ruta": "errorAsignacion", "error": resultado.mensaje }));
+            }
+          }catch(error){
+            ws.send(JSON.stringify({ "ruta": "errorAsignacion", "error": error.message }));
+          }
           break;
         }
         default: {
@@ -953,6 +970,51 @@ wss.on('connection', async (ws) => {
   // Send a welcome message to the new client
   //ws.send('Welcome to the chat!');
 });
+
+
+async function asignarPedido(folio, clave, contraseña) {
+  const postData = new URLSearchParams({
+      sucursal: "Mochis",
+      clave: clave,
+      contraseña: contraseña,
+      folio: folio
+  }).toString();
+
+  const opciones = {
+      hostname: 'www.marverrefacciones.mx',
+      path: '/android/asignar_pedido',
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Length': Buffer.byteLength(postData)
+      }
+  };
+
+  return new Promise((resolve, reject) => {
+      const solicitud = https.request(opciones, async (respuesta) => {
+          let datos = '';
+          
+          respuesta.on('data', (chunk) => {
+              datos += chunk;
+          });
+          
+          respuesta.on('end', () => {
+              try {
+                  resolve(JSON.parse(datos));
+              } catch (error) {
+                  reject(new Error(`Error parseando JSON: ${error.message}`));
+              }
+          });
+      });
+
+      solicitud.on('error', (error) => {
+          reject(new Error(`Error de conexión: ${error.message}`));
+      });
+
+      solicitud.write(postData);
+      solicitud.end();
+  });
+}
 
 function horaActual() {
   const ahora = new Date();

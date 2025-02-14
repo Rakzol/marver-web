@@ -533,7 +533,7 @@
 
         console.log(datos);
 
-        if (datos.error) {
+        if (!datos.ruta && datos.error) {
           alert(datos.error);
           return;
         }

@@ -383,6 +383,31 @@
     }
   </style>
 
+  <style>
+    ol {
+      list-style: none;
+      padding-left: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      align-items: center;
+      padding: 0.3rem;
+      border-bottom: grey 1px solid;
+    }
+
+    span {
+      border-radius: 50rem;
+      color: white;
+      background: #3498db;
+      padding: 0.2em 0.4em;
+    }
+  </style>
+
 </head>
 
 <body>
@@ -397,6 +422,13 @@
       <a href="#" onclick="logout()">Cerrar sesión</a>
     </div>
   </header>
+
+  <video id="camera" style="width: 100%;" class="invisible"></video>
+
+  <div style="justify-content: center; display: flex; margin-top: 0.5rem;">
+    <button id="buttonInicializarScanner" onclick="inicializarScanner();">Scannear</button>
+    <button id="buttonFinalizarScanner" onclick="finalizarScanner();" class="invisible cancelar">Cancelar</button>
+  </div>
 
   <table id="tabla-facturados" class="tabla-contenido">
     <caption>Facturados</caption>
@@ -415,6 +447,8 @@
     <div class="modal-content">
       <h2>Repartidores</h2>
       <!-- ACA UNA LISTA DE LOS REPARTIDORES Y CON EL ONCLICK SE ASIGNAN LLAMANDO A LA FUNCION asignarPedido -->
+      <ol>
+      </ol>
       <div class="modal-buttons">
         <button class="btn-cancel" onclick="cerrarModalAsignarPedido()">Cancelar</button>
       </div>
@@ -424,7 +458,7 @@
   <div id="modalErrorAsignacion" class="modal">
     <div class="modal-content">
       <h2>Erro de asignacion</h2>
-      <!-- ACA VA EL ERROR DE ASIGNACION -->
+      <p></p>
       <div class="modal-buttons">
         <button class="btn-accept" onclick="cerrarModalErrorAsignacion()">Aceptar</button>
       </div>
@@ -450,7 +484,8 @@
       document.getElementById("modalAsignarPedido").style.display = "none";
     }
 
-    function abrirModalErrorAsignacion() {
+    function abrirModalErrorAsignacion(error) {
+      document.getElementById("modalErrorAsignacion").querySelector('p').innerText = error;
       document.getElementById("modalErrorAsignacion").style.display = "flex";
     }
     function cerrarModalErrorAsignacion() {
@@ -498,7 +533,7 @@
 
         console.log(datos);
 
-        if (datos.error) {
+        if ( !datos.ruta && datos.error) {
           alert(datos.error);
           return;
         }
@@ -524,6 +559,8 @@
 
               folioSeleccionado = undefined;
               tipoSeleccionado = undefined;
+
+              document.getElementById('buttonInicializarScanner').classList.remove('invisible');
             }
 
             if (folioSeleccionado != undefined && tipoSeleccionado != undefined) {
@@ -557,6 +594,8 @@
                 } else {
                   folioSeleccionado = undefined;
                   tipoSeleccionado = undefined;
+
+                  document.getElementById('buttonInicializarScanner').classList.remove('invisible');
 
                   trCodigos.classList.add('invisible');
 
@@ -616,6 +655,9 @@
           }
           case 'pedidoDetalle': {
             //marcer que el pedido que te mostro el detalle es el seleccionado
+            finalizarScanner();
+            document.getElementById('buttonInicializarScanner').classList.add('invisible');
+
             folioSeleccionado = datos.folio;
             tipoSeleccionado = datos.tipo;
 
@@ -660,8 +702,25 @@
             break;
           }
           case 'errorAsignacion': {
+            cerrarModalAsignarPedido();
             abrirModalErrorAsignacion(datos.error);
             break;
+          }
+          case 'repartidores': {
+            const ol = document.querySelector("ol");
+            datos.repartidores.forEach(repartidor => {
+              const li = document.createElement('li');
+              li.innerText = repartidor.Nombre;
+              const span = document.createElement('span');
+              span.innerText = repartidor.Clave;
+
+              li.addEventListener('click', () => {
+                ws.send(JSON.stringify({ "ruta": "asignarPedido", "jwt": jwt, "folio": folioSeleccionado, "clave": repartidor.Clave, "contraseña": repartidor.Contraseña }));
+              });
+
+              li.append(span);
+              ol.append(li);
+            });
           }
         }
       };
@@ -689,6 +748,57 @@
 
     let socket = crearSocket();
 
+  </script>
+
+  <script>
+    let scannerIniciado = false;
+
+    const video = document.getElementById('camera');
+
+    function inicializarScanner() {
+      scannerIniciado = true;
+      video.classList.remove('invisible');
+      document.getElementById('buttonInicializarScanner').classList.add('invisible');
+      document.getElementById('buttonFinalizarScanner').classList.remove('invisible');
+    }
+
+    function finalizarScanner() {
+      scannerIniciado = false;
+      video.classList.add('invisible');
+      document.getElementById('buttonInicializarScanner').classList.remove('invisible');
+      document.getElementById('buttonFinalizarScanner').classList.add('invisible');
+    }
+
+    const detector = new BarcodeDetector({ formats: ['qr_code', 'ean_13', 'code_128', 'code_39'] });
+
+    (async () => {
+      if (!('BarcodeDetector' in window)) {
+        alert('API no soportada');
+        return;
+      }
+
+      // Inicializar cámara
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' }
+      });
+      video.srcObject = stream;
+      await video.play();
+
+      // Escanear cada 500ms
+      setInterval(async () => {
+        if (!scannerIniciado) {
+          return;
+        }
+        const codes = await detector.detect(video);
+        if (codes.length > 0) {
+          let divPedidoEncontrado = document.querySelector(`#pedido-${codes[0].rawValue}`);
+          if (divPedidoEncontrado) {
+            divPedidoEncontrado.click();
+          }
+          finalizarScanner();
+        }
+      }, 500);
+    })();
   </script>
 
 </body>
