@@ -546,8 +546,8 @@
 
             if (datos.pedidos.some(buscado => buscado.Folio == folioSeleccionado && buscado.Tipo == tipoSeleccionado)) {
 
-              cerrarModalAsignarPedido();
-              cerrarModalErrorAsignacion();
+              cerrarModalFaltaObservacion();
+              cerrarModalPedidoSinSurtir();
 
               const trCodigosVisible = document.querySelector(`#codigos-${tipoSeleccionado}-${folioSeleccionado}`);
               trCodigosVisible.classList.add('invisible');
