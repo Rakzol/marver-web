@@ -282,11 +282,11 @@ wss.on('connection', async (ws) => {
           solicit.input('folio', mssql.Int, datos.folio);
 
           const res = await solicit.query(datos.tipo == "pedido" ?
-            `SELECT pcd.CodigoArticulo, pro.Localizacion, pro.Descripcion, pcd.CantidadPedida, pcd.CantidadSurtida
+            `SELECT pcd.CodigoArticulo, pro.Localizacion, pro.Fabricante, pro.Producto, pro.Descripcion, pcd.CantidadPedida, pcd.CantidadSurtida
               FROM PedidoClientesDetalle pcd LEFT JOIN Producto pro ON pro.Codigo = pcd.CodigoArticulo
               WHERE pcd.Folio = @folio ORDER BY pro.Localizacion`
             :
-            `SELECT pmd.CodigoArticulo, pro.Localizacion, pro.Descripcion, pmd.CantidadPedida, pmd.CantidadSurtida
+            `SELECT pmd.CodigoArticulo, pro.Localizacion, pro.Fabricante, pro.Producto, pro.Descripcion, pmd.CantidadPedida, pmd.CantidadSurtida
             FROM PedidoMostradorDetalle pmd LEFT JOIN Producto pro ON pro.Codigo = pmd.CodigoArticulo
             WHERE pmd.Folio = @folio ORDER BY pro.Localizacion`);
 
@@ -759,9 +759,9 @@ wss.on('connection', async (ws) => {
             WHERE Folio = @folio`)).recordset[0];
 
           const pedidoDetalle = (await solicitud.query(datos.tipo == "pedido" ?
-            `SELECT pc.CodigoArticulo, pr.Localizacion, pc.CantidadSurtida, pr.Descripcion FROM PedidoClientesDetalle pc LEFT JOIN Producto pr ON pr.Codigo = pc.CodigoArticulo WHERE pc.Folio = @folio`
+            `SELECT pc.CodigoArticulo, pr.Localizacion, pr.Producto, pr.Fabricante, pc.CantidadSurtida, pr.Descripcion FROM PedidoClientesDetalle pc LEFT JOIN Producto pr ON pr.Codigo = pc.CodigoArticulo WHERE pc.Folio = @folio`
             :
-            `SELECT pm.CodigoArticulo, pr.Localizacion, pm.CantidadSurtida, pr.Descripcion FROM PedidoMostradorDetalle pm LEFT JOIN Producto pr ON pr.Codigo = pm.CodigoArticulo WHERE pm.Folio = @folio`)).recordset;
+            `SELECT pm.CodigoArticulo, pr.Localizacion, pr.Producto, pr.Fabricante, pm.CantidadSurtida, pr.Descripcion FROM PedidoMostradorDetalle pm LEFT JOIN Producto pr ON pr.Codigo = pm.CodigoArticulo WHERE pm.Folio = @folio`)).recordset;
 
           let ticket = "";
 
@@ -863,7 +863,7 @@ wss.on('connection', async (ws) => {
           pedidoDetalle.forEach((producto) => {
             ticket += `${producto.CodigoArticulo.padEnd(22)} ${producto.Localizacion.padEnd(10)} ${producto.CantidadSurtida.toString().padStart(8)}` + LF;
             ticket += ESC + "E" + "\x01";
-            ticket += `${producto.Descripcion}` + LF;
+            ticket += `${producto.Fabricante} | ${producto.Producto} | ${producto.Descripcion}` + LF;
             ticket += ESC + "E" + "\x00";
           });
 

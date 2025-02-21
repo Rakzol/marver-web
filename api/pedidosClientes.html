@@ -387,7 +387,7 @@
 
 <body>
   <header>
-    <div>Seguimiento Pedidos</div>
+    <div>Pedidos<span id="almacenista" ><span></div>
     <div class="hamburguer" onclick="toggleMenu()">
       <div></div>
       <div></div>
@@ -400,13 +400,13 @@
 
   <div class="tablas-selector">
     <select id="selectorTablas" class="estilo-combobox">
-      <!-- <option value="capturados">Capturados</option> -->
+      <option value="capturados">Capturados</option>
       <option value="surtiendo">Surtiendo</option>
       <option value="surtidos">Surtidos</option>
     </select>
   </div>
 
-  <table id="tabla-capturados" class="tabla-contenido" style="display: none;" >
+  <table id="tabla-capturados" class="tabla-contenido" >
     <caption>Capturados</caption>
     <thead>
       <tr>
@@ -419,7 +419,7 @@
     </tbody>
   </table>
 
-  <table id="tabla-surtiendo" class="tabla-contenido">
+  <table id="tabla-surtiendo" class="tabla-contenido" style="display: none;">
     <caption>Surtiendo</caption>
     <thead>
       <tr>
@@ -519,6 +519,7 @@
       if (clave === 'jwt') {
         jwt = valor;
         credenciales = JSON.parse(atob(jwt.split('.')[1]));
+        document.getElementById("almacenista").innerText = " (" + credenciales.clave + ") " + credenciales.nombre;
         break;
       }
     }
@@ -721,10 +722,11 @@
               tdCantidadSurtida.innerText = `${pedido.CantidadSurtida} de ${pedido.CantidadPedida}`;
 
               const trDescripcion = document.createElement('tr');
+              trDescripcion.classList.add('invisible');
               const tdDescripcion = document.createElement('td');
               tdDescripcion.classList.add('centrarTexto');
               tdDescripcion.setAttribute("colspan", "3");
-              tdDescripcion.innerText = pedido.Descripcion;
+              tdDescripcion.innerText = pedido.Fabricante + " | " + pedido.Producto + " | " + pedido.Descripcion;
               trDescripcion.append(tdDescripcion);
 
               trPedido.append(tdCodigo);
@@ -733,8 +735,17 @@
               cuerpoTabla.append(trPedido);
               cuerpoTabla.append(trDescripcion);
 
+              trPedido.addEventListener('click', ()=>{
+                if(trDescripcion.classList.contains('invisible')){
+                  trDescripcion.classList.remove('invisible');
+                }else{
+                  trDescripcion.classList.add('invisible');
+                }
+              });
+
               if (datos.status == 'Z') {
                 const trAcciones = document.createElement('tr');
+                trAcciones.classList.add('invisible');
                 const tdAcciones = document.createElement('td');
                 tdAcciones.classList.add('centrarTexto');
                 tdAcciones.setAttribute("colspan", "3");
@@ -761,6 +772,14 @@
                 trAcciones.append(tdAcciones);
 
                 cuerpoTabla.append(trAcciones);
+
+                trPedido.addEventListener('click', ()=>{
+                if(trAcciones.classList.contains('invisible')){
+                  trAcciones.classList.remove('invisible');
+                }else{
+                  trAcciones.classList.add('invisible');
+                }
+              });
               }
 
             });
