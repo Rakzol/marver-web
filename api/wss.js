@@ -724,7 +724,7 @@ wss.on('connection', async (ws) => {
           const pedido = (await solicitud.query(datos.tipo == "pedido" ?
             `
             SELECT
-            pc.Tipocomprobante, cl.Razon_Social, CONCAT(cl.Colonia, ', ', cl.Domicilio, ' #', cl.Num_Exterior ) AS Direccion,
+            pc.Tipocomprobante, cl.Razon_Social, CONCAT(cp.colonia, ', ', cp.calle, ' #', cp.numero_exterior, ' #', cp.numero_interior ) AS Direccion,
             pc.Observacion, pc.Cliente, pc.Vendedor, pc.FechaPedido, pc.HoraPedido, pc.HoraSurtiendo, pc.Alsurtiendo, pc.FechaSurtido, pc.HoraSurtido, pc.ALSurtir, GETDATE() AS FechaImpreso,
             UPPER(CONCAT('PEDIDO ', pc.Extra1)) AS TipoPedido,
             pc.Extra2 AS TipoPago,
@@ -736,13 +736,14 @@ wss.on('connection', async (ws) => {
             pc.MEntrega
             FROM PedidosCliente pc
             LEFT JOIN Clientes cl ON cl.Clave = pc.Cliente
+            LEFT JOIN clientes_posiciones cp ON cp.clave = pc.Cliente
             LEFT JOIN Vendedores ve ON ve.Clave = pc.Vendedor
             LEFT JOIN Vendedores al ON al.Clave = pc.ALSurtir
             WHERE Folio = @folio`
             :
             `
             SELECT
-            pm.Tipocomprobante, cl.Razon_Social, CONCAT(cl.Colonia, ', ', cl.Domicilio, ' #', cl.Num_Exterior ) AS Direccion,
+            pm.Tipocomprobante, cl.Razon_Social, CONCAT(cp.colonia, ', ', cp.calle, ' #', cp.numero_exterior, ' #', cp.numero_interior ) AS Direccion,
             pm.Observacion, pm.Cliente, pm.Vendedor, pm.FechaPedido, pm.HoraPedido, pm.HoraSurtiendo, pm.Alsurtiendo, pm.FechaSurtido, pm.HoraSurtido, pm.ALSurtir, GETDATE() AS FechaImpreso,
             UPPER(CONCAT('MOSTRADOR ', pm.Extra1)) AS TipoPedido,
             pm.Extra2 AS TipoPago,
@@ -754,6 +755,7 @@ wss.on('connection', async (ws) => {
             pm.MEntrega
             FROM PedidosMostrador pm
             LEFT JOIN Clientes cl ON cl.Clave = pm.Cliente
+            LEFT JOIN clientes_posiciones cp ON cp.clave = pm.Cliente
             LEFT JOIN Vendedores ve ON ve.Clave = pm.Vendedor
             LEFT JOIN Vendedores al ON al.Clave = pm.ALSurtir
             WHERE Folio = @folio`)).recordset[0];
@@ -861,7 +863,7 @@ wss.on('connection', async (ws) => {
           ticket += "-".repeat(42) + LF;
 
           pedidoDetalle.forEach((producto) => {
-            ticket += `${producto.CodigoArticulo.padEnd(22)} ${producto.Localizacion.padEnd(10)} ${producto.CantidadSurtida.toString().padStart(8)}` + LF;
+            ticket += `${producto.CodigoArticulo.padEnd(22)} ${ producto.Localizacion ? producto.Localizacion.padEnd(10): '' } ${producto.CantidadSurtida.toString().padStart(8)}` + LF;
             ticket += ESC + "E" + "\x01";
             ticket += `${producto.Fabricante} | ${producto.Producto} | ${producto.Descripcion}` + LF;
             ticket += ESC + "E" + "\x00";
