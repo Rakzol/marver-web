@@ -5,7 +5,7 @@ const mssql = require('mssql');
 const jwt = require('jsonwebtoken');
 const net = require("net");
 const { execSync } = require("child_process");
-
+ 
 const secretKey = 'Q4V5U6b4l68v31W92N46o49K9P6w6HJ4';
 
 let PRINTER_IP;
