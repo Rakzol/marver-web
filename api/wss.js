@@ -414,6 +414,56 @@ wss.on('connection', async (ws) => {
           ws.send(JSON.stringify({ "ruta": "actualizarSurtido", "tipo": datos.tipo, "folio": datos.folio, "codigo": datos.codigo, "cantidadSurtida": res.recordset[0].CantidadSurtida + 1, "cantidadPedida": res.recordset[0].CantidadPedida }));
           break;
         }
+        case 'colocarCantidad': {
+          const credencial = jwt.verify(datos.jwt, secretKey);
+
+          if(datos.cantidad < 0){
+            return;
+          }
+
+          const solicitud = pool.request();
+
+          solicitud.input('folio', mssql.Int, datos.folio);
+
+          let res = await solicitud.query(datos.tipo == "pedido" ?
+            `SELECT Status
+            FROM PedidosCliente
+            WHERE Folio = @folio`
+            :
+            `SELECT Status
+          FROM PedidosMostrador
+          WHERE Folio = @folio`);
+
+          if (res.recordset[0].Status != 'Z') {
+            return;
+          }
+
+          solicitud.input('codigo', mssql.VarChar, datos.codigo);
+
+          res = await solicitud.query(datos.tipo == "pedido" ?
+            `SELECT CantidadPedida, CantidadSurtida
+              FROM PedidoClientesDetalle
+              WHERE Folio = @folio AND CodigoArticulo = @codigo`
+            :
+            `SELECT CantidadPedida, CantidadSurtida
+            FROM PedidoMostradorDetalle
+            WHERE Folio = @folio AND CodigoArticulo = @codigo`);
+
+          if (!res.recordset[0]) {
+            return;
+          }
+
+          solicitud.input('cantidad', mssql.Float, datos.cantidad);
+          await solicitud.query(datos.tipo == "pedido" ?
+            `UPDATE PedidoClientesDetalle SET CantidadSurtida = @cantidad
+              WHERE Folio = @folio AND CodigoArticulo = @codigo`
+            :
+            `UPDATE PedidoMostradorDetalle SET CantidadSurtida = @cantidad
+            WHERE Folio = @folio AND CodigoArticulo = @codigo`);
+
+          ws.send(JSON.stringify({ "ruta": "actualizarSurtido", "tipo": datos.tipo, "folio": datos.folio, "codigo": datos.codigo, "cantidadSurtida": datos.cantidad, "cantidadPedida": res.recordset[0].CantidadPedida }));
+          break;
+        }
         case 'sumarSurtidoBarra': {
           const credencial = jwt.verify(datos.jwt, secretKey);
 

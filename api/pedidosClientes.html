@@ -381,6 +381,20 @@
     .cancelar {
       background: #e74c3c;
     }
+
+    input{
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    #modalColocarCantidad h2{
+      margin-bottom: 0.5rem;
+    }
+
+    #modalColocarCantidad input{
+      margin-bottom: 0.5rem;
+      padding: 0.2rem;
+    }
   </style>
 
 </head>
@@ -465,6 +479,17 @@
     </div>
   </div>
 
+  <div id="modalColocarCantidad" class="modal">
+    <div class="modal-content">
+      <h2>Coloque la cantidad</h2>
+      <input type="number" min="0" value="0">
+      <div class="modal-buttons">
+        <button class="btn-cancel" onclick="cerrarModalColocarCantidad()">Cancelar</button>
+        <button class="btn-accept" onclick="colocarCantidad()">Aceptar</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     let jwt;
     let credenciales;
@@ -472,6 +497,7 @@
 
     let folioSeleccionado;
     let tipoSeleccionado;
+    let codigoSeleccionado;
 
     function surtidoConObservacion() {
       socket.send(JSON.stringify({ "ruta": "statusSurtido", "jwt": jwt, "folio": folioSeleccionado, "tipo": tipoSeleccionado, "observacion": document.querySelector('textarea').value }));
@@ -485,11 +511,28 @@
       document.querySelector('textarea').value = '';
       document.getElementById("modalFaltaObservacion").style.display = "none";
     }
+
     function abrirModalPedidoSinSurtir() {
       document.getElementById("modalPedidoSinSurtir").style.display = "flex";
     }
     function cerrarModalPedidoSinSurtir() {
       document.getElementById("modalPedidoSinSurtir").style.display = "none";
+    }
+
+    function colocarCantidad() {
+      socket.send(JSON.stringify({ "ruta": "colocarCantidad", "jwt": jwt, "codigo": codigoSeleccionado, "tipo": tipoSeleccionado, "folio": folioSeleccionado, "cantidad": parseFloat(document.querySelector('input').value) }));
+      cerrarModalColocarCantidad();
+    }
+
+    function abrirModalColocarCantidad(cantidad) {
+      document.getElementById("modalColocarCantidad").style.display = "flex";
+      document.querySelector('input').value = cantidad;
+      document.querySelector('input').focus();
+      document.querySelector('input').select();
+    }
+    function cerrarModalColocarCantidad() {
+      document.querySelector('input').value = 0;
+      document.getElementById("modalColocarCantidad").style.display = "none";
     }
 
     function toggleMenu() {
@@ -549,6 +592,7 @@
 
               cerrarModalFaltaObservacion();
               cerrarModalPedidoSinSurtir();
+              cerrarModalColocarCantidad();
 
               const trCodigosVisible = document.querySelector(`#codigos-${tipoSeleccionado}-${folioSeleccionado}`);
               trCodigosVisible.classList.add('invisible');
@@ -744,6 +788,11 @@
               });
 
               if (datos.status == 'Z') {
+                tdCantidadSurtida.addEventListener('click', ()=>{
+                  codigoSeleccionado = pedido.CodigoArticulo;
+                  abrirModalColocarCantidad(parseFloat(tdCantidadSurtida.innerText.split(' ')[0]));
+                });
+
                 const trAcciones = document.createElement('tr');
                 trAcciones.classList.add('invisible');
                 const tdAcciones = document.createElement('td');
@@ -787,7 +836,7 @@
             break;
           }
           case 'actualizarSurtido': {
-            document.querySelector(`#surtido-${datos.codigo}-${datos.tipo}-${datos.folio}`).innerText = `${datos.cantidadSurtida} de ${datos.cantidadPedida}`;
+            document.getElementById(`surtido-${datos.codigo}-${datos.tipo}-${datos.folio}`).innerText = `${datos.cantidadSurtida} de ${datos.cantidadPedida}`;
             break;
           }
           case 'faltaObservacion': {
